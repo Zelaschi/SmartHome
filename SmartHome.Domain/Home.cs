@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace SmartHome.Domain;
 public class Home
 {
-    public string MainStreet { get; set; }
-    public string DoorNumber { get; set; }
-    public string Latitude { get; set; }
-    public string Longitude { get; set; }
-    public int MaxMembers { get; set; }
-    public User Owner { get; set; }
+    public required string MainStreet { get; set; }
+    public required string DoorNumber { get; set; }
+    public required string Latitude { get; set; }
+    public required string Longitude { get; set; }
+    public required int MaxMembers { get; set; }
+    public required User Owner { get; set; }
     public List<HomeDevice> Devices { get; set; }
     public List<HomeMember> Members { get; set; }
 

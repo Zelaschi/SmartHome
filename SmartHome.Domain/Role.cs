@@ -8,7 +8,7 @@ namespace SmartHome.Domain;
 
 public class Role
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public List<SystemPermission> Permissions { get; set; }
 
     public Role()
@@ -31,4 +31,3 @@ public class Role
         return Permissions.Contains(permission);
     }
 }
-
