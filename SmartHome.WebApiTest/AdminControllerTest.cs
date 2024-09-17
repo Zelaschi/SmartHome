@@ -11,6 +11,8 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebModels.UserModels.Out;
 
 namespace SmartHome.WebApiTest;
+
+[TestClass]
 public class AdminControllerTest
 {
     private Mock<IAdminLogic>? adminLogicMock;
@@ -18,7 +20,6 @@ public class AdminControllerTest
     private readonly Role admin = new Role() { Name = "Administrator" };
     private readonly Role businessOwner = new Role() { Name = "BusinessOwner" };
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
-
 
     [TestInitialize]
     public void TestInitialize()
