@@ -5,19 +5,23 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.WebApi", "SmartHome.WebApi\SmartHome.WebApi.csproj", "{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.Domain", "SmartHome.Domain\SmartHome.Domain.csproj", "{824CEC8C-CE29-485A-81DB-21047E4D40F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.Domain", "SmartHome.Domain\SmartHome.Domain.csproj", "{824CEC8C-CE29-485A-81DB-21047E4D40F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.BusinessLogic", "SmartHome.BusinessLogic\SmartHome.BusinessLogic.csproj", "{C56A093C-57A0-452D-90E2-2C7D3833E857}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.BusinessLogic", "SmartHome.BusinessLogic\SmartHome.BusinessLogic.csproj", "{C56A093C-57A0-452D-90E2-2C7D3833E857}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.DataAccess", "SmartHome.DataAccess\SmartHome.DataAccess.csproj", "{64ED751B-0B32-44F7-A08B-35A6E6FC4132}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.DataAccess", "SmartHome.DataAccess\SmartHome.DataAccess.csproj", "{64ED751B-0B32-44F7-A08B-35A6E6FC4132}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.RepositoryInterfaces", "SmartHome.RepositoryInterfaces\SmartHome.RepositoryInterfaces.csproj", "{68096CBC-4C4A-426E-BFD1-63B14AC40B4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.RepositoryInterfaces", "SmartHome.RepositoryInterfaces\SmartHome.RepositoryInterfaces.csproj", "{68096CBC-4C4A-426E-BFD1-63B14AC40B4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.LogicInterfaces", "SmartHome.LogicInterfaces\SmartHome.LogicInterfaces.csproj", "{BACFBBAB-C597-43BA-A299-9529CA7B5D9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.LogicInterfaces", "SmartHome.LogicInterfaces\SmartHome.LogicInterfaces.csproj", "{BACFBBAB-C597-43BA-A299-9529CA7B5D9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.CustomExceptions", "SmartHome.CustomExceptions\SmartHome.CustomExceptions.csproj", "{CFBAB1A9-DD34-4526-B3E7-9562B9DDED96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.CustomExceptions", "SmartHome.CustomExceptions\SmartHome.CustomExceptions.csproj", "{CFBAB1A9-DD34-4526-B3E7-9562B9DDED96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.BusinessLogicTest", "SmartHome.BusinessLogicTest\SmartHome.BusinessLogicTest.csproj", "{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.BusinessLogicTest", "SmartHome.BusinessLogicTest\SmartHome.BusinessLogicTest.csproj", "{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{331CD65E-38A2-487F-8C62-7C426783D8E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +64,16 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DB14D6FB-6CC1-4B20-A93D-3478F382CB39} = {6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}
+		{824CEC8C-CE29-485A-81DB-21047E4D40F8} = {6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}
+		{C56A093C-57A0-452D-90E2-2C7D3833E857} = {6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}
+		{64ED751B-0B32-44F7-A08B-35A6E6FC4132} = {6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}
+		{68096CBC-4C4A-426E-BFD1-63B14AC40B4B} = {6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}
+		{BACFBBAB-C597-43BA-A299-9529CA7B5D9D} = {6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}
+		{CFBAB1A9-DD34-4526-B3E7-9562B9DDED96} = {6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}
+		{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61} = {331CD65E-38A2-487F-8C62-7C426783D8E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33EA29AF-1491-4185-92D4-3D7C8BA080AA}
