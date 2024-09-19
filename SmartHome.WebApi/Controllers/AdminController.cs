@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartHome.Interfaces;
+using SmartHome.WebModels.UserModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -14,8 +15,8 @@ public class AdminController : ControllerBase
         _adminLogic = adminLogic ?? throw new ArgumentNullException(nameof(adminLogic));
     }
 
-    public OkObjectResult GetAllUsers()
+    public IActionResult GetAllUsers()
     {
-        throw new NotImplementedException();
+        return Ok(_adminLogic.GetAllUsers().Select(user => new UserResponseModel(user)).ToList());
     }
 }
