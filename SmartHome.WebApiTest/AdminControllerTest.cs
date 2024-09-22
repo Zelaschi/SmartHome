@@ -33,9 +33,9 @@ public class AdminControllerTest
     {
         IEnumerable<User> users = new List<User>
         {
-            new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password= "psw", Email = "mail@mail.com", Role = admin, CreationDate = DateTime.Today},
-            new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password= "psw", Email = "mail2@mail.com", Role = businessOwner,CreationDate = DateTime.Today},
-            new User() { Id = Guid.NewGuid(), Name = "e", Surname = "f", Password = "psw", Email = "mail3@mail.com", Role = homeOwner, CreationDate = DateTime.Today}
+            new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw", Email = "mail@mail.com", Role = admin, CreationDate = DateTime.Today },
+            new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw", Email = "mail2@mail.com", Role = businessOwner, CreationDate = DateTime.Today },
+            new User() { Id = Guid.NewGuid(), Name = "e", Surname = "f", Password = "psw", Email = "mail3@mail.com", Role = homeOwner, CreationDate = DateTime.Today }
         };
 
         adminLogicMock.Setup(a => a.GetAllUsers()).Returns(users);
