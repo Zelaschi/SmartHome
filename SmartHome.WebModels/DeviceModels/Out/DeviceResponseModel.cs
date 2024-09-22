@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SmartHome.Domain;
 namespace SmartHome.WebModels.DeviceModels.Out;
-public class DeviceResponseModel
+public sealed class DeviceResponseModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
