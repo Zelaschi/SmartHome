@@ -16,7 +16,7 @@ public class User
     public bool? Complete { get; set; }
     public string? ProfilePhoto { get; set; }
     public List<Home> Houses { get; set; }
-    public required Role Role { get; set; }
+    public required Role? Role { get; set; }
     public required DateTime CreationDate = DateTime.Today;
 
     public User()

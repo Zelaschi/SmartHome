@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace SmartHome.Domain;
 public class Device
 {
+    public Guid Id { get; set; }
     public required string Name { get; set; }
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
