@@ -32,15 +32,15 @@ public class DeviceControllerTest
 
     public void GetAllDevicesTest_Ok()
     {
-        var user1 = new Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var company1 = new Company() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", CompanyOwner = user1 };
-        var user2 = new Domain.User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var company2 = new Company() { Id = Guid.NewGuid(), Name = "kolke", Logo = "logo2", RUT = "rut2", CompanyOwner = user2 };
 
-        IEnumerable<Domain.Device> devices = new List<Domain.Device>()
+        IEnumerable<Device> devices = new List<Domain.Device>()
         {
-            new Domain.Device(){ Id = Guid.NewGuid(), Company = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" },
-            new Domain.Device(){ Id = Guid.NewGuid(), Company = company2, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" }
+            new Device(){ Id = Guid.NewGuid(), Company = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" },
+            new Device(){ Id = Guid.NewGuid(), Company = company2, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" }
         };
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);
