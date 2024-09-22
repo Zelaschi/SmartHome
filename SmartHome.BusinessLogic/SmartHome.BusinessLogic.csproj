@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
+    <Folder Include="CustomExceptions\" />
     <Folder Include="CustomExceptions\" />
   </ItemGroup>
 

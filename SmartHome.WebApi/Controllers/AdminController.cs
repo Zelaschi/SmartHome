@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SmartHome.Interfaces;
-using SmartHome.WebModels.UserModels.Out;
+using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.WebModels.UserModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 

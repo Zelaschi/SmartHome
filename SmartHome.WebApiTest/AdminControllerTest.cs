@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using SmartHome.Domain;
-using SmartHome.Interfaces;
+using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
-using SmartHome.WebModels.UserModels.Out;
+using SmartHome.WebApi.WebModels.UserModels.Out;
 
 namespace SmartHome.WebApiTest;
 
