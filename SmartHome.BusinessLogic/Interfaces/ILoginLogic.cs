@@ -8,5 +8,5 @@ using SmartHome.BusinessLogic.Domain;
 namespace SmartHome.BusinessLogic.Interfaces;
 public interface ILoginLogic
 {
-    Guid Login(string username, string password);
+    Guid LogIn(string username, string password);
 }

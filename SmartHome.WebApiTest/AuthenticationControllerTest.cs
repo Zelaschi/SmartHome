@@ -5,10 +5,13 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
+using SmartHome.WebApi.WebModels.LoginModels.In;
+using SmartHome.WebApi.WebModels.LoginModels.Out;
 
 namespace SmartHome.WebApiTest;
 
@@ -25,5 +28,26 @@ public class AuthenticationControllerTest
     {
         loginLogicMock = new Mock<ILoginLogic>(MockBehavior.Strict);
         authController = new AuthenticationController(loginLogicMock.Object);
+    }
+
+    [TestMethod]
+    public void LoginTest_Ok()
+    {
+        // ARRANGE
+        var loginRequest = new LoginRequestModel() { Email = "aemail@domain.com", Password = "aPassword" };
+        var token = Guid.NewGuid();
+        var expectedLoginResponse = new LoginResponseModel() { Token = token };
+
+        loginLogicMock.Setup(l => l.LogIn(It.IsAny<string>(), It.IsAny<string>())).Returns(expectedLoginResponse.ToEntity());
+
+        var expected = new OkObjectResult(expectedLoginResponse);
+
+        // ACT
+        var result = authController.LogIn(loginRequest) as OkObjectResult;
+        var objectResult = (result.Value as LoginResponseModel)!;
+
+        // ASSERT
+        loginLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedLoginResponse.Token.Equals(objectResult.Token));
     }
 }
