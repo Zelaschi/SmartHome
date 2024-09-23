@@ -22,7 +22,7 @@ public class HomeOwnerControllerTest
     [TestInitialize]
     public void TestInitialize()
     {
-        homeOwnerLogicMock = new Mock<IHomeOwnerLogic>();
+        homeOwnerLogicMock = new Mock<IHomeOwnerLogic>(MockBehavior.Strict);
         homeOwnerController = new HomeOwnerController(homeOwnerLogicMock.Object);
     }
 
