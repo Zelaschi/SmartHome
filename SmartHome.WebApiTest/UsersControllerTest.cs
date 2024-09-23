@@ -13,10 +13,10 @@ using SmartHome.WebApi.WebModels.UserModels.Out;
 namespace SmartHome.WebApiTest;
 
 [TestClass]
-public class AdminControllerTest
+public class UsersControllerTest
 {
-    private Mock<IAdminLogic>? adminLogicMock;
-    private AdminController? adminController;
+    private Mock<IUsersLogic>? usersLogicMock;
+    private UsersController? usersController;
     private readonly Role admin = new Role() { Name = "Administrator" };
     private readonly Role businessOwner = new Role() { Name = "BusinessOwner" };
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
@@ -24,8 +24,8 @@ public class AdminControllerTest
     [TestInitialize]
     public void TestInitialize()
     {
-        adminLogicMock = new Mock<IAdminLogic>(MockBehavior.Strict);
-        adminController = new AdminController(adminLogicMock.Object);
+        usersLogicMock = new Mock<IUsersLogic>(MockBehavior.Strict);
+        usersController = new UsersController(usersLogicMock.Object);
     }
 
     [TestMethod]
@@ -38,7 +38,7 @@ public class AdminControllerTest
             new User() { Id = Guid.NewGuid(), Name = "e", Surname = "f", Password = "psw", Email = "mail3@mail.com", Role = homeOwner, CreationDate = DateTime.Today }
         };
 
-        adminLogicMock.Setup(a => a.GetAllUsers()).Returns(users);
+        usersLogicMock.Setup(a => a.GetAllUsers()).Returns(users);
 
         var expected = new OkObjectResult(new List<UserResponseModel>
         {
@@ -49,11 +49,11 @@ public class AdminControllerTest
         List<UserResponseModel> expectedObject = (expected.Value as List<UserResponseModel>)!;
 
         // ACT
-        var result = adminController.GetAllUsers() as OkObjectResult;
+        var result = usersController.GetAllUsers() as OkObjectResult;
         var objectResult = (result.Value as List<UserResponseModel>)!;
 
         // ASSERT
-        adminLogicMock.VerifyAll();
+        usersLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Name.Equals(objectResult.First().Name));
     }
 }

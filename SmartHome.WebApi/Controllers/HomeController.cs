@@ -5,6 +5,8 @@ using SmartHome.WebApi.WebModels.HomeModels.In;
 
 namespace SmartHome.WebApi.Controllers;
 
+[Route("api/v1/[controller]")]
+[ApiController]
 public class HomeController : ControllerBase
 {
     private readonly IHomeLogic _homeLogic;
