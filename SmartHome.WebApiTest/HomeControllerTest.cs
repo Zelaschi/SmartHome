@@ -51,9 +51,9 @@ public class HomeControllerTest
         var expectedDeviceResult = new CreatedAtActionResult("CreateHome", "CreateHome", new { Id = home.Id }, expectedResult);
 
         var result = homeController.CreateHome(homeRequestModel) as CreatedAtActionResult;
-        var deviceResult = result.Value as DeviceResponseModel;
+        var homeResult = result.Value as HomeResponseModel;
 
         homeLogicMock.VerifyAll();
-        Assert.IsTrue(expectedDeviceResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
+        Assert.IsTrue(expectedDeviceResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(homeResult));
     }
 }
