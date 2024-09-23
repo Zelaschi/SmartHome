@@ -7,7 +7,7 @@ using SmartHome.WebApi.WebModels.LoginModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/authentication")]
+[Route("api/v1/authentication")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
