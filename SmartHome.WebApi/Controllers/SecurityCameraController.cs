@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -11,5 +12,10 @@ public class SecurityCameraController : ControllerBase
     public SecurityCameraController(ISecurityCameraLogic securityCameraLogic)
     {
         _securityCameraLogic = securityCameraLogic;
+    }
+
+    public CreatedAtActionResult CreateSecurityCamera(SecurityCameraRequestModel securityCameraRequestModel)
+    {
+        throw new NotImplementedException();
     }
 }
