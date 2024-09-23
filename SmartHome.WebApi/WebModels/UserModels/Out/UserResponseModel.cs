@@ -18,10 +18,10 @@ public class UserResponseModel
 
     public UserResponseModel(User user)
     {
-        Id = user.Id;
+        Id = (Guid)user.Id;
         Name = user.Name;
         Surname = user.Surname;
         Email = user.Email;
-        CreationDate = user.CreationDate;
+        CreationDate = (DateTime)user.CreationDate;
     }
 }

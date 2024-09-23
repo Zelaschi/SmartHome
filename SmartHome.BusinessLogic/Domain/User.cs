@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SmartHome.BusinessLogic.Domain;
 public class User
 {
-    public required Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public required string Name { get; set; }
     public required string Surname { get; set; }
     public required string Password { get; set; }
@@ -17,7 +17,7 @@ public class User
     public string? ProfilePhoto { get; set; }
     public List<Home> Houses { get; set; }
     public required Role? Role { get; set; }
-    public required DateTime CreationDate = DateTime.Today;
+    public DateTime? CreationDate = DateTime.Today;
 
     public User()
     {

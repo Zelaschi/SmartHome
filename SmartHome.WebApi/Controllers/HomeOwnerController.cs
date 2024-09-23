@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.WebModels.HomeOwnerModels.In;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -12,5 +13,10 @@ public class HomeOwnerController : ControllerBase
     public HomeOwnerController(IHomeOwnerLogic homeOwnerLogic)
     {
         _homeOwnerLogic = homeOwnerLogic;
+    }
+
+    public CreatedAtActionResult CreateHomeOwner(HomeOwnerRequestModel homeOwnerRequestModel)
+    {
+        throw new NotImplementedException();
     }
 }
