@@ -12,7 +12,6 @@ using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.Out;
 using SmartHome.WebApi.WebModels.HomeOwnerModels.Out;
 
-
 namespace SmartHome.WebApiTest;
 [TestClass]
 public class BusinessOwnerControllerTest

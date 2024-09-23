@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -8,8 +9,13 @@ namespace SmartHome.WebApi.Controllers;
 public class BusinessOwnerController
 {
     private readonly IBusinessOwnerLogic _businessOwnerLogic;
-    public BusinessOwnerController(IBusinessOwnerLogic businessOwnerLogic) 
+    public BusinessOwnerController(IBusinessOwnerLogic businessOwnerLogic)
     {
         _businessOwnerLogic = businessOwnerLogic;
+    }
+
+    public CreatedAtActionResult CreateBusinessOwner(BusinessOwnerRequestModel businessOwnerRequestModel)
+    {
+        throw new NotImplementedException();
     }
 }
