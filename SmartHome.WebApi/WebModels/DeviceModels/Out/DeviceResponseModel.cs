@@ -24,4 +24,9 @@ public sealed class DeviceResponseModel
         Photos = device.Photos;
         CompanyName = device.Company.Name;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is DeviceResponseModel d && d.Id == Id;
+    }
 }

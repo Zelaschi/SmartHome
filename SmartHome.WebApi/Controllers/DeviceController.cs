@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.DeviceModels.In;
-using SmartHome.WebApi.WebModels.DeviceModels.In;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
@@ -20,5 +19,12 @@ public class DeviceController : ControllerBase
     public IActionResult GetAllDevices()
     {
         return Ok(_deviceLogic.GetAllDevices().Select(device => new DeviceResponseModel(device)).ToList());
+    }
+
+    [HttpPost]
+    public IActionResult CreateDevice([FromBody] CreateDeviceRequestModel deviceRequestModel)
+    {
+        var response = new DeviceResponseModel(_deviceLogic.CreateDevice(deviceRequestModel.ToEntity()));
+        return CreatedAtAction("CreateDevice", new {response.Id}, response);
     }
 }

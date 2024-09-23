@@ -61,4 +61,34 @@ public class DeviceControllerTest
         deviceLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Name.Equals(objectResult.First().Name));
     }
+
+    [TestMethod]
+
+    public void CreateDeviceTest_Ok()
+    {
+        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var company1 = new Company() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", CompanyOwner = user1 };
+
+        var deviceRequestModel = new CreateDeviceRequestModel()
+        {
+            Name = "Sensor de ventana 1",
+            Description = "Sensor para ventanas",
+            ModelNumber = "1234",
+            Photos = "foto del sensor",
+            Company = company1
+        };
+
+        Device device = deviceRequestModel.ToEntity();
+        device.Id = Guid.NewGuid();
+
+        deviceLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>())).Returns(device);
+        var expectedResult = new DeviceResponseModel(device);
+        var expectedDeviceResult = new CreatedAtActionResult("CreateDevice", "CreateDevice", new { Id = device.Id }, expectedResult);
+
+        var result = deviceController.CreateDevice(deviceRequestModel) as CreatedAtActionResult;
+        var deviceResult = result.Value as DeviceResponseModel;
+
+        deviceLogicMock.VerifyAll();
+        Assert.IsTrue(expectedDeviceResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
+    }
 }
