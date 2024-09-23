@@ -5,7 +5,7 @@ using SmartHome.WebApi.WebModels.UserModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/")]
 [ApiController]
 public class AdminController : ControllerBase
 {
