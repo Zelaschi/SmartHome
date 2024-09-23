@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
+using SmartHome.WebApi.WebModels.BusinessOwnerModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/businessOwners")]
 [ApiController]
-public class BusinessOwnerController
+public class BusinessOwnerController : ControllerBase
 {
     private readonly IBusinessOwnerLogic _businessOwnerLogic;
     public BusinessOwnerController(IBusinessOwnerLogic businessOwnerLogic)
@@ -14,8 +15,10 @@ public class BusinessOwnerController
         _businessOwnerLogic = businessOwnerLogic;
     }
 
-    public CreatedAtActionResult CreateBusinessOwner(BusinessOwnerRequestModel businessOwnerRequestModel)
+    [HttpPost]
+    public IActionResult CreateBusinessOwner(BusinessOwnerRequestModel businessOwnerRequestModel)
     {
-        throw new NotImplementedException();
+        var createResponse = new BusinessOwnerResponseModel(_businessOwnerLogic.CreateBusinessOwner(businessOwnerRequestModel.ToEntitiy()));
+        return CreatedAtAction("CreateBusinessOwner", new { createResponse.Id }, createResponse);
     }
 }

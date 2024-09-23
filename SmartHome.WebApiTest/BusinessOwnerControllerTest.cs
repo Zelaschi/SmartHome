@@ -31,10 +31,10 @@ public class BusinessOwnerControllerTest
     {
         var businessOwnerRequestModel = new BusinessOwnerRequestModel()
         {
-            Name = "homeOwnerName",
-            Surname = "homeOwnerSurname",
-            Password = "homeOwnerPassword",
-            Email = "homeOwnerMail@domain.com"
+            Name = "businessOwnerName",
+            Surname = "businessOwnerSurname",
+            Password = "businessOwnerPassword",
+            Email = "businessOwnerMail@domain.com"
         };
 
         var businessOwner = businessOwnerRequestModel.ToEntitiy();
@@ -44,7 +44,7 @@ public class BusinessOwnerControllerTest
         var expectedObjecResult = new CreatedAtActionResult("CreateBusinessOwner", "CreateBusinessOwner", new { Id = businessOwner.Id }, expectedResult);
 
         var result = businessOwnerController.CreateBusinessOwner(businessOwnerRequestModel) as CreatedAtActionResult;
-        var businessOwnerResult = result.Value as HomeOwnerResponseModel;
+        var businessOwnerResult = result.Value as BusinessOwnerResponseModel;
 
         businessOwnerLogicMock.VerifyAll();
         Assert.IsTrue(expectedObjecResult.StatusCode.Equals(result.StatusCode) && expectedResult.Name.Equals(businessOwnerResult.Name));
