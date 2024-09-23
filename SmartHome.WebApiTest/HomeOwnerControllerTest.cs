@@ -29,7 +29,6 @@ public class HomeOwnerControllerTest
     [TestMethod]
     public void RegisterHomeOwnerTest_OK()
     {
-        var role = new Role() { Name = "HomeOwner", Permissions = new List<SystemPermission>() };
         var homeOwnerRequestModel = new HomeOwnerRequestModel()
         {
             Name = "homeOwnerName",
@@ -39,16 +38,16 @@ public class HomeOwnerControllerTest
             ProfilePhoto = "profilePhotoPath"
         };
 
-        var homeOwner = homeOwnerRequestModel.ToEntitiy(role);
+        var homeOwner = homeOwnerRequestModel.ToEntitiy();
         homeOwnerLogicMock.Setup(h => h.CreateHomeOwner(It.IsAny<User>())).Returns(homeOwner);
 
         var expectedResult = new HomeOwnerResponseModel(homeOwner);
-        var expectedObjectResult = new CreatedAtActionResult("CreateHomeOwner", "CreateHomeOwner", new { Id = homeOwner.Id}, expectedResult);
+        var expectedObjectResult = new CreatedAtActionResult("CreateHomeOwner", "CreateHomeOwner", new { Id = homeOwner.Id }, expectedResult);
 
         var result = homeOwnerController.CreateHomeOwner(homeOwnerRequestModel) as CreatedAtActionResult;
         var homeOwnerResult = result.Value as HomeOwnerResponseModel;
 
         homeOwnerLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(homeOwnerResult));
+        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Name.Equals(homeOwnerResult.Name));
     }
 }

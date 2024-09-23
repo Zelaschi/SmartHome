@@ -9,11 +9,11 @@ public class HomeOwnerRequestModel
     public required string Email { get; set; }
     public required string Password { get; set; }
     public required string ProfilePhoto { get; set; }
-    public User ToEntitiy(Role role)
+    public User ToEntitiy()
     {
         return new User()
         {
-            Role = role,
+            Role = new Role() { Name = "blankRole" },
             Name = Name,
             Surname = Surname,
             Password = Password,

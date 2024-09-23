@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.HomeOwnerModels.In;
+using SmartHome.WebApi.WebModels.HomeOwnerModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -15,8 +16,10 @@ public class HomeOwnerController : ControllerBase
         _homeOwnerLogic = homeOwnerLogic;
     }
 
-    public CreatedAtActionResult CreateHomeOwner(HomeOwnerRequestModel homeOwnerRequestModel)
+    [HttpPost]
+    public IActionResult CreateHomeOwner(HomeOwnerRequestModel homeOwnerRequestModel)
     {
-        throw new NotImplementedException();
+        var createResponse = new HomeOwnerResponseModel(_homeOwnerLogic.CreateHomeOwner(homeOwnerRequestModel.ToEntitiy()));
+        return CreatedAtAction("CreateHomeOwner", new { createResponse.Id }, createResponse);
     }
 }
