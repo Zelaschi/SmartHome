@@ -3,6 +3,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.DeviceModels.In;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.LoginModels.In;
+using SmartHome.WebApi.WebModels.LoginModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -17,8 +18,9 @@ public class AuthenticationController : ControllerBase
         _loginLogic = loginLogic;
     }
 
-    public OkObjectResult LogIn(LoginRequestModel loginRequest)
+    [HttpPost]
+    public IActionResult LogIn(LoginRequestModel loginRequest)
     {
-        throw new NotImplementedException();
+        return Ok(new LoginResponseModel() { Token = _loginLogic.LogIn(loginRequest.Email, loginRequest.Password) });
     }
 }
