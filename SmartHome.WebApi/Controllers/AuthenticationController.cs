@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
-using SmartHome.WebApi.WebModels.DeviceModels.In;
-using SmartHome.WebApi.WebModels.DeviceModels.Out;
+using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.LoginModels.In;
 using SmartHome.WebApi.WebModels.LoginModels.Out;
 
@@ -9,6 +8,7 @@ namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/authentication")]
 [ApiController]
+[ExceptionFilter]
 public class AuthenticationController : ControllerBase
 {
     private readonly ILoginLogic _loginLogic;

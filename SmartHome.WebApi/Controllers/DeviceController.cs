@@ -2,11 +2,13 @@
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.DeviceModels.In;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
+using SmartHome.WebApi.Filters;
 
 namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
+[ExceptionFilter]
 public class DeviceController : ControllerBase
 {
     private readonly IDeviceLogic _deviceLogic;

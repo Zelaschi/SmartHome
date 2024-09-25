@@ -2,11 +2,13 @@
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.Out;
+using SmartHome.WebApi.Filters;
 
 namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/businessOwners")]
 [ApiController]
+[ExceptionFilter]
 public class BusinessOwnerController : ControllerBase
 {
     private readonly IBusinessOwnerLogic _businessOwnerLogic;

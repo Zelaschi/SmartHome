@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.UserModels.Out;
+using SmartHome.WebApi.Filters;
 
 namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/users")]
 [ApiController]
+[ExceptionFilter]
 public class UsersController : ControllerBase
 {
     private readonly IUsersLogic _usersLogic;

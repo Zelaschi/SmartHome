@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.Businesses.Out;
-using SmartHome.WebApi.WebModels.DeviceModels.Out;
+using SmartHome.WebApi.Filters;
 
 namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/businesses")]
 [ApiController]
+[ExceptionFilter]
 public class BusinessesController : ControllerBase
 {
     private readonly IBusinessesLogic _businessesLogic;
