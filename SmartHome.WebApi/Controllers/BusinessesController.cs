@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.WebModels.Businesses.Out;
+using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -15,8 +17,9 @@ public class BusinessesController : ControllerBase
         _businessesLogic = businessesLogic;
     }
 
-    public OkObjectResult GetAllBusinesses()
+    [HttpGet]
+    public IActionResult GetAllBusinesses()
     {
-        throw new NotImplementedException();
+        return Ok(_businessesLogic.GetAllBusinesses().Select(businesses => new BusinessesResponseModel(businesses)).ToList());
     }
 }
