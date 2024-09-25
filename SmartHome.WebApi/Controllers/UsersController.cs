@@ -16,6 +16,7 @@ public class UsersController : ControllerBase
         _usersLogic = usersLogic ?? throw new ArgumentNullException(nameof(usersLogic));
     }
 
+    [AuthorizationFilter(["Admin"])]
     public IActionResult GetAllUsers()
     {
         return Ok(_usersLogic.GetAllUsers().Select(user => new UserResponseModel(user)).ToList());
