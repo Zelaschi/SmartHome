@@ -54,6 +54,6 @@ public class UsersControllerTest
 
         // ASSERT
         usersLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Name.Equals(objectResult.First().Name));
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Equals(objectResult.First()));
     }
 }

@@ -47,6 +47,6 @@ public class BusinessOwnerControllerTest
         var businessOwnerResult = result.Value as BusinessOwnerResponseModel;
 
         businessOwnerLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjecResult.StatusCode.Equals(result.StatusCode) && expectedResult.Name.Equals(businessOwnerResult.Name));
+        Assert.IsTrue(expectedObjecResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(businessOwnerResult));
     }
 }

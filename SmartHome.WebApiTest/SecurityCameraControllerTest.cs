@@ -55,6 +55,6 @@ public class SecurityCameraControllerTest
         var securityCameraResult = result.Value as SecurityCameraResponseModel;
 
         securityCameraLogicMock.VerifyAll();
-        Assert.IsTrue(expectedSecurityCameraResult.StatusCode.Equals(result.StatusCode) && expectedResult.Id.Equals(securityCameraResult.Id));
+        Assert.IsTrue(expectedSecurityCameraResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(securityCameraResult));
     }
 }

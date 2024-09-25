@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.Controllers;
+using SmartHome.WebApi.WebModels.Businesses.Out;
+
+namespace SmartHome.WebApiTest;
+[TestClass]
+public class BusinessesControllerTest
+{
+    private Mock<IBusinessesLogic>? businessesLogicMock;
+    private BusinessesController? businessesController;
+    private readonly Role businessOwner = new Role() { Name = "businessOwner" };
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        businessesLogicMock = new Mock<IBusinessesLogic>(MockBehavior.Strict);
+        businessesController = new BusinessesController(businessesLogicMock.Object);
+    }
+
+    [TestMethod]
+    public void GetBusinessesTest_OK()
+    {
+        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwner };
+        var company1 = new Company() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", CompanyOwner = user1 };
+        var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = businessOwner};
+        var company2 = new Company() { Id = Guid.NewGuid(), Name = "kolke", Logo = "logo2", RUT = "rut2", CompanyOwner = user2 };
+
+        IEnumerable<Company> companies = new List<Company>()
+        {
+            company1,
+            company2
+        };
+
+        businessesLogicMock.Setup(b => b.GetAllBusinesses()).Returns(companies);
+
+        var expected = new OkObjectResult(new List<BusinessesResponseModel>
+        {
+            new BusinessesResponseModel(companies.First()),
+            new BusinessesResponseModel(companies.Last())
+        });
+        List<BusinessesResponseModel> expectedObject = (expected.Value as List<BusinessesResponseModel>)!;
+
+        var result = businessesController.GetAllBusinesses() as OkObjectResult;
+        var objectResult = (result.Value as List<BusinessesResponseModel>)!;
+
+        businessesLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Equals(objectResult.First()));
+    }
+}

@@ -48,6 +48,6 @@ public class HomeOwnerControllerTest
         var homeOwnerResult = result.Value as HomeOwnerResponseModel;
 
         homeOwnerLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Name.Equals(homeOwnerResult.Name));
+        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(homeOwnerResult));
     }
 }

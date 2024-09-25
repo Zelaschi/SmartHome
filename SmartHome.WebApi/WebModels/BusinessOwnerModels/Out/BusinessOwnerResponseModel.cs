@@ -1,4 +1,5 @@
 ﻿using SmartHome.BusinessLogic.Domain;
+using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.WebModels.BusinessOwnerModels.Out;
 
@@ -19,5 +20,10 @@ public class BusinessOwnerResponseModel
         Password = homeOwner.Password;
         Id = homeOwner.Id;
         Role = homeOwner.Role;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is BusinessOwnerResponseModel d && d.Id == Id;
     }
 }

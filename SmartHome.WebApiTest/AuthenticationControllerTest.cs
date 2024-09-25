@@ -48,6 +48,6 @@ public class AuthenticationControllerTest
 
         // ASSERT
         loginLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedLoginResponse.Token.Equals(objectResult.Token));
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedLoginResponse.Equals(objectResult));
     }
 }

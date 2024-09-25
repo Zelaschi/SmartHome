@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.WebModels.UserModels.Out;
 
@@ -23,5 +24,10 @@ public class UserResponseModel
         Surname = user.Surname;
         Email = user.Email;
         CreationDate = (DateTime)user.CreationDate;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is UserResponseModel d && d.Id == Id;
     }
 }
