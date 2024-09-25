@@ -14,4 +14,9 @@ public class BusinessesController : ControllerBase
     {
         _businessesLogic = businessesLogic;
     }
+
+    public OkObjectResult GetAllBusinesses()
+    {
+        throw new NotImplementedException();
+    }
 }
