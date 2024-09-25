@@ -19,6 +19,7 @@ public class HomeMemberController : ControllerBase
     [HttpPost]
     public CreatedAtActionResult CreateHomeMember(HomeMemberRequestModel homeMemberRequestModel)
     {
-        throw new NotImplementedException();
+        var createResponse = new HomeMemberResponseModel(_homeMemberLogic.CreateHomeMember(homeMemberRequestModel.ToEntitiy()));
+        return CreatedAtAction("CreateHomeMember", new { createResponse.HomeMemberId }, createResponse);
     }
 }
