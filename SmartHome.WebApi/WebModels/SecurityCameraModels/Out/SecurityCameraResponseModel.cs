@@ -28,6 +28,7 @@ public class SecurityCameraResponseModel
         PersonDetection = securityCamera.PersonDetection;
         Company = securityCamera.Company;
     }
+
     public override bool Equals(object? obj)
     {
         return obj is SecurityCameraResponseModel d && d.Id == Id;
