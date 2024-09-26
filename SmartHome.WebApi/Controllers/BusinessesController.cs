@@ -21,7 +21,8 @@ public class BusinessesController : ControllerBase
 
     public IActionResult CreateBusiness(BusinessRequestModel businessRequestModel)
     {
-        throw new NotImplementedException();
+        var response = new BusinessesResponseModel(_businessesLogic.CreateBusiness(businessRequestModel.ToEntity()));
+        return CreatedAtAction("CreateBusiness", new { response.Id }, response);
     }
 
     [HttpGet]

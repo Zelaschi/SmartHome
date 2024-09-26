@@ -5,6 +5,7 @@ namespace SmartHome.WebApi.WebModels.Businesses.Out;
 
 public class BusinessesResponseModel
 {
+    public string Id;
     public string Name;
     public string OwnerName;
     public string Email;
@@ -12,6 +13,7 @@ public class BusinessesResponseModel
 
     public BusinessesResponseModel(Company aCompany)
     {
+        Id = aCompany.Id.ToString();
         Name = aCompany.Name;
         OwnerName = aCompany.CompanyOwner.Name;
         Email = aCompany.CompanyOwner.Email;
