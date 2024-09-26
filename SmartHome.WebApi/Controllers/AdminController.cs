@@ -9,6 +9,7 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v1/admins")]
 [ApiController]
 [ExceptionFilter]
+[AuthorizationFilter(["Admin"])]
 public sealed class AdminController : ControllerBase
 {
     private readonly IAdminLogic _adminLogic;
@@ -27,6 +28,7 @@ public sealed class AdminController : ControllerBase
     [HttpDelete("{adminId}")]
     public IActionResult DeleteAdmin(Guid adminId)
     {
-        throw new NotImplementedException();
+        _adminLogic.DeleteAdmin(adminId);
+        return NoContent();
     }
 }
