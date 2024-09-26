@@ -23,4 +23,10 @@ public sealed class AdminController : ControllerBase
         var createResponse = new AdminResponseModel(_adminLogic.CreateAdmin(adminRequestModel.ToEntitiy()));
         return CreatedAtAction("CreateAdmin", new { createResponse.Id }, createResponse);
     }
+
+    [HttpDelete("{adminId}")]
+    public IActionResult DeleteAdmin(Guid adminId)
+    {
+        throw new NotImplementedException();
+    }
 }

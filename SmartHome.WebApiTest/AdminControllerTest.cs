@@ -17,6 +17,7 @@ public class AdminControllerTest
 {
     private Mock<IAdminLogic>? adminLogicMock;
     private AdminController? adminController;
+    private readonly Role admin = new Role() { Name = "admin" };
 
     [TestInitialize]
     public void TestInitialize()
@@ -47,5 +48,28 @@ public class AdminControllerTest
 
         adminLogicMock.VerifyAll();
         Assert.IsTrue(expectedObjecResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(adminResult));
+    }
+
+    [TestMethod]
+    public void DeleteAdminTest_OK()
+    {
+        var adminId = Guid.NewGuid();
+
+        var adminToDelete = new User()
+        {
+            Id = adminId,
+            Name = "adminName",
+            Surname = "adminSurname",
+            Password = "adminPassword",
+            Email = "admin@gmail.com",
+            Role = admin
+        };
+
+        adminLogicMock.Setup(a => a.DeleteAdmin(adminId));
+
+        var result = adminController.DeleteAdmin(adminId) as NoContentResult;
+
+        adminLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(204));
     }
 }
