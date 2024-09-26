@@ -9,5 +9,5 @@ namespace SmartHome.BusinessLogic.Interfaces;
 public interface IHomeLogic
 {
     Home CreateHome(Home home);
-    IEnumerable<Home> GetAllHomes();
+    IEnumerable<Home> GetAllHomesByUserId(Guid userId);
 }

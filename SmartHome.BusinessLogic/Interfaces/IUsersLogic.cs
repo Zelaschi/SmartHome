@@ -9,4 +9,5 @@ namespace SmartHome.BusinessLogic.Interfaces;
 public interface IUsersLogic
 {
     IEnumerable<User> GetAllUsers();
+    IEnumerable<Home> GetAllHomes();
 }

@@ -15,7 +15,7 @@ public class User
     public required string Email { get; set; }
     public bool? Complete { get; set; }
     public string? ProfilePhoto { get; set; }
-    public List<Home> Houses { get; set; }
+    public List<Home>? Houses { get; set; }
     public required Role? Role { get; set; }
     public DateTime? CreationDate = DateTime.Today;
 

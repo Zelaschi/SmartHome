@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -55,5 +56,35 @@ public class HomeControllerTest
 
         homeLogicMock.VerifyAll();
         Assert.IsTrue(expectedDeviceResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(homeResult));
+    }
+
+    [TestMethod]
+
+    public void GetAllHomesTest_Ok()
+    {
+        var user1Id = Guid.NewGuid();
+        var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "user2@hotmail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1};
+        var home2 = new Home() { Id = Guid.NewGuid(), MainStreet = "18 de Julio", DoorNumber = "5678", Latitude = "56", Longitude = "78", MaxMembers = 10, Owner = user2};
+        var homes = new List<Home>() { home1, home2 };
+        user1.Houses = homes;
+
+        IUsersLogic usersLogicMock = new Mock<IUsersLogic>().Object;
+        homeLogicMock.Setup(h => h.GetAllHomesByUserId(It.IsAny<Guid>())).Returns(homes);
+
+        var expected = new OkObjectResult(new List<HomeResponseModel>
+        {
+            new HomeResponseModel(homes.First()),
+            new HomeResponseModel(homes.Last())
+        });
+
+        var result = homeController.GetAllHomesByUserId(user1Id) as OkObjectResult;
+        var objectResult = (result.Value as List<HomeResponseModel>)!;
+
+        var expectedObject = (expected.Value as List<HomeResponseModel>)!;
+        homeLogicMock.VerifyAll();
+
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Equals(objectResult.First()));
     }
 }

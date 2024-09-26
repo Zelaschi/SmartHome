@@ -24,4 +24,10 @@ public class HomeController : ControllerBase
         var response = new HomeResponseModel(_homeLogic.CreateHome(homeRequestModel.ToEntity()));
         return CreatedAtAction("CreateHome", new { response.Id }, response);
     }
+
+    [HttpGet("{userId}")]
+    public IActionResult GetAllHomesByUserId([FromRoute] Guid userId)
+    {
+        throw new NotImplementedException();
+    }
 }
