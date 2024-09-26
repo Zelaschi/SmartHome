@@ -17,6 +17,6 @@ public class NotificationController : ControllerBase
     [HttpGet("{homeMemberId}")]
     public IActionResult GetNotificationsByHomeMemberId([FromRoute] Guid homeMemberId)
     {
-        throw new NotImplementedException();
+        return Ok(_notificationLogic.GetNotificationsByHomeMemberId(homeMemberId));
     }
 }
