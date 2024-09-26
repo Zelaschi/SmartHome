@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 namespace SmartHome.BusinessLogic.Domain;
 public class Notification
 {
-    public required string HomeDevice { get; set; }
+    public Guid Id { get; set; }
+    public required HomeDevice HomeDevice { get; set; }
     public required string Event { get; set; }
-    public required bool Read { get; set; }
+    public bool Read { get; set; } = false;
     public required DateTime Date { get; set; }
     public required string Time { get; set; }
 }

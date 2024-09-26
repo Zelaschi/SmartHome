@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SmartHome.BusinessLogic.Domain;
 public class HomeDevice
 {
-    public required string HardwareId { get; set; }
-    public required string Online { get; set; }
-    public required string Device { get; set; }
+    public required Guid HardwardId { get; set; }
+    public required bool Online { get; set; }
+    public required Device Device { get; set; }
 }
