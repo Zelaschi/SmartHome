@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.Filters;
+using SmartHome.WebApi.WebModels.Businesses.In;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -16,6 +17,11 @@ public class BusinessesController : ControllerBase
     public BusinessesController(IBusinessesLogic businessesLogic)
     {
         _businessesLogic = businessesLogic;
+    }
+
+    public IActionResult CreateBusiness(BusinessRequestModel businessRequestModel)
+    {
+        throw new NotImplementedException();
     }
 
     [HttpGet]

@@ -8,5 +8,6 @@ using SmartHome.BusinessLogic.Domain;
 namespace SmartHome.BusinessLogic.Interfaces;
 public interface IBusinessesLogic
 {
+    Company CreateBusiness(Company company);
     IEnumerable<Company> GetAllBusinesses();
 }

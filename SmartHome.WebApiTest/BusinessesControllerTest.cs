@@ -8,7 +8,9 @@ using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
+using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.WebApi.WebModels.Businesses.Out;
+using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 
 namespace SmartHome.WebApiTest;
 [TestClass]
@@ -52,5 +54,28 @@ public class BusinessesControllerTest
 
         businessesLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Equals(objectResult.First()));
+    }
+
+    [TestMethod]
+    public void RegisterBusinessTest_Ok()
+    {
+        var businessRequestModel = new BusinessRequestModel()
+        {
+            Name = "businessName",
+            Logo = "businessLogo",
+            RUT = "businessRUT",
+        };
+        var business = businessRequestModel.ToEntity();
+
+        businessesLogicMock.Setup(b => b.CreateBusiness(It.IsAny<Company>())).Returns(business);
+
+        var expectedResult = new BusinessesResponseModel(business);
+        var expectedObjectResult = new CreatedAtActionResult("CreateBusiness", "CreateBusiness", new { Id = business.Id }, expectedResult);
+
+        var result = businessesController.CreateBusiness(businessRequestModel) as CreatedAtActionResult;
+        var businessResult = result.Value as BusinessesResponseModel;
+
+        businessesLogicMock.VerifyAll();
+        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(businessResult));
     }
 }
