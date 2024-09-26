@@ -17,7 +17,7 @@ public class AdminControllerTest
 {
     private Mock<IAdminLogic>? adminLogicMock;
     private AdminController? adminController;
-    private readonly Role admin = new Role() { Name = "admin" };
+    private readonly Role admin = new Role() { Name = "HomeOwner" };
 
     [TestInitialize]
     public void TestInitialize()
