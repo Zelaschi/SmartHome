@@ -11,7 +11,5 @@ namespace SmartHome.BusinessLogic.Interfaces;
 public interface IAdminLogic
 {
     User CreateAdmin(User user);
-    void DeleteAdmin(User admin);
-    User CreateBusinessOwner(User bOwner);
-    IEnumerable<Company> GetAllCompanies();
+    void DeleteAdmin(Guid adminId);
 }
