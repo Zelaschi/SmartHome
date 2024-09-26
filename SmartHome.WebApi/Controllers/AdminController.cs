@@ -2,6 +2,7 @@
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.AdminModels.In;
+using SmartHome.WebApi.WebModels.AdminModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -16,8 +17,10 @@ public sealed class AdminController : ControllerBase
         _adminLogic = adminLogic;
     }
 
-    public CreatedAtActionResult CreateAdmin(AdminRequestModel adminRequestModel)
+    [HttpPost]
+    public IActionResult CreateAdmin(AdminRequestModel adminRequestModel)
     {
-        throw new NotImplementedException();
+        var createResponse = new AdminResponseModel(_adminLogic.CreateAdmin(adminRequestModel.ToEntitiy()));
+        return CreatedAtAction("CreateAdmin", new { createResponse.Id }, createResponse);
     }
 }
