@@ -3,6 +3,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
 using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.Filters;
+using System.Reflection.Metadata.Ecma335;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -28,6 +29,6 @@ public class HomeController : ControllerBase
     [HttpGet("{userId}")]
     public IActionResult GetAllHomesByUserId([FromRoute] Guid userId)
     {
-        throw new NotImplementedException();
+        return Ok(_homeLogic.GetAllHomesByUserId(userId).Select(home => new HomeResponseModel(home)).ToList());
     }
 }

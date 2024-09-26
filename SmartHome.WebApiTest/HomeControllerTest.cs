@@ -60,7 +60,7 @@ public class HomeControllerTest
 
     [TestMethod]
 
-    public void GetAllHomesTest_Ok()
+    public void GetAllHomesByUserIdTest_Ok()
     {
         var user1Id = Guid.NewGuid();
         var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
