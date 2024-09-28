@@ -4,7 +4,7 @@ using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.WebApi.Filters;
 
-public class AuthorizationFilter : Attribute, IAuthorizationFilter
+public sealed class AuthorizationFilter : Attribute, IAuthorizationFilter
 {
     private List<string>? Roles { get; set; }
 

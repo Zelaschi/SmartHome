@@ -9,7 +9,7 @@ using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.WebModels.UserModels.Out;
 
-public class UserResponseModel
+public sealed class UserResponseModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

@@ -7,7 +7,7 @@ namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/homeMembers")]
 [ApiController]
-public class HomeMemberController : ControllerBase
+public sealed class HomeMemberController : ControllerBase
 {
     private readonly IHomeMemberLogic _homeMemberLogic;
 

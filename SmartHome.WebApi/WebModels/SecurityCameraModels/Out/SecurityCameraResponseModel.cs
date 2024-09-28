@@ -3,7 +3,7 @@ using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
 
-public class SecurityCameraResponseModel
+public sealed class SecurityCameraResponseModel
 {
     public Guid Id { get; set; }
     public string Type { get; set; } = "Camara de Seguridad";

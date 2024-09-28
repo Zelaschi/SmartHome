@@ -9,7 +9,7 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v1/authentication")]
 [ApiController]
 [ExceptionFilter]
-public class AuthenticationController : ControllerBase
+public sealed class AuthenticationController : ControllerBase
 {
     private readonly ILoginLogic _loginLogic;
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public class Home
+public sealed class Home
 {
     public Guid Id { get; set; }
     public required string MainStreet { get; set; }

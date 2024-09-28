@@ -3,7 +3,7 @@ using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.WebModels.BusinessOwnerModels.Out;
 
-public class BusinessOwnerResponseModel
+public sealed class BusinessOwnerResponseModel
 {
     public string? Name { get; set; }
     public string? Surname { get; set; }

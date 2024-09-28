@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public class Notification
+public sealed class Notification
 {
     public Guid Id { get; set; }
     public required HomeDevice HomeDevice { get; set; }

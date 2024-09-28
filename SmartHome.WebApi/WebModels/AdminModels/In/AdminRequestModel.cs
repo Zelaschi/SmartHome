@@ -2,7 +2,7 @@
 
 namespace SmartHome.WebApi.WebModels.AdminModels.In;
 
-public class AdminRequestModel
+public sealed class AdminRequestModel
 {
     public required string Name { get; set; }
     public required string Surname { get; set; }

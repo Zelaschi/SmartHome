@@ -9,7 +9,7 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v1/businessOwners")]
 [ApiController]
 [ExceptionFilter]
-public class BusinessOwnerController : ControllerBase
+public sealed class BusinessOwnerController : ControllerBase
 {
     private readonly IBusinessOwnerLogic _businessOwnerLogic;
     public BusinessOwnerController(IBusinessOwnerLogic businessOwnerLogic)

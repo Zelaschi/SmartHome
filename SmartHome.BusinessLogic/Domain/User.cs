@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public class User
+public sealed class User
 {
     public Guid? Id { get; set; }
     public required string Name { get; set; }

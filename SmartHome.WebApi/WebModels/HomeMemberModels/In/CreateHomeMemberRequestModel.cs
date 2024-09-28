@@ -2,7 +2,7 @@ using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.WebModels.HomeMemberModels.In;
 
-public class HomeMemberRequestModel
+public sealed class HomeMemberRequestModel
 {
     public required Guid HomeMemberId { get; set; }
     public required List<HomePermission> HomePermissions { get; set; }

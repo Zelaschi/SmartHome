@@ -2,7 +2,7 @@
 
 namespace SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 
-public class BusinessOwnerRequestModel
+public sealed class BusinessOwnerRequestModel
 {
     public required string Name { get; set; }
     public required string Surname { get; set; }

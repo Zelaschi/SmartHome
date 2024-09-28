@@ -8,7 +8,7 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v1/users")]
 [ApiController]
 [ExceptionFilter]
-public class UsersController : ControllerBase
+public sealed class UsersController : ControllerBase
 {
     private readonly IUsersLogic _usersLogic;
     public UsersController(IUsersLogic usersLogic)

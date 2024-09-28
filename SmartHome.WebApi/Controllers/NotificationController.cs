@@ -5,7 +5,7 @@ namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-public class NotificationController : ControllerBase
+public sealed class NotificationController : ControllerBase
 {
     private readonly INotificationLogic _notificationLogic;
 

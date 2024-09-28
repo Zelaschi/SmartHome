@@ -2,7 +2,7 @@
 
 namespace SmartHome.WebApi.WebModels.Businesses.In;
 
-public class BusinessRequestModel
+public sealed class BusinessRequestModel
 {
     public required string Name { get; set; }
     public required string Logo { get; set; }

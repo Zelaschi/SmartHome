@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace SmartHome.WebApi.Filters;
 
-public class ExceptionFilter : ExceptionFilterAttribute
+public sealed class ExceptionFilter : ExceptionFilterAttribute
 {
     public override void OnException(ExceptionContext context)
     {

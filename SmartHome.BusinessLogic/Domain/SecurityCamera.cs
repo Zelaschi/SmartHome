@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public class SecurityCamera : Device
+public sealed class SecurityCamera : Device
 {
     public bool Outdoor { get; set; }
     public bool Indoor { get; set; }

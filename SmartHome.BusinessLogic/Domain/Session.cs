@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public class Session
+public sealed class Session
 {
     public Guid SessionId { get; set; }
     public Guid UserId { get; set; }

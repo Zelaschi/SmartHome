@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
 
-public class Role
+public sealed class Role
 {
     public required string Name { get; set; }
     public List<SystemPermission> Permissions { get; set; }

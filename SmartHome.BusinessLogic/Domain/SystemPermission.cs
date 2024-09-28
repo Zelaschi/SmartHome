@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public class SystemPermission
+public sealed class SystemPermission
 {
     public required string Name { get; set; }
     public required string Description { get; set; }

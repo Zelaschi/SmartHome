@@ -9,7 +9,7 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v1/[controller]")]
 [ApiController]
 [ExceptionFilter]
-public class DeviceController : ControllerBase
+public sealed class DeviceController : ControllerBase
 {
     private readonly IDeviceLogic _deviceLogic;
     public DeviceController(IDeviceLogic deviceLogic)

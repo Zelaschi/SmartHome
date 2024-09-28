@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public class HomeMember
+public sealed class HomeMember
 {
     public Guid HomeMemberId { get; set; }
     public List<HomePermission> HomePermissions { get; set; }

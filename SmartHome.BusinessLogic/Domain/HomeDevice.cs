@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public class HomeDevice
+public sealed class HomeDevice
 {
     public required Guid HardwardId { get; set; }
     public required bool Online { get; set; }
