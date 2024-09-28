@@ -57,13 +57,14 @@ public class HomeMemberControllerTest
 
     public void GetAllHomeMembersTest_Ok()
     {
+        // ARRANGE
         IEnumerable<HomeMember> homeMembers = new List<HomeMember>()
         {
             new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() },
             new HomeMember(){ HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() }
         };
 
-        homeMemberLogicMock.Setup(h => h.GetAllHomeMembers()).Equals(homeMembers);
+        homeMemberLogicMock.Setup(h => h.GetAllHomeMembers()).Returns(homeMembers);
 
         var expected = new OkObjectResult(new List<HomeMemberResponseModel>
         {
@@ -73,9 +74,11 @@ public class HomeMemberControllerTest
 
         List<HomeMemberResponseModel> expectedObject = (expected.Value as List<HomeMemberResponseModel>)!;
 
+        // ACT
         var result = homeMemberController.GetAllHomeMembers() as OkObjectResult;
         var objectResult = (result.Value as List<HomeMemberResponseModel>)!;
 
+        // ASSERT
         homeMemberLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().HomeMemberId.Equals(objectResult.First().HomeMemberId));
     }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.In;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 
@@ -26,6 +27,6 @@ public class HomeMemberController : ControllerBase
     [HttpGet]
     public IActionResult GetAllHomeMembers()
     {
-        throw new NotImplementedException();
+        return Ok(_homeMemberLogic.GetAllHomeMembers().Select(homeMember => new HomeMemberResponseModel(homeMember)).ToList());
     }
 }
