@@ -9,4 +9,5 @@ namespace SmartHome.BusinessLogic.Interfaces;
 public interface IHomeMemberLogic
 {
     HomeMember CreateHomeMember(HomeMember homeMember);
+    IEnumerable<HomeMember> GetAllHomeMembers();
 }

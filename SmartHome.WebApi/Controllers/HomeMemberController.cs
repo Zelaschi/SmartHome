@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.In;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 
@@ -21,5 +22,11 @@ public sealed class HomeMemberController : ControllerBase
     {
         var createResponse = new HomeMemberResponseModel(_homeMemberLogic.CreateHomeMember(homeMemberRequestModel.ToEntitiy()));
         return CreatedAtAction("CreateHomeMember", new { createResponse.HomeMemberId }, createResponse);
+    }
+
+    [HttpGet]
+    public IActionResult GetAllHomeMembers()
+    {
+        return Ok(_homeMemberLogic.GetAllHomeMembers().Select(homeMember => new HomeMemberResponseModel(homeMember)).ToList());
     }
 }
