@@ -10,6 +10,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.HomeMemberModels.In;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SmartHome.WebApiTest;
 
@@ -50,5 +51,32 @@ public class HomeMemberControllerTest
         // ASSERT
         homeMemberLogicMock.VerifyAll();
         Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.HomeMemberId.Equals(homeMemberResult.HomeMemberId));
+    }
+
+    [TestMethod]
+
+    public void GetAllHomeMembersTest_Ok()
+    {
+        IEnumerable<HomeMember> homeMembers = new List<HomeMember>()
+        {
+            new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() },
+            new HomeMember(){ HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() }
+        };
+
+        homeMemberLogicMock.Setup(h => h.GetAllHomeMembers()).Equals(homeMembers);
+
+        var expected = new OkObjectResult(new List<HomeMemberResponseModel>
+        {
+            new HomeMemberResponseModel(homeMembers.First()),
+            new HomeMemberResponseModel(homeMembers.Last())
+        });
+
+        List<HomeMemberResponseModel> expectedObject = (expected.Value as List<HomeMemberResponseModel>)!;
+
+        var result = homeMemberController.GetAllHomeMembers() as OkObjectResult;
+        var objectResult = (result.Value as List<HomeMemberResponseModel>)!;
+
+        homeMemberLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().HomeMemberId.Equals(objectResult.First().HomeMemberId));
     }
 }

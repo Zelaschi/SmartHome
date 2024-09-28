@@ -22,4 +22,10 @@ public class HomeMemberController : ControllerBase
         var createResponse = new HomeMemberResponseModel(_homeMemberLogic.CreateHomeMember(homeMemberRequestModel.ToEntitiy()));
         return CreatedAtAction("CreateHomeMember", new { createResponse.HomeMemberId }, createResponse);
     }
+
+    [HttpGet]
+    public IActionResult GetAllHomeMembers()
+    {
+        throw new NotImplementedException();
+    }
 }
