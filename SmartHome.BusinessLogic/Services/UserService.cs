@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class UserService : IHomeOwnerLogic, IUsersLogic
+public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLogic
 {
     private readonly IGenericRepository<User> _userRepository;
 
@@ -94,6 +94,11 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic
     }
 
     public IEnumerable<Home> GetAllHomes()
+    {
+        throw new NotImplementedException();
+    }
+
+    public User CreateBusinessOwner(User user)
     {
         throw new NotImplementedException();
     }

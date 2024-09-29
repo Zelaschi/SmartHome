@@ -297,4 +297,30 @@ public class UserLogicTest
         userRepositoryMock.VerifyAll();
         Assert.AreEqual(users, usersResult);
     }
+
+    [TestMethod]
+
+    public void Create_BusinessOwner_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodrigues",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com",
+            Role = new Role { Name = "BusinessOwner" },
+            Complete = false
+        };
+
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+
+        userRepositoryMock.Setup(x => x.Add(businessOwner)).Returns(businessOwner);
+
+        businessOwner.Id = Guid.NewGuid();
+        var businessOwnerResult = userService.CreateBusinessOwner(businessOwner);
+
+        Assert.IsNotNull(businessOwnerResult);
+        Assert.AreEqual(businessOwner, businessOwnerResult);
+    }
 }
