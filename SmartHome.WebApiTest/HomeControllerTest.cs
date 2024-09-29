@@ -90,5 +90,30 @@ public class HomeControllerTest
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Equals(objectResult.First()));
     }
 
-    
+    [TestMethod]
+    public void AddDeviceToHomeTest_Ok()
+    {
+        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var homeRequestModel = new CreateHomeRequestModel()
+        {
+            Owner = user1,
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "12",
+            Longitude = "34",
+            MaxMembers = 5
+        };
+        Home home = homeRequestModel.ToEntity();
+        home.Id = Guid.NewGuid();
+        var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
+        var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = company };
+
+        homeLogicMock.Setup(h => h.AddDeviceToHome(It.IsAny<Guid>(), It.IsAny<Guid>()));
+
+        var expected = new NoContentResult();
+        var result = homeController.AddDeviceToHome(home.Id, device.Id) as NoContentResult;
+
+        homeLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
+    }
 }
