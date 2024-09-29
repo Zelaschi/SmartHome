@@ -26,6 +26,7 @@ public sealed class NotificationController : ControllerBase
     [HttpPost("{homeDeviceId}")]
     public IActionResult CreateMovementDetectionNotification([FromRoute] Guid homeDeviceId)
     {
-        throw new NotImplementedException();
+        var createResponse = new NotificationResponseModel(_notificationLogic.CreateMovementDetectionNotification(homeDeviceId));
+        return CreatedAtAction("CreateMovementDetectionNotification", new { createResponse.Id }, createResponse);
     }
 }
