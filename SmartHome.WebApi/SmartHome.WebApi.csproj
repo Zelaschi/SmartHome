@@ -10,4 +10,8 @@
     <ProjectReference Include="..\SmartHome.BusinessLogic\SmartHome.BusinessLogic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="WebModels\NotificationModels\In\" />
+  </ItemGroup>
+
 </Project>

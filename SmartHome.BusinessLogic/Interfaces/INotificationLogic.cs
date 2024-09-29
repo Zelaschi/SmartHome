@@ -9,4 +9,6 @@ namespace SmartHome.BusinessLogic.Interfaces;
 public interface INotificationLogic
 {
     List<Notification> GetNotificationsByHomeMemberId(Guid homeMemberId);
+
+    Notification CreateMovementDetectionNotification(Guid homeDeviceId);
 }
