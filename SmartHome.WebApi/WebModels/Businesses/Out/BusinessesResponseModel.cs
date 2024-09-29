@@ -11,13 +11,13 @@ public sealed class BusinessesResponseModel
     public string Email;
     public string RUT;
 
-    public BusinessesResponseModel(Company aCompany)
+    public BusinessesResponseModel(Business aBusiness)
     {
-        Id = aCompany.Id.ToString();
-        Name = aCompany.Name;
-        OwnerName = aCompany.CompanyOwner.Name;
-        Email = aCompany.CompanyOwner.Email;
-        RUT = aCompany.RUT;
+        Id = aBusiness.Id.ToString();
+        Name = aBusiness.Name;
+        OwnerName = aBusiness.BusinessOwner.Name;
+        Email = aBusiness.BusinessOwner.Email;
+        RUT = aBusiness.RUT;
     }
 
     public override bool Equals(object? obj)

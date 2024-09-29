@@ -13,5 +13,5 @@ public class Device
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
     public required string Photos { get; set; }
-    public required Company Company { get; set; }
+    public required Business Company { get; set; }
 }

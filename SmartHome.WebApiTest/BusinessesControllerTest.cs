@@ -30,11 +30,11 @@ public class BusinessesControllerTest
     public void GetBusinessesTest_OK()
     {
         var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwner };
-        var company1 = new Company() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", CompanyOwner = user1 };
+        var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
         var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = businessOwner};
-        var company2 = new Company() { Id = Guid.NewGuid(), Name = "kolke", Logo = "logo2", RUT = "rut2", CompanyOwner = user2 };
+        var company2 = new Business() { Id = Guid.NewGuid(), Name = "kolke", Logo = "logo2", RUT = "rut2", BusinessOwner = user2 };
 
-        IEnumerable<Company> companies = new List<Company>()
+        IEnumerable<Business> companies = new List<Business>()
         {
             company1,
             company2
@@ -67,7 +67,7 @@ public class BusinessesControllerTest
         };
         var business = businessRequestModel.ToEntity();
 
-        businessesLogicMock.Setup(b => b.CreateBusiness(It.IsAny<Company>())).Returns(business);
+        businessesLogicMock.Setup(b => b.CreateBusiness(It.IsAny<Business>())).Returns(business);
 
         var expectedResult = new BusinessesResponseModel(business);
         var expectedObjectResult = new CreatedAtActionResult("CreateBusiness", "CreateBusiness", new { Id = business.Id }, expectedResult);
