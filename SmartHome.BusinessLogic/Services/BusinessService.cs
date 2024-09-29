@@ -24,6 +24,6 @@ public sealed class BusinessService : IBusinessesLogic
 
     public IEnumerable<Business> GetAllBusinesses()
     {
-        throw new NotImplementedException();
+        return _businessRepository.FindAll();
     }
 }
