@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class UserService : IHomeOwnerLogic
+public sealed class UserService : IHomeOwnerLogic, IUsersLogic
 {
     private readonly IGenericRepository<User> _userRepository;
 
@@ -86,5 +86,15 @@ public sealed class UserService : IHomeOwnerLogic
     {
         var user = _userRepository.Find(u => u.Email.ToLower().Equals(email.ToLower()));
         return user == null;
+    }
+
+    public IEnumerable<User> GetAllUsers()
+    {
+        return _userRepository.FindAll();
+    }
+
+    public IEnumerable<Home> GetAllHomes()
+    {
+        throw new NotImplementedException();
     }
 }
