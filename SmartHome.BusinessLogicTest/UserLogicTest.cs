@@ -79,4 +79,34 @@ public class UserLogicTest
         Assert.IsInstanceOfType(exception, typeof(UserException));
         Assert.AreEqual("User with that email already exists", exception.Message);
     }
+
+    [TestMethod]
+
+    public void Create_HomeOwnerWithNoAInvalidEmail_Test()
+    {
+        var homeOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperezgmail.com",
+            Role = new Role { Name = "HomeOwner" }
+        };
+
+        Exception exception = null;
+
+        try
+        {
+            userService.CreateHomeOwner(homeOwner);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        userRepositoryMock.Verify(x => x.Find(It.IsAny<Func<User, bool>>()), Times.Never);
+        Assert.IsInstanceOfType(exception, typeof(UserException));
+        Assert.AreEqual("Invalid email, must contain @ and .", exception.Message);
+    }
 }
