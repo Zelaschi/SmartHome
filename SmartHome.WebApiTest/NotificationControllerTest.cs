@@ -9,6 +9,8 @@ using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
+using SmartHome.WebApi.WebModels.NotificationModels.Out;
+using SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 
 namespace SmartHome.WebApiTest;
 
@@ -71,5 +73,44 @@ public class NotificationControllerTest
         Assert.IsNotNull(objectResult);
 
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.First().Equals(notifications.First()));
+    }
+
+    [TestMethod]
+
+    public void Create_MovementDetectionNotification_TestOk()
+    {
+        var businessOwnerRole = new Role() { Name = "BusinessOwner" };
+        var businessOwner = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwnerRole, CreationDate = DateTime.Today };
+        var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = businessOwner };
+        var securityCamera = new SecurityCamera()
+        {
+            Name = "SecurityCamera",
+            ModelNumber = "modelNumber",
+            Description = "description",
+            Photos = "photoPath",
+            Indoor = true,
+            Outdoor = false,
+            MovementDetection = true,
+            PersonDetection = true,
+            Business = company,
+        };
+
+        var homeDevice = new HomeDevice() { HardwardId = Guid.NewGuid(), Device = securityCamera, Online = true };
+
+        var notification = new Notification() { Id = Guid.NewGuid(), Event = "MovementDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" };
+
+        var notificationResponseModel = new NotificationResponseModel(notification);
+
+        _notificationLogicMock.Setup(n => n.CreateMovementDetectionNotification(It.IsAny<Guid>())).Returns(notification);
+
+        var expected = new CreatedAtActionResult("CreateMovementDetectionNotification", "CreateMovementDetectionNotification", new { notificationResponseModel.Id }, notificationResponseModel);
+        var result = _notificationController.CreateMovementDetectionNotification(homeDevice.HardwardId) as CreatedAtActionResult;
+        var objectResult = result.Value as NotificationResponseModel;
+
+        _notificationLogicMock.VerifyAll();
+
+        Assert.IsNotNull(objectResult);
+
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.Equals(notificationResponseModel));
     }
 }
