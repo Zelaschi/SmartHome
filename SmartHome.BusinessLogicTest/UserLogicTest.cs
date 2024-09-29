@@ -169,4 +169,34 @@ public class UserLogicTest
         Assert.IsInstanceOfType(exception, typeof(UserException));
         Assert.AreEqual("Invalid password, must contain special character and be longer than 6 characters", exception.Message);
     }
+
+    [TestMethod]
+
+    public void Create_HomeOwnerWithShortInvalidPassword_Test()
+    {
+        var homeOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "P@14",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com",
+            Role = new Role { Name = "HomeOwner" }
+        };
+
+        Exception exception = null;
+
+        try
+        {
+            userService.CreateHomeOwner(homeOwner);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        userRepositoryMock.Verify(x => x.Find(It.IsAny<Func<User, bool>>()), Times.Never);
+        Assert.IsInstanceOfType(exception, typeof(UserException));
+        Assert.AreEqual("Invalid password, must contain special character and be longer than 6 characters", exception.Message);
+    }
 }
