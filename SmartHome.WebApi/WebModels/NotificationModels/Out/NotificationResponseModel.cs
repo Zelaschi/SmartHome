@@ -2,7 +2,7 @@
 
 namespace SmartHome.WebApi.WebModels.NotificationModels.Out;
 
-public class NotificationResponseModel
+public sealed class NotificationResponseModel
 {
     public Guid Id { get; set; }
     public HomeDevice HomeDevice { get; set; }
