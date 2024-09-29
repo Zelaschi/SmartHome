@@ -31,7 +31,7 @@ public class SecurityCameraControllerTest
     {
         var businessOwnerRole = new Role() { Name = "BusinessOwner" };
         var businessOwner = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwnerRole, CreationDate = DateTime.Today };
-        var company = new Company() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", CompanyOwner = businessOwner };
+        var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = businessOwner };
         var securityCameraRequestModel = new SecurityCameraRequestModel()
         {
             ModelNumber = "modelNumber",

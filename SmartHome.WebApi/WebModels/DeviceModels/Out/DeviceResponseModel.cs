@@ -22,7 +22,7 @@ public sealed class DeviceResponseModel
         ModelNumber = device.ModelNumber;
         Description = device.Description;
         Photos = device.Photos;
-        CompanyName = device.Company.Name;
+        CompanyName = device.Business.Name;
     }
 
     public override bool Equals(object? obj)

@@ -19,6 +19,12 @@ public sealed class HomeController : ControllerBase
         _homeLogic = homeLogic;
     }
 
+    [HttpPost("{homeId}/homeDevices")]
+    public IActionResult AddDeviceToHome([FromRoute] Guid homeId, [FromBody] Guid deviceId)
+    {
+        throw new NotImplementedException();
+    }
+
     [HttpPost]
     public IActionResult CreateHome([FromBody] CreateHomeRequestModel homeRequestModel)
     {

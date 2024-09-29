@@ -12,7 +12,7 @@ public sealed class CreateDeviceRequestModel
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
     public required string Photos { get; set; }
-    public required Company Company { get; set; }
+    public required Business Business { get; set; }
 
     public Device ToEntity()
     {
@@ -22,7 +22,7 @@ public sealed class CreateDeviceRequestModel
             ModelNumber = ModelNumber,
             Description = Description,
             Photos = Photos,
-            Company = Company
+            Business = Business
         };
     }
 }
