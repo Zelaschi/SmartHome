@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
-using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
 
 namespace SmartHome.BusinessLogicTest;
@@ -39,7 +39,6 @@ public class UserLogicTest
         };
 
         genericRepositoryMock.Setup(x => x.Add(homeOwner)).Returns(homeOwner);
-        genericRepositoryMock.Setup(x => x.FindAll()).Returns(new List<User>());
 
         homeOwner.Id = Guid.NewGuid();
         var homeOwnerResult = userService.CreateHomeOwner(homeOwner);

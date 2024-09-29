@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.GenericRepositoryInterface;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class UserService : IHomeOwnerLogic
 {
-    private readonly IGenericRepository<User> _genericRepository;
-    public UserService(IGenericRepository<User> genericRepository)
+    private readonly IGenericRepository<User> _userRepository;
+    public UserService(IGenericRepository<User> userRepository)
     {
-        _genericRepository = genericRepository;
+        _userRepository = userRepository;
     }
 
     public HomeMember CreateHomeMember(HomeMember homeMember)
@@ -22,6 +23,7 @@ public sealed class UserService : IHomeOwnerLogic
 
     public User CreateHomeOwner(User user)
     {
-        throw new NotImplementedException();
+        User newHomeOwner = _userRepository.Add(user);
+        return newHomeOwner;
     }
 }

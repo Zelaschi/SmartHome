@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SmartHome.BusinessLogic.Domain;
-using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.GenericRepositoryInterface;
 
 namespace SmartHome.DataAccess.Repositories;
 
 public sealed class UserRepository : IGenericRepository<User>
 {
-    public User Add(User oneElement)
+    public User Add(User user)
     {
         throw new NotImplementedException();
     }
