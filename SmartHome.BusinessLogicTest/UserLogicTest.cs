@@ -47,6 +47,7 @@ public class UserLogicTest
 
         userRepositoryMock.VerifyAll();
         Assert.AreEqual(homeOwner, homeOwnerResult);
+        Assert.AreEqual(homeOwner.Role.Name, "HomeOwner");
     }
 
     [TestMethod]
@@ -321,6 +322,7 @@ public class UserLogicTest
         var businessOwnerResult = userService.CreateBusinessOwner(businessOwner);
 
         Assert.IsNotNull(businessOwnerResult);
+        Assert.AreEqual(businessOwner.Role.Name, "BusinessOwner");
         Assert.AreEqual(businessOwner, businessOwnerResult);
     }
 }

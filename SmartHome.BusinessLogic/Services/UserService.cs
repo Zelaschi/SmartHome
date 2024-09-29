@@ -100,6 +100,14 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
 
     public User CreateBusinessOwner(User user)
     {
-        throw new NotImplementedException();
+        ValidateUser(user);
+
+        if (!EmailIsUnique(user.Email))
+        {
+            throw new UserException("User with that email already exists");
+        }
+
+        User newBusinesssOwner = _userRepository.Add(user);
+        return newBusinesssOwner;
     }
 }
