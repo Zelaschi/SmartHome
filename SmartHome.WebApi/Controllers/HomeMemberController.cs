@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.In;
@@ -17,16 +18,9 @@ public sealed class HomeMemberController : ControllerBase
         _homeMemberLogic = homeMemberLogic ?? throw new ArgumentNullException(nameof(homeMemberLogic));
     }
 
-    [HttpPost]
-    public CreatedAtActionResult CreateHomeMember(HomeMemberRequestModel homeMemberRequestModel)
+    [HttpPost("{homeMemberId}/permissions")]
+    public IActionResult AddHomePermissionsToHomeMember([FromRoute] Guid homeMemberId, [FromRoute] Guid? memberId,[FromBody] HomeMemberPermissions permissions)
     {
-        var createResponse = new HomeMemberResponseModel(_homeMemberLogic.CreateHomeMember(homeMemberRequestModel.ToEntitiy()));
-        return CreatedAtAction("CreateHomeMember", new { createResponse.HomeMemberId }, createResponse);
-    }
-
-    [HttpGet]
-    public IActionResult GetAllHomeMembers()
-    {
-        return Ok(_homeMemberLogic.GetAllHomeMembers().Select(homeMember => new HomeMemberResponseModel(homeMember)).ToList());
+        throw new NotImplementedException();
     }
 }

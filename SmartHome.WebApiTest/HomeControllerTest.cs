@@ -62,7 +62,6 @@ public class HomeControllerTest
     }
 
     [TestMethod]
-
     public void GetAllHomesByUserIdTest_Ok()
     {
         var user1Id = Guid.NewGuid();
