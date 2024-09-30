@@ -6,6 +6,7 @@ using SmartHome.WebApi.Filters;
 using System.Reflection.Metadata.Ecma335;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
+using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -41,9 +42,10 @@ public sealed class HomeController : ControllerBase
         return Ok(_homeLogic.GetAllHomeDevices(homeId).Select(homeDevice => new HomeDeviceResponseModel(homeDevice)).ToList());
     }
 
-    public OkObjectResult GetAllHomeMembers(Guid id)
+    [HttpGet("{homeId}/members")]
+    public IActionResult GetAllHomeMembers([FromRoute] Guid homeId)
     {
-        throw new NotImplementedException();
+        return Ok(_homeLogic.GetAllHomeMembers(homeId).Select(homeMember => new HomeMemberResponseModel(homeMember)).ToList());
     }
 
     [HttpGet("{userId}")]
