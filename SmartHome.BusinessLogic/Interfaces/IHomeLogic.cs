@@ -11,4 +11,6 @@ public interface IHomeLogic
     void AddDeviceToHome(Guid homeId, Guid deviceId);
     Home CreateHome(Home home);
     IEnumerable<Home> GetAllHomesByUserId(Guid userId);
+    IEnumerable<HomeDevice> GetAllHomeDevices(Guid homeId);
+
 }

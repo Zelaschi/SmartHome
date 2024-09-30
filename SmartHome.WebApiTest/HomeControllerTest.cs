@@ -11,7 +11,7 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
-using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
+using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
 
@@ -115,5 +115,51 @@ public class HomeControllerTest
 
         homeLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
+    }
+
+    [TestMethod]
+    public void GetAllHomeMembersTest_Ok()
+    {
+    }
+
+    [TestMethod]
+    public void RegisterHomeMemberTest_OK()
+    {
+    }
+
+    [TestMethod]
+    public void GetAllHomeDevicesTest_Ok()
+    {
+        // ARRANGE
+        var user1Id = Guid.NewGuid();
+        var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var bussiness = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
+        var device = new Device() { Id = Guid.NewGuid(), Name = "A", Type = "A", ModelNumber = "1", Description = "A", Photos = "jpg", Business = bussiness };
+
+        IEnumerable<HomeDevice> homeDevices = new List<HomeDevice>()
+        {
+            new HomeDevice() { HardwardId = Guid.NewGuid(), Online = true, Device = device },
+            new HomeDevice(){ HardwardId = Guid.NewGuid(), Online = true, Device = device }
+        };
+
+        var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
+
+        homeLogicMock.Setup(h => h.GetAllHomeDevices(home1.Id)).Returns(homeDevices);
+
+        var expected = new OkObjectResult(new List<HomeDeviceResponseModel>
+        {
+            new HomeDeviceResponseModel(homeDevices.First()),
+            new HomeDeviceResponseModel(homeDevices.Last())
+        });
+
+        List<HomeDeviceResponseModel> expectedObject = (expected.Value as List<HomeDeviceResponseModel>)!;
+
+        // ACT
+        var result = homeController.GetAllHomeDevices(home1.Id) as OkObjectResult;
+        var objectResult = (result.Value as List<HomeDeviceResponseModel>)!;
+
+        // ASSERT
+        homeLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().HardwardId.Equals(objectResult.First().HardwardId));
     }
 }
