@@ -14,11 +14,13 @@ namespace SmartHome.BusinessLogic.Services;
 public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLogic
 {
     private readonly IGenericRepository<User> _userRepository;
+    private readonly IRoleLogic _roleService;
 
     private const int MinPasswordLength = 6;
-    public UserService(IGenericRepository<User> userRepository)
+    public UserService(IGenericRepository<User> userRepository, IRoleLogic roleLogic)
     {
         _userRepository = userRepository;
+        _roleService = roleLogic;
     }
 
     public HomeMember CreateHomeMember(HomeMember homeMember)
@@ -34,6 +36,8 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         {
             throw new UserException("User with that email already exists");
         }
+
+        user.Role = _roleService.GetHomeOwnerRole();
 
         User newHomeOwner = _userRepository.Add(user);
         return newHomeOwner;
@@ -106,6 +110,8 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         {
             throw new UserException("User with that email already exists");
         }
+
+        user.Role = _roleService.GetBusinessOwnerRole();
 
         User newBusinesssOwner = _userRepository.Add(user);
         return newBusinesssOwner;

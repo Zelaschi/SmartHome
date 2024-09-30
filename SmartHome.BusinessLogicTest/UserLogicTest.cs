@@ -7,6 +7,7 @@ using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
 
 namespace SmartHome.BusinessLogicTest;
@@ -15,6 +16,8 @@ namespace SmartHome.BusinessLogicTest;
 public class UserLogicTest
 {
     private Mock<IGenericRepository<User>>? userRepositoryMock;
+    private Mock<IGenericRepository<Role>>? roleRepositoryMock;
+    private Mock<IRoleLogic>? roleLogicMock;
     private UserService? userService;
 
     [TestInitialize]
@@ -22,7 +25,9 @@ public class UserLogicTest
     public void Initialize()
     {
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
-        userService = new UserService(userRepositoryMock.Object);
+        roleRepositoryMock = new Mock<IGenericRepository<Role>>(MockBehavior.Strict);
+        roleLogicMock = new Mock<IRoleLogic>(MockBehavior.Strict);
+        userService = new UserService(userRepositoryMock.Object, roleLogicMock.Object);
     }
 
     [TestMethod]
@@ -35,8 +40,9 @@ public class UserLogicTest
             Password = "Password@1234",
             CreationDate = DateTime.Today,
             Email = "juanperez@gmail.com",
-            Role = new Role { Name = "HomeOwner" }
         };
+
+        roleLogicMock.Setup(x => x.GetHomeOwnerRole()).Returns(new Role { Name = "HomeOwner" });
 
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
 
@@ -47,7 +53,7 @@ public class UserLogicTest
 
         userRepositoryMock.VerifyAll();
         Assert.AreEqual(homeOwner, homeOwnerResult);
-        Assert.AreEqual(homeOwner.Role.Name, "HomeOwner");
+        Assert.AreEqual(expected: homeOwner.Role.Name, "HomeOwner");
     }
 
     [TestMethod]
@@ -310,9 +316,10 @@ public class UserLogicTest
             Password = "Password@1234",
             CreationDate = DateTime.Today,
             Email = "pedroRodriguez@gmail.com",
-            Role = new Role { Name = "BusinessOwner" },
             Complete = false
         };
+
+        roleLogicMock.Setup(x => x.GetBusinessOwnerRole()).Returns(new Role { Name = "BusinessOwner" });
 
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
 
