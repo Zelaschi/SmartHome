@@ -29,9 +29,11 @@ public sealed class HomeController : ControllerBase
         return NoContent();
     }
 
-    public NoContentResult AddHomeMemberToHome(Guid id, Guid homeMemberId)
+    [HttpPost("{homeId}/members")]
+    public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, Guid homeMemberId)
     {
-        throw new NotImplementedException();
+        _homeLogic.AddHomeMemberToHome(homeId, homeMemberId);
+        return NoContent();
     }
 
     [HttpPost]
