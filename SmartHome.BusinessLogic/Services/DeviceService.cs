@@ -23,6 +23,6 @@ public sealed class DeviceService : IDeviceLogic
 
     public IEnumerable<Device> GetAllDevices()
     {
-        throw new NotImplementedException();
+        return _deviceRepository.FindAll();
     }
 }
