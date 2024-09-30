@@ -57,11 +57,17 @@ public class HomeMemberControllerTest
 
     public void GetAllHomeMembersTest_Ok()
     {
+        var homeOwner = new Role() { Name = "HomeOwner" };
+
         // ARRANGE
         IEnumerable<HomeMember> homeMembers = new List<HomeMember>()
         {
-            new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() },
-            new HomeMember(){ HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() }
+            new HomeMember(
+                    new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today }, false
+                ) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() },
+            new HomeMember(
+                     new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = homeOwner, CreationDate = DateTime.Today }, false
+                ){ HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() }
         };
 
         homeMemberLogicMock.Setup(h => h.GetAllHomeMembers()).Returns(homeMembers);
