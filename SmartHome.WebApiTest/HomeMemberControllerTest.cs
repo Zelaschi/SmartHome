@@ -53,4 +53,30 @@ public class HomeMemberControllerTest
         homeMemberLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
+
+    [TestMethod]
+    public void UpdateHomePermissionsOfHomeMemberTest_Ok()
+    {
+        // ARRANGE
+        var user1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Elm Street", DoorNumber = "4567", Latitude = "10", Longitude = "20", Owner = user1, MaxMembers = 4 };
+        var homeMember = new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var homeMemberPermissionsModel = new HomeMemberPermissions()
+        {
+            AddMemberPermission = true,
+            AddDevicePermission = true,
+            ListDevicesPermission = false,
+            NotificationsPermission = true
+        };
+
+        homeMemberLogicMock.Setup(h => h.UpdateHomePermissionsOfHomeMember(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<List<HomePermission>>()));
+
+        // ACT
+        var expected = new NoContentResult();
+        var result = homeMemberController.UpdateHomeMemberPermissions(homeMember.HomeMemberId, user1.Id, homeMemberPermissionsModel) as NoContentResult;
+
+        // ASSERT
+        homeMemberLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
+    }
 }

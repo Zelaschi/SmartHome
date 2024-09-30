@@ -11,4 +11,5 @@ public interface IHomeMemberLogic
     HomeMember CreateHomeMember(HomeMember homeMember);
     IEnumerable<HomeMember> GetAllHomeMembers();
     void AddHomePermissionsToHomeMember(Guid homeMemberId, Guid? memberId, List<HomePermission> permissions);
+    void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, Guid? memberId, List<HomePermission> permissions);
 }

@@ -26,6 +26,12 @@ public sealed class HomeMemberController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{homeMemberId}/permissions")]
+    public IActionResult UpdateHomeMemberPermissions([FromRoute] Guid homeMemberId, [FromQuery] Guid? memberId, [FromBody] HomeMemberPermissions permissions)
+    {
+        throw new NotImplementedException();
+    }
+
     private List<HomePermission> ConvertHomeMemberPermissionsToList(HomeMemberPermissions permissions)
     {
         var homePermissions = new List<HomePermission>();
