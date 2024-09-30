@@ -18,7 +18,7 @@ public sealed class AuthorizationFilter : Attribute, IAuthorizationFilter
         if (context != null)
         {
             var tokenString = context.HttpContext.Request.Headers["Authorization"].ToString();
-            if (!String.IsNullOrEmpty(tokenString))
+            if (!string.IsNullOrEmpty(tokenString))
             {
                 var token = Guid.Parse(tokenString);
                 if (Roles.Count > 0)
