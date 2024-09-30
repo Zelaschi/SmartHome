@@ -30,9 +30,16 @@ public sealed class HomeController : ControllerBase
     }
 
     [HttpPost("{homeId}/members")]
-    public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, Guid homeMemberId)
+    public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId)
     {
-        _homeLogic.AddHomeMemberToHome(homeId, homeMemberId);
+        var userIdString = HttpContext.Items["UserId"] as string;
+        if (userIdString == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        var userId = Guid.Parse(userIdString);
+        _homeLogic.AddHomeMemberToHome(homeId, userId);
         return NoContent();
     }
 

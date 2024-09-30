@@ -45,4 +45,21 @@ public class HomeServiceTest
         homeRepositoryMock.VerifyAll();
         Assert.AreEqual(home, result);
     }
+
+    [TestMethod]
+    public void Register_HomeMemberToHouse_OK_Test()
+    {
+        var ownerId = Guid.NewGuid();
+        var owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = ownerId, Role = homeOwnerRole };
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var memberId = Guid.NewGuid();
+        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+
+        homeService.AddHomeMemberToHome(home.Id, memberId);
+        homeRepositoryMock.VerifyAll();
+    }
 }

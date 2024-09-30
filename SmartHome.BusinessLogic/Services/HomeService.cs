@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class HomeService : IHomeMemberLogic, IHomeLogic
+public sealed class HomeService : IHomeLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Home> _homeRepository;
@@ -25,6 +25,25 @@ public sealed class HomeService : IHomeMemberLogic, IHomeLogic
     public void AddDeviceToHome(Guid homeId, Guid deviceId)
     {
         throw new NotImplementedException();
+    }
+
+    public void AddHomeMemberToHome(Guid homeId, Guid userId)
+    {
+        var user = _userRepository.Find(x => x.Id == userId);
+        if (user == null)
+        {
+            throw new HomeException("User Id does not match any user");
+        }
+
+        var homeMember = new HomeMember(user, false);
+        var home = _homeRepository.Find(x => x.Id == homeId);
+        if (home == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+
+        home.Members.Add(homeMember);
+        _homeRepository.Update(home);
     }
 
     public Home CreateHome(Home home, Guid userId)
@@ -43,12 +62,12 @@ public sealed class HomeService : IHomeMemberLogic, IHomeLogic
         return home;
     }
 
-    public HomeMember CreateHomeMember(HomeMember homeMember)
+    public IEnumerable<HomeDevice> GetAllHomeDevices(Guid homeId)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<HomeMember> GetAllHomeMembers()
+    public IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId)
     {
         throw new NotImplementedException();
     }
@@ -62,27 +81,27 @@ public sealed class HomeService : IHomeMemberLogic, IHomeLogic
     {
         if (string.IsNullOrEmpty(home.MainStreet))
         {
-            throw new HomeException("Invalid main street, cannot be empty");
+            throw new HomeArgumentException("Invalid main street, cannot be empty");
         }
 
         if (string.IsNullOrEmpty(home.DoorNumber))
         {
-            throw new HomeException("Invalid door number, cannot be empty");
+            throw new HomeArgumentException("Invalid door number, cannot be empty");
         }
 
         if (string.IsNullOrEmpty(home.Latitude))
         {
-            throw new HomeException("Invalid latitude, cannot be empty");
+            throw new HomeArgumentException("Invalid latitude, cannot be empty");
         }
 
         if (string.IsNullOrEmpty(home.Longitude))
         {
-            throw new HomeException("Invalid longitude, cannot be empty");
+            throw new HomeArgumentException("Invalid longitude, cannot be empty");
         }
 
         if (home.MaxMembers < 1)
         {
-            throw new HomeException("Invalid max members, must be at least 1");
+            throw new HomeArgumentException("Invalid max members, must be at least 1");
         }
     }
 }
