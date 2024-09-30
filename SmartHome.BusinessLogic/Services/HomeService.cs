@@ -69,7 +69,13 @@ public sealed class HomeService : IHomeLogic
 
     public IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId)
     {
-        throw new NotImplementedException();
+        var home = _homeRepository.Find(x => x.Id == homeId);
+        if (home.Members == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+
+        return home.Members.ToList();
     }
 
     public IEnumerable<Home> GetAllHomesByUserId(Guid userId)

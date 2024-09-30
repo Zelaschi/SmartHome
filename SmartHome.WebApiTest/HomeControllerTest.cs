@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -15,6 +16,9 @@ using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+using Device = SmartHome.BusinessLogic.Domain.Device;
+using User = SmartHome.BusinessLogic.Domain.User;
 
 namespace SmartHome.WebApiTest;
 
@@ -36,7 +40,8 @@ public class HomeControllerTest
     [TestMethod]
     public void CreateHomeTest_Ok()
     {
-        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var user1Id = Guid.NewGuid();
+        var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var homeRequestModel = new CreateHomeRequestModel()
         {
             Owner = user1,
@@ -50,7 +55,17 @@ public class HomeControllerTest
         Home home = homeRequestModel.ToEntity();
         home.Id = Guid.NewGuid();
 
-        homeLogicMock.Setup(h => h.CreateHome(It.IsAny<Home>())).Returns(home);
+        HttpContext httpContext = new DefaultHttpContext();
+        httpContext.Items.Add("UserId", user1.Id.ToString());
+
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        homeController = new HomeController(homeLogicMock.Object) { ControllerContext = controllerContext };
+
+        homeLogicMock.Setup(h => h.CreateHome(It.IsAny<Home>(), It.IsAny<Guid>())).Returns(home);
         var expectedResult = new HomeResponseModel(home);
         var expectedDeviceResult = new CreatedAtActionResult("CreateHome", "CreateHome", new { Id = home.Id }, expectedResult);
 
@@ -123,9 +138,11 @@ public class HomeControllerTest
     {
         // ARRANGE
         var user1Id = Guid.NewGuid();
+        var user2Id = Guid.NewGuid();
         var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var homeMember1 = new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
-        var homeMember2 = new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var user2 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var homeMember1 = new HomeMember(user1, false) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var homeMember2 = new HomeMember(user2, false) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeMembers = new List<HomeMember>() { homeMember1, homeMember2 };
         var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
 
@@ -154,7 +171,7 @@ public class HomeControllerTest
         // ARRANGE
         var userId = Guid.NewGuid();
         var user = new User() { Id = userId, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var homeMember = new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var homeMember = new HomeMember(user, false) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeRequestModel = new CreateHomeRequestModel()
         {
             Owner = user,
@@ -167,11 +184,21 @@ public class HomeControllerTest
         Home home = homeRequestModel.ToEntity();
         home.Id = Guid.NewGuid();
 
+        HttpContext httpContext = new DefaultHttpContext();
+        httpContext.Items.Add("UserId", user.Id.ToString());
+
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
         homeLogicMock.Setup(h => h.AddHomeMemberToHome(It.IsAny<Guid>(), It.IsAny<Guid>()));
+
+        homeController = new HomeController(homeLogicMock.Object) { ControllerContext = controllerContext };
 
         // ACT
         var expected = new NoContentResult();
-        var result = homeController.AddHomeMemberToHome(home.Id, homeMember.HomeMemberId) as NoContentResult;
+        var result = homeController.AddHomeMemberToHome(home.Id) as NoContentResult;
 
         // ASSERT
         homeLogicMock.VerifyAll();

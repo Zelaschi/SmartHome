@@ -42,6 +42,7 @@ public class HomeServiceTest
 
         var result = homeService.CreateHome(home, ownerId);
 
+        userRepositoryMock.VerifyAll();
         homeRepositoryMock.VerifyAll();
         Assert.AreEqual(home, result);
     }
@@ -60,6 +61,28 @@ public class HomeServiceTest
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
 
         homeService.AddHomeMemberToHome(home.Id, memberId);
+        homeRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void GetAll_HomeMembers_Test()
+    {
+        var owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var homeOwner = new HomeMember(owner, true);
+        var homeMember1 = new HomeMember(member1, false);
+        var homeMember2 = new HomeMember(member2, false);
+
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        home.Members.Add(homeOwner);
+        home.Members.Add(homeMember1);
+        home.Members.Add(homeMember2);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        homeService.GetAllHomeMembers(home.Id);
         homeRepositoryMock.VerifyAll();
     }
 }
