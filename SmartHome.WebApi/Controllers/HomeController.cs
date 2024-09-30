@@ -41,6 +41,11 @@ public sealed class HomeController : ControllerBase
         return Ok(_homeLogic.GetAllHomeDevices(homeId).Select(homeDevice => new HomeDeviceResponseModel(homeDevice)).ToList());
     }
 
+    public OkObjectResult GetAllHomeMembers(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
     [HttpGet("{userId}")]
     public IActionResult GetAllHomesByUserId([FromRoute] Guid userId)
     {
