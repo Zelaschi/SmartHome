@@ -4,6 +4,9 @@ using SmartHome.WebApi.WebModels.HomeModels.Out;
 using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.Filters;
 using System.Reflection.Metadata.Ecma335;
+using SmartHome.BusinessLogic.Domain;
+using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
+using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -26,7 +29,13 @@ public sealed class HomeController : ControllerBase
         return NoContent();
     }
 
-    [AuthorizationFilter(["homeOwner"])]
+    [HttpPost("{homeId}/members")]
+    public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, Guid homeMemberId)
+    {
+        _homeLogic.AddHomeMemberToHome(homeId, homeMemberId);
+        return NoContent();
+    }
+
     [HttpPost]
     public IActionResult CreateHome([FromBody] CreateHomeRequestModel homeRequestModel)
     {
@@ -39,6 +48,18 @@ public sealed class HomeController : ControllerBase
         var userId = Guid.Parse(userIdString);
         var response = new HomeResponseModel(_homeLogic.CreateHome(homeRequestModel.ToEntity(), userId));
         return CreatedAtAction("CreateHome", new { response.Id }, response);
+    }
+
+    [HttpGet("{homeId}/homeDevices")]
+    public IActionResult GetAllHomeDevices([FromRoute] Guid homeId)
+    {
+        return Ok(_homeLogic.GetAllHomeDevices(homeId).Select(homeDevice => new HomeDeviceResponseModel(homeDevice)).ToList());
+    }
+
+    [HttpGet("{homeId}/members")]
+    public IActionResult GetAllHomeMembers([FromRoute] Guid homeId)
+    {
+        return Ok(_homeLogic.GetAllHomeMembers(homeId).Select(homeMember => new HomeMemberResponseModel(homeMember)).ToList());
     }
 
     [HttpGet("{userId}")]
