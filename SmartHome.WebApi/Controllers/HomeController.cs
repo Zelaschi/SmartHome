@@ -29,6 +29,11 @@ public sealed class HomeController : ControllerBase
         return NoContent();
     }
 
+    public NoContentResult AddHomeMemberToHome(Guid id, Guid homeMemberId)
+    {
+        throw new NotImplementedException();
+    }
+
     [HttpPost]
     public IActionResult CreateHome([FromBody] CreateHomeRequestModel homeRequestModel)
     {

@@ -124,7 +124,6 @@ public class HomeControllerTest
         // ARRANGE
         var user1Id = Guid.NewGuid();
         var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var bussiness = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
         var homeMember1 = new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeMember2 = new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeMembers = new List<HomeMember>() { homeMember1, homeMember2 };
@@ -150,8 +149,33 @@ public class HomeControllerTest
     }
 
     [TestMethod]
-    public void RegisterHomeMemberTest_OK()
+    public void AddHomeMemberToHomeTest_OK()
     {
+        // ARRANGE
+        var userId = Guid.NewGuid();
+        var user = new User() { Id = userId, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var homeMember = new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var homeRequestModel = new CreateHomeRequestModel()
+        {
+            Owner = user,
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "12",
+            Longitude = "34",
+            MaxMembers = 5
+        };
+        Home home = homeRequestModel.ToEntity();
+        home.Id = Guid.NewGuid();
+
+        homeLogicMock.Setup(h => h.AddHomeMemberToHome(It.IsAny<Guid>(), It.IsAny<Guid>()));
+
+        // ACT
+        var expected = new NoContentResult();
+        var result = homeController.AddHomeMemberToHome(home.Id, homeMember.HomeMemberId) as NoContentResult;
+
+        // ASSERT
+        homeLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
 
     [TestMethod]
