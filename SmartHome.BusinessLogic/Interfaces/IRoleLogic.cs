@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.BusinessLogic.Interfaces;
-public interface INotificationLogic
+public interface IRoleLogic
 {
-    List<Notification> GetNotificationsByHomeMemberId(Guid homeMemberId);
-
-    Notification CreateMovementDetectionNotification(Guid homeDeviceId);
+    public Role GetHomeOwnerRole();
+    public Role GetBusinessOwnerRole();
 }
