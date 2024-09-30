@@ -9,7 +9,7 @@ public class Device
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
-    public string Type { get; set; } = "Sensor Ventana";
+    public string Type { get; set; } = "Window Sensor";
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
     public required string Photos { get; set; }
