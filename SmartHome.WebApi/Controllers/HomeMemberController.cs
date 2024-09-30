@@ -21,6 +21,23 @@ public sealed class HomeMemberController : ControllerBase
     [HttpPost("{homeMemberId}/permissions")]
     public IActionResult AddHomePermissionsToHomeMember([FromRoute] Guid homeMemberId, [FromRoute] Guid? memberId,[FromBody] HomeMemberPermissions permissions)
     {
-        throw new NotImplementedException();
+        var memberPermissions = ConvertHomeMemberPermissionsToList(permissions);
+        _homeMemberLogic.AddHomePermissionsToHomeMember(homeMemberId, memberId, memberPermissions);
+        return NoContent();
+    }
+
+    private List<HomePermission> ConvertHomeMemberPermissionsToList(HomeMemberPermissions permissions)
+    {
+        var homePermissions = new List<HomePermission>();
+        if (permissions.AddMemberPermission)
+            homePermissions.Add(new HomePermission { Name = "AddMemberPermission" });
+        if (permissions.AddDevicePermission)
+            homePermissions.Add(new HomePermission { Name = "AddDevicesPermission" });
+        if (permissions.ListDevicesPermission)
+            homePermissions.Add(new HomePermission { Name = "ListDevicesPermission" });
+        if (permissions.NotificationsPermission)
+            homePermissions.Add(new HomePermission { Name = "NotificationsPermission" });
+
+        return homePermissions;
     }
 }
