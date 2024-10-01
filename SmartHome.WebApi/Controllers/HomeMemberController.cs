@@ -19,33 +19,16 @@ public sealed class HomeMemberController : ControllerBase
     }
 
     [HttpPost("{homeMemberId}/permissions")]
-    public IActionResult AddHomePermissionsToHomeMember([FromRoute] Guid homeMemberId, [FromRoute] Guid? memberId,[FromBody] HomeMemberPermissions permissions)
+    public IActionResult AddHomePermissionsToHomeMember([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
     {
-        var memberPermissions = ConvertHomeMemberPermissionsToList(permissions);
-        _homeMemberLogic.AddHomePermissionsToHomeMember(homeMemberId, memberId, memberPermissions);
+        _homeMemberLogic.AddHomePermissionsToHomeMember(homeMemberId, permissions.ToHomePermissionList());
         return NoContent();
     }
 
     [HttpPut("{homeMemberId}/permissions")]
-    public IActionResult UpdateHomeMemberPermissions([FromRoute] Guid homeMemberId, [FromQuery] Guid? memberId, [FromBody] HomeMemberPermissions permissions)
+    public IActionResult UpdateHomeMemberPermissions([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
     {
-        var memberPermissions = ConvertHomeMemberPermissionsToList(permissions);
-        _homeMemberLogic.UpdateHomePermissionsOfHomeMember(homeMemberId, memberId, memberPermissions);
+        _homeMemberLogic.UpdateHomePermissionsOfHomeMember(homeMemberId, permissions.ToHomePermissionList());
         return NoContent();
-    }
-
-    private List<HomePermission> ConvertHomeMemberPermissionsToList(HomeMemberPermissions permissions)
-    {
-        var homePermissions = new List<HomePermission>();
-        if (permissions.AddMemberPermission)
-            homePermissions.Add(new HomePermission { Name = "AddMemberPermission" });
-        if (permissions.AddDevicePermission)
-            homePermissions.Add(new HomePermission { Name = "AddDevicesPermission" });
-        if (permissions.ListDevicesPermission)
-            homePermissions.Add(new HomePermission { Name = "ListDevicesPermission" });
-        if (permissions.NotificationsPermission)
-            homePermissions.Add(new HomePermission { Name = "NotificationsPermission" });
-
-        return homePermissions;
     }
 }
