@@ -11,4 +11,6 @@ public interface INotificationLogic
     List<Notification> GetNotificationsByHomeMemberId(Guid homeMemberId);
 
     Notification CreateMovementDetectionNotification(Guid homeDeviceId);
+
+    Notification CreatePersonDetectionNotification(Guid homeDeviceId);
 }

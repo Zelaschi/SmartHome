@@ -27,6 +27,6 @@ public sealed class DeviceController : ControllerBase
     public IActionResult CreateDevice([FromBody] CreateDeviceRequestModel deviceRequestModel)
     {
         var response = new DeviceResponseModel(_deviceLogic.CreateDevice(deviceRequestModel.ToEntity()));
-        return CreatedAtAction("CreateDevice", new {response.Id}, response);
+        return CreatedAtAction("CreateDevice", new {response.Id }, response);
     }
 }
