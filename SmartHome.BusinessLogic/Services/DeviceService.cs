@@ -18,7 +18,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 
     public Device CreateDevice(Device device)
     {
-        throw new NotImplementedException();
+        return _deviceRepository.Add(device);
     }
 
     public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera)
