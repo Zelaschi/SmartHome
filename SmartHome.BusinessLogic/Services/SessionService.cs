@@ -23,7 +23,22 @@ public class SessionService : ILoginLogic
 
     public Guid LogIn(string email, string password)
     {
-        throw new NotImplementedException();
+        User? existingUser = _userRepository.FindAll().FirstOrDefault(u => u.Email == email && u.Password == password);
+
+        if (existingUser == null)
+        {
+            throw new UserException("User with that email and password does not exist");
+        }
+
+        var session = new Session()
+        {
+            SessionId = Guid.NewGuid(),
+            UserId = (Guid)existingUser.Id
+        };
+
+        _sessionRepository.Add(session);
+
+        return session.SessionId;
     }
 
     public Session GetSessionByUserId(Guid userId)
