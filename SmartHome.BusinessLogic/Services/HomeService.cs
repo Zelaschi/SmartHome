@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class HomeService : IHomeLogic
+public sealed class HomeService : IHomeLogic, IHomeMemberLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Home> _homeRepository;
@@ -89,11 +89,6 @@ public sealed class HomeService : IHomeLogic
         return home.Members.ToList();
     }
 
-    public IEnumerable<Home> GetAllHomesByUserId(Guid userId)
-    {
-        throw new NotImplementedException();
-    }
-
     private void ValidateHome(Home home)
     {
         if (string.IsNullOrEmpty(home.MainStreet))
@@ -120,5 +115,20 @@ public sealed class HomeService : IHomeLogic
         {
             throw new HomeArgumentException("Invalid max members, must be at least 1");
         }
+    }
+
+    public IEnumerable<Home> GetAllHomesByUserId(Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddHomePermissionsToHomeMember(Guid homeMemberId, List<HomePermission> permissions)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions)
+    {
+        throw new NotImplementedException();
     }
 }
