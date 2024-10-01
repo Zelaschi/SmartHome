@@ -29,7 +29,6 @@ public class SessionServiceTest
     public void GetLogIn_WithValidCredentials_Test()
     {
         var userId = Guid.NewGuid();
-
         var existingUser = new User
         {
             Name = "Juan",
@@ -37,18 +36,23 @@ public class SessionServiceTest
             Password = "Password@1234",
             CreationDate = DateTime.Today,
             Email = "juanperez@gmail.com",
+            Id = userId
         };
-
-        existingUser.Id = userId;
 
         userRepositoryMock.Setup(repo => repo.FindAll())
             .Returns(new List<User> { existingUser });
 
+        Session? sessionAdded = null;
+        sessionRepositoryMock.Setup(repo => repo.Add(It.IsAny<Session>()))
+            .Callback<Session>(s => sessionAdded = s)
+            .Returns((Session s) => s);
+
         var result = sessionService.LogIn("juanperez@gmail.com", "Password@1234");
 
         Assert.IsNotNull(result);
-        Assert.AreNotEqual(Guid.Empty, result);
-
+        Assert.IsNotNull(sessionAdded);
+        Assert.AreEqual(userId, sessionAdded.UserId);
+        Assert.AreEqual(result, sessionAdded.SessionId);
         sessionRepositoryMock.Verify(repo => repo.Add(It.IsAny<Session>()), Times.Once);
     }
 }
