@@ -14,4 +14,9 @@ public class Device
     public required string Description { get; set; }
     public required string Photos { get; set; }
     public required Business Business { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Device device && device.Id == Id;
+    }
 }
