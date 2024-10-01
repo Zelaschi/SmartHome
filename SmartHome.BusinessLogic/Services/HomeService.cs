@@ -64,7 +64,18 @@ public sealed class HomeService : IHomeLogic
 
     public IEnumerable<HomeDevice> GetAllHomeDevices(Guid homeId)
     {
-        throw new NotImplementedException();
+        var home = _homeRepository.Find(x => x.Id == homeId);
+        if (home == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+
+        if (home.Devices == null)
+        {
+            throw new HomeException("Home devices was not found");
+        }
+
+        return home.Devices.ToList();
     }
 
     public IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId)

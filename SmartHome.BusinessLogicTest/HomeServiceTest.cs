@@ -82,7 +82,36 @@ public class HomeServiceTest
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
 
-        homeService.GetAllHomeMembers(home.Id);
+        IEnumerable<HomeMember> homeMembers = homeService.GetAllHomeMembers(home.Id);
         homeRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(home.Members.First(), homeMembers.First());
+        Assert.AreEqual(home.Members.Last(), homeMembers.Last());
+    }
+
+    [TestMethod]
+    public void GetAll_HomeDevices_Test()
+    {
+        var owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var home = new Home { Devices =  new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner};
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner,Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+
+        var device1 = new Device { Id = Guid.NewGuid(), Name = "Device1" , Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
+        var device2 = new Device { Id = Guid.NewGuid(), Name = "Device2", Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
+
+        var homeDevice1 = new HomeDevice { Device = device1, HardwardId = Guid.NewGuid() , Online = true};
+        var homeDevice2 = new HomeDevice { Device = device2, HardwardId = Guid.NewGuid(), Online = false };
+
+        home.Devices.Add(homeDevice1);
+        home.Devices.Add(homeDevice2);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        IEnumerable<HomeDevice> homeDevices= homeService.GetAllHomeDevices(home.Id);
+        homeRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(home.Devices.First() , homeDevices.First());
+        Assert.AreEqual(home.Devices.Last(), homeDevices.Last());
     }
 }
