@@ -90,4 +90,130 @@ public class DeviceServiceTest
         deviceRepositoryMock.VerifyAll();
         Assert.AreEqual(devices, result);
     }
+
+    [TestMethod]
+
+    public void Create_SecurityCamera_Test()
+    {
+        var securityCamera = new SecurityCamera
+        {
+            Id = Guid.NewGuid(),
+            Name = "Security Camera",
+            Description = "Security Camera outdoor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "SecurityCamera",
+            Outdoor = true,
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "Kolke",
+                Logo = "Logo1",
+                RUT = "1234",
+                BusinessOwner = new User
+                {
+                    Name = "Pedro",
+                    Surname = "Rodriguez",
+                    Password = "Password@1234",
+                    CreationDate = DateTime.Today,
+                    Email = "pedrorod@gmail.com"
+                }
+            }
+        };
+
+        var expected = new SecurityCamera
+        {
+            Id = securityCamera.Id,
+            Name = "Security Camera",
+            Description = "Security Camera outdoor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "SecurityCamera",
+            Outdoor = true,
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "Kolke",
+                Logo = "Logo1",
+                RUT = "1234",
+                BusinessOwner = new User
+                {
+                    Name = "Pedro",
+                    Surname = "Rodriguez",
+                    Password = "Password@1234",
+                    CreationDate = DateTime.Today,
+                    Email = "pedrorod@gmail.com"
+                }
+            }
+        };
+
+        deviceRepositoryMock.Setup(x => x.Add(securityCamera)).Returns(expected);
+
+        var result = deviceService.CreateSecurityCamera(securityCamera);
+
+        deviceRepositoryMock.Verify(x => x.Add(securityCamera), Times.Once);
+
+        Assert.AreEqual(securityCamera, result);
+    }
+
+    [TestMethod]
+
+    public void Create_WindowSensor_Test()
+    {
+        var windowSensor = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Window Sensor",
+            Description = "Window Sensor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "HikVision",
+                Logo = "Logo1",
+                RUT = "1234",
+                BusinessOwner = new User
+                {
+                    Name = "Juan",
+                    Surname = "Perez",
+                    Password = "Password@1234",
+                    CreationDate = DateTime.Today,
+                    Email = "juanperez@gmail.com"
+                }
+            }
+        };
+
+        var expected = new Device
+        {
+            Id = windowSensor.Id,
+            Name = "Window Sensor",
+            Description = "Window Sensor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "HikVision",
+                Logo = "Logo1",
+                RUT = "1234",
+                BusinessOwner = new User
+                {
+                    Name = "Juan",
+                    Surname = "Perez",
+                    Password = "Password@1234",
+                    CreationDate = DateTime.Today,
+                    Email = "juanperez@gmail.com"
+                }
+            }
+        };
+
+        deviceRepositoryMock.Setup(x => x.Add(windowSensor)).Returns(expected);
+
+        var result = deviceService.CreateDevice(windowSensor);
+
+        deviceRepositoryMock.Verify(x => x.Add(windowSensor), Times.Once);
+
+        Assert.AreEqual(windowSensor, result);
+    }
 }

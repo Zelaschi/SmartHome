@@ -53,7 +53,7 @@ public class NotificationControllerTest
             new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" }
         };
 
-        var homeMember = new HomeMember() { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = homePermissions };
+        var homeMember = new HomeMember(user1, false) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = homePermissions };
 
         _notificationLogicMock.Setup(n => n.GetNotificationsByHomeMemberId(homeMemberId)).Returns(notifications);
 
@@ -105,6 +105,45 @@ public class NotificationControllerTest
 
         var expected = new CreatedAtActionResult("CreateMovementDetectionNotification", "CreateMovementDetectionNotification", new { notificationResponseModel.Id }, notificationResponseModel);
         var result = _notificationController.CreateMovementDetectionNotification(homeDevice.HardwardId) as CreatedAtActionResult;
+        var objectResult = result.Value as NotificationResponseModel;
+
+        _notificationLogicMock.VerifyAll();
+
+        Assert.IsNotNull(objectResult);
+
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.Equals(notificationResponseModel));
+    }
+
+    [TestMethod]
+
+    public void Create_PersonDetectionNotification_TestOk()
+    {
+        var businessOwnerRole = new Role() { Name = "BusinessOwner" };
+        var businessOwner = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwnerRole, CreationDate = DateTime.Today };
+        var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = businessOwner };
+        var securityCamera = new SecurityCamera()
+        {
+            Name = "SecurityCamera",
+            ModelNumber = "modelNumber",
+            Description = "description",
+            Photos = "photoPath",
+            Indoor = true,
+            Outdoor = false,
+            MovementDetection = true,
+            PersonDetection = true,
+            Business = company,
+        };
+
+        var homeDevice = new HomeDevice() { HardwardId = Guid.NewGuid(), Device = securityCamera, Online = true };
+
+        var notification = new Notification() { Id = Guid.NewGuid(), Event = "PersonDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" };
+
+        var notificationResponseModel = new NotificationResponseModel(notification);
+
+        _notificationLogicMock.Setup(n => n.CreatePersonDetectionNotification(It.IsAny<Guid>())).Returns(notification);
+
+        var expected = new CreatedAtActionResult("CreatePersonDetectionNotification", "CreatePersonDetectionNotification", new { notificationResponseModel.Id }, notificationResponseModel);
+        var result = _notificationController.CreatePersonDetectionNotification(homeDevice.HardwardId) as CreatedAtActionResult;
         var objectResult = result.Value as NotificationResponseModel;
 
         _notificationLogicMock.VerifyAll();
