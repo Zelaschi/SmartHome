@@ -23,7 +23,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 
     public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera)
     {
-        throw new NotImplementedException();
+        return _deviceRepository.Add(securityCamera) as SecurityCamera;
     }
 
     public IEnumerable<Device> GetAllDevices()
