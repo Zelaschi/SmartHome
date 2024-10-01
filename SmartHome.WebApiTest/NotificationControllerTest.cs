@@ -53,7 +53,7 @@ public class NotificationControllerTest
             new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" }
         };
 
-        var homeMember = new HomeMember() { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = homePermissions };
+        var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = homePermissions };
 
         _notificationLogicMock.Setup(n => n.GetNotificationsByHomeMemberId(homeMemberId)).Returns(notifications);
 

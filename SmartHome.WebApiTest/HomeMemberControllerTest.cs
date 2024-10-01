@@ -19,6 +19,7 @@ public class HomeMemberControllerTest
 {
     private Mock<IHomeMemberLogic>? homeMemberLogicMock;
     private HomeMemberController? homeMemberController;
+    private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
 
     [TestInitialize]
     public void TestInitialize()
@@ -28,58 +29,54 @@ public class HomeMemberControllerTest
     }
 
     [TestMethod]
-    public void RegisterHomeMemberTest_OK()
+    public void AddHomePermissionsToHomeMemberTest_Ok()
     {
         // ARRANGE
-        var homeMemberRequestModel = new HomeMemberRequestModel()
+        var user1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var home = new Home() {Id = Guid.NewGuid(), MainStreet = "Elm Street", DoorNumber = "4567", Latitude = "10", Longitude = "20", Owner = user1, MaxMembers = 4};
+        var homeMember = new HomeMember(user1) {HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>()};
+        var homeMemberPermissionsModel = new HomeMemberPermissions()
         {
-            HomeMemberId = Guid.NewGuid(),
-            HomePermissions = new List<HomePermission>(),
-            Notifications = new List<Notification>(),
+            AddMemberPermission = true,
+            AddDevicePermission = true,
+            ListDevicesPermission = false,
+            NotificationsPermission = true
         };
 
-        var homeMember = homeMemberRequestModel.ToEntitiy();
-        homeMemberLogicMock.Setup(h => h.CreateHomeMember(It.IsAny<HomeMember>())).Returns(homeMember);
-
-        var expectedResult = new HomeMemberResponseModel(homeMember);
-        var expectedObjectResult = new CreatedAtActionResult("CreateHomeMember", "CreateHomeMember", new { HomeMemberId = homeMember.HomeMemberId }, expectedResult);
+        homeMemberLogicMock.Setup(h => h.AddHomePermissionsToHomeMember(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<List<HomePermission>>()));
 
         // ACT
-        var result = homeMemberController.CreateHomeMember(homeMemberRequestModel) as CreatedAtActionResult;
-        var homeMemberResult = result.Value as HomeMemberResponseModel;
+        var expected = new NoContentResult();
+        var result = homeMemberController.AddHomePermissionsToHomeMember(homeMember.HomeMemberId, user1.Id, homeMemberPermissionsModel) as NoContentResult;
 
         // ASSERT
         homeMemberLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.HomeMemberId.Equals(homeMemberResult.HomeMemberId));
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
 
     [TestMethod]
-
-    public void GetAllHomeMembersTest_Ok()
+    public void UpdateHomePermissionsOfHomeMemberTest_Ok()
     {
         // ARRANGE
-        IEnumerable<HomeMember> homeMembers = new List<HomeMember>()
+        var user1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Elm Street", DoorNumber = "4567", Latitude = "10", Longitude = "20", Owner = user1, MaxMembers = 4 };
+        var homeMember = new HomeMember(user1) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var homeMemberPermissionsModel = new HomeMemberPermissions()
         {
-            new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() },
-            new HomeMember(){ HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() }
+            AddMemberPermission = true,
+            AddDevicePermission = true,
+            ListDevicesPermission = false,
+            NotificationsPermission = true
         };
 
-        homeMemberLogicMock.Setup(h => h.GetAllHomeMembers()).Returns(homeMembers);
-
-        var expected = new OkObjectResult(new List<HomeMemberResponseModel>
-        {
-            new HomeMemberResponseModel(homeMembers.First()),
-            new HomeMemberResponseModel(homeMembers.Last())
-        });
-
-        List<HomeMemberResponseModel> expectedObject = (expected.Value as List<HomeMemberResponseModel>)!;
+        homeMemberLogicMock.Setup(h => h.UpdateHomePermissionsOfHomeMember(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<List<HomePermission>>()));
 
         // ACT
-        var result = homeMemberController.GetAllHomeMembers() as OkObjectResult;
-        var objectResult = (result.Value as List<HomeMemberResponseModel>)!;
+        var expected = new NoContentResult();
+        var result = homeMemberController.UpdateHomeMemberPermissions(homeMember.HomeMemberId, user1.Id, homeMemberPermissionsModel) as NoContentResult;
 
         // ASSERT
         homeMemberLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().HomeMemberId.Equals(objectResult.First().HomeMemberId));
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
 }

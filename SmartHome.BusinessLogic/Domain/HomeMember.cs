@@ -10,11 +10,12 @@ public sealed class HomeMember
     public Guid HomeMemberId { get; set; }
     public List<HomePermission> HomePermissions { get; set; }
     public List<Notification> Notifications { get; set; }
-
-    public HomeMember()
+    public User User { get; set; }
+    public HomeMember(User user)
     {
         HomeMemberId = Guid.NewGuid();
         HomePermissions = new List<HomePermission>();
         Notifications = new List<Notification>();
+        User = user;
     }
 }
