@@ -29,4 +29,11 @@ public sealed class NotificationController : ControllerBase
         var createResponse = new NotificationResponseModel(_notificationLogic.CreateMovementDetectionNotification(homeDeviceId));
         return CreatedAtAction("CreateMovementDetectionNotification", new { createResponse.Id }, createResponse);
     }
+
+    [HttpPost("{homeDeviceId}")]
+    public IActionResult CreatePersonDetectionNotification([FromRoute] Guid homeDeviceId)
+    {
+        var createResponse = new NotificationResponseModel(_notificationLogic.CreatePersonDetectionNotification(homeDeviceId));
+        return CreatedAtAction("CreatePersonDetectionNotification", new { createResponse.Id }, createResponse);
+    }
 }
