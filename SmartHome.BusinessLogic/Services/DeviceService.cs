@@ -8,7 +8,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class DeviceService : IDeviceLogic
+public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 {
     private readonly IGenericRepository<Device> _deviceRepository;
     public DeviceService(IGenericRepository<Device> deviceRepository)
@@ -17,6 +17,11 @@ public sealed class DeviceService : IDeviceLogic
     }
 
     public Device CreateDevice(Device device)
+    {
+        throw new NotImplementedException();
+    }
+
+    public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera)
     {
         throw new NotImplementedException();
     }
