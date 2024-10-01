@@ -34,7 +34,7 @@ public class HomeMemberControllerTest
         // ARRANGE
         var user1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var home = new Home() {Id = Guid.NewGuid(), MainStreet = "Elm Street", DoorNumber = "4567", Latitude = "10", Longitude = "20", Owner = user1, MaxMembers = 4};
-        var homeMember = new HomeMember() {HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>()};
+        var homeMember = new HomeMember(user1) {HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>()};
         var homeMemberPermissionsModel = new HomeMemberPermissions()
         {
             AddMemberPermission = true,
@@ -60,7 +60,7 @@ public class HomeMemberControllerTest
         // ARRANGE
         var user1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Elm Street", DoorNumber = "4567", Latitude = "10", Longitude = "20", Owner = user1, MaxMembers = 4 };
-        var homeMember = new HomeMember() { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var homeMember = new HomeMember(user1) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeMemberPermissionsModel = new HomeMemberPermissions()
         {
             AddMemberPermission = true,

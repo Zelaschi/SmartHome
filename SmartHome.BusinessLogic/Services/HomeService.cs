@@ -35,7 +35,7 @@ public sealed class HomeService : IHomeLogic
             throw new HomeException("User Id does not match any user");
         }
 
-        var homeMember = new HomeMember(user, false);
+        var homeMember = new HomeMember(user);
         var home = _homeRepository.Find(x => x.Id == homeId);
         if (home == null)
         {
@@ -56,7 +56,7 @@ public sealed class HomeService : IHomeLogic
         }
 
         home.Owner = owner;
-        var homeOwnerMember = new HomeMember(owner, true);
+        var homeOwnerMember = new HomeMember(owner);
         home.Members.Add(homeOwnerMember);
         _homeRepository.Add(home);
         return home;

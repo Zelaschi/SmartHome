@@ -71,9 +71,9 @@ public class HomeServiceTest
         var owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
         var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
         var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
-        var homeOwner = new HomeMember(owner, true);
-        var homeMember1 = new HomeMember(member1, false);
-        var homeMember2 = new HomeMember(member2, false);
+        var homeOwner = new HomeMember(owner);
+        var homeMember1 = new HomeMember(member1);
+        var homeMember2 = new HomeMember(member2);
 
         var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
         home.Members.Add(homeOwner);

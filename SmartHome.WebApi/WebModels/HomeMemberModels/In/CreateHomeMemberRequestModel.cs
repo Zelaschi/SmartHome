@@ -10,7 +10,7 @@ public sealed class HomeMemberRequestModel
 
     public HomeMember ToEntitiy()
     {
-        return new HomeMember(null, false)
+        return new HomeMember(null)
         {
             HomeMemberId = HomeMemberId,
             HomePermissions = HomePermissions,

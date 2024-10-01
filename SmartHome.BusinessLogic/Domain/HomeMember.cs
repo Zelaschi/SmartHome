@@ -11,14 +11,11 @@ public sealed class HomeMember
     public List<HomePermission> HomePermissions { get; set; }
     public List<Notification> Notifications { get; set; }
     public User User { get; set; }
-    public bool IsOwner { get; set; } = false;
-
-    public HomeMember(User user, bool isOwner)
+    public HomeMember(User user)
     {
         HomeMemberId = Guid.NewGuid();
         HomePermissions = new List<HomePermission>();
         Notifications = new List<Notification>();
         User = user;
-        IsOwner = isOwner;
     }
 }
