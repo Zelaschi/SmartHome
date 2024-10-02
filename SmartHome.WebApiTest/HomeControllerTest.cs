@@ -213,8 +213,8 @@ public class HomeControllerTest
         var business = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
         var device1 = new Device() { Id = Guid.NewGuid(), Name = "A", Type = "A", ModelNumber = "1", Description = "A", Photos = "jpg", Business = business };
         var device2 = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = business };
-        var homeDevice1 = new HomeDevice() { HardwardId = Guid.NewGuid(), Online = true, Device = device1 };
-        var homeDevice2 = new HomeDevice(){ HardwardId = Guid.NewGuid(), Online = true, Device = device2 };
+        var homeDevice1 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device1 };
+        var homeDevice2 = new HomeDevice(){ Id = Guid.NewGuid(), Online = true, Device = device2 };
         var homeDevices = new List<HomeDevice>() { homeDevice1, homeDevice2 };
         var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
         home1.Devices = homeDevices;

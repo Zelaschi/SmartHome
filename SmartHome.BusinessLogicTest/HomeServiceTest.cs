@@ -101,8 +101,8 @@ public class HomeServiceTest
         var device1 = new Device { Id = Guid.NewGuid(), Name = "Device1" , Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
         var device2 = new Device { Id = Guid.NewGuid(), Name = "Device2", Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
 
-        var homeDevice1 = new HomeDevice { Device = device1, HardwardId = Guid.NewGuid() , Online = true};
-        var homeDevice2 = new HomeDevice { Device = device2, HardwardId = Guid.NewGuid(), Online = false };
+        var homeDevice1 = new HomeDevice { Device = device1, Id = Guid.NewGuid() , Online = true};
+        var homeDevice2 = new HomeDevice { Device = device2, Id = Guid.NewGuid(), Online = false };
 
         home.Devices.Add(homeDevice1);
         home.Devices.Add(homeDevice2);

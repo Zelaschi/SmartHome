@@ -16,7 +16,7 @@ public sealed class HomeDeviceResponseModel
 
     public HomeDeviceResponseModel(HomeDevice homeDevice)
     {
-        HardwardId = homeDevice.HardwardId;
+        HardwardId = homeDevice.Id;
         Online = homeDevice.Online;
         Device = homeDevice.Device;
     }
