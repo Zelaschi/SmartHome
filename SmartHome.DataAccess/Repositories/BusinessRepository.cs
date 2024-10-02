@@ -3,34 +3,107 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.DataAccess.Contexts;
+using SmartHome.DataAccess.CustomExceptions;
 
 namespace SmartHome.DataAccess.Repositories;
 public sealed class BusinessRepository : IGenericRepository<Business>
 {
-    public Business Add(Business entity)
+    private readonly SmartHomeEFCoreContext _repository;
+    public BusinessRepository(SmartHomeEFCoreContext repository)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _repository = repository;
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
     }
 
-    public void Delete(int id)
+    public Business Add(Business entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _repository.Businesses.Add(entity);
+            _repository.SaveChanges();
+            return _repository.Businesses.FirstOrDefault(b => b.Id == entity.Id);
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
+    }
+
+    public void Delete(Guid id)
+    {
+        try
+        {
+            Business businessToDelete = _repository.Businesses.FirstOrDefault(b => b.Id == id);
+            if (businessToDelete != null)
+            {
+                _repository.Businesses.Remove(businessToDelete);
+                _repository.SaveChanges();
+            }
+            else
+            {
+                throw new DatabaseException("The Business does not exist in the Data Base.");
+            }
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
     }
 
     public Business? Find(Func<Business, bool> filter)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return _repository.Businesses.FirstOrDefault(filter);
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
     }
 
     public IList<Business> FindAll()
     {
-        throw new NotImplementedException();
+        try
+        {
+            return _repository.Businesses.ToList();
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
     }
 
     public Business? Update(Business updatedEntity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            Business foundBusiness = _repository.Businesses.FirstOrDefault(b => b.Id == updatedEntity.Id);
+
+            if (foundBusiness != null)
+            {
+                _repository.Entry(foundBusiness).CurrentValues.SetValues(updatedEntity);
+                _repository.SaveChanges();
+                return _repository.Businesses.FirstOrDefault(b => b.Id == updatedEntity.Id);
+            }
+            else
+            {
+                throw new DatabaseException("The Business does not exist in the Data Base.");
+            }
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
     }
 }
