@@ -337,7 +337,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.Property<bool>("PersonDetection")
                         .HasColumnType("bit");
 
-                    b.HasDiscriminator().HasValue("SecurityCamera");
+                    b.HasDiscriminator().HasValue("Security Camera");
                 });
 
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.Business", b =>

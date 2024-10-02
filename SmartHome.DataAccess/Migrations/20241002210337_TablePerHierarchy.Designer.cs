@@ -12,8 +12,8 @@ using SmartHome.DataAccess.Contexts;
 namespace SmartHome.DataAccess.Migrations
 {
     [DbContext(typeof(SmartHomeEFCoreContext))]
-    [Migration("20241002210011_TablePerHirarchy")]
-    partial class TablePerHirarchy
+    [Migration("20241002210337_TablePerHierarchy")]
+    partial class TablePerHierarchy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -340,7 +340,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.Property<bool>("PersonDetection")
                         .HasColumnType("bit");
 
-                    b.HasDiscriminator().HasValue("SecurityCamera");
+                    b.HasDiscriminator().HasValue("Security Camera");
                 });
 
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.Business", b =>

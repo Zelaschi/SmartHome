@@ -32,7 +32,7 @@ public sealed class SmartHomeEFCoreContext : DbContext
             .ToTable("Devices")
             .HasDiscriminator<string>("DeviceType")
             .HasValue<Device>("Window Sensor")
-            .HasValue<SecurityCamera>("SecurityCamera");
+            .HasValue<SecurityCamera>("Security Camera");
         modelBuilder.Entity<Home>()
             .HasMany(h => h.Members)
             .WithOne()
