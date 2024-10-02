@@ -21,8 +21,25 @@ public sealed class SmartHomeEFCoreContext : DbContext
     public DbSet<HomeDevice> HomeDevices { get; set; }
     public DbSet<Device> Devices { get; set; }
 
-    public SmartHomeEFCoreContext(DbContextOptions options)
-        : base(options)
+    public SmartHomeEFCoreContext(DbContextOptions<SmartHomeEFCoreContext> options)
+    : base(options)
     {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Home>()
+            .HasMany(h => h.Members)
+            .WithOne()
+            .HasForeignKey(hm => hm.HomeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Home>()
+            .HasMany(h => h.Devices)
+            .WithOne()
+            .HasForeignKey(hd => hd.HomeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        base.OnModelCreating(modelBuilder);
     }
 }

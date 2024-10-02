@@ -11,6 +11,7 @@ public sealed class HomeMember
     public List<HomePermission> HomePermissions { get; set; }
     public List<Notification> Notifications { get; set; }
     public User? User { get; set; }
+    public Guid HomeId { get; set; }
     public HomeMember()
     {
         User = User;

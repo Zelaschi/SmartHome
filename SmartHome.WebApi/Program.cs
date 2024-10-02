@@ -16,29 +16,13 @@ builder.Services.AddControllers();
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-var SmartHomeConnectionString = configuration.GetConnectionString("SmartHome");
-if (string.IsNullOrEmpty(SmartHomeConnectionString))
+var smartHomeConnectionString = configuration.GetConnectionString("SmartHome");
+if (string.IsNullOrEmpty(smartHomeConnectionString))
 {
     throw new Exception("Missing SmartHome connection string");
 }
 
-services.AddDbContext<SmartHomeEFCoreContext>(options => options.UseSqlServer(SmartHomeConnectionString));
-
-services.AddScoped<IBusinessesLogic, BusinessService>();
-services.AddScoped<IDeviceLogic, DeviceService>();
-services.AddScoped<ISecurityCameraLogic, DeviceService>();
-services.AddScoped<IHomeOwnerLogic, UserService>();
-services.AddScoped<IUsersLogic, UserService>();
-services.AddScoped<IBusinessOwnerLogic, UserService>();
-services.AddScoped<ILoginLogic, SessionService>();
-services.AddScoped<IRoleLogic, RoleService>();
-services.AddScoped<IHomeLogic, HomeService>();
-
-services.AddScoped<IGenericRepository<Business>, BusinessRepository>();
-services.AddScoped<IGenericRepository<Device>, DeviceRepository>();
-services.AddScoped<IGenericRepository<Role>, RoleRepository>();
-services.AddScoped<IGenericRepository<Session>, SessionRepository>();
-services.AddScoped<IGenericRepository<User>, UserRepository>();
+services.AddDbContext<SmartHomeEFCoreContext>(options => options.UseSqlServer(smartHomeConnectionString));
 
 var app = builder.Build();
 
