@@ -11,11 +11,11 @@ public sealed class SmartHomeEFCoreContext : DbContext
 {
     public DbSet<Home> Homes { get; set; }
     public DbSet<HomeMember> HomeMembers { get; set; }
-    public DbSet<HomePermission> HomePermissions { get; set; }
+    public DbSet<HomeMemberHomePermission> HomePermissions { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Session> Sessions { get; set; }
-    public DbSet<SystemPermission> SystemPermissions { get; set; }
+    public DbSet<RoleSystemPermission> SystemPermissions { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Business> Businesses { get; set; }
     public DbSet<HomeDevice> HomeDevices { get; set; }

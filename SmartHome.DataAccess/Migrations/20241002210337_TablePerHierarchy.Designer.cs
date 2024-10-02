@@ -178,7 +178,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.ToTable("HomeMembers");
                 });
 
-            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomePermission", b =>
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomeMemberPermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,7 +262,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.ToTable("Sessions");
                 });
 
-            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.SystemPermission", b =>
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.RoleSystemPermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -408,7 +408,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomePermission", b =>
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomeMemberPermission", b =>
                 {
                     b.HasOne("SmartHome.BusinessLogic.Domain.HomeMember", null)
                         .WithMany("HomePermissions")
@@ -430,7 +430,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.Navigation("HomeDevice");
                 });
 
-            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.SystemPermission", b =>
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.RoleSystemPermission", b =>
                 {
                     b.HasOne("SmartHome.BusinessLogic.Domain.Role", null)
                         .WithMany("Permissions")

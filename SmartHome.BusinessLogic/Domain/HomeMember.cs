@@ -8,7 +8,7 @@ namespace SmartHome.BusinessLogic.Domain;
 public sealed class HomeMember
 {
     public Guid HomeMemberId { get; set; }
-    public List<HomePermission> HomePermissions { get; set; }
+    public List<HomeMemberHomePermission> HomePermissions { get; set; }
     public List<Notification> Notifications { get; set; }
     public User? User { get; set; }
     public Guid HomeId { get; set; }
@@ -16,7 +16,7 @@ public sealed class HomeMember
     {
         User = User;
         HomeMemberId = Guid.NewGuid();
-        HomePermissions = new List<HomePermission>();
+        HomePermissions = new List<HomeMemberHomePermission>();
         Notifications = new List<Notification>();
     }
 

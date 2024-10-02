@@ -21,7 +21,7 @@ public class NotificationControllerTest
     private NotificationController? _notificationController;
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
     private readonly Role companyOwner = new Role() { Name = "CompanyOwner" };
-    private readonly HomePermission notificationPermission = new HomePermission() { Name = "NotificationPermission" };
+    private readonly HomeMemberPermission notificationPermission = new HomeMemberPermission() { Name = "NotificationPermission" };
 
     [TestInitialize]
     public void TestInitialize()
@@ -41,11 +41,6 @@ public class NotificationControllerTest
         var device1 = new Device() { Id = Guid.NewGuid(), Name = "Device1", Type = "Type1", Business = company, Description = "description", ModelNumber = "1234", Photos = "photos" };
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device1, Online = true };
 
-        var homePermissions = new List<HomePermission>
-        {
-            notificationPermission
-        };
-
         var notifications = new List<Notification>
         {
             new Notification() { Id = Guid.NewGuid(), Event = "Event1", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" },
@@ -53,7 +48,12 @@ public class NotificationControllerTest
             new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" }
         };
 
-        var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = homePermissions };
+        var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = new List<HomeMemberHomePermission>() };
+
+        var homePermissions = new List<HomeMemberHomePermission>
+        {
+            new HomeMemberHomePermission() { Permission = notificationPermission, HomeMember =  homeMember}
+        };
 
         _notificationLogicMock.Setup(n => n.GetNotificationsByHomeMemberId(homeMemberId)).Returns(notifications);
 
