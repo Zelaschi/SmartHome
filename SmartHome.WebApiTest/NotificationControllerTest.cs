@@ -39,7 +39,7 @@ public class NotificationControllerTest
         var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
         var company = new Business() { Id = Guid.NewGuid(), BusinessOwner = companyOwner1, Logo = "logo", Name = "hikvision", RUT = "1234" };
         var device1 = new Device() { Id = Guid.NewGuid(), Name = "Device1", Type = "Type1", Business = company, Description = "description", ModelNumber = "1234", Photos = "photos" };
-        var homeDevice = new HomeDevice() { HardwardId = Guid.NewGuid(), Device = device1, Online = true };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device1, Online = true };
 
         var homePermissions = new List<HomePermission>
         {
@@ -95,7 +95,7 @@ public class NotificationControllerTest
             Business = company,
         };
 
-        var homeDevice = new HomeDevice() { HardwardId = Guid.NewGuid(), Device = securityCamera, Online = true };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = securityCamera, Online = true };
 
         var notification = new Notification() { Id = Guid.NewGuid(), Event = "MovementDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" };
 
@@ -104,7 +104,7 @@ public class NotificationControllerTest
         _notificationLogicMock.Setup(n => n.CreateMovementDetectionNotification(It.IsAny<Guid>())).Returns(notification);
 
         var expected = new CreatedAtActionResult("CreateMovementDetectionNotification", "CreateMovementDetectionNotification", new { notificationResponseModel.Id }, notificationResponseModel);
-        var result = _notificationController.CreateMovementDetectionNotification(homeDevice.HardwardId) as CreatedAtActionResult;
+        var result = _notificationController.CreateMovementDetectionNotification(homeDevice.Id) as CreatedAtActionResult;
         var objectResult = result.Value as NotificationResponseModel;
 
         _notificationLogicMock.VerifyAll();
@@ -134,7 +134,7 @@ public class NotificationControllerTest
             Business = company,
         };
 
-        var homeDevice = new HomeDevice() { HardwardId = Guid.NewGuid(), Device = securityCamera, Online = true };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = securityCamera, Online = true };
 
         var notification = new Notification() { Id = Guid.NewGuid(), Event = "PersonDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" };
 
@@ -143,7 +143,7 @@ public class NotificationControllerTest
         _notificationLogicMock.Setup(n => n.CreatePersonDetectionNotification(It.IsAny<Guid>())).Returns(notification);
 
         var expected = new CreatedAtActionResult("CreatePersonDetectionNotification", "CreatePersonDetectionNotification", new { notificationResponseModel.Id }, notificationResponseModel);
-        var result = _notificationController.CreatePersonDetectionNotification(homeDevice.HardwardId) as CreatedAtActionResult;
+        var result = _notificationController.CreatePersonDetectionNotification(homeDevice.Id) as CreatedAtActionResult;
         var objectResult = result.Value as NotificationResponseModel;
 
         _notificationLogicMock.VerifyAll();
