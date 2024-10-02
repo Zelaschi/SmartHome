@@ -28,6 +28,11 @@ public sealed class SmartHomeEFCoreContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Device>()
+            .ToTable("Devices")
+            .HasDiscriminator<string>("DeviceType")
+            .HasValue<Device>("Window Sensor")
+            .HasValue<SecurityCamera>("SecurityCamera");
         modelBuilder.Entity<Home>()
             .HasMany(h => h.Members)
             .WithOne()
