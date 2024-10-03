@@ -7,8 +7,10 @@ using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
+using SmartHome.BusinessLogic.InitialSeedData;
 
 namespace SmartHome.BusinessLogicTest;
 
@@ -331,5 +333,32 @@ public class UserLogicTest
         Assert.IsNotNull(businessOwnerResult);
         Assert.AreEqual(businessOwner.Role.Name, "BusinessOwner");
         Assert.AreEqual(businessOwner, businessOwnerResult);
+    }
+
+    [TestMethod]
+
+    public void Create_Admin_Test()
+    {
+        var admin = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodrigues",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com"
+        };
+
+        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) });
+
+        userRepositoryMock.Setup(x => x.Add(admin)).Returns(admin);
+
+        var adminResult = userService.CreateAdmin(admin);
+
+        Assert.IsNotNull(adminResult);
+
+        Assert.AreEqual(admin.Role.Name, "Admin");
+        Assert.AreEqual(admin.Role.Id, Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID));
+
+        Assert.AreEqual(admin, adminResult);
     }
 }

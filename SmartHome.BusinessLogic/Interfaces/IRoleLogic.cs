@@ -10,5 +10,6 @@ public interface IRoleLogic
 {
     public Role GetHomeOwnerRole();
     public Role GetBusinessOwnerRole();
+    public Role GetAdminRole();
     public bool HasPermission(Guid roleId, Guid permissionId);
 }

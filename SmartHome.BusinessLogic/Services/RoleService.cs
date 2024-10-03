@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
 public class RoleService : IRoleLogic
 {
     private readonly IGenericRepository<Role> _roleRepository;
-    private const string HomeOwnerRole = "HomeOwner";
-    private const string BusinessOwnerRole = "BusinessOwner";
 
     public RoleService(IGenericRepository<Role> roleRepository)
     {
@@ -22,12 +21,17 @@ public class RoleService : IRoleLogic
 
     public virtual Role GetHomeOwnerRole()
     {
-        return _roleRepository.Find(role => role.Name == HomeOwnerRole) ?? throw new RoleException("Role not found");
+        return _roleRepository.Find(role => role.Id == Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID)) ?? throw new RoleException("Role not found");
     }
 
     public virtual Role GetBusinessOwnerRole()
     {
-        return _roleRepository.Find(role => role.Name == BusinessOwnerRole) ?? throw new RoleException("Role not found");
+        return _roleRepository.Find(role => role.Id == Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID)) ?? throw new RoleException("Role not found");
+    }
+
+    public virtual Role GetAdminRole()
+    {
+        return _roleRepository.Find(role => role.Id == Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID)) ?? throw new RoleException("Role not found");
     }
 
     public bool HasPermission(Guid roleId, Guid permissionId)

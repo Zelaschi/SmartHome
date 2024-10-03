@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLogic
+public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLogic, IAdminLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IRoleLogic _roleService;
@@ -115,5 +115,19 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
 
         User newBusinesssOwner = _userRepository.Add(user);
         return newBusinesssOwner;
+    }
+
+    public User CreateAdmin(User user)
+    {
+        user.Role = _roleService.GetAdminRole();
+
+        User newAdmin = _userRepository.Add(user);
+
+        return newAdmin;
+    }
+
+    public void DeleteAdmin(Guid adminId)
+    {
+        throw new NotImplementedException();
     }
 }
