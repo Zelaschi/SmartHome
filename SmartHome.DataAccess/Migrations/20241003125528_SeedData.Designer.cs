@@ -12,7 +12,7 @@ using SmartHome.DataAccess.Contexts;
 namespace SmartHome.DataAccess.Migrations
 {
     [DbContext(typeof(SmartHomeEFCoreContext))]
-    [Migration("20241003035250_SeedData")]
+    [Migration("20241003125528_SeedData")]
     partial class SeedData
     {
         /// <inheritdoc />
