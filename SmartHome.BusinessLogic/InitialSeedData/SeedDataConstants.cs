@@ -11,6 +11,7 @@ public static class SeedDataConstants
     public static Guid ADMIN_ROLE_ID = Guid.Parse("ffa636e8-ce76-4b52-b03e-8b3989bfd008");
     public static Guid HOME_OWNER_ROLE_ID = Guid.Parse("5725feee-327f-4147-aad9-ea28b9ff3e7b");
     public static Guid BUSINESS_OWNER_ROLE_ID = Guid.Parse("28a660d2-c86a-49a8-bbeb-587a82415771");
+    public static Guid FIRST_ADMIN_ID = Guid.Parse("80e909fb-3c8a-423d-bd46-edde4f85fbe3");
 
     public static Guid CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID = Guid.Parse("f22942d7-9bc0-4458-a713-15c9010deaa1");
     public static Guid CREATE_BUSINESS_OWNER_ACCOUNT_PERMISSION_ID = Guid.Parse("b3eef741-8d56-4263-a633-7e176981feec");

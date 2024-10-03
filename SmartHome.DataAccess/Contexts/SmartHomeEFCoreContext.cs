@@ -187,6 +187,18 @@ public sealed class SmartHomeEFCoreContext : DbContext
                 Name = "Recieve device's notifications"
             }
         );
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = SeedDataConstants.FIRST_ADMIN_ID,
+                Name = "First admin",
+                Surname = "admin surname",
+                Password = "Password@1234",
+                Email = "admin1234@gmail.com",
+                CreationDate = DateTime.Now,
+                RoleId = SeedDataConstants.ADMIN_ROLE_ID
+            }
+         );
     }
 
     private void ConfigSchema(ModelBuilder modelBuilder)

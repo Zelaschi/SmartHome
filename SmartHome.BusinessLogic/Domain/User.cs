@@ -17,6 +17,7 @@ public sealed class User
     public string? ProfilePhoto { get; set; }
     public List<Home>? Houses { get; set; }
     public Role? Role { get; set; }
+    public Guid RoleId { get; set; }
     public DateTime CreationDate = DateTime.Today;
 
     public User()
