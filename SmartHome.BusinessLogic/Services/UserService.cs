@@ -119,6 +119,13 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
 
     public User CreateAdmin(User user)
     {
+        ValidateUser(user);
+
+        if (!EmailIsUnique(user.Email))
+        {
+            throw new UserException("User with that email already exists");
+        }
+
         user.Role = _roleService.GetAdminRole();
 
         User newAdmin = _userRepository.Add(user);
