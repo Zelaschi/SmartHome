@@ -17,7 +17,7 @@ public sealed class BusinessService : IBusinessesLogic
         _businessRepository = businessRepository;
     }
 
-    public Business CreateBusiness(Business business)
+    public Business CreateBusiness(Business business, User user)
     {
         throw new NotImplementedException();
     }

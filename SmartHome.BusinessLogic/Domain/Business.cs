@@ -11,5 +11,5 @@ public sealed class Business
     public required string Name { get; set; }
     public required string Logo { get; set; }
     public required string RUT { get; set; }
-    public required User BusinessOwner { get; set; }
+    public User? BusinessOwner { get; set; }
 }

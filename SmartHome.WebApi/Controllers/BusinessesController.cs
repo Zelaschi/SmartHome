@@ -4,6 +4,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.Businesses.In;
+using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -22,7 +23,14 @@ public sealed class BusinessesController : ControllerBase
 
     public IActionResult CreateBusiness(BusinessRequestModel businessRequestModel)
     {
-        var response = new BusinessesResponseModel(_businessesLogic.CreateBusiness(businessRequestModel.ToEntity()));
+        var user = HttpContext.Items["User"] as User;
+
+        if (user == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        var response = new BusinessesResponseModel(_businessesLogic.CreateBusiness(businessRequestModel.ToEntity(), user));
         return CreatedAtAction("CreateBusiness", new { response.Id }, response);
     }
 

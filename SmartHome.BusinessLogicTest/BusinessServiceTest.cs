@@ -14,6 +14,7 @@ namespace SmartHome.BusinessLogicTest;
 public class BusinessServiceTest
 {
     private Mock<IGenericRepository<Business>>? businessRepositoryMock;
+    private Mock<IGenericRepository<User>>? userRepositoryMock;
     private BusinessService? businessService;
 
     [TestInitialize]
@@ -21,6 +22,7 @@ public class BusinessServiceTest
     public void Initialize()
     {
         businessRepositoryMock = new Mock<IGenericRepository<Business>>(MockBehavior.Strict);
+        userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
         businessService = new BusinessService(businessRepositoryMock.Object);
     }
 
@@ -71,5 +73,45 @@ public class BusinessServiceTest
 
         businessRepositoryMock.VerifyAll();
         Assert.AreEqual(businesses, businessesResult);
+    }
+
+    [TestMethod]
+
+    public void Create_Business_Test()
+    {
+        var businessOwner = new Role { Name = "BusinessOwner" };
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+        };
+        var owner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedrorodriguez@gmail.com",
+            Role = businessOwner,
+            Complete = false
+        };
+
+        businessRepositoryMock.Setup(x => x.Add(business)).Returns(business);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+
+        var businessResult = businessService.CreateBusiness(business, owner);
+
+        owner.Complete = true;
+
+        userRepositoryMock.Setup(x => x.Update(owner)).Returns(owner);
+        businessRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(business, businessResult);
+        Assert.AreEqual(owner.Complete, true);
+        Assert.AreEqual(business.BusinessOwner, owner);
     }
 }

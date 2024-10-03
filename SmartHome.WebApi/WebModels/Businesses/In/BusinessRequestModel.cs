@@ -12,7 +12,6 @@ public sealed class BusinessRequestModel
         return new Business()
         {
             Id = new Guid(),
-            BusinessOwner = new User() { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = new Role() { Name = "blankRole" } },
             Name = Name,
             Logo = Logo,
             RUT = RUT
