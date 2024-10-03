@@ -9,6 +9,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using SmartHome.BusinessLogic.CustomExceptions;
+using SmartHome.BusinessLogic.InitialSeedData;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLogic, IAdminLogic
@@ -133,8 +134,19 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         return newAdmin;
     }
 
+    private void EnsureAdminCannotBeDeletedIfOnlyOneExists()
+    {
+        IList<User> users = _userRepository.FindAll().ToList();
+        var adminUsers = users.Where(user => user.Role == _roleService.GetAdminRole()).ToList();
+        if (adminUsers.Count <= 1)
+        {
+            throw new UserException("Cannot delete the only admin user");
+        }
+    }
+
     public void DeleteAdmin(Guid adminId)
     {
+        EnsureAdminCannotBeDeletedIfOnlyOneExists();
         _userRepository.Delete(adminId);
     }
 }

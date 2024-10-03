@@ -415,20 +415,21 @@ public class UserLogicTest
         };
         var adminList = new List<User> { admin };
 
-        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);
-        userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
-        Exception exception = null;
+        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) });
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+        userRepositoryMock.Setup(x => x.Add(admin)).Returns(admin);
+        userService.CreateAdmin(admin);
+
+        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);;
         try
         {
             userService.DeleteAdmin(adminId);
         }
         catch (Exception e)
         {
-            exception = e;
+            userRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(e, typeof(UserException));
+            Assert.AreEqual("Cannot delete the only admin user", e.Message);
         }
-
-        userRepositoryMock.VerifyAll();
-        Assert.IsInstanceOfType(exception, typeof(UserException));
-        Assert.AreEqual("User with that email already exists", exception.Message);
     }
 }
