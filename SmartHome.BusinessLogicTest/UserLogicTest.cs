@@ -387,7 +387,6 @@ public class UserLogicTest
         var adminList = new List<User> { admin, admin2 };
 
         userRepositoryMock.Setup(x=> x.FindAll()).Returns(adminList);
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(admin);
         userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
 
         userService.DeleteAdmin(adminId);

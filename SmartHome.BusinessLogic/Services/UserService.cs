@@ -135,6 +135,6 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
 
     public void DeleteAdmin(Guid adminId)
     {
-        throw new NotImplementedException();
+        _userRepository.Delete(adminId);
     }
 }
