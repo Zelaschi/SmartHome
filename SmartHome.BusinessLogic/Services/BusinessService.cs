@@ -20,17 +20,27 @@ public sealed class BusinessService : IBusinessesLogic
         _userRepository = userRepository;
     }
 
-    public Business CreateBusiness(Business business, User user)
+    private Business AssignOwnerToBusiness(Business business, User user)
     {
-        if ((bool)user.Complete)
-        {
-            throw new UserException("User is already owner of a business");
-        }
-
         business.BusinessOwner = user;
         user.Complete = true;
         _userRepository.Update(user);
         return _businessRepository.Add(business);
+    }
+
+    private bool OwnerAccountComplete(User user)
+    {
+        return (bool)user.Complete;
+    }
+
+    public Business CreateBusiness(Business business, User user)
+    {
+        if (OwnerAccountComplete(user))
+        {
+            throw new UserException("User is already owner of a business");
+        }
+
+        return AssignOwnerToBusiness(business, user);
     }
 
     public IEnumerable<Business> GetAllBusinesses()
