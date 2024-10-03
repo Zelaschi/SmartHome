@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.InitialSeedData;
 
 namespace SmartHome.DataAccess.Contexts;
 public sealed class SmartHomeEFCoreContext : DbContext
@@ -30,17 +31,173 @@ public sealed class SmartHomeEFCoreContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ConfigSchema(modelBuilder);
+        ConfigSeedData(modelBuilder);
         base.OnModelCreating(modelBuilder);
+    }
+
+    private void ConfigSeedData(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<SystemPermission>().HasData(
+            new SystemPermission
+            {
+                Id = SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID,
+                Name = "Create or delete admin account",
+                Description = "Create or delete admin account"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.CREATE_BUSINESS_OWNER_ACCOUNT_PERMISSION_ID,
+                Name = "Create business owner account",
+                Description = "Create business owner account"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.LIST_ALL_ACCOUNTS_PERMISSION_ID,
+                Name = "List all accounts",
+                Description = "List all accounts"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID,
+                Name = "List all businesses",
+                Description = "List all businesses"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID,
+                Name = "Create business",
+                Description = "Create business"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.CREATE_DEVICE_PERMISSION_ID,
+                Name = "Create device",
+                Description = "Create device"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.LIST_ALL_DEVICES_PERMISSION_ID,
+                Name = "List all devices",
+                Description = "List all devices"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID,
+                Name = "List all device types",
+                Description = "List all device types"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.CREATE_HOME_PERMISSION_ID,
+                Name = "Create home",
+                Description = "Create home"
+            },
+            new SystemPermission
+            {
+                Id = SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID,
+                Name = "Add member to home",
+                Description = "Add member to home"
+            });
+        modelBuilder.Entity<Role>().HasData(
+            new Role
+            {
+                Id = SeedDataConstants.ADMIN_ROLE_ID,
+                Name = "Admin"
+            },
+            new Role
+            {
+                Id = SeedDataConstants.HOME_OWNER_ROLE_ID,
+                Name = "HomeOwner"
+            },
+            new Role
+            {
+                Id = SeedDataConstants.BUSINESS_OWNER_ROLE_ID,
+                Name = "BusinessOwner"
+            });
+        modelBuilder.Entity<RoleSystemPermission>().HasData(
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.ADMIN_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.ADMIN_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.CREATE_BUSINESS_OWNER_ACCOUNT_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.ADMIN_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.LIST_ALL_ACCOUNTS_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.ADMIN_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.BUSINESS_OWNER_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.BUSINESS_OWNER_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.CREATE_DEVICE_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.HOME_OWNER_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.LIST_ALL_DEVICES_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.HOME_OWNER_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.HOME_OWNER_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.CREATE_HOME_PERMISSION_ID
+            },
+            new RoleSystemPermission
+            {
+                RoleId = SeedDataConstants.HOME_OWNER_ROLE_ID,
+                SystemPermissionId = SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID
+            }
+        );
+        modelBuilder.Entity<HomePermission>().HasData(
+            new HomePermission
+            {
+                Id = SeedDataConstants.ADD_MEMBER_TO_HOME_HOMEPERMISSION_ID,
+                Name = "Add member to home permission"
+            },
+            new HomePermission
+            {
+                Id = SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID,
+                Name = "Add devices to home permission"
+            },
+            new HomePermission
+            {
+                Id = SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID,
+                Name = "List home's devices permission"
+            },
+            new HomePermission
+            {
+                Id = SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID,
+                Name = "Recieve device's notifications"
+            }
+        );
     }
 
     private void ConfigSchema(ModelBuilder modelBuilder)
     {
-         modelBuilder.Entity<Role>()
-            .HasMany(r => r.SystemPermissions)
-            .WithMany(s => s.Roles)
-           .UsingEntity<RoleSystemPermission>(
-           r => r.HasOne(x => x.SystemPermission).WithMany().HasForeignKey(x => x.SystemPermissionId),
-           l => l.HasOne(x => x.Role).WithMany().HasForeignKey(x => x.RoleId));
+        modelBuilder.Entity<Role>()
+           .HasMany(r => r.SystemPermissions)
+           .WithMany(s => s.Roles)
+          .UsingEntity<RoleSystemPermission>(
+          r => r.HasOne(x => x.SystemPermission).WithMany().HasForeignKey(x => x.SystemPermissionId),
+          l => l.HasOne(x => x.Role).WithMany().HasForeignKey(x => x.RoleId));
 
         modelBuilder.Entity<HomeMember>()
             .HasMany(h => h.HomePermissions)
