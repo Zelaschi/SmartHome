@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.In;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
@@ -8,6 +10,8 @@ using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/homeMembers")]
+[AuthenticationFilter]
+[ExceptionFilter]
 [ApiController]
 public sealed class HomeMemberController : ControllerBase
 {
@@ -18,6 +22,7 @@ public sealed class HomeMemberController : ControllerBase
         _homeMemberLogic = homeMemberLogic ?? throw new ArgumentNullException(nameof(homeMemberLogic));
     }
 
+    [AuthorizationFilter(SeedDataConstants.CREATE_HOME_PERMISSION_ID)]
     [HttpPost("{homeMemberId}/permissions")]
     public IActionResult AddHomePermissionsToHomeMember([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
     {
@@ -25,6 +30,7 @@ public sealed class HomeMemberController : ControllerBase
         return NoContent();
     }
 
+    [AuthorizationFilter(SeedDataConstants.CREATE_HOME_PERMISSION_ID)]
     [HttpPut("{homeMemberId}/permissions")]
     public IActionResult UpdateHomeMemberPermissions([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
     {

@@ -29,4 +29,9 @@ public class RoleService : IRoleLogic
     {
         return _roleRepository.Find(role => role.Name == BusinessOwnerRole) ?? throw new RoleException("Role not found");
     }
+
+    public bool HasPermission(Guid roleId, Guid permissionId)
+    {
+        throw new NotImplementedException();
+    }
 }

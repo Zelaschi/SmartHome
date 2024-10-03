@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.HomeOwnerModels.In;
@@ -8,6 +9,7 @@ namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/homeOwners")]
 [ApiController]
+[AuthenticationFilter]
 [ExceptionFilter]
 public sealed class HomeOwnerController : ControllerBase
 {

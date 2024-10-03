@@ -9,6 +9,7 @@ namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/businesses")]
 [ApiController]
+[AuthenticationFilter]
 [ExceptionFilter]
 public sealed class BusinessesController : ControllerBase
 {

@@ -12,8 +12,8 @@ using SmartHome.DataAccess.Contexts;
 namespace SmartHome.DataAccess.Migrations
 {
     [DbContext(typeof(SmartHomeEFCoreContext))]
-    [Migration("20241003125528_SeedData")]
-    partial class SeedData
+    [Migration("20241003174408_SeedDataCorrection")]
+    partial class SeedDataCorrection
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -483,7 +483,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("RoleId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Surname")
@@ -495,6 +495,17 @@ namespace SmartHome.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("80e909fb-3c8a-423d-bd46-edde4f85fbe3"),
+                            Email = "admin1234@gmail.com",
+                            Name = "First admin",
+                            Password = "Password@1234",
+                            RoleId = new Guid("ffa636e8-ce76-4b52-b03e-8b3989bfd008"),
+                            Surname = "admin surname"
+                        });
                 });
 
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.SecurityCamera", b =>
@@ -638,7 +649,9 @@ namespace SmartHome.DataAccess.Migrations
                 {
                     b.HasOne("SmartHome.BusinessLogic.Domain.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
                 });

@@ -7,11 +7,13 @@ using System.Reflection.Metadata.Ecma335;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
+using SmartHome.BusinessLogic.InitialSeedData;
 
 namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
+[AuthenticationFilter]
 [ExceptionFilter]
 public sealed class HomeController : ControllerBase
 {
@@ -43,6 +45,7 @@ public sealed class HomeController : ControllerBase
         return NoContent();
     }
 
+    [AuthorizationFilter(SeedDataConstants.CREATE_HOME_PERMISSION_ID)]
     [HttpPost]
     public IActionResult CreateHome([FromBody] CreateHomeRequestModel homeRequestModel)
     {

@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.BusinessLogic.Interfaces;
-public interface IRoleLogic
+public interface ISystemPermissionLogic
 {
-    public Role GetHomeOwnerRole();
-    public Role GetBusinessOwnerRole();
-    public bool HasPermission(Guid roleId, Guid permissionId);
+    public SystemPermission GetSystemPermissionById(Guid systemPermissionId);
 }

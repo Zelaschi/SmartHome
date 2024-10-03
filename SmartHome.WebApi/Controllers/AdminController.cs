@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.AdminModels.In;
@@ -8,8 +9,8 @@ namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/admins")]
 [ApiController]
+[AuthenticationFilter]
 [ExceptionFilter]
-[AuthorizationFilter(["Admin"])]
 public sealed class AdminController : ControllerBase
 {
     private readonly IAdminLogic _adminLogic;
@@ -18,6 +19,7 @@ public sealed class AdminController : ControllerBase
         _adminLogic = adminLogic;
     }
 
+    [AuthorizationFilter(SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID)]
     [HttpPost]
     public IActionResult CreateAdmin(AdminRequestModel adminRequestModel)
     {
@@ -25,6 +27,7 @@ public sealed class AdminController : ControllerBase
         return CreatedAtAction("CreateAdmin", new { createResponse.Id }, createResponse);
     }
 
+    [AuthorizationFilter(SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID)]
     [HttpDelete("{adminId}")]
     public IActionResult DeleteAdmin(Guid adminId)
     {

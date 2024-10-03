@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.AdminModels.In;
 using SmartHome.WebApi.WebModels.AdminModels.Out;
 using SmartHome.WebApi.WebModels.NotificationModels.Out;
@@ -8,6 +9,8 @@ namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
+[AuthenticationFilter]
+[ExceptionFilter]
 public sealed class NotificationController : ControllerBase
 {
     private readonly INotificationLogic _notificationLogic;
