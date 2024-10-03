@@ -169,7 +169,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.ToTable("HomeMembers");
                 });
 
-            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomeMemberPermission", b =>
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomePermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,7 +253,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.ToTable("Sessions");
                 });
 
-            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.RoleSystemPermission", b =>
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.RolePermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -376,7 +376,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomeMemberPermission", b =>
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomePermission", b =>
                 {
                     b.HasOne("SmartHome.BusinessLogic.Domain.HomeMember", null)
                         .WithMany("HomePermissions")
@@ -398,10 +398,10 @@ namespace SmartHome.DataAccess.Migrations
                     b.Navigation("HomeDevice");
                 });
 
-            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.RoleSystemPermission", b =>
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.RolePermission", b =>
                 {
                     b.HasOne("SmartHome.BusinessLogic.Domain.Role", null)
-                        .WithMany("Permissions")
+                        .WithMany("SystemPermissions")
                         .HasForeignKey("RoleId");
                 });
 
@@ -430,7 +430,7 @@ namespace SmartHome.DataAccess.Migrations
 
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.Role", b =>
                 {
-                    b.Navigation("Permissions");
+                    b.Navigation("SystemPermissions");
                 });
 
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.User", b =>
