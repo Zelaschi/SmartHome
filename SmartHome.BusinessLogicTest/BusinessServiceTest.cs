@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
@@ -112,5 +113,41 @@ public class BusinessServiceTest
         Assert.AreEqual(business, businessResult);
         Assert.IsTrue(owner.Complete);
         Assert.AreEqual(business.BusinessOwner, owner);
+    }
+
+    [TestMethod]
+
+    public void Create_Business_With_Complete_Account_Throws_Exception_Test()
+    {
+        var businessOwner = new Role { Name = "BusinessOwner" };
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+        };
+        var owner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedrorodriguez@gmail.com",
+            Role = businessOwner,
+            Complete = true,
+        };
+
+        try
+        {
+            businessService.CreateBusiness(business, owner);
+        }
+        catch (Exception e)
+        {
+            businessRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(e, typeof(UserException));
+            Assert.AreEqual("User is already owner of a business", e.Message);
+        }
     }
 }
