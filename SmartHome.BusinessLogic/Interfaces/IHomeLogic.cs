@@ -9,9 +9,9 @@ namespace SmartHome.BusinessLogic.Interfaces;
 public interface IHomeLogic
 {
     void AddDeviceToHome(Guid homeId, Guid deviceId);
-    Home CreateHome(Home home, Guid userId);
+    Home CreateHome(Home home, Guid? userId);
     IEnumerable<Home> GetAllHomesByUserId(Guid userId);
     IEnumerable<HomeDevice> GetAllHomeDevices(Guid homeId);
     IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId);
-    void AddHomeMemberToHome(Guid homeId, Guid userIdS);
+    void AddHomeMemberToHome(Guid homeId, Guid? userId);
 }

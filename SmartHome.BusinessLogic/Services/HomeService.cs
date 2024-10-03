@@ -14,12 +14,14 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Home> _homeRepository;
+    private readonly IGenericRepository<HomePermission> _homePermissionRepository;
     private readonly IGenericRepository<HomeMember> _homeMemberRepository;
-    public HomeService(IGenericRepository<Home> homeRepository, IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<User> userRepository)
+    public HomeService(IGenericRepository<Home> homeRepository, IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<User> userRepository, IGenericRepository<HomePermission> homePermissionRepository)
     {
         _homeRepository = homeRepository;
         _homeMemberRepository = homeMemberRepository;
         _userRepository = userRepository;
+        _homePermissionRepository = homePermissionRepository;
     }
 
     public void AddDeviceToHome(Guid homeId, Guid deviceId)
@@ -27,7 +29,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic
         throw new NotImplementedException();
     }
 
-    public void AddHomeMemberToHome(Guid homeId, Guid userId)
+    public void AddHomeMemberToHome(Guid homeId, Guid? userId)
     {
         var user = _userRepository.Find(x => x.Id == userId);
         if (user == null)
@@ -46,7 +48,13 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic
         _homeRepository.Update(home);
     }
 
-    public Home CreateHome(Home home, Guid userId)
+    private void AddPermissionsToOwner(HomeMember homeOwnerMember)
+    {
+        var PermissionsList = _homePermissionRepository.FindAll().ToList();
+        homeOwnerMember.HomePermissions = PermissionsList;
+    }
+
+    public Home CreateHome(Home home, Guid? userId)
     {
         ValidateHome(home);
         var owner = _userRepository.Find(x => x.Id == userId);
@@ -57,6 +65,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic
 
         home.Owner = owner;
         var homeOwnerMember = new HomeMember(owner);
+        AddPermissionsToOwner(homeOwnerMember);
         home.Members.Add(homeOwnerMember);
         _homeRepository.Add(home);
         return home;

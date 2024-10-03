@@ -17,6 +17,7 @@ public class HomeServiceTest
     private Mock<IGenericRepository<Home>>? homeRepositoryMock;
     private Mock<IGenericRepository<HomeMember>>? homeMemberRepositoryMock;
     private Mock<IGenericRepository<User>>? userRepositoryMock;
+    private Mock<IGenericRepository<HomePermission>>? homePermissionRepositoryMock;
     private HomeService? homeService;
     private Role? homeOwnerRole;
 
@@ -26,7 +27,8 @@ public class HomeServiceTest
         homeMemberRepositoryMock = new Mock<IGenericRepository<HomeMember>>(MockBehavior.Strict);
         homeRepositoryMock = new Mock<IGenericRepository<Home>>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
-        homeService = new HomeService(homeRepositoryMock.Object, homeMemberRepositoryMock.Object, userRepositoryMock.Object);
+        homePermissionRepositoryMock = new Mock<IGenericRepository<HomePermission>>(MockBehavior.Strict);
+        homeService = new HomeService(homeRepositoryMock.Object, homeMemberRepositoryMock.Object, userRepositoryMock.Object, homePermissionRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
     }
 
@@ -39,9 +41,11 @@ public class HomeServiceTest
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission>());
 
         var result = homeService.CreateHome(home, ownerId);
 
+        homeRepositoryMock.VerifyAll();
         userRepositoryMock.VerifyAll();
         homeRepositoryMock.VerifyAll();
         Assert.AreEqual(home, result);

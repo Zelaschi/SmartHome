@@ -34,14 +34,13 @@ public sealed class HomeController : ControllerBase
     [HttpPost("{homeId}/members")]
     public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId)
     {
-        var userIdString = HttpContext.Items["UserId"] as string;
-        if (userIdString == null)
+        var user = HttpContext.Items["User"] as User;
+        if (user == null)
         {
             return Unauthorized("UserId is missing");
         }
 
-        var userId = Guid.Parse(userIdString);
-        _homeLogic.AddHomeMemberToHome(homeId, userId);
+        _homeLogic.AddHomeMemberToHome(homeId, user.Id);
         return NoContent();
     }
 
@@ -49,14 +48,13 @@ public sealed class HomeController : ControllerBase
     [HttpPost]
     public IActionResult CreateHome([FromBody] CreateHomeRequestModel homeRequestModel)
     {
-        var userIdString = HttpContext.Items["UserId"] as string;
-        if (userIdString == null)
+        var user = HttpContext.Items["User"] as User;
+        if (user == null)
         {
             return Unauthorized("UserId is missing");
         }
 
-        var userId = Guid.Parse(userIdString);
-        var response = new HomeResponseModel(_homeLogic.CreateHome(homeRequestModel.ToEntity(), userId));
+        var response = new HomeResponseModel(_homeLogic.CreateHome(homeRequestModel.ToEntity(), user.Id));
         return CreatedAtAction("CreateHome", new { response.Id }, response);
     }
 
