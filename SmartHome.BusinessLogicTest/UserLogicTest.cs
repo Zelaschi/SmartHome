@@ -361,4 +361,43 @@ public class UserLogicTest
 
         Assert.AreEqual(admin, adminResult);
     }
+
+    [TestMethod]
+
+    public void Delete_Admin_Test()
+    {
+        var adminId = Guid.NewGuid();
+        var admin = new User
+        {
+            Id = adminId,
+            Name = "Pedro",
+            Surname = "Azambuja",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com"
+        };
+        var admin2 = new User
+        {
+            Name = "Toto",
+            Surname = "Zelaschi",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com"
+        };
+        var adminList = new List<User> { admin, admin2 };
+
+        userRepositoryMock.Setup(x=> x.FindAll()).Returns(adminList);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(admin);
+        userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
+
+        userService.DeleteAdmin(adminId);
+
+        var expectedAdminList = new List<User> { admin2 };
+
+        userRepositoryMock.Setup(x => x.FindAll()).Returns(expectedAdminList);
+        var adminListResult = userService.GetAllUsers();
+
+        userRepositoryMock.VerifyAll();
+        Assert.AreEqual(expectedAdminList, adminListResult);
+    }
 }
