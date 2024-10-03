@@ -9,17 +9,17 @@ public class HomeMemberPermissions
     public bool ListDevicesPermission { get; set; }
     public bool NotificationsPermission { get; set; }
 
-    public List<HomeMemberPermission> ToHomePermissionList()
+    public List<HomePermission> ToHomePermissionList()
     {
-        var homePermissions = new List<HomeMemberPermission>();
+        var homePermissions = new List<HomePermission>();
         if (AddMemberPermission)
-            homePermissions.Add(new HomeMemberPermission { Name = "AddMemberPermission" });
+            homePermissions.Add(new HomePermission() { Name = "AddMemberPermission" });
         if (AddDevicePermission)
-            homePermissions.Add(new HomeMemberPermission { Name = "AddDevicesPermission" });
+            homePermissions.Add(new HomePermission() { Name = "AddDevicesPermission" });
         if (ListDevicesPermission)
-            homePermissions.Add(new HomeMemberPermission { Name = "ListDevicesPermission" });
+            homePermissions.Add(new HomePermission { Name = "ListDevicesPermission" });
         if (NotificationsPermission)
-            homePermissions.Add(new HomeMemberPermission { Name = "NotificationsPermission" });
+            homePermissions.Add(new HomePermission { Name = "NotificationsPermission" });
 
         return homePermissions;
     }

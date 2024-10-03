@@ -29,7 +29,7 @@ public sealed class User
         Role = role;
     }
 
-    public bool HasPermission(RoleSystemPermission permission)
+    public bool HasPermission(SystemPermission permission)
     {
         return Role.HasPermission(permission);
     }

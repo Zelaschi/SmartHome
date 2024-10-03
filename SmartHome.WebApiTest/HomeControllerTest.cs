@@ -140,8 +140,8 @@ public class HomeControllerTest
         var user2Id = Guid.NewGuid();
         var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var user2 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var homeMember1 = new HomeMember(user1) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomeMemberHomePermission>(), Notifications = new List<Notification>() };
-        var homeMember2 = new HomeMember(user2) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomeMemberHomePermission>(), Notifications = new List<Notification>() };
+        var homeMember1 = new HomeMember(user1) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var homeMember2 = new HomeMember(user2) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeMembers = new List<HomeMember>() { homeMember1, homeMember2 };
         var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
 
@@ -170,7 +170,7 @@ public class HomeControllerTest
         // ARRANGE
         var userId = Guid.NewGuid();
         var user = new User() { Id = userId, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var homeMember = new HomeMember(user) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomeMemberHomePermission>(), Notifications = new List<Notification>() };
+        var homeMember = new HomeMember(user) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeRequestModel = new CreateHomeRequestModel()
         {
             Owner = user,

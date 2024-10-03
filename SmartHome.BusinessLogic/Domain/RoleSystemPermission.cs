@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace SmartHome.BusinessLogic.Domain;
 public class RoleSystemPermission
 {
-    public int RoleId { get; set; }
+    public Guid RoleId { get; set; }
     public required Role Role { get; set; }
 
-    public int SystemPermissionId { get; set; }
-    public required RoleSystemPermission SystemPermission { get; set; }
+    public Guid SystemPermissionId { get; set; }
+    public required SystemPermission SystemPermission { get; set; }
 }

@@ -122,12 +122,12 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic
         throw new NotImplementedException();
     }
 
-    public void AddHomePermissionsToHomeMember(Guid homeMemberId, List<HomeMemberPermission> permissions)
+    public void AddHomePermissionsToHomeMember(Guid homeMemberId, List<HomePermission> permissions)
     {
         throw new NotImplementedException();
     }
 
-    public void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomeMemberPermission> permissions)
+    public void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions)
     {
         throw new NotImplementedException();
     }

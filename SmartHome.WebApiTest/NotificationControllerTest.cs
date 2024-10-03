@@ -21,7 +21,6 @@ public class NotificationControllerTest
     private NotificationController? _notificationController;
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
     private readonly Role companyOwner = new Role() { Name = "CompanyOwner" };
-    private readonly HomeMemberPermission notificationPermission = new HomeMemberPermission() { Name = "NotificationPermission" };
 
     [TestInitialize]
     public void TestInitialize()
@@ -48,12 +47,7 @@ public class NotificationControllerTest
             new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" }
         };
 
-        var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = new List<HomeMemberHomePermission>() };
-
-        var homePermissions = new List<HomeMemberHomePermission>
-        {
-            new HomeMemberHomePermission() { Permission = notificationPermission, HomeMember =  homeMember}
-        };
+        var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = new List<HomePermission>() };
 
         _notificationLogicMock.Setup(n => n.GetNotificationsByHomeMemberId(homeMemberId)).Returns(notifications);
 

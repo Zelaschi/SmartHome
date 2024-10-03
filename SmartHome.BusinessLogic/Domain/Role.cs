@@ -10,25 +10,25 @@ public sealed class Role
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
-    public List<RoleSystemPermission> Permissions { get; set; }
+    public List<SystemPermission> SystemPermissions { get; set; }
 
     public Role()
     {
-        Permissions = new List<RoleSystemPermission>();
+        SystemPermissions = new List<SystemPermission>();
     }
 
-    public void AddPermission(RoleSystemPermission permission)
+    public void AddPermission(SystemPermission permission)
     {
-        Permissions.Add(permission);
+        SystemPermissions.Add(permission);
     }
 
-    public void RemovePermission(RoleSystemPermission permission)
+    public void RemovePermission(SystemPermission permission)
     {
-        Permissions.Remove(permission);
+        SystemPermissions.Remove(permission);
     }
 
-    public bool HasPermission(RoleSystemPermission permission)
+    public bool HasPermission(SystemPermission permission)
     {
-        return Permissions.Contains(permission);
+        return SystemPermissions.Contains(permission);
     }
 }
