@@ -144,8 +144,18 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         }
     }
 
+    private void ValidateAdminExistance(Guid adminId)
+    {
+        var admin = _userRepository.Find(user => user.Id == adminId && user.Role == _roleService.GetAdminRole());
+        if (admin == null)
+        {
+            throw new UserException("Admin not found");
+        }
+    }
+
     public void DeleteAdmin(Guid adminId)
     {
+        ValidateAdminExistance(adminId);
         EnsureAdminCannotBeDeletedIfOnlyOneExists();
         _userRepository.Delete(adminId);
     }

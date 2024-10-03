@@ -447,6 +447,7 @@ public class UserLogicTest
             Email = "pedroRodriguez@gmail.com"
         };
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) });
         try
         {
             userService.DeleteAdmin(adminId);
