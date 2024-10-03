@@ -399,4 +399,36 @@ public class UserLogicTest
         userRepositoryMock.VerifyAll();
         Assert.AreEqual(expectedAdminList, adminListResult);
     }
+
+    [TestMethod]
+    public void Delete_Only_Admin_Throws_Exception_Test()
+    {
+        var adminId = Guid.NewGuid();
+        var admin = new User
+        {
+            Id = adminId,
+            Name = "Pedro",
+            Surname = "Azambuja",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com"
+        };
+        var adminList = new List<User> { admin };
+
+        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);
+        userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
+        Exception exception = null;
+        try
+        {
+            userService.DeleteAdmin(adminId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(UserException));
+        Assert.AreEqual("User with that email already exists", exception.Message);
+    }
 }
