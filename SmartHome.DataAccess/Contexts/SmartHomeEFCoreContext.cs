@@ -32,11 +32,26 @@ public sealed class SmartHomeEFCoreContext : DbContext
     {
         ConfigSchema(modelBuilder);
         ConfigSeedData(modelBuilder);
-        base.OnModelCreating(modelBuilder);
     }
 
     private void ConfigSeedData(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Role>().HasData(
+            new Role
+            {
+                Id = SeedDataConstants.ADMIN_ROLE_ID,
+                Name = "Admin"
+            },
+            new Role
+            {
+                Id = SeedDataConstants.HOME_OWNER_ROLE_ID,
+                Name = "HomeOwner"
+            },
+            new Role
+            {
+                Id = SeedDataConstants.BUSINESS_OWNER_ROLE_ID,
+                Name = "BusinessOwner"
+            });
         modelBuilder.Entity<SystemPermission>().HasData(
             new SystemPermission
             {
@@ -97,22 +112,6 @@ public sealed class SmartHomeEFCoreContext : DbContext
                 Id = SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID,
                 Name = "Add member to home",
                 Description = "Add member to home"
-            });
-        modelBuilder.Entity<Role>().HasData(
-            new Role
-            {
-                Id = SeedDataConstants.ADMIN_ROLE_ID,
-                Name = "Admin"
-            },
-            new Role
-            {
-                Id = SeedDataConstants.HOME_OWNER_ROLE_ID,
-                Name = "HomeOwner"
-            },
-            new Role
-            {
-                Id = SeedDataConstants.BUSINESS_OWNER_ROLE_ID,
-                Name = "BusinessOwner"
             });
         modelBuilder.Entity<RoleSystemPermission>().HasData(
             new RoleSystemPermission
