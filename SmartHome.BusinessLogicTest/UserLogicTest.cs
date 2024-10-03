@@ -432,4 +432,30 @@ public class UserLogicTest
             Assert.AreEqual("Cannot delete the only admin user", e.Message);
         }
     }
+
+    [TestMethod]
+    public void Delete_Non_Existing_Admin_Throws_Exception_Test()
+    {
+        var adminId = Guid.NewGuid();
+        var admin = new User
+        {
+            Id = adminId,
+            Name = "Pedro",
+            Surname = "Azambuja",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com"
+        };
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+        try
+        {
+            userService.DeleteAdmin(adminId);
+        }
+        catch (Exception e)
+        {
+            userRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(e, typeof(UserException));
+            Assert.AreEqual("Admin not found", e.Message);
+        }
+    }
 }
