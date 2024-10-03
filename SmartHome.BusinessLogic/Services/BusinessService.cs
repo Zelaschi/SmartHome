@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
@@ -21,6 +22,11 @@ public sealed class BusinessService : IBusinessesLogic
 
     public Business CreateBusiness(Business business, User user)
     {
+        if ((bool)user.Complete)
+        {
+            throw new UserException("User is already owner of a business");
+        }
+
         business.BusinessOwner = user;
         user.Complete = true;
         _userRepository.Update(user);
