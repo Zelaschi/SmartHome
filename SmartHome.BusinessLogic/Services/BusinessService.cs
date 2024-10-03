@@ -11,15 +11,20 @@ namespace SmartHome.BusinessLogic.Services;
 public sealed class BusinessService : IBusinessesLogic
 {
     private readonly IGenericRepository<Business> _businessRepository;
+    private readonly IGenericRepository<User> _userRepository;
 
-    public BusinessService(IGenericRepository<Business> businessRepository)
+    public BusinessService(IGenericRepository<Business> businessRepository, IGenericRepository<User> userRepository)
     {
         _businessRepository = businessRepository;
+        _userRepository = userRepository;
     }
 
     public Business CreateBusiness(Business business, User user)
     {
-        throw new NotImplementedException();
+        business.BusinessOwner = user;
+        user.Complete = true;
+        _userRepository.Update(user);
+        return _businessRepository.Add(business);
     }
 
     public IEnumerable<Business> GetAllBusinesses()

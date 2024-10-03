@@ -23,7 +23,7 @@ public class BusinessServiceTest
     {
         businessRepositoryMock = new Mock<IGenericRepository<Business>>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
-        businessService = new BusinessService(businessRepositoryMock.Object);
+        businessService = new BusinessService(businessRepositoryMock.Object, userRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -102,16 +102,15 @@ public class BusinessServiceTest
         businessRepositoryMock.Setup(x => x.Add(business)).Returns(business);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
 
+        userRepositoryMock.Setup(x => x.Update(It.Is<User>(u => u.Id == owner.Id))).Returns(owner);
+
         var businessResult = businessService.CreateBusiness(business, owner);
 
-        owner.Complete = true;
-
-        userRepositoryMock.Setup(x => x.Update(owner)).Returns(owner);
-        businessRepositoryMock.VerifyAll();
-        userRepositoryMock.VerifyAll();
+        businessRepositoryMock.Verify(x => x.Add(business), Times.Once);
+        userRepositoryMock.Verify(x => x.Update(It.Is<User>(u => u.Id == owner.Id && u.Complete == true)), Times.Once);
 
         Assert.AreEqual(business, businessResult);
-        Assert.AreEqual(owner.Complete, true);
+        Assert.IsTrue(owner.Complete);
         Assert.AreEqual(business.BusinessOwner, owner);
     }
 }
