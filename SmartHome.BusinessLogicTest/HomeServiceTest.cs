@@ -353,7 +353,7 @@ public class HomeServiceTest
             .Returns(listDevicesPermission)
             .Returns(notificationsPermission);
 
-        homeService.AddHomePermissionsToHomeMember(returnedMember.HomeMemberId, permissions);
+        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, permissions);
 
         IEnumerable<HomeMember> members = homeService.GetAllHomeMembers(homeId);
         var foundMember = members.First(x => x.User == user);
@@ -397,7 +397,7 @@ public class HomeServiceTest
             .Returns(listDevicesPermission)
             .Returns(notificationsPermission);
 
-        homeService.AddHomePermissionsToHomeMember(returnedMember.HomeMemberId, permissions);
+        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, permissions);
 
         var updatedPermissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission };
 

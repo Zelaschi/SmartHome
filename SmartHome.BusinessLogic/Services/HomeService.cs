@@ -146,17 +146,6 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return member;
     }
 
-    public void AddHomePermissionsToHomeMember(Guid homeMemberId, List<HomePermission> permissions)
-    {
-        var member = FindHomeMemberById(homeMemberId);
-        var allPermissions = _homePermissionRepository.FindAll().ToList();
-        var foundPermissions = allPermissions
-                .Where(permission => permissions.Any(p => p.Id == permission.Id))  // Comparación por Id o cualquier otra propiedad
-                .ToList();
-        member.HomePermissions = foundPermissions;
-        _homeMemberRepository.Update(member);
-    }
-
     public void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions)
     {
         var member = FindHomeMemberById(homeMemberId);

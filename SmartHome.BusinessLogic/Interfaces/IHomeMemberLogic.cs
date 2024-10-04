@@ -8,6 +8,5 @@ using SmartHome.BusinessLogic.Domain;
 namespace SmartHome.BusinessLogic.Interfaces;
 public interface IHomeMemberLogic
 {
-    void AddHomePermissionsToHomeMember(Guid homeMemberId, List<HomePermission> permissions);
     void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions);
 }
