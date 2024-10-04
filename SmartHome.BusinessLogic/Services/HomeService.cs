@@ -148,7 +148,35 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public Notification CreateMovementDetectionNotification(Guid homeDeviceId)
     {
-        throw new NotImplementedException();
+        var homeDevice = _homeDeviceRepository.Find(x => x.Id == homeDeviceId);
+        if (homeDevice == null)
+        {
+            throw new HomeException("Home Device Id does not match any home device");
+        }
+
+        var home = _homeRepository.Find(x => x.Id == homeDevice.HomeId);
+        if (home == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Movement Detection",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now
+        };
+
+        var homeMembers = home.Members;
+        foreach (var homeMember in homeMembers)
+        {
+            homeMember.Notifications.Add(notification);
+        }
+
+        _homeRepository.Update(home);
+
+        return notification;
     }
 
     public Notification CreatePersonDetectionNotification(Guid homeDeviceId)
