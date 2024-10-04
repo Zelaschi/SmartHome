@@ -11,6 +11,6 @@ public sealed class Notification
     public required HomeDevice HomeDevice { get; set; }
     public required string Event { get; set; }
     public required DateTime Date { get; set; }
-    public required string Time { get; set; }
+    public required DateTime Time { get; set; }
     public List<HomeMember> HomeMembers { get; set; } = new List<HomeMember>();
 }

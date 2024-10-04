@@ -17,6 +17,7 @@ public class HomeServiceTest
     private Mock<IGenericRepository<Home>>? homeRepositoryMock;
     private Mock<IGenericRepository<User>>? userRepositoryMock;
     private Mock<IGenericRepository<HomePermission>>? homePermissionRepositoryMock;
+    private Mock<IGenericRepository<HomeDevice>>? homeDeviceRepositoryMock;
     private HomeService? homeService;
     private Role? homeOwnerRole;
     private Guid ownerId;
@@ -28,7 +29,8 @@ public class HomeServiceTest
         homeRepositoryMock = new Mock<IGenericRepository<Home>>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
         homePermissionRepositoryMock = new Mock<IGenericRepository<HomePermission>>(MockBehavior.Strict);
-        homeService = new HomeService(homeRepositoryMock.Object, userRepositoryMock.Object, homePermissionRepositoryMock.Object);
+        homeDeviceRepositoryMock = new Mock<IGenericRepository<HomeDevice>>(MockBehavior.Strict);
+        homeService = new HomeService(homeDeviceRepositoryMock.Object, homeRepositoryMock.Object, userRepositoryMock.Object, homePermissionRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
         ownerId = Guid.NewGuid();
         owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = ownerId, Role = homeOwnerRole };
@@ -113,5 +115,34 @@ public class HomeServiceTest
 
         Assert.AreEqual(home.Devices.First() , homeDevices.First());
         Assert.AreEqual(home.Devices.Last(), homeDevices.Last());
+    }
+
+    [TestMethod]
+    public void Create_Movement_Detection_Notification()
+    {
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var homeMember = new HomeMember(owner);
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = true };
+
+        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
+        home.Devices.Add(homeDevice);
+        home.Members.Add(homeMember);
+
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+
+        homeService.CreateMovementDetectionNotification(homeDevice.Id);
+
+        homeMember.Notifications.Add(notification);
+        homeRepositoryMock.VerifyAll();
+
+        IEnumerable<HomeMember> homeMembers = (List<HomeMember>)homeService.GetAllHomeMembers(home.Id);
+
+        Assert.AreEqual(homeMember.Notifications.First(), homeMembers.First().Notifications.First());
     }
 }

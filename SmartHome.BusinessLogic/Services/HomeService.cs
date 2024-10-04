@@ -15,11 +15,13 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Home> _homeRepository;
     private readonly IGenericRepository<HomePermission> _homePermissionRepository;
-    public HomeService(IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository, IGenericRepository<HomePermission> homePermissionRepository)
+    private readonly IGenericRepository<HomeDevice> _homeDeviceRepository;
+    public HomeService(IGenericRepository<HomeDevice> homeDeviceRepository, IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository, IGenericRepository<HomePermission> homePermissionRepository)
     {
         _homeRepository = homeRepository;
         _userRepository = userRepository;
         _homePermissionRepository = homePermissionRepository;
+        _homeDeviceRepository = homeDeviceRepository;
     }
 
     public void AddDeviceToHome(Guid homeId, Guid deviceId)
