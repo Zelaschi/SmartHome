@@ -363,4 +363,51 @@ public class HomeServiceTest
         Assert.IsTrue(homeService.HasPermission(returnedMember.HomeMemberId, listDevicesPermission.Id));
         Assert.IsTrue(homeService.HasPermission(returnedMember.HomeMemberId, notificationsPermission.Id));
     }
+
+    [TestMethod]
+    public void Update_Permissions_To_HomeMember_Test()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+
+        var userId = Guid.NewGuid();
+        var user = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = userId, Role = homeOwnerRole };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(user);
+
+        var returnedMember = homeService.AddHomeMemberToHome(homeId, userId);
+
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(returnedMember);
+        homeMemberRepositoryMock.Setup(x => x.Update(It.IsAny<HomeMember>())).Returns(returnedMember);
+
+        var addMemberPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID), Name = "AddMemberPermission" };
+        var addDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID), Name = "AddDevicesPermission" };
+        var listDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID), Name = "ListDevicesPermission" };
+        var notificationsPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationsPermission" };
+
+        var permissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission, notificationsPermission };
+
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(permissions);
+        homePermissionRepositoryMock
+            .SetupSequence(x => x.Find(It.IsAny<Func<HomePermission, bool>>()))
+            .Returns(addMemberPermission)
+            .Returns(addDevicesPermission)
+            .Returns(listDevicesPermission)
+            .Returns(notificationsPermission);
+
+        homeService.AddHomePermissionsToHomeMember(returnedMember.HomeMemberId, permissions);
+
+        var updatedPermissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission };
+
+        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, updatedPermissions);
+        IEnumerable<HomeMember> members = homeService.GetAllHomeMembers(homeId);
+        var foundMember = members.First(x => x.User == user);
+
+        Assert.IsTrue(homeService.HasPermission(returnedMember.HomeMemberId, addMemberPermission.Id));
+        Assert.IsTrue(homeService.HasPermission(returnedMember.HomeMemberId, addDevicesPermission.Id));
+        Assert.IsTrue(homeService.HasPermission(returnedMember.HomeMemberId, listDevicesPermission.Id));
+        Assert.IsFalse(homeService.HasPermission(returnedMember.HomeMemberId, notificationsPermission.Id));
+    }
 }
