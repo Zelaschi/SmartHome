@@ -1,4 +1,5 @@
 ﻿using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.InitialSeedData;
 
 namespace SmartHome.WebApi.WebModels.HomeMemberModels.In;
 
@@ -13,13 +14,13 @@ public class HomeMemberPermissions
     {
         var homePermissions = new List<HomePermission>();
         if (AddMemberPermission)
-            homePermissions.Add(new HomePermission() { Name = "AddMemberPermission" });
+            homePermissions.Add(new HomePermission() { Name = "AddMemberPermission", Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID) });
         if (AddDevicePermission)
-            homePermissions.Add(new HomePermission() { Name = "AddDevicesPermission" });
+            homePermissions.Add(new HomePermission() { Name = "AddDevicesPermission" , Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID)});
         if (ListDevicesPermission)
-            homePermissions.Add(new HomePermission { Name = "ListDevicesPermission" });
+            homePermissions.Add(new HomePermission { Name = "ListDevicesPermission" , Id = Guid.Parse(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID)});
         if (NotificationsPermission)
-            homePermissions.Add(new HomePermission { Name = "NotificationsPermission" });
+            homePermissions.Add(new HomePermission { Name = "NotificationsPermission", Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID) });
 
         return homePermissions;
     }

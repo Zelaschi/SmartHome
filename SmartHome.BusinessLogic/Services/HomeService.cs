@@ -135,9 +135,26 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         throw new NotImplementedException();
     }
 
+    private HomeMember FindHomeMemberById(Guid id)
+    {
+        var member = _homeMemberRepository.Find(x => x.HomeMemberId == id);
+        if (member == null)
+        {
+            throw new HomeException("Home Member not found");
+        }
+
+        return member;
+    }
+
     public void AddHomePermissionsToHomeMember(Guid homeMemberId, List<HomePermission> permissions)
     {
-        throw new NotImplementedException();
+        var member = FindHomeMemberById(homeMemberId);
+        var allPermissions = _homePermissionRepository.FindAll().ToList();
+        var foundPermissions = allPermissions
+                .Where(permission => permissions.Any(p => p.Id == permission.Id))  // Comparación por Id o cualquier otra propiedad
+                .ToList();
+        member.HomePermissions = foundPermissions;
+        _homeMemberRepository.Update(member);
     }
 
     public void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions)
