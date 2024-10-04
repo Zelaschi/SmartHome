@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
@@ -16,8 +17,10 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     private readonly IGenericRepository<Home> _homeRepository;
     private readonly IGenericRepository<HomePermission> _homePermissionRepository;
     private readonly IGenericRepository<HomeDevice> _homeDeviceRepository;
-    public HomeService(IGenericRepository<HomeDevice> homeDeviceRepository, IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository, IGenericRepository<HomePermission> homePermissionRepository)
+    private readonly IGenericRepository<HomeMember> _homeMemberRepository;
+    public HomeService(IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<HomeDevice> homeDeviceRepository, IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository, IGenericRepository<HomePermission> homePermissionRepository)
     {
+        _homeMemberRepository = homeMemberRepository;
         _homeRepository = homeRepository;
         _userRepository = userRepository;
         _homePermissionRepository = homePermissionRepository;
@@ -29,7 +32,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         throw new NotImplementedException();
     }
 
-    public void AddHomeMemberToHome(Guid homeId, Guid? userId)
+    public HomeMember AddHomeMemberToHome(Guid homeId, Guid? userId)
     {
         var user = _userRepository.Find(x => x.Id == userId);
         if (user == null)
@@ -46,6 +49,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         home.Members.Add(homeMember);
         _homeRepository.Update(home);
+        return homeMember;
     }
 
     private void AddPermissionsToOwner(HomeMember homeOwnerMember)
@@ -146,6 +150,28 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         throw new NotImplementedException();
     }
 
+    public bool HasPermission(Guid homeMemberid, Guid homePermissionId)
+    {
+        var homeMember = _homeMemberRepository.Find(x => x.HomeMemberId == homeMemberid);
+        var homePermission = _homePermissionRepository.Find(x => x.Id == homePermissionId);
+        if (homeMember == null)
+        {
+            throw new HomeException("Home Member Id does not match any home member");
+        }
+
+        if (homePermission == null)
+        {
+            throw new HomeException("Home Permission Id does not match any home permission");
+        }
+
+        if (homeMember.HomePermissions.Contains(homePermission))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public Notification CreateMovementDetectionNotification(Guid homeDeviceId)
     {
         var homeDevice = _homeDeviceRepository.Find(x => x.Id == homeDeviceId);
@@ -174,9 +200,13 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         };
 
         var homeMembers = home.Members;
+        var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         foreach (var homeMember in homeMembers)
         {
-            homeMember.Notifications.Add(notification);
+            if (HasPermission(homeMember.HomeMemberId, notificationPermission))
+            {
+                homeMember.Notifications.Add(notification);
+            }
         }
 
         _homeRepository.Update(home);

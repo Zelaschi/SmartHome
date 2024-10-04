@@ -13,5 +13,5 @@ public interface IHomeLogic
     IEnumerable<Home> GetAllHomesByUserId(Guid userId);
     IEnumerable<HomeDevice> GetAllHomeDevices(Guid homeId);
     IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId);
-    void AddHomeMemberToHome(Guid homeId, Guid? userId);
+    HomeMember AddHomeMemberToHome(Guid homeId, Guid? userId);
 }
