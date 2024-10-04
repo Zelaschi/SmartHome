@@ -47,6 +47,8 @@ services.AddScoped<IGenericRepository<Role>, RoleRepository>();
 services.AddScoped<IGenericRepository<HomePermission>, HomePermissionRepository>();
 services.AddScoped<IGenericRepository<Device>, DeviceRepository>();
 services.AddScoped<IGenericRepository<Business>, BusinessRepository>();
+services.AddScoped<IGenericRepository<HomeDevice>, HomeDeviceRepository>();
+services.AddScoped<IGenericRepository<HomeMember>, HomeMemberRepository>();
 
 var app = builder.Build();
 
