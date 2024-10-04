@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Moq;
+using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
@@ -95,25 +96,25 @@ public class HomeServiceTest
     [TestMethod]
     public void GetAll_HomeDevices_Test()
     {
-        var home = new Home { Devices =  new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner};
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner,Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
 
-        var device1 = new Device { Id = Guid.NewGuid(), Name = "Device1" , Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
+        var device1 = new Device { Id = Guid.NewGuid(), Name = "Device1", Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
         var device2 = new Device { Id = Guid.NewGuid(), Name = "Device2", Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
 
-        var homeDevice1 = new HomeDevice { Device = device1, Id = Guid.NewGuid() , Online = true};
+        var homeDevice1 = new HomeDevice { Device = device1, Id = Guid.NewGuid(), Online = true };
         var homeDevice2 = new HomeDevice { Device = device2, Id = Guid.NewGuid(), Online = false };
 
         home.Devices.Add(homeDevice1);
         home.Devices.Add(homeDevice2);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
 
-        IEnumerable<HomeDevice> homeDevices= homeService.GetAllHomeDevices(home.Id);
+        IEnumerable<HomeDevice> homeDevices = homeService.GetAllHomeDevices(home.Id);
         homeRepositoryMock.VerifyAll();
 
-        Assert.AreEqual(home.Devices.First() , homeDevices.First());
+        Assert.AreEqual(home.Devices.First(), homeDevices.First());
         Assert.AreEqual(home.Devices.Last(), homeDevices.Last());
     }
 
@@ -144,5 +145,38 @@ public class HomeServiceTest
         IEnumerable<HomeMember> homeMembers = (List<HomeMember>)homeService.GetAllHomeMembers(home.Id);
 
         Assert.AreEqual(homeMember.Notifications.First(), homeMembers.First().Notifications.First());
+    }
+
+    [TestMethod]
+    public void Create_Movement_Detection_Notification_On_Off_Device_Throws_Exception()
+    {
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var homeMember = new HomeMember(owner);
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = false };
+
+        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
+        home.Devices.Add(homeDevice);
+        home.Members.Add(homeMember);
+
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+
+        var ex = new HomeDeviceException("PlaceHolder");
+        try
+        {
+            homeService.CreateMovementDetectionNotification(homeDevice.Id);
+        }
+        catch (Exception e)
+        {
+            ex = (HomeDeviceException)e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        Assert.AreEqual("Device is offline", ex.Message);
     }
 }
