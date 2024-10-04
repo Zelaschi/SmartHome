@@ -69,10 +69,4 @@ public sealed class HomeController : ControllerBase
     {
         return Ok(_homeLogic.GetAllHomeMembers(homeId).Select(homeMember => new HomeMemberResponseModel(homeMember)).ToList());
     }
-
-    [HttpGet("{userId}")]
-    public IActionResult GetAllHomesByUserId([FromRoute] Guid userId)
-    {
-        return Ok(_homeLogic.GetAllHomesByUserId(userId).Select(home => new HomeResponseModel(home)).ToList());
-    }
 }

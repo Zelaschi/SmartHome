@@ -20,12 +20,6 @@ public sealed class NotificationController : ControllerBase
         _notificationLogic = notificationLogic;
     }
 
-    [HttpGet("{homeMemberId}")]
-    public IActionResult GetNotificationsByHomeMemberId([FromRoute] Guid homeMemberId)
-    {
-        return Ok(_notificationLogic.GetNotificationsByHomeMemberId(homeMemberId));
-    }
-
     [HttpPost("{homeDeviceId}/movementDetection")]
     public IActionResult CreateMovementDetectionNotification([FromRoute] Guid homeDeviceId)
     {

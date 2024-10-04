@@ -19,54 +19,12 @@ public class NotificationControllerTest
 {
     private Mock<INotificationLogic>? _notificationLogicMock;
     private NotificationController? _notificationController;
-    private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
-    private readonly Role companyOwner = new Role() { Name = "CompanyOwner" };
 
     [TestInitialize]
     public void TestInitialize()
     {
         _notificationLogicMock = new Mock<INotificationLogic>();
         _notificationController = new NotificationController(_notificationLogicMock.Object);
-    }
-
-    [TestMethod]
-    public void GetNotificationsByHomeMemberIdTest_OK()
-    {
-        var homeMemberId = Guid.NewGuid();
-        var companyOwner1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = companyOwner, CreationDate = DateTime.Today };
-        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
-        var company = new Business() { Id = Guid.NewGuid(), BusinessOwner = companyOwner1, Logo = "logo", Name = "hikvision", RUT = "1234" };
-        var device1 = new Device() { Id = Guid.NewGuid(), Name = "Device1", Type = "Type1", Business = company, Description = "description", ModelNumber = "1234", Photos = "photos" };
-        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device1, Online = true };
-
-        var notifications = new List<Notification>
-        {
-            new Notification() { Id = Guid.NewGuid(), Event = "Event1", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
-            new Notification() { Id = Guid.NewGuid(), Event = "Event2", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
-            new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now }
-        };
-
-        var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = new List<HomePermission>() };
-
-        _notificationLogicMock.Setup(n => n.GetNotificationsByHomeMemberId(homeMemberId)).Returns(notifications);
-
-        var expected = new OkObjectResult(new List<Notification>
-        {
-            notifications.First(),
-            notifications.ElementAt(1),
-            notifications.Last()
-        });
-
-        var result = _notificationController.GetNotificationsByHomeMemberId(homeMemberId) as OkObjectResult;
-
-        var objectResult = result.Value as List<Notification>;
-
-        _notificationLogicMock.VerifyAll();
-
-        Assert.IsNotNull(objectResult);
-
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.First().Equals(notifications.First()));
     }
 
     [TestMethod]
