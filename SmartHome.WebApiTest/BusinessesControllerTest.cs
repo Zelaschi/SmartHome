@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -68,7 +69,19 @@ public class BusinessesControllerTest
         };
         var business = businessRequestModel.ToEntity();
 
+        HttpContext httpContext = new DefaultHttpContext();
+        httpContext.Items.Add("User", user);
+
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        businessesController = new BusinessesController(businessesLogicMock.Object) { ControllerContext = controllerContext };
+
         businessesLogicMock.Setup(b => b.CreateBusiness(It.IsAny<Business>(), It.IsAny<User>())).Returns(business);
+
+        business.BusinessOwner = user;
 
         var expectedResult = new BusinessesResponseModel(business);
         var expectedObjectResult = new CreatedAtActionResult("CreateBusiness", "CreateBusiness", new { Id = business.Id }, expectedResult);

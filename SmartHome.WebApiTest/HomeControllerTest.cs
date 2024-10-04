@@ -56,7 +56,7 @@ public class HomeControllerTest
         home.Id = Guid.NewGuid();
 
         HttpContext httpContext = new DefaultHttpContext();
-        httpContext.Items.Add("UserId", user1.Id.ToString());
+        httpContext.Items.Add("User", user1);
 
         var controllerContext = new ControllerContext()
         {

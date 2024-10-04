@@ -283,7 +283,6 @@ public class HomeServiceTest
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns((Device)null);
 
-
         var ex = new HomeDeviceException("PlaceHolder");
         try
         {
@@ -320,5 +319,4 @@ public class HomeServiceTest
         homeRepositoryMock.VerifyAll();
         Assert.AreEqual("Home Id does not match any home", ex.Message);
     }
-
 }
