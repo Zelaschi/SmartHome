@@ -13,4 +13,5 @@ public sealed class Notification
     public required DateTime Date { get; set; }
     public required DateTime Time { get; set; }
     public List<HomeMember> HomeMembers { get; set; } = new List<HomeMember>();
+    public User? DetectedPerson { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -286,8 +287,46 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homeRepository.Update(home);
     }
 
-    public Notification CreatePersonDetectionNotification(Guid homeDeviceId)
+    private Notification CreateDetectedPersonNotification(HomeDevice homeDevice, Guid detectedPersonId)
     {
-        throw new NotImplementedException();
+        var detectedPerson = _userRepository.Find(x => x.Id == detectedPersonId);
+        if (detectedPerson == null)
+        {
+            throw new UserException("User detected by camera not found");
+        }
+
+        return new Notification
+        {
+            Date = DateTime.Today,
+            Event = detectedPerson.Name + "detected!",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now,
+            DetectedPerson = detectedPerson
+        };
+    }
+
+    public Notification CreatePersonDetectionNotification(Guid homeDeviceId, Guid userId)
+    {
+        var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+
+        CheckDeviceOnline(homeDevice);
+
+        var home = FindHomeById(homeDevice.HomeId);
+        var homeMembers = home.Members;
+
+        var notification = CreateDetectedPersonNotification(homeDevice, userId);
+
+        foreach (var homeMember in homeMembers)
+        {
+            if (HasPermission(homeMember.HomeMemberId, notificationPermission))
+            {
+                homeMember.Notifications.Add(notification);
+            }
+        }
+
+        _homeRepository.Update(home);
+
+        return notification;
     }
 }

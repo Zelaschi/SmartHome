@@ -113,7 +113,8 @@ public class NotificationControllerTest
     public void Create_PersonDetectionNotification_TestOk()
     {
         var businessOwnerRole = new Role() { Name = "BusinessOwner" };
-        var businessOwner = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwnerRole, CreationDate = DateTime.Today };
+        var businessOwnerId = Guid.NewGuid();
+        var businessOwner = new User() { Id = businessOwnerId, Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwnerRole, CreationDate = DateTime.Today };
         var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = businessOwner };
         var securityCamera = new SecurityCamera()
         {
@@ -134,10 +135,10 @@ public class NotificationControllerTest
 
         var notificationResponseModel = new NotificationResponseModel(notification);
 
-        _notificationLogicMock.Setup(n => n.CreatePersonDetectionNotification(It.IsAny<Guid>())).Returns(notification);
+        _notificationLogicMock.Setup(n => n.CreatePersonDetectionNotification(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(notification);
 
         var expected = new CreatedAtActionResult("CreatePersonDetectionNotification", "CreatePersonDetectionNotification", new { notificationResponseModel.Id }, notificationResponseModel);
-        var result = _notificationController.CreatePersonDetectionNotification(homeDevice.Id) as CreatedAtActionResult;
+        var result = _notificationController.CreatePersonDetectionNotification(homeDevice.Id, businessOwnerId) as CreatedAtActionResult;
         var objectResult = result.Value as NotificationResponseModel;
 
         _notificationLogicMock.VerifyAll();

@@ -33,10 +33,10 @@ public sealed class NotificationController : ControllerBase
         return CreatedAtAction("CreateMovementDetectionNotification", new { createResponse.Id }, createResponse);
     }
 
-    [HttpPost("{homeDeviceId}")]
-    public IActionResult CreatePersonDetectionNotification([FromRoute] Guid homeDeviceId)
+    [HttpPost("{homeDeviceId}/personDetection")]
+    public IActionResult CreatePersonDetectionNotification([FromRoute] Guid homeDeviceId, Guid userId)
     {
-        var createResponse = new NotificationResponseModel(_notificationLogic.CreatePersonDetectionNotification(homeDeviceId));
+        var createResponse = new NotificationResponseModel(_notificationLogic.CreatePersonDetectionNotification(homeDeviceId, userId));
         return CreatedAtAction("CreatePersonDetectionNotification", new { createResponse.Id }, createResponse);
     }
 }

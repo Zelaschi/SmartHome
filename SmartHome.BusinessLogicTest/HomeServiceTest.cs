@@ -125,6 +125,39 @@ public class HomeServiceTest
     }
 
     [TestMethod]
+    public void Create_Person_Detecion_Notification()
+    {
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var homeMember = new HomeMember(owner);
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = true };
+        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+
+        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now, DetectedPerson = owner };
+        home.Devices.Add(homeDevice);
+        home.Members.Add(homeMember);
+
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeMember);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
+
+        homeService.CreatePersonDetectionNotification(homeDevice.Id, ownerId);
+
+        homeMember.Notifications.Add(notification);
+        homeRepositoryMock.VerifyAll();
+
+        IEnumerable<HomeMember> homeMembers = (List<HomeMember>)homeService.GetAllHomeMembers(home.Id);
+
+        Assert.AreEqual(homeMember.Notifications.First(), homeMembers.First().Notifications.First());
+    }
+
+    [TestMethod]
     public void Create_Movement_Detection_Notification()
     {
         var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
