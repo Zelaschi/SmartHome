@@ -349,7 +349,7 @@ public class UserLogicTest
         };
 
         roleLogicMock.Setup(x => x.GetAdminRole()).Returns(new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) });
-
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
         userRepositoryMock.Setup(x => x.Add(admin)).Returns(admin);
 
         var adminResult = userService.CreateAdmin(admin);
@@ -366,6 +366,7 @@ public class UserLogicTest
 
     public void Delete_Admin_Test()
     {
+        var adminRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
         var adminId = Guid.NewGuid();
         var admin = new User
         {
@@ -374,7 +375,8 @@ public class UserLogicTest
             Surname = "Azambuja",
             Password = "Password@1234",
             CreationDate = DateTime.Today,
-            Email = "pedroRodriguez@gmail.com"
+            Email = "pedroRodriguez@gmail.com",
+            Role = adminRole
         };
         var admin2 = new User
         {
@@ -382,12 +384,15 @@ public class UserLogicTest
             Surname = "Zelaschi",
             Password = "Password@1234",
             CreationDate = DateTime.Today,
-            Email = "pedroRodriguez@gmail.com"
+            Email = "pedroRodriguez@gmail.com",
+            Role = adminRole
         };
         var adminList = new List<User> { admin, admin2 };
 
         userRepositoryMock.Setup(x=> x.FindAll()).Returns(adminList);
         userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(admin);
+        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(adminRole);
 
         userService.DeleteAdmin(adminId);
 
@@ -403,6 +408,7 @@ public class UserLogicTest
     [TestMethod]
     public void Delete_Only_Admin_Throws_Exception_Test()
     {
+        var adminRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
         var adminId = Guid.NewGuid();
         var admin = new User
         {
@@ -411,16 +417,18 @@ public class UserLogicTest
             Surname = "Azambuja",
             Password = "Password@1234",
             CreationDate = DateTime.Today,
-            Email = "pedroRodriguez@gmail.com"
+            Email = "pedroRodriguez@gmail.com",
+            Role = adminRole
         };
         var adminList = new List<User> { admin };
 
-        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) });
+        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(adminRole);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
         userRepositoryMock.Setup(x => x.Add(admin)).Returns(admin);
+        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);
         userService.CreateAdmin(admin);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(admin);
 
-        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);;
         try
         {
             userService.DeleteAdmin(adminId);
