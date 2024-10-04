@@ -271,4 +271,30 @@ public class HomeServiceTest
         Assert.IsNotNull(home.Devices);
         Assert.AreEqual(1, home.Devices.Count);
     }
+
+    [TestMethod]
+
+    public void Register_Device_To_Home_Throws_Exception_If_Device_Does_Not_Exist()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var deviceId = Guid.NewGuid();
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns((Device)null);
+
+
+        var ex = new HomeDeviceException("PlaceHolder");
+        try
+        {
+            homeService.AddDeviceToHome(homeId, deviceId);
+        }
+        catch (Exception e)
+        {
+            ex = (HomeDeviceException)e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        Assert.AreEqual("Device Id does not match any device", ex.Message);
+    }
 }
