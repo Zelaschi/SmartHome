@@ -59,6 +59,7 @@ public class BusinessesControllerTest
     [TestMethod]
     public void RegisterBusinessTest_Ok()
     {
+        var user = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwner };
         var businessRequestModel = new BusinessRequestModel()
         {
             Name = "businessName",
@@ -67,7 +68,7 @@ public class BusinessesControllerTest
         };
         var business = businessRequestModel.ToEntity();
 
-        businessesLogicMock.Setup(b => b.CreateBusiness(It.IsAny<Business>())).Returns(business);
+        businessesLogicMock.Setup(b => b.CreateBusiness(It.IsAny<Business>(), It.IsAny<User>())).Returns(business);
 
         var expectedResult = new BusinessesResponseModel(business);
         var expectedObjectResult = new CreatedAtActionResult("CreateBusiness", "CreateBusiness", new { Id = business.Id }, expectedResult);

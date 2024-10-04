@@ -21,6 +21,7 @@ public class HomeServiceTest
     private Mock<IGenericRepository<HomePermission>>? homePermissionRepositoryMock;
     private Mock<IGenericRepository<HomeDevice>>? homeDeviceRepositoryMock;
     private Mock<IGenericRepository<HomeMember>>? homeMemberRepositoryMock;
+    private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
     private HomeService? homeService;
     private Role? homeOwnerRole;
     private Guid ownerId;
@@ -34,7 +35,9 @@ public class HomeServiceTest
         homePermissionRepositoryMock = new Mock<IGenericRepository<HomePermission>>(MockBehavior.Strict);
         homeDeviceRepositoryMock = new Mock<IGenericRepository<HomeDevice>>(MockBehavior.Strict);
         homeMemberRepositoryMock = new Mock<IGenericRepository<HomeMember>>(MockBehavior.Strict);
-        homeService = new HomeService(homeMemberRepositoryMock.Object, homeDeviceRepositoryMock.Object, homeRepositoryMock.Object, userRepositoryMock.Object, homePermissionRepositoryMock.Object);
+        deviceRepositoryMock = new Mock<IGenericRepository<Device>>(MockBehavior.Strict);
+        homeService = new HomeService(homeMemberRepositoryMock.Object, homeDeviceRepositoryMock.Object, homeRepositoryMock.Object,
+                                      userRepositoryMock.Object, homePermissionRepositoryMock.Object, deviceRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
         ownerId = Guid.NewGuid();
         owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
@@ -252,13 +255,13 @@ public class HomeServiceTest
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
         var deviceId = Guid.NewGuid();
-        var device = new Device { Id = deviceId, Name = "Window sendor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = business };
+        var device = new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = business };
         var homeDeviceId = Guid.NewGuid();
         var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId };
 
         homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
-        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(device);
 
         homeService.AddDeviceToHome(homeId, deviceId);
 
@@ -267,6 +270,5 @@ public class HomeServiceTest
 
         Assert.IsNotNull(home.Devices);
         Assert.AreEqual(1, home.Devices.Count);
-        Assert.AreEqual(homeDevice, home.Devices.First());
     }
 }

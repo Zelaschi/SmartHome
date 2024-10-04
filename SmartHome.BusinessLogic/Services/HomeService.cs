@@ -18,18 +18,42 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     private readonly IGenericRepository<HomePermission> _homePermissionRepository;
     private readonly IGenericRepository<HomeDevice> _homeDeviceRepository;
     private readonly IGenericRepository<HomeMember> _homeMemberRepository;
-    public HomeService(IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<HomeDevice> homeDeviceRepository, IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository, IGenericRepository<HomePermission> homePermissionRepository)
+    private readonly IGenericRepository<Device> _deviceRepository;
+
+    public HomeService(IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<HomeDevice> homeDeviceRepository,
+        IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository,
+        IGenericRepository<HomePermission> homePermissionRepository, IGenericRepository<Device> deviceRepository)
     {
         _homeMemberRepository = homeMemberRepository;
         _homeRepository = homeRepository;
         _userRepository = userRepository;
         _homePermissionRepository = homePermissionRepository;
         _homeDeviceRepository = homeDeviceRepository;
+        _deviceRepository = deviceRepository;
     }
 
     public void AddDeviceToHome(Guid homeId, Guid deviceId)
     {
-        throw new NotImplementedException();
+        var home = FindHomeById(homeId);
+
+        var device = _deviceRepository.Find(x => x.Id == deviceId);
+
+        if (device == null)
+        {
+            throw new HomeDeviceException("Device Id does not match any device");
+        }
+
+        var homeDevice = new HomeDevice
+        {
+            Id = Guid.NewGuid(),
+            Device = device,
+            HomeId = homeId,
+            Online = true
+        };
+
+        home.Devices.Add(homeDevice);
+
+        _homeRepository.Update(home);
     }
 
     public HomeMember AddHomeMemberToHome(Guid homeId, Guid? userId)

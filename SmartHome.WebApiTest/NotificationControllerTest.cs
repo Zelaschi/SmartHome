@@ -42,9 +42,9 @@ public class NotificationControllerTest
 
         var notifications = new List<Notification>
         {
-            new Notification() { Id = Guid.NewGuid(), Event = "Event1", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" },
-            new Notification() { Id = Guid.NewGuid(), Event = "Event2", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" },
-            new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" }
+            new Notification() { Id = Guid.NewGuid(), Event = "Event1", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
+            new Notification() { Id = Guid.NewGuid(), Event = "Event2", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
+            new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now }
         };
 
         var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = new List<HomePermission>() };
@@ -91,7 +91,7 @@ public class NotificationControllerTest
 
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = securityCamera, Online = true };
 
-        var notification = new Notification() { Id = Guid.NewGuid(), Event = "MovementDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" };
+        var notification = new Notification() { Id = Guid.NewGuid(), Event = "MovementDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
 
         var notificationResponseModel = new NotificationResponseModel(notification);
 
@@ -130,7 +130,7 @@ public class NotificationControllerTest
 
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = securityCamera, Online = true };
 
-        var notification = new Notification() { Id = Guid.NewGuid(), Event = "PersonDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = "19:00" };
+        var notification = new Notification() { Id = Guid.NewGuid(), Event = "PersonDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
 
         var notificationResponseModel = new NotificationResponseModel(notification);
 

@@ -9,7 +9,7 @@ public sealed class NotificationResponseModel
     public string Event { get; set; }
     public bool Read { get; set; } = false;
     public DateTime Date { get; set; }
-    public string Time { get; set; }
+    public DateTime Time { get; set; }
 
     public NotificationResponseModel(Notification notification)
     {
