@@ -297,4 +297,28 @@ public class HomeServiceTest
         homeRepositoryMock.VerifyAll();
         Assert.AreEqual("Device Id does not match any device", ex.Message);
     }
+
+    [TestMethod]
+
+    public void Register_Device_To_Home_Throws_Exception_If_Home_Does_Not_Exist()
+    {
+        var homeId = Guid.NewGuid();
+        var deviceId = Guid.NewGuid();
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
+
+        var ex = new HomeException("PlaceHolder");
+        try
+        {
+            homeService.AddDeviceToHome(homeId, deviceId);
+        }
+        catch (Exception e)
+        {
+            ex = (HomeException)e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        Assert.AreEqual("Home Id does not match any home", ex.Message);
+    }
+
 }
