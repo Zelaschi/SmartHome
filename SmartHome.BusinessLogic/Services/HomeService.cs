@@ -172,7 +172,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return false;
     }
 
-    public Notification CreateMovementDetectionNotification(Guid homeDeviceId)
+    private HomeDevice FindHomeDeviceById(Guid homeDeviceId)
     {
         var homeDevice = _homeDeviceRepository.Find(x => x.Id == homeDeviceId);
         if (homeDevice == null)
@@ -180,27 +180,51 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("Home Device Id does not match any home device");
         }
 
-        if (!homeDevice.Online)
-        {
-            throw new HomeDeviceException("Device is offline");
-        }
+        return homeDevice;
+    }
 
-        var home = _homeRepository.Find(x => x.Id == homeDevice.HomeId);
+    private Home FindHomeById(Guid homeId)
+    {
+        var home = _homeRepository.Find(x => x.Id == homeId);
         if (home == null)
         {
             throw new HomeException("Home Id does not match any home");
         }
 
-        var notification = new Notification
+        return home;
+    }
+
+    private Notification CreateNotification(string eventString, HomeDevice homeDevice)
+    {
+        return new Notification
         {
             Date = DateTime.Today,
-            Event = "Movement Detection",
+            Event = eventString,
             HomeDevice = homeDevice,
             Time = DateTime.Now
         };
+    }
 
-        var homeMembers = home.Members;
+    private void CheckDeviceOnline(HomeDevice device)
+    {
+        if (!device.Online)
+        {
+            throw new HomeDeviceException("Device is offline");
+        }
+    }
+
+    public Notification CreateMovementDetectionNotification(Guid homeDeviceId)
+    {
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+
+        CheckDeviceOnline(homeDevice);
+
+        var home = FindHomeById(homeDevice.HomeId);
+        var homeMembers = home.Members;
+
+        var notification = CreateNotification("Movement Detection", homeDevice);
+
         foreach (var homeMember in homeMembers)
         {
             if (HasPermission(homeMember.HomeMemberId, notificationPermission))
