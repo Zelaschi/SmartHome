@@ -10,16 +10,14 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class HomeService : IHomeLogic, IHomeMemberLogic
+public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Home> _homeRepository;
     private readonly IGenericRepository<HomePermission> _homePermissionRepository;
-    private readonly IGenericRepository<HomeMember> _homeMemberRepository;
-    public HomeService(IGenericRepository<Home> homeRepository, IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<User> userRepository, IGenericRepository<HomePermission> homePermissionRepository)
+    public HomeService(IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository, IGenericRepository<HomePermission> homePermissionRepository)
     {
         _homeRepository = homeRepository;
-        _homeMemberRepository = homeMemberRepository;
         _userRepository = userRepository;
         _homePermissionRepository = homePermissionRepository;
     }
@@ -137,6 +135,21 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic
     }
 
     public void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Notification> GetNotificationsByHomeMemberId(Guid homeMemberId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Notification CreateMovementDetectionNotification(Guid homeDeviceId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Notification CreatePersonDetectionNotification(Guid homeDeviceId)
     {
         throw new NotImplementedException();
     }

@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public class RoleService : IRoleLogic
+public class RoleService : IRoleLogic, ISystemPermissionLogic
 {
     private readonly IGenericRepository<Role> _roleRepository;
 
@@ -35,6 +35,11 @@ public class RoleService : IRoleLogic
     }
 
     public bool HasPermission(Guid roleId, Guid permissionId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public SystemPermission GetSystemPermissionById(Guid systemPermissionId)
     {
         throw new NotImplementedException();
     }

@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public class SessionService : ILoginLogic
+public class SessionService : ILoginLogic, ISessionLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Session> _sessionRepository;
@@ -41,15 +41,13 @@ public class SessionService : ILoginLogic
         return session.SessionId;
     }
 
-    public Session GetSessionByUserId(Guid userId)
+    public bool IsSessionValid(Guid token)
     {
-        Session? session = _sessionRepository.Find(s => s.UserId == userId);
+        throw new NotImplementedException();
+    }
 
-        if (session == null)
-        {
-            throw new UserException("Session for that user does not exist");
-        }
-
-        return session;
+    public User GetUserOfSession(Guid token)
+    {
+        throw new NotImplementedException();
     }
 }

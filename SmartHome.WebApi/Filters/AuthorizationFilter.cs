@@ -35,7 +35,7 @@ public sealed class AuthorizationFilter : Attribute, IAuthorizationFilter
             return;
         }
 
-        var sessionService = context.HttpContext.RequestServices.GetRequiredService<ISystemPermissionLogic>();
+        var permissionService = context.HttpContext.RequestServices.GetRequiredService<ISystemPermissionLogic>();
         var roleService = context.HttpContext.RequestServices.GetRequiredService<IRoleLogic>();
         var userLogged = context.HttpContext.Items["User"];
         if (userLogged == null)
@@ -53,7 +53,7 @@ public sealed class AuthorizationFilter : Attribute, IAuthorizationFilter
 
         var userLoggedMapped = (User)userLogged;
         var permissionIdGuid = Guid.Parse(permissionId);
-        var systemPermission = sessionService.GetSystemPermissionById(permissionIdGuid);
+        var systemPermission = permissionService.GetSystemPermissionById(permissionIdGuid);
         var hasPermission = roleService.HasPermission(userLoggedMapped.Role.Id, systemPermission.Id);
         if (!hasPermission)
         {

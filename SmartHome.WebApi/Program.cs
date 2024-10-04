@@ -24,6 +24,30 @@ if (string.IsNullOrEmpty(smartHomeConnectionString))
 
 services.AddDbContext<SmartHomeEFCoreContext>(options => options.UseSqlServer(smartHomeConnectionString));
 
+services.AddScoped<IHomeOwnerLogic, UserService>();
+services.AddScoped<IUsersLogic, UserService>();
+services.AddScoped<IBusinessOwnerLogic, UserService>();
+services.AddScoped<IAdminLogic, UserService>();
+services.AddScoped<ILoginLogic, SessionService>();
+services.AddScoped<ISystemPermissionLogic, RoleService>();
+services.AddScoped<IRoleLogic, RoleService>();
+services.AddScoped<IBusinessesLogic, BusinessService>();
+services.AddScoped<IDeviceLogic, DeviceService>();
+services.AddScoped<ISecurityCameraLogic, DeviceService>();
+services.AddScoped<IHomeLogic, HomeService>();
+services.AddScoped<IHomeMemberLogic, HomeService>();
+services.AddScoped<INotificationLogic, HomeService>();
+services.AddScoped<ISessionLogic, SessionService>();
+services.AddScoped<ILoginLogic, SessionService>();
+
+services.AddScoped<IGenericRepository<User>, UserRepository>();
+services.AddScoped<IGenericRepository<Session>, SessionRepository>();
+services.AddScoped<IGenericRepository<Home>, HomeRepository>();
+services.AddScoped<IGenericRepository<Role>, RoleRepository>();
+services.AddScoped<IGenericRepository<HomePermission>, HomePermissionRepository>();
+services.AddScoped<IGenericRepository<Device>, DeviceRepository>();
+services.AddScoped<IGenericRepository<Business>, BusinessRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
