@@ -184,14 +184,14 @@ public class HomeControllerTest
         home.Id = Guid.NewGuid();
 
         HttpContext httpContext = new DefaultHttpContext();
-        httpContext.Items.Add("UserId", user.Id.ToString());
+        httpContext.Items.Add("User", user);
 
         var controllerContext = new ControllerContext()
         {
             HttpContext = httpContext
         };
 
-        homeLogicMock.Setup(h => h.AddHomeMemberToHome(It.IsAny<Guid>(), It.IsAny<Guid>()));
+        homeLogicMock.Setup(h => h.AddHomeMemberToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(It.IsAny<HomeMember>());
 
         homeController = new HomeController(homeLogicMock.Object) { ControllerContext = controllerContext };
 
