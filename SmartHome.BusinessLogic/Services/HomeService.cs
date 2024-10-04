@@ -154,6 +154,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("Home Device Id does not match any home device");
         }
 
+        if (!homeDevice.Online)
+        {
+            throw new HomeDeviceException("Device is offline");
+        }
+
         var home = _homeRepository.Find(x => x.Id == homeDevice.HomeId);
         if (home == null)
         {
