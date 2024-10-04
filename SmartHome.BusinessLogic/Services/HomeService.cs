@@ -32,30 +32,6 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _deviceRepository = deviceRepository;
     }
 
-    public void AddDeviceToHome(Guid homeId, Guid deviceId)
-    {
-        var home = FindHomeById(homeId);
-
-        var device = _deviceRepository.Find(x => x.Id == deviceId);
-
-        if (device == null)
-        {
-            throw new HomeDeviceException("Device Id does not match any device");
-        }
-
-        var homeDevice = new HomeDevice
-        {
-            Id = Guid.NewGuid(),
-            Device = device,
-            HomeId = homeId,
-            Online = true
-        };
-
-        home.Devices.Add(homeDevice);
-
-        _homeRepository.Update(home);
-    }
-
     public HomeMember AddHomeMemberToHome(Guid homeId, Guid? userId)
     {
         var user = _userRepository.Find(x => x.Id == userId);
@@ -237,6 +213,29 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         }
     }
 
+    private Device FindDeviceById(Guid deviceId)
+    {
+        var device = _deviceRepository.Find(x => x.Id == deviceId);
+
+        if (device == null)
+        {
+            throw new HomeDeviceException("Device Id does not match any device");
+        }
+
+        return device;
+    }
+
+    private HomeDevice CreateHomeDevice(Guid homeId, Device device)
+    {
+        return new HomeDevice
+        {
+            Id = Guid.NewGuid(),
+            Device = device,
+            HomeId = homeId,
+            Online = true
+        };
+    }
+
     public Notification CreateMovementDetectionNotification(Guid homeDeviceId)
     {
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
@@ -260,6 +259,19 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homeRepository.Update(home);
 
         return notification;
+    }
+
+    public void AddDeviceToHome(Guid homeId, Guid deviceId)
+    {
+        var home = FindHomeById(homeId);
+
+        var device = FindDeviceById(deviceId);
+
+        var homeDevice = CreateHomeDevice(homeId, device);
+
+        home.Devices.Add(homeDevice);
+
+        _homeRepository.Update(home);
     }
 
     public Notification CreatePersonDetectionNotification(Guid homeDeviceId)
