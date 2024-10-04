@@ -8,6 +8,7 @@ using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Services;
 
 namespace SmartHome.BusinessLogicTest;
@@ -19,6 +20,7 @@ public class HomeServiceTest
     private Mock<IGenericRepository<User>>? userRepositoryMock;
     private Mock<IGenericRepository<HomePermission>>? homePermissionRepositoryMock;
     private Mock<IGenericRepository<HomeDevice>>? homeDeviceRepositoryMock;
+    private Mock<IGenericRepository<HomeMember>>? homeMemberRepositoryMock;
     private HomeService? homeService;
     private Role? homeOwnerRole;
     private Guid ownerId;
@@ -31,10 +33,11 @@ public class HomeServiceTest
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
         homePermissionRepositoryMock = new Mock<IGenericRepository<HomePermission>>(MockBehavior.Strict);
         homeDeviceRepositoryMock = new Mock<IGenericRepository<HomeDevice>>(MockBehavior.Strict);
-        homeService = new HomeService(homeDeviceRepositoryMock.Object, homeRepositoryMock.Object, userRepositoryMock.Object, homePermissionRepositoryMock.Object);
+        homeMemberRepositoryMock = new Mock<IGenericRepository<HomeMember>>(MockBehavior.Strict);
+        homeService = new HomeService(homeMemberRepositoryMock.Object, homeDeviceRepositoryMock.Object, homeRepositoryMock.Object, userRepositoryMock.Object, homePermissionRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
         ownerId = Guid.NewGuid();
-        owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = ownerId, Role = homeOwnerRole };
+        owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
     }
 
     [TestMethod]
@@ -176,5 +179,63 @@ public class HomeServiceTest
 
         homeRepositoryMock.VerifyAll();
         Assert.AreEqual("Device is offline", ex.Message);
+    }
+
+    [TestMethod]
+    public void Create_Movement_Detection_Notification_Should_Only_Be_Added_To_HomeMember_If_He_Has_Notification_Permission()
+    {
+        // ASSERT
+
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+
+        homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission> { notificationPermission });
+
+        var result = homeService.CreateHome(home, ownerId);
+
+        var memberId = Guid.NewGuid();
+        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(member);
+
+        HomeMember homeMember = homeService.AddHomeMemberToHome(home.Id, memberId);
+
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = true };
+
+        home.Devices.Add(homeDevice);
+
+        var homeOwner = result.Members.Find(x => x.User == owner);
+
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+        homeMemberRepositoryMock
+            .SetupSequence(x => x.Find(It.IsAny<Func<HomeMember, bool>>()))
+            .Returns(homeOwner)
+            .Returns(homeMember);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
+
+        // ACCTION
+
+        homeService.CreateMovementDetectionNotification(homeDevice.Id);
+
+        IEnumerable<HomeMember> homeMembers = (List<HomeMember>)homeService.GetAllHomeMembers(home.Id);
+        var ownerFound = homeMembers.First(x => x.User == owner);
+        var memberFound = homeMembers.First(x => x.User == member);
+
+        // ASSERT
+
+        Assert.IsTrue(ownerFound.Notifications.Count > 0);
+        Assert.IsTrue(memberFound.Notifications.Count == 0);
+
+        homeRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        homeRepositoryMock.VerifyAll();
     }
 }
