@@ -241,4 +241,32 @@ public class HomeServiceTest
         userRepositoryMock.VerifyAll();
         homeRepositoryMock.VerifyAll();
     }
+
+    [TestMethod]
+
+    public void Register_Device_To_Home_Test()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = homeId , MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var deviceId = Guid.NewGuid();
+        var device = new Device { Id = deviceId, Name = "Window sendor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = business };
+        var homeDeviceId = Guid.NewGuid();
+        var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId };
+
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+
+        homeService.AddDeviceToHome(homeId, deviceId);
+
+        homeRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(home.Devices);
+        Assert.AreEqual(1, home.Devices.Count);
+        Assert.AreEqual(homeDevice, home.Devices.First());
+    }
 }
