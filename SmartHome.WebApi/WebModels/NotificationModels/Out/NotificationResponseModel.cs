@@ -16,7 +16,6 @@ public sealed class NotificationResponseModel
         Id = notification.Id;
         HomeDevice = notification.HomeDevice;
         Event = notification.Event;
-        Read = notification.Read;
         Date = notification.Date;
         Time = notification.Time;
     }

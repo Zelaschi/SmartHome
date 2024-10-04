@@ -221,6 +221,13 @@ public sealed class SmartHomeEFCoreContext : DbContext
             r => r.HasOne(x => x.Permission).WithMany().HasForeignKey(x => x.PermissionId),
             l => l.HasOne(x => x.HomeMember).WithMany().HasForeignKey(x => x.HomeMemberId));
 
+        modelBuilder.Entity<HomeMember>()
+            .HasMany(n => n.Notifications)
+            .WithMany(m => m.HomeMembers)
+            .UsingEntity<HomeMemberNotification>(
+            r => r.HasOne(x => x.Notification).WithMany().HasForeignKey(x => x.NotificationId),
+            l => l.HasOne(x => x.HomeMember).WithMany().HasForeignKey(x => x.HomeMemberId));
+
         modelBuilder.Entity<Device>()
             .ToTable("Devices")
             .HasDiscriminator<string>("DeviceType")

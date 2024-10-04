@@ -10,7 +10,7 @@ public sealed class Notification
     public Guid Id { get; set; }
     public required HomeDevice HomeDevice { get; set; }
     public required string Event { get; set; }
-    public bool Read { get; set; } = false;
     public required DateTime Date { get; set; }
     public required string Time { get; set; }
+    public List<HomeMember> HomeMembers { get; set; } = new List<HomeMember>();
 }

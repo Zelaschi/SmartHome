@@ -15,28 +15,28 @@ namespace SmartHome.BusinessLogicTest;
 public class HomeServiceTest
 {
     private Mock<IGenericRepository<Home>>? homeRepositoryMock;
-    private Mock<IGenericRepository<HomeMember>>? homeMemberRepositoryMock;
     private Mock<IGenericRepository<User>>? userRepositoryMock;
     private Mock<IGenericRepository<HomePermission>>? homePermissionRepositoryMock;
     private HomeService? homeService;
     private Role? homeOwnerRole;
+    private Guid ownerId;
+    private User? owner;
 
     [TestInitialize]
     public void Initialize()
     {
-        homeMemberRepositoryMock = new Mock<IGenericRepository<HomeMember>>(MockBehavior.Strict);
         homeRepositoryMock = new Mock<IGenericRepository<Home>>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
         homePermissionRepositoryMock = new Mock<IGenericRepository<HomePermission>>(MockBehavior.Strict);
-        homeService = new HomeService(homeRepositoryMock.Object, homeMemberRepositoryMock.Object, userRepositoryMock.Object, homePermissionRepositoryMock.Object);
+        homeService = new HomeService(homeRepositoryMock.Object, userRepositoryMock.Object, homePermissionRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
+        ownerId = Guid.NewGuid();
+        owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = ownerId, Role = homeOwnerRole };
     }
 
     [TestMethod]
     public void Create_Home_OK_Test()
     {
-        var ownerId = Guid.NewGuid();
-        var owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = ownerId, Role = homeOwnerRole };
         var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
@@ -54,8 +54,6 @@ public class HomeServiceTest
     [TestMethod]
     public void Register_HomeMemberToHouse_OK_Test()
     {
-        var ownerId = Guid.NewGuid();
-        var owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = ownerId, Role = homeOwnerRole };
         var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
         var memberId = Guid.NewGuid();
         var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
@@ -72,7 +70,6 @@ public class HomeServiceTest
     [TestMethod]
     public void GetAll_HomeMembers_Test()
     {
-        var owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
         var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
         var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
         var homeOwner = new HomeMember(owner);
@@ -96,7 +93,6 @@ public class HomeServiceTest
     [TestMethod]
     public void GetAll_HomeDevices_Test()
     {
-        var owner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
         var home = new Home { Devices =  new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner};
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };

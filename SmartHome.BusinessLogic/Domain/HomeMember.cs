@@ -20,7 +20,7 @@ public sealed class HomeMember
         Notifications = new List<Notification>();
     }
 
-    public HomeMember(User user)
+    public HomeMember(User? user)
         : this()
     {
         User = user;
