@@ -91,4 +91,27 @@ public class DeviceControllerTest
         deviceLogicMock.VerifyAll();
         Assert.IsTrue(expectedDeviceResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
     }
+
+    [TestMethod]
+
+    public void GetAll_DeviceTypesTest_Ok()
+    {
+        IEnumerable<string> deviceTypes = new List<string>() { "Window Sensor", "Security Camera" };
+
+        deviceLogicMock.Setup(d => d.GetAllDeviceTypes()).Returns(deviceTypes);
+
+        var expected = new OkObjectResult(new List<DeviceTypesResponseModel>
+        {
+            new DeviceTypesResponseModel(deviceTypes.First()),
+            new DeviceTypesResponseModel(deviceTypes.Last())
+        });
+
+        List<DeviceTypesResponseModel> expectedObject = (expected.Value as List<DeviceTypesResponseModel>)!;
+
+        var result = deviceController.GetAllDeviceTypes() as OkObjectResult;
+        var objectResult = (result.Value as List<DeviceTypesResponseModel>)!;
+
+        deviceLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Type.Equals(objectResult.First().Type));
+    }
 }

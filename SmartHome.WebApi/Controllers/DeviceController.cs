@@ -4,6 +4,7 @@ using SmartHome.WebApi.WebModels.DeviceModels.In;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.InitialSeedData;
+using Microsoft.Identity.Client;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -32,5 +33,11 @@ public sealed class DeviceController : ControllerBase
     {
         var response = new DeviceResponseModel(_deviceLogic.CreateDevice(deviceRequestModel.ToEntity()));
         return CreatedAtAction("CreateDevice", new {response.Id }, response);
+    }
+
+    [AuthorizationFilter(SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID)]
+    public IActionResult GetAllDeviceTypes()
+    {
+        throw new NotImplementedException();
     }
 }

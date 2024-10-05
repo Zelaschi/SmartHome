@@ -30,4 +30,9 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
     {
         return _deviceRepository.FindAll();
     }
+
+    public IEnumerable<string> GetAllDeviceTypes()
+    {
+        throw new NotImplementedException();
+    }
 }
