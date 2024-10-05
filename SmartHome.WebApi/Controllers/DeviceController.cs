@@ -4,6 +4,7 @@ using SmartHome.WebApi.WebModels.DeviceModels.In;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.InitialSeedData;
+using Microsoft.Identity.Client;
 
 namespace SmartHome.WebApi.Controllers;
 

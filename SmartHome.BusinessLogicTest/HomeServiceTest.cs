@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Services;
@@ -22,6 +23,7 @@ public class HomeServiceTest
     private Mock<IGenericRepository<HomeDevice>>? homeDeviceRepositoryMock;
     private Mock<IGenericRepository<HomeMember>>? homeMemberRepositoryMock;
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
+    private Mock<IHomesFromUserRepository>? homesFromUserRepositoryMock;
     private HomeService? homeService;
     private Role? homeOwnerRole;
     private Guid ownerId;
@@ -36,8 +38,10 @@ public class HomeServiceTest
         homeDeviceRepositoryMock = new Mock<IGenericRepository<HomeDevice>>(MockBehavior.Strict);
         homeMemberRepositoryMock = new Mock<IGenericRepository<HomeMember>>(MockBehavior.Strict);
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>(MockBehavior.Strict);
+        homesFromUserRepositoryMock = new Mock<IHomesFromUserRepository>(MockBehavior.Strict);
         homeService = new HomeService(homeMemberRepositoryMock.Object, homeDeviceRepositoryMock.Object, homeRepositoryMock.Object,
-                                      userRepositoryMock.Object, homePermissionRepositoryMock.Object, deviceRepositoryMock.Object);
+                                      userRepositoryMock.Object, homePermissionRepositoryMock.Object, deviceRepositoryMock.Object,
+                                      homesFromUserRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
         ownerId = Guid.NewGuid();
         owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
@@ -495,5 +499,35 @@ public class HomeServiceTest
 
         var notifications = homeService.GetUsersNotifications(owner);
         Assert.IsTrue(notifications.Count == 2);
+    }
+
+    [TestMethod]
+
+    public void GetAll_Users_Homes_Test()
+    {
+        var member1Id = Guid.NewGuid();
+        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = member1Id, Role = homeOwnerRole };
+        var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var homeOwner = new HomeMember(owner);
+        var homeMember1 = new HomeMember(member1);
+        var homeMember2 = new HomeMember(member2);
+
+        var home1 = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var home2 = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        home1.Members.Add(homeOwner);
+        home1.Members.Add(homeMember1);
+        home1.Members.Add(homeMember2);
+
+        home2.Members.Add(homeMember1);
+
+        var homesFromMember1 = new List<Home> { home1, home2 };
+
+        homesFromUserRepositoryMock.Setup(x => x.GetAllHomesByUserId(member1Id)).Returns(homesFromMember1);
+
+        var homes = homeService.GetAllHomesByUserId(member1Id);
+
+        Assert.AreEqual(homesFromMember1.Count, homes.Count());
+
+        CollectionAssert.AreEqual(homesFromMember1, homes.ToList());
     }
 }

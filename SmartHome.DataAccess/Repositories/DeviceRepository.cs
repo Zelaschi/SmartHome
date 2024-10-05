@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
 
 namespace SmartHome.DataAccess.Repositories;
-public class DeviceRepository : IGenericRepository<Device>
+public class DeviceRepository : IGenericRepository<Device>, IDeviceTypeRepository
 {
     private readonly SmartHomeEFCoreContext _repository;
     public DeviceRepository(SmartHomeEFCoreContext repository)
@@ -100,6 +102,21 @@ public class DeviceRepository : IGenericRepository<Device>
             {
                 throw new DatabaseException("The Business does not exist in the Data Base.");
             }
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
+    }
+
+    public IList<string> GetAllDeviceTypes()
+    {
+        try
+        {
+            return _repository.Devices
+                              .Select(d => EF.Property<string>(d, "DeviceType"))
+                              .Distinct()
+                              .ToList();
         }
         catch (SqlException)
         {

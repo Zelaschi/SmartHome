@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
 
@@ -14,6 +15,7 @@ namespace SmartHome.BusinessLogicTest;
 public class DeviceServiceTest
 {
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
+    private Mock<IDeviceTypeRepository>? deviceTypeRepositoryMock;
     private DeviceService? deviceService;
 
     [TestInitialize]
@@ -21,7 +23,8 @@ public class DeviceServiceTest
     public void Initialize()
     {
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
-        deviceService = new DeviceService(deviceRepositoryMock.Object);
+        deviceTypeRepositoryMock = new Mock<IDeviceTypeRepository>();
+        deviceService = new DeviceService(deviceRepositoryMock.Object, deviceTypeRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -85,10 +88,10 @@ public class DeviceServiceTest
 
         deviceRepositoryMock.Setup(x => x.FindAll()).Returns(devices);
 
-        var result = deviceService.GetAllDevices();
+        var result = deviceService.GetAllDevices().ToList();
 
         deviceRepositoryMock.VerifyAll();
-        Assert.AreEqual(devices, result);
+        CollectionAssert.AreEqual(devices, result);
     }
 
     [TestMethod]
@@ -215,5 +218,75 @@ public class DeviceServiceTest
         deviceRepositoryMock.Verify(x => x.Add(windowSensor), Times.Once);
 
         Assert.AreEqual(windowSensor, result);
+    }
+
+    [TestMethod]
+
+    public void ListAll_DeviceTypes_Test()
+    {
+        var devices = new List<Device>
+        {
+            new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "WindowSensor",
+                Description = "Window Sensor",
+                ModelNumber = "1234",
+                Photos = "Photo1",
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "HikVision",
+                    Logo = "Logo1",
+                    RUT = "1234",
+                    BusinessOwner = new User
+                    {
+                        Name = "Juan",
+                        Surname = "Perez",
+                        Password = "Password@1234",
+                        CreationDate = DateTime.Today,
+                        Email = "juanperez@gmail.com"
+                    }
+                }
+            },
+            new SecurityCamera
+            {
+                Id = Guid.NewGuid(),
+                Name = "WindowSensor",
+                Description = "Security Camera",
+                ModelNumber = "1234",
+                Photos = "Photo1",
+                Type = "Security Camera",
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Kolke",
+                    Logo = "Logo1",
+                    RUT = "1234",
+                    BusinessOwner = new User
+                    {
+                        Name = "Pedro",
+                        Surname = "Rodriguez",
+                        Password = "Password@1234",
+                        CreationDate = DateTime.Today,
+                        Email = "pedrorod@gmail.com"
+                    }
+                },
+                Outdoor = true,
+                Indoor = true,
+                MovementDetection = true,
+                PersonDetection = true
+            }
+        };
+
+        var deviceTypes = new List<string> { "Window Sensor", "Security Camera" };
+
+        deviceTypeRepositoryMock.Setup(x => x.GetAllDeviceTypes()).Returns(deviceTypes);
+
+        var result = deviceService.GetAllDeviceTypes().ToList();
+
+        deviceTypeRepositoryMock.Verify(x => x.GetAllDeviceTypes(), Times.Once);
+
+        CollectionAssert.AreEqual(deviceTypes, result);
     }
 }

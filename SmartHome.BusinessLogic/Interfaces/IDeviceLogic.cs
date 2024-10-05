@@ -10,4 +10,5 @@ public interface IDeviceLogic
 {
     Device CreateDevice(Device device);
     IEnumerable<Device> GetAllDevices();
+    IEnumerable<string> GetAllDeviceTypes();
 }
