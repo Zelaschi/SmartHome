@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.AdminModels.In;
@@ -20,6 +21,7 @@ public sealed class NotificationController : ControllerBase
         _notificationLogic = notificationLogic;
     }
 
+    [AuthorizationFilter(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID)]
     [HttpPost("{homeDeviceId}/movementDetection")]
     public IActionResult CreateMovementDetectionNotification([FromRoute] Guid homeDeviceId)
     {
@@ -27,6 +29,7 @@ public sealed class NotificationController : ControllerBase
         return CreatedAtAction("CreateMovementDetectionNotification", new { createResponse.Id }, createResponse);
     }
 
+    [AuthorizationFilter(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID)
     [HttpPost("{homeDeviceId}/personDetection")]
     public IActionResult CreatePersonDetectionNotification([FromRoute] Guid homeDeviceId, [FromBody] Guid userId)
     {

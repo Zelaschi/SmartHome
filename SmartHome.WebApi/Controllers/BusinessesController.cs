@@ -5,6 +5,7 @@ using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.InitialSeedData;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -21,6 +22,8 @@ public sealed class BusinessesController : ControllerBase
         _businessesLogic = businessesLogic;
     }
 
+    [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
+    [HttpPost]
     public IActionResult CreateBusiness([FromBody] BusinessRequestModel businessRequestModel)
     {
         var user = HttpContext.Items["User"] as User;
@@ -34,6 +37,7 @@ public sealed class BusinessesController : ControllerBase
         return CreatedAtAction("CreateBusiness", new { response.Id }, response);
     }
 
+    [AuthorizationFilter(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)]
     [HttpGet]
     public IActionResult GetAllBusinesses()
     {

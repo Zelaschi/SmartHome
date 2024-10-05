@@ -19,7 +19,7 @@ public sealed class BusinessOwnerController : ControllerBase
         _businessOwnerLogic = businessOwnerLogic;
     }
 
-    [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
+    [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_OWNER_ACCOUNT_PERMISSION_ID)]
     [HttpPost]
     public IActionResult CreateBusinessOwner([FromBody] BusinessOwnerRequestModel businessOwnerRequestModel)
     {

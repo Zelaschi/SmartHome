@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
@@ -19,6 +20,7 @@ public class MeController : ControllerBase
         _homeLogic = homeLogic;
     }
 
+    [AuthorizationFilter(SeedDataConstants.LIST_ALL_USERS_NOTIFICATIONS_PERMISSION_ID)]
     [HttpGet("/notifications")]
     public IActionResult GetUsersNotifications()
     {
@@ -31,6 +33,7 @@ public class MeController : ControllerBase
         return Ok(_notificationLogic.GetUsersNotifications(user));
     }
 
+    [AuthorizationFilter(SeedDataConstants.LIST_ALL_USERS_HOMES_PERMISSION_ID)]
     [HttpGet("/homes")]
     public IActionResult GetAllHomesByUserId([FromRoute] Guid userId)
     {

@@ -24,6 +24,7 @@ public sealed class HomeController : ControllerBase
         _homeLogic = homeLogic;
     }
 
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HttpPost("{homeId}/homeDevices")]
     public IActionResult AddDeviceToHome([FromRoute] Guid homeId, [FromBody] Guid deviceId)
     {
@@ -31,6 +32,7 @@ public sealed class HomeController : ControllerBase
         return NoContent();
     }
 
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HttpPost("{homeId}/members")]
     public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId)
     {
@@ -58,12 +60,14 @@ public sealed class HomeController : ControllerBase
         return CreatedAtAction("CreateHome", new { response.Id }, response);
     }
 
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HttpGet("{homeId}/homeDevices")]
     public IActionResult GetAllHomeDevices([FromRoute] Guid homeId)
     {
         return Ok(_homeLogic.GetAllHomeDevices(homeId).Select(homeDevice => new HomeDeviceResponseModel(homeDevice)).ToList());
     }
 
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HttpGet("{homeId}/members")]
     public IActionResult GetAllHomeMembers([FromRoute] Guid homeId)
     {
