@@ -137,7 +137,14 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public IEnumerable<Home> GetAllHomesByUserId(Guid userId)
     {
-        throw new NotImplementedException();
+        var homes = _homesFromUserRepository.GetAllHomesByUserId(userId);
+
+        if (homes == null)
+        {
+            throw new UserException("This user id does not correspond to any house");
+        }
+
+        return homes;
     }
 
     private HomeMember FindHomeMemberById(Guid id)

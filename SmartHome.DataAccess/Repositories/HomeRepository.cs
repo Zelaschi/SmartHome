@@ -89,7 +89,16 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
 
     public IEnumerable<Home> GetAllHomesByUserId(Guid userId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return _repository.Homes
+                        .Where(home => home.Members.Any(member => member.User != null && member.User.Id == userId))
+                        .ToList();
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
     }
 
     public Home? Update(Home updatedEntity)
