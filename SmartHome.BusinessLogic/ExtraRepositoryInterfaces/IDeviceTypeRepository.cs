@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartHome.BusinessLogic.Interfaces;
+namespace SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 public interface IDeviceTypeRepository
 {
     IList<string> GetAllDeviceTypes();

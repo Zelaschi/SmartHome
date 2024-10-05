@@ -8,9 +8,11 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.DataAccess.Contexts;
 using Microsoft.Data.SqlClient;
 using SmartHome.DataAccess.CustomExceptions;
+using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
+using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.DataAccess.Repositories;
-public class HomeRepository : IGenericRepository<Home>
+public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
 {
     private readonly SmartHomeEFCoreContext _repository;
 
@@ -83,6 +85,11 @@ public class HomeRepository : IGenericRepository<Home>
         {
             throw new DatabaseException("Error related to the Data Base, please validate the connection.");
         }
+    }
+
+    public IEnumerable<Home> GetAllHomesByUserId(Guid userId)
+    {
+        throw new NotImplementedException();
     }
 
     public Home? Update(Home updatedEntity)

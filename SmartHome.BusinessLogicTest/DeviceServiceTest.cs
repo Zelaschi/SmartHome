@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
-using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
 
 namespace SmartHome.BusinessLogicTest;

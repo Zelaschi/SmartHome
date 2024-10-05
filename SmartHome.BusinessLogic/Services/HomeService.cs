@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
@@ -20,10 +21,12 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     private readonly IGenericRepository<HomeDevice> _homeDeviceRepository;
     private readonly IGenericRepository<HomeMember> _homeMemberRepository;
     private readonly IGenericRepository<Device> _deviceRepository;
+    private readonly IHomesFromUserRepository _homesFromUserRepository;
 
     public HomeService(IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<HomeDevice> homeDeviceRepository,
         IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository,
-        IGenericRepository<HomePermission> homePermissionRepository, IGenericRepository<Device> deviceRepository)
+        IGenericRepository<HomePermission> homePermissionRepository, IGenericRepository<Device> deviceRepository,
+        IHomesFromUserRepository homesFromUserRepository)
     {
         _homeMemberRepository = homeMemberRepository;
         _homeRepository = homeRepository;
@@ -31,6 +34,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homePermissionRepository = homePermissionRepository;
         _homeDeviceRepository = homeDeviceRepository;
         _deviceRepository = deviceRepository;
+        _homesFromUserRepository = homesFromUserRepository;
     }
 
     public HomeMember AddHomeMemberToHome(Guid homeId, Guid? userId)
