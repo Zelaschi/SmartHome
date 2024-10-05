@@ -8,7 +8,7 @@ using SmartHome.BusinessLogic.Domain;
 namespace SmartHome.BusinessLogic.Interfaces;
 public interface INotificationLogic
 {
-    List<Notification> GetNotificationsByHomeMemberId(Guid homeMemberId);
+    List<Notification> GetUsersNotifications(User user);
 
     Notification CreateMovementDetectionNotification(Guid homeDeviceId);
 

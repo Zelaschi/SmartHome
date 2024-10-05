@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
@@ -19,9 +20,15 @@ public class MeController : ControllerBase
     }
 
     [HttpGet("/notifications")]
-    public IActionResult GetNotificationsByHomeMemberId([FromRoute] Guid homeMemberId)
+    public IActionResult GetUsersNotifications()
     {
-        return Ok(_notificationLogic.GetNotificationsByHomeMemberId(homeMemberId));
+        var user = HttpContext.Items["User"] as User;
+        if (user == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        return Ok(_notificationLogic.GetUsersNotifications(user));
     }
 
     [HttpGet("/homes")]

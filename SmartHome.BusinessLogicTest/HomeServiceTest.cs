@@ -283,7 +283,7 @@ public class HomeServiceTest
     public void Register_Device_To_Home_Test()
     {
         var homeId = Guid.NewGuid();
-        var home = new Home { Id = homeId , MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
@@ -442,5 +442,58 @@ public class HomeServiceTest
         Assert.IsTrue(homeService.HasPermission(returnedMember.HomeMemberId, addDevicesPermission.Id));
         Assert.IsTrue(homeService.HasPermission(returnedMember.HomeMemberId, listDevicesPermission.Id));
         Assert.IsFalse(homeService.HasPermission(returnedMember.HomeMemberId, notificationsPermission.Id));
+    }
+
+    [TestMethod]
+    public void Get_Users_Notifications()
+    {
+        var owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
+        var home1Id = Guid.NewGuid();
+        var home1 = new Home { Id = home1Id, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var home2Id = Guid.NewGuid();
+        var home2 = new Home { Id = home2Id, MainStreet = "Street2", DoorNumber = "1235", Latitude = "-32", Longitude = "11", MaxMembers = 6, Owner = owner };
+        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var deviceId = Guid.NewGuid();
+        var device = new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = business };
+        var homeDeviceId = Guid.NewGuid();
+
+        homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home1);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission> { notificationPermission });
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission,bool>>())).Returns(notificationPermission);
+
+        homeService.CreateHome(home1, ownerId);
+        homeService.CreateHome(home2, ownerId);
+
+        homeRepositoryMock.SetupSequence(x => x.Update(It.IsAny<Home>())).Returns(home1).Returns(home2);
+        homeRepositoryMock.SetupSequence(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home1).Returns(home2);
+        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(device);
+
+        var homeDevice1 = homeService.AddDeviceToHome(home1Id, deviceId);
+        var homeDevice2 = homeService.AddDeviceToHome(home2Id, deviceId);
+
+        homeDeviceRepositoryMock.SetupSequence(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice1).Returns(homeDevice2);
+        homeRepositoryMock.SetupSequence(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home1).Returns(home2);
+        homeMemberRepositoryMock.SetupSequence(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(new HomeMember(owner)).Returns(new HomeMember(owner));
+
+        var noti1 = homeService.CreatePersonDetectionNotification(home1.Id, ownerId);
+        var noti2 = homeService.CreateMovementDetectionNotification(home2.Id);
+        var homeMember1 = home1.Members.FirstOrDefault(x => x.User.Id == ownerId);
+        homeMember1.Notifications.Add(noti1);
+        var homeMember2 = home2.Members.FirstOrDefault(x => x.User.Id == ownerId);
+        homeMember2.Notifications.Add(noti2);
+        home1.Members.Clear();
+        home1.Members.Add(homeMember1);
+        home2.Members.Clear();
+        home2.Members.Add(homeMember2);
+
+        homeRepositoryMock.Setup(x => x.FindAll()).Returns(new List<Home> { home1, home2 });
+
+        var notifications = homeService.GetUsersNotifications(owner);
+        Assert.IsTrue(notifications.Count == 2);
     }
 }

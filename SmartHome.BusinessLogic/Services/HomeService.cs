@@ -158,9 +158,27 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homeMemberRepository.Update(member);
     }
 
-    public List<Notification> GetNotificationsByHomeMemberId(Guid homeMemberId)
+    public List<Notification> GetUsersNotifications(User user)
     {
-        throw new NotImplementedException();
+        var homes = _homeRepository.FindAll().ToList();
+        var userHomes = homes.Where(home => home.Members.Any(member => member.User.Id == user.Id)).ToList();
+        var notifications = new List<Notification>();
+        foreach (var home in userHomes)
+        {
+            var homeMember = home.Members
+                .FirstOrDefault(member => member.User.Id == user.Id);
+
+            // MarkNotificationsAsRead(unReadNotifications, homeMember); y validar que te de las unread noti esten sin leer
+            if (homeMember != null)
+            {
+                var unReadNotifications = homeMember.Notifications
+                    .ToList();
+                // MarkNotificationsAsRead(unReadNotifications, homeMember);
+                notifications.AddRange(unReadNotifications);
+            }
+        }
+
+        return notifications;
     }
 
     public bool HasPermission(Guid homeMemberid, Guid homePermissionId)
@@ -274,7 +292,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return notification;
     }
 
-    public void AddDeviceToHome(Guid homeId, Guid deviceId)
+    public HomeDevice AddDeviceToHome(Guid homeId, Guid deviceId)
     {
         var home = FindHomeById(homeId);
 
@@ -285,6 +303,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         home.Devices.Add(homeDevice);
 
         _homeRepository.Update(home);
+        return homeDevice;
     }
 
     private Notification CreateDetectedPersonNotification(HomeDevice homeDevice, Guid detectedPersonId)
