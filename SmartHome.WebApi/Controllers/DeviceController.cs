@@ -38,6 +38,6 @@ public sealed class DeviceController : ControllerBase
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID)]
     public IActionResult GetAllDeviceTypes()
     {
-        throw new NotImplementedException();
+        return Ok(_deviceLogic.GetAllDeviceTypes().Select(deviceType => new DeviceTypesResponseModel(deviceType)).ToList());
     }
 }
