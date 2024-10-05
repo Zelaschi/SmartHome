@@ -19,7 +19,7 @@ public sealed class AuthenticationController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult LogIn(LoginRequestModel loginRequest)
+    public IActionResult LogIn([FromBody] LoginRequestModel loginRequest)
     {
         return Ok(new LoginResponseModel() { Token = _loginLogic.LogIn(loginRequest.Email, loginRequest.Password) });
     }
