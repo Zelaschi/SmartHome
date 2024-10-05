@@ -21,7 +21,7 @@ public sealed class BusinessOwnerController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
     [HttpPost]
-    public IActionResult CreateBusinessOwner(BusinessOwnerRequestModel businessOwnerRequestModel)
+    public IActionResult CreateBusinessOwner([FromBody] BusinessOwnerRequestModel businessOwnerRequestModel)
     {
         var createResponse = new BusinessOwnerResponseModel(_businessOwnerLogic.CreateBusinessOwner(businessOwnerRequestModel.ToEntitiy()));
         return CreatedAtAction("CreateBusinessOwner", new { createResponse.Id }, createResponse);

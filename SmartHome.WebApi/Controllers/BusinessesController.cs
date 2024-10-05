@@ -21,7 +21,7 @@ public sealed class BusinessesController : ControllerBase
         _businessesLogic = businessesLogic;
     }
 
-    public IActionResult CreateBusiness(BusinessRequestModel businessRequestModel)
+    public IActionResult CreateBusiness([FromBody] BusinessRequestModel businessRequestModel)
     {
         var user = HttpContext.Items["User"] as User;
 

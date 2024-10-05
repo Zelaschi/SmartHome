@@ -21,7 +21,7 @@ public sealed class SecurityCameraController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
     [HttpPost]
-    public IActionResult CreateSecurityCamera(SecurityCameraRequestModel securityCameraRequestModel)
+    public IActionResult CreateSecurityCamera([FromBody] SecurityCameraRequestModel securityCameraRequestModel)
     {
         var response = new SecurityCameraResponseModel(_securityCameraLogic.CreateSecurityCamera(securityCameraRequestModel.ToEntity()));
         return CreatedAtAction("CreateSecurityCamera", new { response.Id }, response);

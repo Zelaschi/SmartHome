@@ -21,7 +21,7 @@ public sealed class AdminController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID)]
     [HttpPost]
-    public IActionResult CreateAdmin(AdminRequestModel adminRequestModel)
+    public IActionResult CreateAdmin([FromBody]AdminRequestModel adminRequestModel)
     {
         var createResponse = new AdminResponseModel(_adminLogic.CreateAdmin(adminRequestModel.ToEntitiy()));
         return CreatedAtAction("CreateAdmin", new { createResponse.Id }, createResponse);
@@ -29,7 +29,7 @@ public sealed class AdminController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID)]
     [HttpDelete("{adminId}")]
-    public IActionResult DeleteAdmin(Guid adminId)
+    public IActionResult DeleteAdmin([FromBody] Guid adminId)
     {
         _adminLogic.DeleteAdmin(adminId);
         return NoContent();

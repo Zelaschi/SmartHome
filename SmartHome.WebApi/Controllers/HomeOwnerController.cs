@@ -21,7 +21,7 @@ public sealed class HomeOwnerController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateHomeOwner(HomeOwnerRequestModel homeOwnerRequestModel)
+    public IActionResult CreateHomeOwner([FromBody] HomeOwnerRequestModel homeOwnerRequestModel)
     {
         var createResponse = new HomeOwnerResponseModel(_homeOwnerLogic.CreateHomeOwner(homeOwnerRequestModel.ToEntitiy()));
         return CreatedAtAction("CreateHomeOwner", new { createResponse.Id }, createResponse);

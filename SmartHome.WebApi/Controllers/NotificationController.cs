@@ -28,7 +28,7 @@ public sealed class NotificationController : ControllerBase
     }
 
     [HttpPost("{homeDeviceId}/personDetection")]
-    public IActionResult CreatePersonDetectionNotification([FromRoute] Guid homeDeviceId, Guid userId)
+    public IActionResult CreatePersonDetectionNotification([FromRoute] Guid homeDeviceId, [FromBody] Guid userId)
     {
         var createResponse = new NotificationResponseModel(_notificationLogic.CreatePersonDetectionNotification(homeDeviceId, userId));
         return CreatedAtAction("CreatePersonDetectionNotification", new { createResponse.Id }, createResponse);
