@@ -34,10 +34,4 @@ public sealed class DeviceController : ControllerBase
         var response = new DeviceResponseModel(_deviceLogic.CreateDevice(deviceRequestModel.ToEntity()));
         return CreatedAtAction("CreateDevice", new {response.Id }, response);
     }
-
-    [AuthorizationFilter(SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID)]
-    public IActionResult GetAllDeviceTypes()
-    {
-        return Ok(_deviceLogic.GetAllDeviceTypes().Select(deviceType => new DeviceTypesResponseModel(deviceType)).ToList());
-    }
 }

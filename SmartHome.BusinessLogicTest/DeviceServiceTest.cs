@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
 
 namespace SmartHome.BusinessLogicTest;
@@ -14,6 +15,7 @@ namespace SmartHome.BusinessLogicTest;
 public class DeviceServiceTest
 {
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
+    private Mock<IDeviceTypeRepository>? deviceTypeRepositoryMock;
     private DeviceService? deviceService;
 
     [TestInitialize]
@@ -21,7 +23,8 @@ public class DeviceServiceTest
     public void Initialize()
     {
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
-        deviceService = new DeviceService(deviceRepositoryMock.Object);
+        deviceTypeRepositoryMock = new Mock<IDeviceTypeRepository>();
+        deviceService = new DeviceService(deviceRepositoryMock.Object, deviceTypeRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -278,11 +281,11 @@ public class DeviceServiceTest
 
         var deviceTypes = new List<string> { "Window Sensor", "Security Camera" };
 
-        deviceRepositoryMock.Setup(x => x.FindAll()).Returns(devices);
+        deviceTypeRepositoryMock.Setup(x => x.GetAllDeviceTypes()).Returns(deviceTypes);
 
         var result = deviceService.GetAllDeviceTypes().ToList();
 
-        deviceRepositoryMock.Verify(x => x.FindAll(), Times.Once);
+        deviceTypeRepositoryMock.Verify(x => x.GetAllDeviceTypes(), Times.Once);
 
         CollectionAssert.AreEqual(deviceTypes, result);
     }

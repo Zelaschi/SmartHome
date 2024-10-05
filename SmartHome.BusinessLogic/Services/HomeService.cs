@@ -173,6 +173,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             {
                 var unReadNotifications = homeMember.Notifications
                     .ToList();
+
                 // MarkNotificationsAsRead(unReadNotifications, homeMember);
                 notifications.AddRange(unReadNotifications);
             }

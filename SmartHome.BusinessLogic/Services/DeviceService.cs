@@ -12,9 +12,11 @@ namespace SmartHome.BusinessLogic.Services;
 public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 {
     private readonly IGenericRepository<Device> _deviceRepository;
-    public DeviceService(IGenericRepository<Device> deviceRepository)
+    private readonly IDeviceTypeRepository _deviceTypeRepository;
+    public DeviceService(IGenericRepository<Device> deviceRepository, IDeviceTypeRepository deviceTypeRepository)
     {
         _deviceRepository = deviceRepository;
+        _deviceTypeRepository = deviceTypeRepository;
     }
 
     public Device CreateDevice(Device device)
@@ -41,7 +43,6 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 
     public IEnumerable<string> GetAllDeviceTypes()
     {
-        var allDevices = _deviceRepository.FindAll();
-        return allDevices.Select(d => d.Type).Distinct().ToList();
+        return _deviceTypeRepository.GetAllDeviceTypes();
     }
 }

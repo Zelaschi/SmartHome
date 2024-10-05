@@ -93,8 +93,9 @@ public class HomeControllerTest
         home.Id = Guid.NewGuid();
         var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
         var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = company };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device, HomeId = home.Id };
 
-        homeLogicMock.Setup(h => h.AddDeviceToHome(It.IsAny<Guid>(), It.IsAny<Guid>()));
+        homeLogicMock.Setup(h => h.AddDeviceToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(homeDevice);
 
         var expected = new NoContentResult();
         var result = homeController.AddDeviceToHome(home.Id, device.Id) as NoContentResult;
