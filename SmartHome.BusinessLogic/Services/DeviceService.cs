@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
@@ -28,7 +29,14 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 
     public IEnumerable<Device> GetAllDevices()
     {
-        return _deviceRepository.FindAll();
+        var allDevices = _deviceRepository.FindAll().ToList();
+
+        if (allDevices.Count == 0)
+        {
+            throw new DeviceException("There are no devices in the database.");
+        }
+
+        return allDevices;
     }
 
     public IEnumerable<string> GetAllDeviceTypes()

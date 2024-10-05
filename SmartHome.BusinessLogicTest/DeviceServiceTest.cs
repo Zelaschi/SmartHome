@@ -85,10 +85,10 @@ public class DeviceServiceTest
 
         deviceRepositoryMock.Setup(x => x.FindAll()).Returns(devices);
 
-        var result = deviceService.GetAllDevices();
+        var result = deviceService.GetAllDevices().ToList();
 
         deviceRepositoryMock.VerifyAll();
-        Assert.AreEqual(devices, result);
+        CollectionAssert.AreEqual(devices, result);
     }
 
     [TestMethod]

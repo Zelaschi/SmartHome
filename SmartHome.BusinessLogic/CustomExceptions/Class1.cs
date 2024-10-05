@@ -5,6 +5,4 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.CustomExceptions;
-internal class Class1
-{
-}
+public class DeviceException(string message) : Exception(message);
