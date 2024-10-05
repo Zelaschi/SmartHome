@@ -13,4 +13,6 @@ public interface INotificationLogic
     Notification CreateMovementDetectionNotification(Guid homeDeviceId);
 
     Notification CreatePersonDetectionNotification(Guid homeDeviceId, Guid userid);
+
+    Notification CreateOpenCloseWindowNotification(Guid homeDeviceId, bool open);
 }

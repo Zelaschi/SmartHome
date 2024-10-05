@@ -36,4 +36,18 @@ public sealed class NotificationController : ControllerBase
         var createResponse = new NotificationResponseModel(_notificationLogic.CreatePersonDetectionNotification(homeDeviceId, userId));
         return CreatedAtAction("CreatePersonDetectionNotification", new { createResponse.Id }, createResponse);
     }
+
+    [HttpPost("{homeDeviceId}/openClosedStatus")]
+    public IActionResult CreateOpenCloseWindowNotification([FromRoute] Guid homeDeviceId, [FromBody] bool opened)
+    {
+        var createResponse = new NotificationResponseModel(_notificationLogic.CreateOpenCloseWindowNotification(homeDeviceId, opened));
+        if (opened)
+        {
+            return CreatedAtAction("CreateOpenedWindowNotification", new { createResponse.Id }, createResponse);
+        }
+        else
+        {
+            return CreatedAtAction("CreateClosedWindowNotification", new { createResponse.Id }, createResponse);
+        }
+    }
 }
