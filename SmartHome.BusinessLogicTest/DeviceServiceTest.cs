@@ -216,4 +216,74 @@ public class DeviceServiceTest
 
         Assert.AreEqual(windowSensor, result);
     }
+
+    [TestMethod]
+
+    public void ListAll_DeviceTypes_Test()
+    {
+        var devices = new List<Device>
+        {
+            new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "WindowSensor",
+                Description = "Window Sensor",
+                ModelNumber = "1234",
+                Photos = "Photo1",
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "HikVision",
+                    Logo = "Logo1",
+                    RUT = "1234",
+                    BusinessOwner = new User
+                    {
+                        Name = "Juan",
+                        Surname = "Perez",
+                        Password = "Password@1234",
+                        CreationDate = DateTime.Today,
+                        Email = "juanperez@gmail.com"
+                    }
+                }
+            },
+            new SecurityCamera
+            {
+                Id = Guid.NewGuid(),
+                Name = "WindowSensor",
+                Description = "Security Camera",
+                ModelNumber = "1234",
+                Photos = "Photo1",
+                Type = "Security Camera",
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Kolke",
+                    Logo = "Logo1",
+                    RUT = "1234",
+                    BusinessOwner = new User
+                    {
+                        Name = "Pedro",
+                        Surname = "Rodriguez",
+                        Password = "Password@1234",
+                        CreationDate = DateTime.Today,
+                        Email = "pedrorod@gmail.com"
+                    }
+                },
+                Outdoor = true,
+                Indoor = true,
+                MovementDetection = true,
+                PersonDetection = true
+            }
+        };
+
+        var deviceTypes = new List<string> { "Window Sensor", "Security Camera" };
+
+        deviceRepositoryMock.Setup(x => x.FindAll()).Returns(devices);
+
+        var result = deviceService.GetAllDeviceTypes().ToList();
+
+        deviceRepositoryMock.Verify(x => x.FindAll(), Times.Once);
+
+        CollectionAssert.AreEqual(deviceTypes, result);
+    }
 }
