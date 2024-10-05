@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
+using static Azure.Core.HttpHeader;
 
 namespace SmartHome.DataAccess.Contexts;
 public sealed class SmartHomeEFCoreContext : DbContext
@@ -113,9 +114,54 @@ public sealed class SmartHomeEFCoreContext : DbContext
                 Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID),
                 Name = "Add member to home",
                 Description = "Add member to home"
-            });
+            },
+            new SystemPermission
+            {
+                Id = Guid.Parse(SeedDataConstants.HOME_RELATED_PERMISSION_ID),
+                Name = "Home related permission",
+                Description = "Lets a user with the role homeOwner access the home related endpoints"
+            },
+            new SystemPermission
+            {
+                Id = Guid.Parse(SeedDataConstants.LIST_ALL_USERS_HOMES_PERMISSION_ID),
+                Name = "List all users homes",
+                Description = "List all users homes"
+            },
+            new SystemPermission
+            {
+                Id = Guid.Parse(SeedDataConstants.LIST_ALL_USERS_NOTIFICATIONS_PERMISSION_ID),
+                Name = "List all users notifications",
+                Description = "Lets a user access all its notifications"
+            },
+            new SystemPermission
+            {
+                Id = Guid.Parse(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID),
+                Name = "Create notification",
+                Description = "Create notification"
+            }
+            );
 
         modelBuilder.Entity<RoleSystemPermission>().HasData(
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_USERS_NOTIFICATIONS_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_USERS_HOMES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.HOME_RELATED_PERMISSION_ID)
+            },
             new RoleSystemPermission
             {
                 RoleId = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID),
