@@ -143,4 +143,42 @@ public class NotificationControllerTest
 
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.Equals(notificationResponseModel));
     }
+
+    [TestMethod]
+
+    public void Create_ClosedWindowNotification_TestOk()
+    {
+        var businessOwnerRole = new Role() { Name = "BusinessOwner" };
+        var businessOwnerId = Guid.NewGuid();
+        var businessOwner = new User() { Id = businessOwnerId, Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwnerRole, CreationDate = DateTime.Today };
+        var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = businessOwner };
+        var device = new Device()
+        {
+            Id = Guid.NewGuid(),
+            Name = "WindowSensor",
+            ModelNumber = "modelNumber",
+            Description = "description",
+            Photos = "photoPath",
+            Business = company,
+            Type = "Window Sensor"
+        };
+
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device, Online = true };
+
+        var notification = new Notification() { Id = Guid.NewGuid(), Event = "ClosedWindow", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
+
+        var notificationResponseModel = new NotificationResponseModel(notification);
+
+        _notificationLogicMock.Setup(n => n.CreateOpenCloseWindowNotification(It.IsAny<Guid>(), false)).Returns(notification);
+
+        var expected = new CreatedAtActionResult("CreateClosedWindowNotification", "CreateClosedWindowNotification", new { notificationResponseModel.Id }, notificationResponseModel);
+        var result = _notificationController.CreateOpenCloseWindowNotification(homeDevice.Id, false) as CreatedAtActionResult;
+        var objectResult = result.Value as NotificationResponseModel;
+
+        _notificationLogicMock.VerifyAll();
+
+        Assert.IsNotNull(objectResult);
+
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.Equals(notificationResponseModel));
+    }
 }
