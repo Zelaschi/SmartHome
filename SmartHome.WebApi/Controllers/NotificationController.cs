@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.AdminModels.In;
@@ -32,5 +33,11 @@ public sealed class NotificationController : ControllerBase
     {
         var createResponse = new NotificationResponseModel(_notificationLogic.CreatePersonDetectionNotification(homeDeviceId, userId));
         return CreatedAtAction("CreatePersonDetectionNotification", new { createResponse.Id }, createResponse);
+    }
+
+    [HttpPost("{homeDeviceId}/openClosedStatus")]
+    public IActionResult CreateOpenCloseWindowNotification([FromRoute] Guid homeDeviceId, [FromBody] bool opened)
+    {
+        throw new NotImplementedException();
     }
 }

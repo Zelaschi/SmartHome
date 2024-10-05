@@ -348,4 +348,9 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         return notification;
     }
+
+    public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId, bool opened)
+    {
+        throw new NotImplementedException();
+    }
 }
