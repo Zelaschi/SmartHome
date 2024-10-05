@@ -15,6 +15,10 @@ public sealed class ExceptionFilter : ExceptionFilterAttribute
         {
             context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.Unauthorized };
         }
+        else if (exception is DeviceException)
+        {
+            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
+        }
         else if (exception is UserException)
         {
             context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
