@@ -38,6 +38,14 @@ public sealed class NotificationController : ControllerBase
     [HttpPost("{homeDeviceId}/openClosedStatus")]
     public IActionResult CreateOpenCloseWindowNotification([FromRoute] Guid homeDeviceId, [FromBody] bool opened)
     {
-        throw new NotImplementedException();
+        var createResponse = new NotificationResponseModel(_notificationLogic.CreateOpenCloseWindowNotification(homeDeviceId, opened));
+        if (opened)
+        {
+            return CreatedAtAction("CreatePersonDetectionNotification", new { createResponse.Id }, createResponse);
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
     }
 }
