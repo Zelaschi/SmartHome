@@ -680,4 +680,62 @@ public class HomeServiceTest
         userRepositoryMock.VerifyAll();
         homeRepositoryMock.VerifyAll();
     }
+
+    [TestMethod]
+    public void Create_Closed_Window_Notification_Should_Only_Be_Added_To_HomeMember_If_He_Has_Notification_Permission()
+    {
+        // ASSERT
+
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+
+        homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission> { notificationPermission });
+
+        var result = homeService.CreateHome(home, ownerId);
+
+        var memberId = Guid.NewGuid();
+        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(member);
+
+        HomeMember homeMember = homeService.AddHomeMemberToHome(home.Id, memberId);
+
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = true };
+
+        home.Devices.Add(homeDevice);
+
+        var homeOwner = result.Members.Find(x => x.User == owner);
+
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+        homeMemberRepositoryMock
+            .SetupSequence(x => x.Find(It.IsAny<Func<HomeMember, bool>>()))
+            .Returns(homeOwner)
+            .Returns(homeMember);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
+
+        // ACCTION
+
+        homeService.CreateOpenCloseWindowNotification(homeDevice.Id, false);
+
+        IEnumerable<HomeMember> homeMembers = (List<HomeMember>)homeService.GetAllHomeMembers(home.Id);
+        var ownerFound = homeMembers.First(x => x.User == owner);
+        var memberFound = homeMembers.First(x => x.User == member);
+
+        // ASSERT
+
+        Assert.IsTrue(ownerFound.Notifications.Count > 0);
+        Assert.IsTrue(memberFound.Notifications.Count == 0);
+
+        homeRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        homeRepositoryMock.VerifyAll();
+    }
 }
