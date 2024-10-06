@@ -29,7 +29,7 @@ public sealed class NotificationController : ControllerBase
         return CreatedAtAction("CreateMovementDetectionNotification", new { createResponse.Id }, createResponse);
     }
 
-    [AuthorizationFilter(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID)
+    [AuthorizationFilter(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID)]
     [HttpPost("{homeDeviceId}/personDetection")]
     public IActionResult CreatePersonDetectionNotification([FromRoute] Guid homeDeviceId, [FromBody] Guid userId)
     {
