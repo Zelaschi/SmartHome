@@ -63,6 +63,13 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         homeOwnerMember.HomePermissions = PermissionsList;
     }
 
+    private bool ReapetedHome(Home home)
+    {
+        var reapeatedHome = _homeRepository.Find(x => x.MainStreet == home.MainStreet && x.DoorNumber == home.DoorNumber && x.Latitude == home.Latitude && x.Longitude == home.Longitude);
+        if (reapeatedHome != null) return true;
+        return false;
+    }
+
     public Home CreateHome(Home home, Guid? userId)
     {
         ValidateHome(home);
@@ -70,6 +77,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         if (owner == null)
         {
             throw new HomeException("User Id does not match any user");
+        }
+
+        if (ReapetedHome(home))
+        {
+            throw new HomeException("Home already exists");
         }
 
         home.Owner = owner;
