@@ -364,6 +364,45 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId, bool opened)
     {
-        throw new NotImplementedException();
+        var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+
+        CheckDeviceOnline(homeDevice);
+
+        var home = FindHomeById(homeDevice.HomeId);
+        var homeMembers = home.Members;
+
+        if (opened)
+        {
+            var notificationOpened = CreateNotification("Window Opened", homeDevice);
+
+            foreach (var homeMember in homeMembers)
+            {
+                if (HasPermission(homeMember.HomeMemberId, notificationPermission))
+                {
+                    homeMember.Notifications.Add(notificationOpened);
+                }
+            }
+
+            _homeRepository.Update(home);
+
+            return notificationOpened;
+        }
+        else
+        {
+            var notificationClosed = CreateNotification("Window Closed", homeDevice);
+
+            foreach (var homeMember in homeMembers)
+            {
+                if (HasPermission(homeMember.HomeMemberId, notificationPermission))
+                {
+                    homeMember.Notifications.Add(notificationClosed);
+                }
+            }
+
+            _homeRepository.Update(home);
+
+            return notificationClosed;
+        }
     }
 }
