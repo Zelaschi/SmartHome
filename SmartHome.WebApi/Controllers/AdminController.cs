@@ -28,7 +28,7 @@ public sealed class AdminController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID)]
-    [HttpDelete("{adminId}")]
+    [HttpDelete]
     public IActionResult DeleteAdmin([FromBody] Guid adminId)
     {
         _adminLogic.DeleteAdmin(adminId);

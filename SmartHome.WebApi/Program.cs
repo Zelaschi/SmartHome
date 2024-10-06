@@ -6,6 +6,7 @@ using SmartHome.BusinessLogic.Services;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Repositories;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,9 +44,11 @@ services.AddScoped<ILoginLogic, SessionService>();
 services.AddScoped<IGenericRepository<User>, UserRepository>();
 services.AddScoped<IGenericRepository<Session>, SessionRepository>();
 services.AddScoped<IGenericRepository<Home>, HomeRepository>();
+services.AddScoped<IHomesFromUserRepository, HomeRepository>();
 services.AddScoped<IGenericRepository<Role>, RoleRepository>();
 services.AddScoped<IGenericRepository<HomePermission>, HomePermissionRepository>();
 services.AddScoped<IGenericRepository<Device>, DeviceRepository>();
+services.AddScoped<IDeviceTypeRepository, DeviceRepository>();
 services.AddScoped<IGenericRepository<Business>, BusinessRepository>();
 services.AddScoped<IGenericRepository<HomeDevice>, HomeDeviceRepository>();
 services.AddScoped<IGenericRepository<HomeMember>, HomeMemberRepository>();
