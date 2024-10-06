@@ -22,7 +22,19 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 
     public Device CreateDevice(Device device)
     {
+        if (ReapetedModelNumber(device))
+        {
+            throw new DeviceException("Device model already exists");
+        }
+
         return _deviceRepository.Add(device);
+    }
+
+    private bool ReapetedModelNumber(Device device)
+    {
+        var reapeatedDevice = _deviceRepository.Find(d => d.ModelNumber == device.ModelNumber);
+        if (reapeatedDevice != null) return true;
+        return false;
     }
 
     public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera)
