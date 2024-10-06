@@ -560,4 +560,35 @@ public class HomeServiceTest
 
         Assert.AreEqual(homeMember.Notifications.First(), homeMembers.First().Notifications.First());
     }
+
+    [TestMethod]
+    public void Create_Opened_Window_Notification_On_Off_Device_Throws_Exception()
+    {
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var homeMember = new HomeMember(owner);
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = false };
+
+        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
+        home.Devices.Add(homeDevice);
+        home.Members.Add(homeMember);
+
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+
+        var ex = new HomeDeviceException("PlaceHolder");
+        try
+        {
+            homeService.CreateOpenCloseWindowNotification(homeDevice.Id, true);
+        }
+        catch (Exception e)
+        {
+            ex = (HomeDeviceException)e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        Assert.AreEqual("Device is offline", ex.Message);
+    }
 }
