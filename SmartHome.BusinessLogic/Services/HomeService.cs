@@ -361,23 +361,35 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         if (opened)
         {
-            var notification = CreateNotification("Window Opened", homeDevice);
+            var notificationOpened = CreateNotification("Window Opened", homeDevice);
 
             foreach (var homeMember in homeMembers)
             {
                 if (HasPermission(homeMember.HomeMemberId, notificationPermission))
                 {
-                    homeMember.Notifications.Add(notification);
+                    homeMember.Notifications.Add(notificationOpened);
                 }
             }
 
             _homeRepository.Update(home);
 
-            return notification;
+            return notificationOpened;
         }
         else
         {
-            throw new NotImplementedException();
+            var notificationClosed = CreateNotification("Window Closed", homeDevice);
+
+            foreach (var homeMember in homeMembers)
+            {
+                if (HasPermission(homeMember.HomeMemberId, notificationPermission))
+                {
+                    homeMember.Notifications.Add(notificationClosed);
+                }
+            }
+
+            _homeRepository.Update(home);
+
+            return notificationClosed;
         }
     }
 }
