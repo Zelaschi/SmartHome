@@ -68,7 +68,7 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            return _repository.Homes.Include(x => x.Members).ThenInclude(x => x.User).Include(x => x.Devices).FirstOrDefault(filter);
+            return _repository.Homes.Include(x => x.Members).ThenInclude(x => x.User).Include(x => x.Devices).ThenInclude(x=>x.Device).FirstOrDefault(filter);
         }
         catch (SqlException)
         {

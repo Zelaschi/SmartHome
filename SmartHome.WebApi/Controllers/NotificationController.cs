@@ -8,7 +8,7 @@ using SmartHome.WebApi.WebModels.NotificationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/[controller]")]
+[Route("api/v1/notifications")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]

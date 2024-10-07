@@ -196,6 +196,12 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var foundPermissions = allPermissions
                 .Where(permission => permissions.Any(p => p.Id == permission.Id))  // Comparación por Id o cualquier otra propiedad
                 .ToList();
+        if (member.HomePermissions.Count > 0)
+        {
+            member.HomePermissions.Clear();
+            _homeMemberRepository.Update(member);
+        }
+
         member.HomePermissions = foundPermissions;
         _homeMemberRepository.Update(member);
     }

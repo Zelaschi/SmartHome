@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;
@@ -64,7 +65,7 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>
     {
         try
         {
-            return _repository.HomeMembers.FirstOrDefault(filter);
+            return _repository.HomeMembers.Include(x=>x.HomePermissions).Include(x=> x.Notifications).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -92,6 +93,7 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>
 
             if (foundHomeMember != null)
             {
+                foundHomeMember.HomePermissions = updatedEntity.HomePermissions;
                 _repository.Entry(foundHomeMember).CurrentValues.SetValues(updatedEntity);
                 _repository.SaveChanges();
                 return _repository.HomeMembers.FirstOrDefault(b => b.HomeMemberId == updatedEntity.HomeMemberId);

@@ -13,7 +13,6 @@ public sealed class HomeMemberResponseModel
     public Guid? HomeMemberId { get; set; }
     public List<HomePermission>? HomePermissions { get; set; }
     public List<Notification>? Notifications { get; set; }
-
     public HomeMemberResponseModel(HomeMember homeMember)
     {
         HomeMemberId = homeMember.HomeMemberId;
