@@ -7,6 +7,7 @@ public sealed class SecurityCameraRequestModel
     public string Type { get; set; } = "Camara de Seguridad";
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
+    public string? Name { get; set; }
     public string? Photos { get; set; }
     public bool? InDoor { get; set; }
     public bool? OutDoor { get; set; }
@@ -17,7 +18,7 @@ public sealed class SecurityCameraRequestModel
     {
         return new SecurityCamera()
         {
-            Name = "name??",
+            Name = Name,
             Type = Type,
             ModelNumber = ModelNumber,
             Description = Description,

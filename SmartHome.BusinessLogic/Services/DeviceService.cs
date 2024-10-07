@@ -60,6 +60,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
         {
             throw new DeviceException("Security Camera model already exists");
         }
+
         securityCamera.Business = business;
         return _deviceRepository.Add(securityCamera) as SecurityCamera;
     }
