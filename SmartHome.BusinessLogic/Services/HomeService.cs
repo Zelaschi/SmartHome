@@ -370,7 +370,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return new Notification
         {
             Date = DateTime.Today,
-            Event = detectedPerson.Name + "detected!",
+            Event = detectedPerson.Name + " detected!",
             HomeDevice = homeDevice,
             Time = DateTime.Now,
             DetectedPerson = detectedPerson
