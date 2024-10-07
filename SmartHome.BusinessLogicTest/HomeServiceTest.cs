@@ -700,6 +700,7 @@ public class HomeServiceTest
         try
         {
             homeService.CreateHome(home, ownerId);
+            homeService.CreateHome(home2, ownerId);
         }
         catch (Exception e)
         {

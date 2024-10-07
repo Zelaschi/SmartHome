@@ -229,6 +229,23 @@ public class DeviceServiceTest
 
     public void Create_WindowSensor_ModelNumeber_Reapeted_Throws_Exception_Test()
     {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner
+        };
         var windowSensor = new Device
         {
             Id = Guid.NewGuid(),
@@ -236,25 +253,9 @@ public class DeviceServiceTest
             Description = "Window Sensor",
             ModelNumber = "1234",
             Photos = "Photo1",
-            Business = new Business
-            {
-                Id = Guid.NewGuid(),
-                Name = "HikVision",
-                Logo = "Logo1",
-                RUT = "1234",
-                BusinessOwner = new User
-                {
-                    Name = "Juan",
-                    Surname = "Perez",
-                    Password = "Password@1234",
-                    CreationDate = DateTime.Today,
-                    Email = "juanperez@gmail.com"
-                }
-            }
+            Business = business
         };
 
-        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(windowSensor.Business);
-        userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(windowSensor.Business.BusinessOwner);
         deviceRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Device, bool>>())).Returns(windowSensor);
         Exception exception = null;
 
@@ -268,8 +269,6 @@ public class DeviceServiceTest
         }
 
         deviceRepositoryMock.VerifyAll();
-        businessRepositoryMock.VerifyAll();
-        userRepositoryMock.VerifyAll();
         Assert.IsInstanceOfType(exception, typeof(DeviceException));
         Assert.AreEqual("Device model already exists", exception.Message);
     }
