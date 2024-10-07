@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;
@@ -65,7 +66,7 @@ public sealed class RoleRepository : IGenericRepository<Role>
     {
         try
         {
-            return _repository.Roles.FirstOrDefault(filter);
+            return _repository.Roles.Include(r => r.SystemPermissions).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
