@@ -32,6 +32,6 @@ public sealed class AdminController : ControllerBase
     public IActionResult DeleteAdmin([FromRoute] Guid adminId)
     {
         _adminLogic.DeleteAdmin(adminId);
-        return NoContent();
+        return Ok("The admin was deleted successfully");
     }
 }
