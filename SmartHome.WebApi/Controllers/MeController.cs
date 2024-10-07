@@ -21,7 +21,7 @@ public class MeController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_USERS_NOTIFICATIONS_PERMISSION_ID)]
-    [HttpGet("/notifications")]
+    [HttpGet("notifications")]
     public IActionResult GetUsersNotifications()
     {
         var user = HttpContext.Items["User"] as User;
@@ -34,9 +34,20 @@ public class MeController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_USERS_HOMES_PERMISSION_ID)]
-    [HttpGet("/homes")]
-    public IActionResult GetAllHomesByUserId([FromRoute] Guid userId)
+    [HttpGet("homes")]
+    public IActionResult GetAllHomesByUserId()
     {
-        return Ok(_homeLogic.GetAllHomesByUserId(userId).Select(home => new HomeResponseModel(home)).ToList());
+        var user = HttpContext.Items["User"] as User;
+        if (user == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        if (user.Id == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        return Ok(_homeLogic.GetAllHomesByUserId((Guid)user.Id).Select(home => new HomeResponseModel(home)).ToList());
     }
 }

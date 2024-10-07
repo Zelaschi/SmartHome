@@ -22,15 +22,12 @@ public static class SeedDataConstants
     public const string LIST_ALL_DEVICES_PERMISSION_ID = "bf35d7ed-f4b9-410e-a427-d139ce74cf73";
     public const string LIST_ALL_DEVICES_TYPES_PERMISSION_ID = "17133752-d60e-4f35-916f-6651ab4463e4";
     public const string CREATE_HOME_PERMISSION_ID = "206ad2b6-e911-4491-84e4-0a6082f5f360";
-
-    // Nuevos
-
     public const string HOME_RELATED_PERMISSION_ID = "48644f45-4d83-4961-924b-7733881258e9";
     public const string LIST_ALL_USERS_HOMES_PERMISSION_ID = "0957ea49-6c58-4f9a-9cbc-bb4a300077f3";
     public const string LIST_ALL_USERS_NOTIFICATIONS_PERMISSION_ID = "dde0bac9-e646-4d9f-96f5-c77e7295cb4b";
     public const string CREATE_NOTIFICATION_PERMISSION_ID = "b404659a-35a4-4486-867f-db4c24f9f827";
-
     public const string ADD_MEMBER_TO_HOME_PERMISSION_ID = "7306a4ce-47fc-4ba8-8aac-60243701cd5b";
+
     public const string ADD_MEMBER_TO_HOME_HOMEPERMISSION_ID = "98bb8133-688a-4f1d-8587-87c485df6534";
     public const string ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID = "c49f2858-72fc-422d-bd4b-f49b482f80bd";
     public const string LIST_DEVICES_HOMEPERMISSION_ID = "fa0cad23-153b-46b5-a690-91d0d7677c31";

@@ -34,15 +34,9 @@ public sealed class HomeController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HttpPost("{homeId}/members")]
-    public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId)
+    public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, [FromBody] Guid userId)
     {
-        var user = HttpContext.Items["User"] as User;
-        if (user == null)
-        {
-            return Unauthorized("UserId is missing");
-        }
-
-        _homeLogic.AddHomeMemberToHome(homeId, user.Id);
+        _homeLogic.AddHomeMemberToHome(homeId, userId);
         return NoContent();
     }
 

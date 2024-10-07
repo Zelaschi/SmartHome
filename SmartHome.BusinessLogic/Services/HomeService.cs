@@ -64,16 +64,15 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         }
     }
 
-    public HomeMember AddHomeMemberToHome(Guid homeId, Guid? userId)
+    public HomeMember AddHomeMemberToHome(Guid homeId, Guid userId)
     {
         var user = FindUserById(userId);
         var homeMember = new HomeMember(user);
         var home = FindHomeById(homeId);
-
         CheckUserIsNotAlreadyInHome(home, user);
         CheckHomeAvailability(home);
-        home.Members.Add(homeMember);
-        _homeRepository.Update(home);
+        homeMember.HomeId = homeId;
+        _homeMemberRepository.Add(homeMember);
         return homeMember;
     }
 

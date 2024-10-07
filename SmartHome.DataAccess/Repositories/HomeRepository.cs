@@ -10,6 +10,7 @@ using Microsoft.Data.SqlClient;
 using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.CustomExceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartHome.DataAccess.Repositories;
 public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
@@ -67,7 +68,7 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            return _repository.Homes.FirstOrDefault(filter);
+            return _repository.Homes.Include(x => x.Members).Include(x => x.Devices).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -105,18 +106,9 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            Home foundHome = _repository.Homes.FirstOrDefault(h => h.Id == updatedEntity.Id);
-
-            if (foundHome != null)
-            {
-                _repository.Entry(foundHome).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.Homes.FirstOrDefault(b => b.Id == updatedEntity.Id);
-            }
-            else
-            {
-                throw new DatabaseException("The Home does not exist in the Data Base.");
-            }
+            _repository.Update(updatedEntity);
+            _repository.SaveChanges();
+            return updatedEntity;
         }
         catch (SqlException)
         {
