@@ -24,11 +24,6 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         _roleService = roleLogic;
     }
 
-    public HomeMember CreateHomeMember(HomeMember homeMember)
-    {
-        throw new NotImplementedException();
-    }
-
     public User CreateHomeOwner(User user)
     {
         ValidateUser(user);
