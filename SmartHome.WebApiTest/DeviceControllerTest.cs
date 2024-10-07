@@ -74,14 +74,23 @@ public class DeviceControllerTest
             Name = "Sensor de ventana 1",
             Description = "Sensor para ventanas",
             ModelNumber = "1234",
-            Photos = "foto del sensor",
-            Business = company1
+            Photos = "foto del sensor"
         };
 
         Device device = deviceRequestModel.ToEntity();
+        device.Business = company1;
         device.Id = Guid.NewGuid();
+        HttpContext httpContext = new DefaultHttpContext();
+        httpContext.Items.Add("User", user1);
 
-        deviceLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>())).Returns(device);
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        deviceController = new DeviceController(deviceLogicMock.Object) { ControllerContext = controllerContext };
+
+        deviceLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>())).Returns(device);
         var expectedResult = new DeviceResponseModel(device);
         var expectedDeviceResult = new CreatedAtActionResult("CreateDevice", "CreateDevice", new { Id = device.Id }, expectedResult);
 

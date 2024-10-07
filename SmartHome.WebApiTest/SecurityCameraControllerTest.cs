@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -41,13 +43,22 @@ public class SecurityCameraControllerTest
             OutDoor = false,
             MovementDetection = true,
             PersonDetection = true,
-            Company = company,
         };
 
         var securityCamera = securityCameraRequestModel.ToEntity();
         securityCamera.Id = Guid.NewGuid();
 
-        securityCameraLogicMock.Setup(d => d.CreateSecurityCamera(It.IsAny<SecurityCamera>())).Returns(securityCamera);
+        HttpContext httpContext = new DefaultHttpContext();
+        httpContext.Items.Add("User", businessOwner);
+
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        securityCameraController = new SecurityCameraController(securityCameraLogicMock.Object) { ControllerContext = controllerContext };
+
+        securityCameraLogicMock.Setup(d => d.CreateSecurityCamera(It.IsAny<SecurityCamera>(), It.IsAny<BusinessLogic.Domain.User>())).Returns(securityCamera);
         var expectedResult = new SecurityCameraResponseModel(securityCamera);
         var expectedSecurityCameraResult = new CreatedAtActionResult("CreateSecurityCamera", "CreateSecurityCamera", new { Id = securityCamera.Id }, expectedResult);
 

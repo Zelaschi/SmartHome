@@ -44,7 +44,6 @@ public class HomeControllerTest
         var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var homeRequestModel = new CreateHomeRequestModel()
         {
-            Owner = user1,
             MainStreet = "Cuareim",
             DoorNumber = "1234",
             Latitude = "12",
@@ -82,7 +81,6 @@ public class HomeControllerTest
         var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var homeRequestModel = new CreateHomeRequestModel()
         {
-            Owner = user1,
             MainStreet = "Cuareim",
             DoorNumber = "1234",
             Latitude = "12",
@@ -145,7 +143,6 @@ public class HomeControllerTest
         var homeMember = new HomeMember(user) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeRequestModel = new CreateHomeRequestModel()
         {
-            Owner = user,
             MainStreet = "Cuareim",
             DoorNumber = "1234",
             Latitude = "12",
@@ -169,7 +166,7 @@ public class HomeControllerTest
 
         // ACT
         var expected = new NoContentResult();
-        var result = homeController.AddHomeMemberToHome(home.Id) as NoContentResult;
+        var result = homeController.AddHomeMemberToHome(home.Id, userId) as NoContentResult;
 
         // ASSERT
         homeLogicMock.VerifyAll();

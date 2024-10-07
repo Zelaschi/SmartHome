@@ -100,8 +100,16 @@ public class MeControllerTest
             new HomeResponseModel(homes.First()),
             new HomeResponseModel(homes.Last())
         });
+        HttpContext httpContext = new DefaultHttpContext();
+        httpContext.Items.Add("User", user1);
 
-        var result = _meController.GetAllHomesByUserId(user1Id) as OkObjectResult;
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object) { ControllerContext = controllerContext };
+        var result = _meController.GetAllHomesByUserId() as OkObjectResult;
         var objectResult = (result.Value as List<HomeResponseModel>)!;
 
         var expectedObject = (expected.Value as List<HomeResponseModel>)!;
