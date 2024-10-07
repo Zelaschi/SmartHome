@@ -54,21 +54,29 @@ public sealed class DeviceController : ControllerBase
         }
 
         var totalCount = query.Count();
+        List<DeviceResponseModel> devicesResponse;
 
-        var pagedData = query
-            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-            .Take(paginationParams.PageSize)
-            .ToList();
-
-        var devicesResponse = pagedData.Select(device => new DeviceResponseModel(device)).ToList();
-
-        return Ok(new
+        if (paginationParams != null)
         {
-            Data = devicesResponse,
-            TotalCount = totalCount,
-            PageNumber = paginationParams.PageNumber,
-            PageSize = paginationParams.PageSize
-        });
+            var pagedData = query
+                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
+                .ToList();
+
+            devicesResponse = pagedData.Select(device => new DeviceResponseModel(device)).ToList();
+            return Ok(new
+            {
+                Data = devicesResponse,
+                TotalCount = totalCount,
+                PageNumber = paginationParams.PageNumber,
+                PageSize = paginationParams.PageSize
+            });
+        }
+        else
+        {
+            devicesResponse = query.Select(device => new DeviceResponseModel(device)).ToList();
+            return Ok(devicesResponse);
+        }
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]

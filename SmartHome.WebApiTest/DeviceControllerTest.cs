@@ -55,7 +55,7 @@ public class DeviceControllerTest
 
         List<DeviceResponseModel> expectedObject = (expected.Value as List<DeviceResponseModel>)!;
 
-        var result = deviceController.GetAllDevices() as OkObjectResult;
+        var result = deviceController.GetAllDevices(null, null, null) as OkObjectResult;
         var objectResult = (result.Value as List<DeviceResponseModel>)!;
 
         deviceLogicMock.VerifyAll();

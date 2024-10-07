@@ -12,6 +12,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
+using SmartHome.WebApi.WebModels.QueryParams;
 
 namespace SmartHome.WebApiTest;
 [TestClass]
@@ -50,7 +51,7 @@ public class BusinessesControllerTest
         });
         List<BusinessesResponseModel> expectedObject = (expected.Value as List<BusinessesResponseModel>)!;
 
-        var result = businessesController.GetAllBusinesses() as OkObjectResult;
+        var result = businessesController.GetAllBusinesses((Pagination)null,null,null) as OkObjectResult;
         var objectResult = (result.Value as List<BusinessesResponseModel>)!;
 
         businessesLogicMock.VerifyAll();
