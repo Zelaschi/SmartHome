@@ -344,7 +344,14 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var detectedPerson = _userRepository.Find(x => x.Id == detectedPersonId);
         if (detectedPerson == null)
         {
-            throw new UserException("User detected by camera not found");
+            return new Notification
+            {
+                Date = DateTime.Today,
+                Event = "Undetected person",
+                HomeDevice = homeDevice,
+                Time = DateTime.Now,
+                DetectedPerson = detectedPerson
+            };
         }
 
         return new Notification
