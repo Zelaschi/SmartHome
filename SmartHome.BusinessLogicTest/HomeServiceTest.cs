@@ -712,4 +712,32 @@ public class HomeServiceTest
         Assert.IsInstanceOfType(exception, typeof(HomeException));
         Assert.AreEqual("Home already exists", exception.Message);
     }
+
+    [TestMethod]
+    public void Register_Repeated_HomeMemberToHouse_Throws_Exception_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var memberId = Guid.NewGuid();
+        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        Exception exception = null;
+
+        try
+        {
+            homeService.AddHomeMemberToHome(home.Id, memberId);
+            homeService.AddHomeMemberToHome(home.Id, memberId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("User is already in home", exception.Message);
+    }
 }
