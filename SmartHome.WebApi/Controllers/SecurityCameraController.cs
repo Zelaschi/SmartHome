@@ -4,6 +4,7 @@ using SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 using SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.InitialSeedData;
+using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -23,7 +24,14 @@ public sealed class SecurityCameraController : ControllerBase
     [HttpPost]
     public IActionResult CreateSecurityCamera([FromBody] SecurityCameraRequestModel securityCameraRequestModel)
     {
-        var response = new SecurityCameraResponseModel(_securityCameraLogic.CreateSecurityCamera(securityCameraRequestModel.ToEntity()));
+        var user = HttpContext.Items["User"] as User;
+
+        if (user == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        var response = new SecurityCameraResponseModel(_securityCameraLogic.CreateSecurityCamera(securityCameraRequestModel.ToEntity(), user));
         return CreatedAtAction("CreateSecurityCamera", new { response.Id }, response);
     }
 }

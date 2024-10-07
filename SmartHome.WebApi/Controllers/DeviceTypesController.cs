@@ -6,7 +6,7 @@ using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/[controller]")]
+[Route("api/v1/deviceTypes")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]
@@ -19,6 +19,7 @@ public sealed class DeviceTypesController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID)]
+    [HttpGet]
     public IActionResult GetAllDeviceTypes()
     {
         return Ok(_deviceLogic.GetAllDeviceTypes().Select(deviceType => new DeviceTypesResponseModel(deviceType)).ToList());

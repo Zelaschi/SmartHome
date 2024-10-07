@@ -48,13 +48,19 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
         return false;
     }
 
-    public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera)
+    public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera, User bOwner)
     {
+        var business = _businessRepository.Find(x => x.BusinessOwner == bOwner);
+        if (business == null)
+        {
+            throw new DeviceException("Business was not found for the user");
+        }
+
         if (RepeatedModelNumber(securityCamera))
         {
             throw new DeviceException("Security Camera model already exists");
         }
-
+        securityCamera.Business = business;
         return _deviceRepository.Add(securityCamera) as SecurityCamera;
     }
 

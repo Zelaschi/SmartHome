@@ -12,7 +12,6 @@ public sealed class SecurityCameraRequestModel
     public bool? OutDoor { get; set; }
     public bool? MovementDetection { get; set; }
     public bool? PersonDetection { get; set; }
-    public Business? Company { get; set; }
 
     public SecurityCamera ToEntity()
     {
@@ -23,7 +22,6 @@ public sealed class SecurityCameraRequestModel
             ModelNumber = ModelNumber,
             Description = Description,
             Photos = Photos,
-            Business = Company,
             Outdoor = (bool)OutDoor,
             Indoor = (bool)InDoor,
             MovementDetection = (bool)MovementDetection,
