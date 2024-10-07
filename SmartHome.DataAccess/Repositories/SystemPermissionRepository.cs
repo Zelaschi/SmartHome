@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;
@@ -12,21 +9,29 @@ using SmartHome.DataAccess.CustomExceptions;
 
 namespace SmartHome.DataAccess.Repositories;
 
-public sealed class UserRepository : IGenericRepository<User>
+public class SystemPermissionRepository : IGenericRepository<SystemPermission>
 {
     private readonly SmartHomeEFCoreContext _repository;
-    public UserRepository(SmartHomeEFCoreContext repository)
-    {
-        _repository = repository;
-    }
 
-    public User Add(User user)
+    public SystemPermissionRepository(SmartHomeEFCoreContext repository)
     {
         try
         {
-            _repository.Users.Add(user);
+            _repository = repository;
+        }
+        catch (SqlException)
+        {
+            throw new DatabaseException("Error related to the Data Base, please validate the connection.");
+        }
+    }
+
+    public SystemPermission Add(SystemPermission entity)
+    {
+        try
+        {
+            _repository.SystemPermissions.Add(entity);
             _repository.SaveChanges();
-            return _repository.Users.FirstOrDefault(u => u.Id == user.Id);
+            return _repository.SystemPermissions.FirstOrDefault(sp => sp.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -38,15 +43,15 @@ public sealed class UserRepository : IGenericRepository<User>
     {
         try
         {
-            User userToDelete = _repository.Users.FirstOrDefault(b => b.Id == id);
-            if (userToDelete != null)
+            SystemPermission permissionToDelete = _repository.SystemPermissions.FirstOrDefault(sp => sp.Id == id);
+            if (permissionToDelete != null)
             {
-                _repository.Users.Remove(userToDelete);
+                _repository.SystemPermissions.Remove(permissionToDelete);
                 _repository.SaveChanges();
             }
             else
             {
-                throw new DatabaseException("The User does not exist in the Data Base.");
+                throw new DatabaseException("The SystemPermission does not exist in the Data Base.");
             }
         }
         catch (SqlException)
@@ -55,11 +60,11 @@ public sealed class UserRepository : IGenericRepository<User>
         }
     }
 
-    public User? Find(Func<User, bool> filter)
+    public SystemPermission? Find(Func<SystemPermission, bool> filter)
     {
         try
         {
-            return _repository.Users.Include(u => u.Role).FirstOrDefault(filter);
+            return _repository.SystemPermissions.FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -67,11 +72,11 @@ public sealed class UserRepository : IGenericRepository<User>
         }
     }
 
-    public IList<User> FindAll()
+    public IList<SystemPermission> FindAll()
     {
         try
         {
-            return _repository.Users.ToList();
+            return _repository.SystemPermissions.ToList();
         }
         catch (SqlException)
         {
@@ -79,21 +84,21 @@ public sealed class UserRepository : IGenericRepository<User>
         }
     }
 
-    public User? Update(User updatedEntity)
+    public SystemPermission? Update(SystemPermission updatedEntity)
     {
         try
         {
-            User foundUser = _repository.Users.FirstOrDefault(u => u.Id == updatedEntity.Id);
+            SystemPermission foundPermission = _repository.SystemPermissions.FirstOrDefault(sp => sp.Id == updatedEntity.Id);
 
-            if (foundUser != null)
+            if (foundPermission != null)
             {
-                _repository.Entry(foundUser).CurrentValues.SetValues(updatedEntity);
+                _repository.Entry(foundPermission).CurrentValues.SetValues(updatedEntity);
                 _repository.SaveChanges();
-                return _repository.Users.FirstOrDefault(u => u.Id == updatedEntity.Id);
+                return _repository.SystemPermissions.FirstOrDefault(sp => sp.Id == updatedEntity.Id);
             }
             else
             {
-                throw new DatabaseException("The User does not exist in the Data Base.");
+                throw new DatabaseException("The SystemPermission does not exist in the Data Base.");
             }
         }
         catch (SqlException)
