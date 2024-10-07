@@ -13,10 +13,12 @@ namespace SmartHome.BusinessLogic.Services;
 public class RoleService : IRoleLogic, ISystemPermissionLogic
 {
     private readonly IGenericRepository<Role> _roleRepository;
+    private readonly IGenericRepository<SystemPermission> _systemPermissionRepository;
 
-    public RoleService(IGenericRepository<Role> roleRepository)
+    public RoleService(IGenericRepository<Role> roleRepository, IGenericRepository<SystemPermission> systemPermissionRepository)
     {
         _roleRepository = roleRepository;
+        _systemPermissionRepository = systemPermissionRepository;
     }
 
     public virtual Role GetHomeOwnerRole()
@@ -36,11 +38,23 @@ public class RoleService : IRoleLogic, ISystemPermissionLogic
 
     public bool HasPermission(Guid roleId, Guid permissionId)
     {
-        throw new NotImplementedException();
+        var role = _roleRepository.Find(x => x.Id == roleId);
+        if (role == null)
+        {
+            throw new RoleException("Role not found");
+        }
+
+        var permission = role.SystemPermissions.FirstOrDefault(x => x.Id == permissionId);
+        if (permission != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public SystemPermission GetSystemPermissionById(Guid systemPermissionId)
     {
-        throw new NotImplementedException();
+        return _systemPermissionRepository.Find(permission => permission.Id == systemPermissionId) ?? throw new RoleException("Permission not found");
     }
 }

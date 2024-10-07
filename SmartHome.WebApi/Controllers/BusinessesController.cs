@@ -6,6 +6,8 @@ using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
+using SmartHome.WebApi.WebModels.QueryParams;
+using SmartHome.WebApi.WebModels.UserModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -39,8 +41,40 @@ public sealed class BusinessesController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)]
     [HttpGet]
-    public IActionResult GetAllBusinesses()
+    public IActionResult GetAllBusinesses(
+        [FromQuery] Pagination paginationParams, [FromQuery] string? businessName = null, [FromQuery] string? fullName = null)
     {
-        return Ok(_businessesLogic.GetAllBusinesses().Select(businesses => new BusinessesResponseModel(businesses)).ToList());
+        var query = _businessesLogic.GetAllBusinesses();
+
+        if (!string.IsNullOrEmpty(businessName))
+        {
+            query = query.Where(u => u.Name == businessName);
+        }
+
+        if (!string.IsNullOrEmpty(fullName))
+        {
+            var searchTerm = fullName.ToLower();
+            query = query.Where(u =>
+                (u.BusinessOwner.Name.ToLower() + " " + u.BusinessOwner.Surname.ToLower()).Contains(searchTerm) ||
+                (u.BusinessOwner.Surname.ToLower() + " " + u.BusinessOwner.Name.ToLower()).Contains(searchTerm)
+            );
+        }
+
+        var totalCount = query.Count();
+
+        var pagedData = query
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .ToList();
+
+        var usersResponse = pagedData.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
+
+        return Ok(new
+        {
+            Data = usersResponse,
+            TotalCount = totalCount,
+            PageNumber = paginationParams.PageNumber,
+            PageSize = paginationParams.PageSize
+        });
     }
 }

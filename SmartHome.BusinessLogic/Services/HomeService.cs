@@ -37,7 +37,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homesFromUserRepository = homesFromUserRepository;
     }
 
-    public HomeMember AddHomeMemberToHome(Guid homeId, Guid? userId)
+    private User FindUserById(Guid? userId)
     {
         var user = _userRepository.Find(x => x.Id == userId);
         if (user == null)
@@ -45,13 +45,33 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("User Id does not match any user");
         }
 
-        var homeMember = new HomeMember(user);
-        var home = _homeRepository.Find(x => x.Id == homeId);
-        if (home == null)
-        {
-            throw new HomeException("Home Id does not match any home");
-        }
+        return user;
+    }
 
+    private void CheckHomeAvailability(Home home)
+    {
+        if (home.Members.Count >= home.MaxMembers)
+        {
+            throw new HomeException("Home has no more space");
+        }
+    }
+
+    private void CheckUserIsNotAlreadyInHome(Home home, User user)
+    {
+        if (home.Members.Any(member => member.User.Id == user.Id))
+        {
+            throw new HomeException("User is already in home");
+        }
+    }
+
+    public HomeMember AddHomeMemberToHome(Guid homeId, Guid? userId)
+    {
+        var user = FindUserById(userId);
+        var homeMember = new HomeMember(user);
+        var home = FindHomeById(homeId);
+
+        CheckUserIsNotAlreadyInHome(home, user);
+        CheckHomeAvailability(home);
         home.Members.Add(homeMember);
         _homeRepository.Update(home);
         return homeMember;

@@ -24,19 +24,11 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         _roleService = roleLogic;
     }
 
-    public HomeMember CreateHomeMember(HomeMember homeMember)
-    {
-        throw new NotImplementedException();
-    }
-
     public User CreateHomeOwner(User user)
     {
         ValidateUser(user);
 
-        if (!EmailIsUnique(user.Email))
-        {
-            throw new UserException("User with that email already exists");
-        }
+        EmailIsUnique(user.Email);
 
         user.Role = _roleService.GetHomeOwnerRole();
 
@@ -78,7 +70,7 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
                password.IndexOfAny(specialCharacters.ToCharArray()) >= 0;
     }
 
-    public bool IsValidEmail(string email)
+    private bool IsValidEmail(string email)
     {
         var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
@@ -87,10 +79,13 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         return isEmailFormatValid;
     }
 
-    public bool EmailIsUnique(string email)
+    private void EmailIsUnique(string email)
     {
         var user = _userRepository.Find(u => u.Email.ToLower().Equals(email.ToLower()));
-        return user == null;
+        if (user != null)
+        {
+            throw new UserException("User with that email already exists");
+        }
     }
 
     public IEnumerable<User> GetAllUsers()
@@ -98,19 +93,11 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         return _userRepository.FindAll();
     }
 
-    public IEnumerable<Home> GetAllHomes()
-    {
-        throw new NotImplementedException();
-    }
-
     public User CreateBusinessOwner(User user)
     {
         ValidateUser(user);
 
-        if (!EmailIsUnique(user.Email))
-        {
-            throw new UserException("User with that email already exists");
-        }
+        EmailIsUnique(user.Email);
 
         user.Role = _roleService.GetBusinessOwnerRole();
 
@@ -122,10 +109,7 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
     {
         ValidateUser(user);
 
-        if (!EmailIsUnique(user.Email))
-        {
-            throw new UserException("User with that email already exists");
-        }
+        EmailIsUnique(user.Email);
 
         user.Role = _roleService.GetAdminRole();
 

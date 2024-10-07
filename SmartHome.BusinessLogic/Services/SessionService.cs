@@ -43,11 +43,30 @@ public class SessionService : ILoginLogic, ISessionLogic
 
     public bool IsSessionValid(Guid token)
     {
-        throw new NotImplementedException();
+        var session = _sessionRepository.Find(x => x.SessionId == token);
+        if (session == null)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public User GetUserOfSession(Guid token)
     {
-        throw new NotImplementedException();
+        var session = _sessionRepository.Find(x => x.SessionId == token);
+        if (session == null)
+        {
+            throw new SessionException("The session with token: " + token + " was not found");
+        }
+
+        var user = _userRepository.Find(x => x.Id == session.UserId);
+
+        if (user == null)
+        {
+            throw new SessionException("The user of the session with token: " + token + " was not found");
+        }
+
+        return user;
     }
 }
