@@ -100,6 +100,7 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         EmailIsUnique(user.Email);
 
         user.Role = _roleService.GetBusinessOwnerRole();
+        user.Complete = false;
 
         User newBusinesssOwner = _userRepository.Add(user);
         return newBusinesssOwner;
