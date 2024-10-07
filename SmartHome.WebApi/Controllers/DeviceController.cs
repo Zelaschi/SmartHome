@@ -5,6 +5,8 @@ using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.InitialSeedData;
 using Microsoft.Identity.Client;
+using SmartHome.WebApi.WebModels.QueryParams;
+using SmartHome.WebApi.WebModels.UserModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -22,9 +24,51 @@ public sealed class DeviceController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_DEVICES_PERMISSION_ID)]
     [HttpGet]
-    public IActionResult GetAllDevices()
+    public IActionResult GetAllDevices(
+    [FromQuery] Pagination paginationParams,
+    [FromQuery] string? deviceName = null,
+    [FromQuery] string? deviceModel = null,
+    [FromQuery] string? businessName = null,
+    [FromQuery] string? deviceType = null)
     {
-        return Ok(_deviceLogic.GetAllDevices().Select(device => new DeviceResponseModel(device)).ToList());
+        var query = _deviceLogic.GetAllDevices();
+
+        if (!string.IsNullOrEmpty(deviceName))
+        {
+            query = query.Where(d => d.Name.Contains(deviceName));
+        }
+
+        if (!string.IsNullOrEmpty(deviceModel))
+        {
+            query = query.Where(d => d.ModelNumber.Contains(deviceModel));
+        }
+
+        if (!string.IsNullOrEmpty(businessName))
+        {
+            query = query.Where(d => d.Business.Name.Contains(businessName));
+        }
+
+        if (!string.IsNullOrEmpty(deviceType))
+        {
+            query = query.Where(d => d.Type == deviceType);
+        }
+
+        var totalCount = query.Count();
+
+        var pagedData = query
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .ToList();
+
+        var devicesResponse = pagedData.Select(device => new DeviceResponseModel(device)).ToList();
+
+        return Ok(new
+        {
+            Data = devicesResponse,
+            TotalCount = totalCount,
+            PageNumber = paginationParams.PageNumber,
+            PageSize = paginationParams.PageSize
+        });
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
