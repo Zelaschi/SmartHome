@@ -93,11 +93,6 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         return _userRepository.FindAll();
     }
 
-    public IEnumerable<Home> GetAllHomes()
-    {
-        throw new NotImplementedException();
-    }
-
     public User CreateBusinessOwner(User user)
     {
         ValidateUser(user);
