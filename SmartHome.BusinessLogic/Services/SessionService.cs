@@ -43,7 +43,13 @@ public class SessionService : ILoginLogic, ISessionLogic
 
     public bool IsSessionValid(Guid token)
     {
-        throw new NotImplementedException();
+        var session = _sessionRepository.Find(x => x.SessionId == token);
+        if (session == null)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public User GetUserOfSession(Guid token)
