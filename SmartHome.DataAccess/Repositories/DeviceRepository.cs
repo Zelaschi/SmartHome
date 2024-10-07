@@ -66,7 +66,7 @@ public class DeviceRepository : IGenericRepository<Device>, IDeviceTypeRepositor
     {
         try
         {
-            return _repository.Devices.FirstOrDefault(filter);
+            return _repository.Devices.Include(x => x.Business).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -78,7 +78,7 @@ public class DeviceRepository : IGenericRepository<Device>, IDeviceTypeRepositor
     {
         try
         {
-            return _repository.Devices.ToList();
+            return _repository.Devices.Include(x => x.Business).ToList();
         }
         catch (SqlException)
         {
