@@ -4,7 +4,6 @@ namespace SmartHome.WebApi.WebModels.HomeModels.In;
 
 public sealed class CreateHomeRequestModel
 {
-    public required User Owner { get; set; }
     public required string MainStreet { get; set; }
     public required string DoorNumber { get; set; }
     public required string Latitude { get; set; }
@@ -15,7 +14,7 @@ public sealed class CreateHomeRequestModel
     {
         return new Home
         {
-            Owner = Owner,
+            Owner = null,
             MainStreet = MainStreet,
             DoorNumber = DoorNumber,
             Latitude = Latitude,

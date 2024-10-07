@@ -11,7 +11,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/[controller]")]
+[Route("api/v1/homes")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]
