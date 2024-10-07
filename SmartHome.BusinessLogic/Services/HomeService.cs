@@ -83,6 +83,13 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         homeOwnerMember.HomePermissions = PermissionsList;
     }
 
+    private bool ReapetedHome(Home home)
+    {
+        var reapeatedHome = _homeRepository.Find(x => x.MainStreet == home.MainStreet && x.DoorNumber == home.DoorNumber && x.Latitude == home.Latitude && x.Longitude == home.Longitude);
+        if (reapeatedHome != null) return true;
+        return false;
+    }
+
     public Home CreateHome(Home home, Guid? userId)
     {
         ValidateHome(home);
@@ -90,6 +97,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         if (owner == null)
         {
             throw new HomeException("User Id does not match any user");
+        }
+
+        if (ReapetedHome(home))
+        {
+            throw new HomeException("Home already exists");
         }
 
         home.Owner = owner;
@@ -344,7 +356,14 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var detectedPerson = _userRepository.Find(x => x.Id == detectedPersonId);
         if (detectedPerson == null)
         {
-            throw new UserException("User detected by camera not found");
+            return new Notification
+            {
+                Date = DateTime.Today,
+                Event = "Undetected person",
+                HomeDevice = homeDevice,
+                Time = DateTime.Now,
+                DetectedPerson = detectedPerson
+            };
         }
 
         return new Notification
@@ -384,6 +403,45 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId, bool opened)
     {
-        throw new NotImplementedException();
+        var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+
+        CheckDeviceOnline(homeDevice);
+
+        var home = FindHomeById(homeDevice.HomeId);
+        var homeMembers = home.Members;
+
+        if (opened)
+        {
+            var notificationOpened = CreateNotification("Window Opened", homeDevice);
+
+            foreach (var homeMember in homeMembers)
+            {
+                if (HasPermission(homeMember.HomeMemberId, notificationPermission))
+                {
+                    homeMember.Notifications.Add(notificationOpened);
+                }
+            }
+
+            _homeRepository.Update(home);
+
+            return notificationOpened;
+        }
+        else
+        {
+            var notificationClosed = CreateNotification("Window Closed", homeDevice);
+
+            foreach (var homeMember in homeMembers)
+            {
+                if (HasPermission(homeMember.HomeMemberId, notificationPermission))
+                {
+                    homeMember.Notifications.Add(notificationClosed);
+                }
+            }
+
+            _homeRepository.Update(home);
+
+            return notificationClosed;
+        }
     }
 }

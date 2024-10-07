@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
@@ -218,6 +219,105 @@ public class DeviceServiceTest
         deviceRepositoryMock.Verify(x => x.Add(windowSensor), Times.Once);
 
         Assert.AreEqual(windowSensor, result);
+    }
+
+    [TestMethod]
+
+    public void Create_WindowSensor_ModelNumeber_Repeated_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner
+        };
+        var windowSensor = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Window Sensor",
+            Description = "Window Sensor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Business = business
+        };
+
+        deviceRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Device, bool>>())).Returns(windowSensor);
+        Exception exception = null;
+
+        try
+        {
+            deviceService.CreateDevice(windowSensor);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        deviceRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Device model already exists", exception.Message);
+    }
+
+    [TestMethod]
+
+    public void Create_SecurityCamera_ModelNumeber_Repeated_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner
+        };
+        var cameraId = Guid.NewGuid();
+        var securityCamera = new SecurityCamera
+        {
+            Id = cameraId,
+            Name = "Security Camera",
+            Description = "Security Camera outdoor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "SecurityCamera",
+            Outdoor = true,
+            Business = business
+        };
+
+        deviceRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Device, bool>>())).Returns(securityCamera);
+        Exception exception = null;
+
+        try
+        {
+            deviceService.CreateSecurityCamera(securityCamera);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        deviceRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Security Camera model already exists", exception.Message);
     }
 
     [TestMethod]
