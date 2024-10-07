@@ -82,7 +82,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         homeOwnerMember.HomePermissions = PermissionsList;
     }
 
-    private bool ReapetedHome(Home home)
+    private bool RepeatedHome(Home home)
     {
         var reapeatedHome = _homeRepository.Find(x => x.MainStreet == home.MainStreet && x.DoorNumber == home.DoorNumber && x.Latitude == home.Latitude && x.Longitude == home.Longitude);
         if (reapeatedHome != null) return true;
@@ -98,7 +98,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("User Id does not match any user");
         }
 
-        if (ReapetedHome(home))
+        if (RepeatedHome(home))
         {
             throw new HomeException("Home already exists");
         }
