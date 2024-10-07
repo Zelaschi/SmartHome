@@ -8,6 +8,7 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.WebApi.WebModels.QueryParams;
 using SmartHome.WebApi.WebModels.UserModels.Out;
+using System.Linq;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -42,7 +43,7 @@ public sealed class BusinessesController : ControllerBase
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)]
     [HttpGet]
     public IActionResult GetAllBusinesses(
-        [FromQuery] Pagination paginationParams, [FromQuery] string? businessName = null, [FromQuery] string? fullName = null)
+        [FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null, [FromQuery] string? businessName = null, [FromQuery] string? fullName = null)
     {
         var query = _businessesLogic.GetAllBusinesses();
 
@@ -62,11 +63,11 @@ public sealed class BusinessesController : ControllerBase
 
         var totalCount = query.Count();
         List<BusinessesResponseModel> usersResponse;
-        if (paginationParams != null)
+        if (pageNumber != null && pageSize != null)
         {
             var pagedData = query
-            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-            .Take(paginationParams.PageSize)
+            .Skip(((int)pageNumber - 1) * (int)pageSize)
+            .Take((int)pageSize)
             .ToList();
 
             usersResponse = pagedData.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
@@ -74,8 +75,8 @@ public sealed class BusinessesController : ControllerBase
             {
                 Data = usersResponse,
                 TotalCount = totalCount,
-                PageNumber = paginationParams.PageNumber,
-                PageSize = paginationParams.PageSize
+                PageNumber = pageNumber,
+                PageSize = pageSize
             });
         }
         else

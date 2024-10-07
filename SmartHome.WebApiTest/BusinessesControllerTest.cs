@@ -51,7 +51,7 @@ public class BusinessesControllerTest
         });
         List<BusinessesResponseModel> expectedObject = (expected.Value as List<BusinessesResponseModel>)!;
 
-        var result = businessesController.GetAllBusinesses((Pagination)null,null,null) as OkObjectResult;
+        var result = businessesController.GetAllBusinesses(null, null,null,null) as OkObjectResult;
         var objectResult = (result.Value as List<BusinessesResponseModel>)!;
 
         businessesLogicMock.VerifyAll();

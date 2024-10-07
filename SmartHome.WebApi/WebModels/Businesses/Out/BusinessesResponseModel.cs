@@ -5,11 +5,11 @@ namespace SmartHome.WebApi.WebModels.Businesses.Out;
 
 public sealed class BusinessesResponseModel
 {
-    public string Id;
-    public string Name;
-    public string OwnerName;
-    public string Email;
-    public string RUT;
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string OwnerName { get; set; }
+    public string Email { get; set; }
+    public string RUT { get; set; }
 
     public BusinessesResponseModel(Business aBusiness)
     {

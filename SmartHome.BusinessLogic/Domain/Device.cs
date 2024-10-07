@@ -13,7 +13,7 @@ public class Device
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
     public required string Photos { get; set; }
-    public required Business Business { get; set; }
+    public Business? Business { get; set; }
 
     public override bool Equals(object? obj)
     {

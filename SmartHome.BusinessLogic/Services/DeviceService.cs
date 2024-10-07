@@ -14,18 +14,29 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 {
     private readonly IGenericRepository<Device> _deviceRepository;
     private readonly IDeviceTypeRepository _deviceTypeRepository;
-    public DeviceService(IGenericRepository<Device> deviceRepository, IDeviceTypeRepository deviceTypeRepository)
+    private readonly IGenericRepository<Business> _businessRepository;
+    public DeviceService(IGenericRepository<Business> businessRepository, IGenericRepository<Device> deviceRepository, IDeviceTypeRepository deviceTypeRepository)
     {
+        _businessRepository = businessRepository;
         _deviceRepository = deviceRepository;
         _deviceTypeRepository = deviceTypeRepository;
     }
 
-    public Device CreateDevice(Device device)
+    public Device CreateDevice(Device device, User user)
     {
+        var business = _businessRepository.Find(x => x.BusinessOwner == user);
+
+        if (business == null)
+        {
+            throw new DeviceException("Business was not found for the user");
+        }
+
         if (RepeatedModelNumber(device))
         {
             throw new DeviceException("Device model already exists");
         }
+
+        device.Business = business;
 
         return _deviceRepository.Add(device);
     }

@@ -7,6 +7,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using Microsoft.Identity.Client;
 using SmartHome.WebApi.WebModels.QueryParams;
 using SmartHome.WebApi.WebModels.UserModels.Out;
+using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -25,7 +26,8 @@ public sealed class DeviceController : ControllerBase
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_DEVICES_PERMISSION_ID)]
     [HttpGet]
     public IActionResult GetAllDevices(
-    [FromQuery] Pagination paginationParams,
+    [FromQuery] int? pageNumber,
+    [FromQuery] int? pageSize,
     [FromQuery] string? deviceName = null,
     [FromQuery] string? deviceModel = null,
     [FromQuery] string? businessName = null,
@@ -56,11 +58,11 @@ public sealed class DeviceController : ControllerBase
         var totalCount = query.Count();
         List<DeviceResponseModel> devicesResponse;
 
-        if (paginationParams != null)
+        if (pageNumber != null && pageSize != null)
         {
             var pagedData = query
-                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-                .Take(paginationParams.PageSize)
+                .Skip(((int)pageNumber - 1) * (int)pageSize)
+                .Take((int)pageSize)
                 .ToList();
 
             devicesResponse = pagedData.Select(device => new DeviceResponseModel(device)).ToList();
@@ -68,8 +70,8 @@ public sealed class DeviceController : ControllerBase
             {
                 Data = devicesResponse,
                 TotalCount = totalCount,
-                PageNumber = paginationParams.PageNumber,
-                PageSize = paginationParams.PageSize
+                PageNumber = pageNumber,
+                PageSize = pageSize
             });
         }
         else
@@ -83,7 +85,14 @@ public sealed class DeviceController : ControllerBase
     [HttpPost]
     public IActionResult CreateDevice([FromBody] CreateDeviceRequestModel deviceRequestModel)
     {
-        var response = new DeviceResponseModel(_deviceLogic.CreateDevice(deviceRequestModel.ToEntity()));
+        var user = HttpContext.Items["User"] as User;
+
+        if (user == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        var response = new DeviceResponseModel(_deviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user));
         return CreatedAtAction("CreateDevice", new {response.Id }, response);
     }
 }
