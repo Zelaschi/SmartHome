@@ -338,15 +338,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public HomeDevice AddDeviceToHome(Guid homeId, Guid deviceId)
     {
-        var home = FindHomeById(homeId);
-
         var device = FindDeviceById(deviceId);
 
         var homeDevice = CreateHomeDevice(homeId, device);
 
-        home.Devices.Add(homeDevice);
-
-        _homeRepository.Update(home);
+        _homeDeviceRepository.Add(homeDevice);
         return homeDevice;
     }
 
