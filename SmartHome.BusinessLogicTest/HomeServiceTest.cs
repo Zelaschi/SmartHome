@@ -53,6 +53,7 @@ public class HomeServiceTest
         var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
         homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission>());
 
@@ -233,6 +234,7 @@ public class HomeServiceTest
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
         homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission> { notificationPermission });
 
@@ -466,6 +468,7 @@ public class HomeServiceTest
         var homeDeviceId = Guid.NewGuid();
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home1);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
         homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission> { notificationPermission });
         homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission,bool>>())).Returns(notificationPermission);
@@ -635,6 +638,7 @@ public class HomeServiceTest
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
         homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission> { notificationPermission });
 
@@ -682,5 +686,30 @@ public class HomeServiceTest
         homeRepositoryMock.VerifyAll();
         userRepositoryMock.VerifyAll();
         homeRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void Create_Reapeted_Adress_Home_Throws_Exception_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var home2 = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 3, Owner = owner };
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        Exception exception = null;
+
+        try
+        {
+            homeService.CreateHome(home, ownerId);
+            homeService.CreateHome(home2, ownerId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("Home already exists", exception.Message);
     }
 }
