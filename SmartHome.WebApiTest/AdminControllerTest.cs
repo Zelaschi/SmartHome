@@ -67,9 +67,10 @@ public class AdminControllerTest
 
         adminLogicMock.Setup(a => a.DeleteAdmin(adminId));
 
-        var result = adminController.DeleteAdmin(adminId) as NoContentResult;
+        var result = adminController.DeleteAdmin(adminId) as OkObjectResult;
 
         adminLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(204));
+        Assert.IsTrue(result.StatusCode.Equals(200));
+        Assert.IsTrue(result.Value.Equals("The admin was deleted successfully"));
     }
 }
