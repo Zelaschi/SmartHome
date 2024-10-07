@@ -22,7 +22,7 @@ public sealed class UsersController : ControllerBase
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_ACCOUNTS_PERMISSION_ID)]
     [HttpGet]
     public IActionResult GetAllUsers(
-        [FromQuery] Pagination paginationParams, [FromQuery] string? role = null, [FromQuery] string? fullName = null)
+    [FromQuery] Pagination paginationParams, [FromQuery] string? role = null, [FromQuery] string? fullName = null)
     {
         var query = _usersLogic.GetAllUsers();
 
@@ -41,20 +41,28 @@ public sealed class UsersController : ControllerBase
         }
 
         var totalCount = query.Count();
+        List<UserResponseModel> usersResponse;
 
-        var pagedData = query
-            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-            .Take(paginationParams.PageSize)
-            .ToList();
-
-        var usersResponse = pagedData.Select(user => new UserResponseModel(user)).ToList();
-
-        return Ok(new
+        if (paginationParams != null)
         {
-            Data = usersResponse,
-            TotalCount = totalCount,
-            PageNumber = paginationParams.PageNumber,
-            PageSize = paginationParams.PageSize
-        });
+            var pagedData = query
+                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
+                .ToList();
+
+            usersResponse = pagedData.Select(user => new UserResponseModel(user)).ToList();
+            return Ok(new
+            {
+                Data = usersResponse,
+                TotalCount = totalCount,
+                PageNumber = paginationParams.PageNumber,
+                PageSize = paginationParams.PageSize
+            });
+        }
+        else
+        {
+            usersResponse = query.Select(user => new UserResponseModel(user)).ToList();
+            return Ok(usersResponse);
+        }
     }
 }

@@ -49,7 +49,7 @@ public class UsersControllerTest
         List<UserResponseModel> expectedObject = (expected.Value as List<UserResponseModel>)!;
 
         // ACT
-        var result = usersController.GetAllUsers() as OkObjectResult;
+        var result = usersController.GetAllUsers(null, null, null) as OkObjectResult;
         var objectResult = (result.Value as List<UserResponseModel>)!;
 
         // ASSERT

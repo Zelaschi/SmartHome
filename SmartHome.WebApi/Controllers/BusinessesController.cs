@@ -61,20 +61,27 @@ public sealed class BusinessesController : ControllerBase
         }
 
         var totalCount = query.Count();
-
-        var pagedData = query
+        List<BusinessesResponseModel> usersResponse;
+        if (paginationParams != null)
+        {
+            var pagedData = query
             .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
             .Take(paginationParams.PageSize)
             .ToList();
 
-        var usersResponse = pagedData.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
-
-        return Ok(new
+            usersResponse = pagedData.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
+            return Ok(new
+            {
+                Data = usersResponse,
+                TotalCount = totalCount,
+                PageNumber = paginationParams.PageNumber,
+                PageSize = paginationParams.PageSize
+            });
+        }
+        else
         {
-            Data = usersResponse,
-            TotalCount = totalCount,
-            PageNumber = paginationParams.PageNumber,
-            PageSize = paginationParams.PageSize
-        });
+            usersResponse = query.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
+            return Ok(usersResponse);
+        }
     }
 }
