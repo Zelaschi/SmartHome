@@ -22,7 +22,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 
     public Device CreateDevice(Device device)
     {
-        if (ReapetedModelNumber(device))
+        if (RepeatedModelNumber(device))
         {
             throw new DeviceException("Device model already exists");
         }
@@ -30,7 +30,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
         return _deviceRepository.Add(device);
     }
 
-    private bool ReapetedModelNumber(Device device)
+    private bool RepeatedModelNumber(Device device)
     {
         var reapeatedDevice = _deviceRepository.Find(d => d.ModelNumber == device.ModelNumber);
         if (reapeatedDevice != null) return true;
@@ -39,6 +39,11 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
 
     public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera)
     {
+        if (RepeatedModelNumber(securityCamera))
+        {
+            throw new DeviceException("Security Camera model already exists");
+        }
+
         return _deviceRepository.Add(securityCamera) as SecurityCamera;
     }
 

@@ -227,7 +227,7 @@ public class DeviceServiceTest
 
     [TestMethod]
 
-    public void Create_WindowSensor_ModelNumeber_Reapeted_Throws_Exception_Test()
+    public void Create_WindowSensor_ModelNumeber_Repeated_Throws_Exception_Test()
     {
         var businessOwner = new User
         {
@@ -271,6 +271,57 @@ public class DeviceServiceTest
         deviceRepositoryMock.VerifyAll();
         Assert.IsInstanceOfType(exception, typeof(DeviceException));
         Assert.AreEqual("Device model already exists", exception.Message);
+    }
+
+    [TestMethod]
+
+    public void Create_SecurityCamera_ModelNumeber_Repeated_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner
+        };
+        var cameraId = Guid.NewGuid();
+        var securityCamera = new SecurityCamera
+        {
+            Id = cameraId,
+            Name = "Security Camera",
+            Description = "Security Camera outdoor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "SecurityCamera",
+            Outdoor = true,
+            Business = business
+        };
+
+        deviceRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Device, bool>>())).Returns(securityCamera);
+        Exception exception = null;
+
+        try
+        {
+            deviceService.CreateSecurityCamera(securityCamera);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        deviceRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Security Camera model already exists", exception.Message);
     }
 
     [TestMethod]
