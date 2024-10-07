@@ -15,8 +15,6 @@ namespace SmartHome.BusinessLogicTest;
 [TestClass]
 public class DeviceServiceTest
 {
-    private Mock<IGenericRepository<User>>? userRepositoryMock;
-    private Mock<IGenericRepository<Business>>? businessRepositoryMock;
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
     private Mock<IDeviceTypeRepository>? deviceTypeRepositoryMock;
     private DeviceService? deviceService;
@@ -25,8 +23,6 @@ public class DeviceServiceTest
 
     public void Initialize()
     {
-        businessRepositoryMock = new Mock<IGenericRepository<Business>>(MockBehavior.Strict);
-        userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
         deviceTypeRepositoryMock = new Mock<IDeviceTypeRepository>();
         deviceService = new DeviceService(deviceRepositoryMock.Object, deviceTypeRepositoryMock.Object);

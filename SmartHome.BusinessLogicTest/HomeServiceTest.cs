@@ -689,7 +689,7 @@ public class HomeServiceTest
     }
 
     [TestMethod]
-    public void Create_Reapeted_Adress_Home_Throws_Exception_Test()
+    public void Create_Repeated_Adress_Home_Throws_Exception_Test()
     {
         var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
         var home2 = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 3, Owner = owner };
