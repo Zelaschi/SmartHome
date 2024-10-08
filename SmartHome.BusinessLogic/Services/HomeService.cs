@@ -82,6 +82,34 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return false;
     }
 
+    private void ValidateHome(Home home)
+    {
+        if (string.IsNullOrEmpty(home.MainStreet))
+        {
+            throw new HomeArgumentException("Invalid main street, cannot be empty");
+        }
+
+        if (string.IsNullOrEmpty(home.DoorNumber))
+        {
+            throw new HomeArgumentException("Invalid door number, cannot be empty");
+        }
+
+        if (string.IsNullOrEmpty(home.Latitude))
+        {
+            throw new HomeArgumentException("Invalid latitude, cannot be empty");
+        }
+
+        if (string.IsNullOrEmpty(home.Longitude))
+        {
+            throw new HomeArgumentException("Invalid longitude, cannot be empty");
+        }
+
+        if (home.MaxMembers < 1)
+        {
+            throw new HomeArgumentException("Invalid max members, must be at least 1");
+        }
+    }
+
     public Home CreateHome(Home home, Guid? userId)
     {
         ValidateHome(home);
@@ -131,34 +159,6 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return home.Members.ToList();
     }
 
-    private void ValidateHome(Home home)
-    {
-        if (string.IsNullOrEmpty(home.MainStreet))
-        {
-            throw new HomeArgumentException("Invalid main street, cannot be empty");
-        }
-
-        if (string.IsNullOrEmpty(home.DoorNumber))
-        {
-            throw new HomeArgumentException("Invalid door number, cannot be empty");
-        }
-
-        if (string.IsNullOrEmpty(home.Latitude))
-        {
-            throw new HomeArgumentException("Invalid latitude, cannot be empty");
-        }
-
-        if (string.IsNullOrEmpty(home.Longitude))
-        {
-            throw new HomeArgumentException("Invalid longitude, cannot be empty");
-        }
-
-        if (home.MaxMembers < 1)
-        {
-            throw new HomeArgumentException("Invalid max members, must be at least 1");
-        }
-    }
-
     public IEnumerable<Home> GetAllHomesByUserId(Guid userId)
     {
         var homes = _homesFromUserRepository.GetAllHomesByUserId(userId);
@@ -199,6 +199,20 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homeMemberRepository.Update(member);
     }
 
+    private void MarkNotificationsAsRead(IEnumerable<HomeMemberNotification> homeMemberNotifications, List<Notification> notifications)
+    {
+        foreach (var notification in notifications)
+        {
+            var homeMemberNotification = homeMemberNotifications
+                .FirstOrDefault(hmn => hmn.NotificationId == notification.Id);
+
+            if (homeMemberNotification != null)
+            {
+                homeMemberNotification.Read = true;
+            }
+        }
+    }
+
     public List<Notification> GetUsersNotifications(User user)
     {
         var userHomeMembers = _homeRepository
@@ -227,20 +241,6 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         }
 
         return notifications;
-    }
-
-    private void MarkNotificationsAsRead(IEnumerable<HomeMemberNotification> homeMemberNotifications, List<Notification> notifications)
-    {
-        foreach (var notification in notifications)
-        {
-            var homeMemberNotification = homeMemberNotifications
-                .FirstOrDefault(hmn => hmn.NotificationId == notification.Id);
-
-            if (homeMemberNotification != null)
-            {
-                homeMemberNotification.Read = true;
-            }
-        }
     }
 
     public bool HasPermission(Guid userId, Guid homeId, Guid permissionId)
@@ -334,29 +334,6 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         }
     }
 
-    private Device FindDeviceById(Guid deviceId)
-    {
-        var device = _deviceRepository.Find(x => x.Id == deviceId);
-
-        if (device == null)
-        {
-            throw new HomeDeviceException("Device Id does not match any device");
-        }
-
-        return device;
-    }
-
-    private HomeDevice CreateHomeDevice(Guid homeId, Device device)
-    {
-        return new HomeDevice
-        {
-            Id = Guid.NewGuid(),
-            Device = device,
-            HomeId = homeId,
-            Online = true
-        };
-    }
-
     public Notification CreateMovementDetectionNotification(Guid homeDeviceId)
     {
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
@@ -389,6 +366,29 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         {
             throw new HomeException("Home Id does not match any home");
         }
+    }
+
+    private Device FindDeviceById(Guid deviceId)
+    {
+        var device = _deviceRepository.Find(x => x.Id == deviceId);
+
+        if (device == null)
+        {
+            throw new HomeDeviceException("Device Id does not match any device");
+        }
+
+        return device;
+    }
+
+    private HomeDevice CreateHomeDevice(Guid homeId, Device device)
+    {
+        return new HomeDevice
+        {
+            Id = Guid.NewGuid(),
+            Device = device,
+            HomeId = homeId,
+            Online = true
+        };
     }
 
     public HomeDevice AddDeviceToHome(Guid homeId, Guid deviceId)
