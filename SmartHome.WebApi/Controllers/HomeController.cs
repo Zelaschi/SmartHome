@@ -28,8 +28,8 @@ public sealed class HomeController : ControllerBase
     [HttpPost("{homeId}/homeDevices")]
     public IActionResult AddDeviceToHome([FromRoute] Guid homeId, [FromBody] Guid deviceId)
     {
-        _homeLogic.AddDeviceToHome(homeId, deviceId);
-        return NoContent();
+        var response = new HomeDeviceResponseModel(_homeLogic.AddDeviceToHome(homeId, deviceId));
+        return CreatedAtAction("AddDeviceToHome", new { response.HardwardId }, response);
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
@@ -37,8 +37,8 @@ public sealed class HomeController : ControllerBase
     [HttpPost("{homeId}/members")]
     public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, [FromBody] Guid userId)
     {
-        _homeLogic.AddHomeMemberToHome(homeId, userId);
-        return NoContent();
+        var response = new HomeMemberResponseModel(_homeLogic.AddHomeMemberToHome(homeId, userId));
+        return CreatedAtAction("AddMemberToHOme", new { response.HomeMemberId }, response);
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_HOME_PERMISSION_ID)]

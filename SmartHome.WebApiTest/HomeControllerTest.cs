@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.Services;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using Device = SmartHome.BusinessLogic.Domain.Device;
 using User = SmartHome.BusinessLogic.Domain.User;
 
@@ -83,11 +85,12 @@ public class HomeControllerTest
         var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
         var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = company };
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device, HomeId = home.Id };
+        var expectedResponse = new HomeDeviceResponseModel(homeDevice);
 
         homeLogicMock.Setup(h => h.AddDeviceToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(homeDevice);
 
-        var expected = new NoContentResult();
-        var result = homeController.AddDeviceToHome(home.Id, device.Id) as NoContentResult;
+        var expected = new CreatedAtActionResult("AddDeviceToHome", "AddDeviceToHome", new { Id = homeDevice.Id}, expectedResponse);
+        var result = homeController.AddDeviceToHome(home.Id, device.Id) as CreatedAtActionResult;
 
         homeLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
@@ -151,15 +154,17 @@ public class HomeControllerTest
             HttpContext = httpContext
         };
 
-        homeLogicMock.Setup(h => h.AddHomeMemberToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(It.IsAny<HomeMember>());
+        homeLogicMock.Setup(h => h.AddHomeMemberToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(homeMember);
 
         homeController = new HomeController(homeLogicMock.Object) { ControllerContext = controllerContext };
 
-        // ACT
-        var expected = new NoContentResult();
-        var result = homeController.AddHomeMemberToHome(home.Id, userId) as NoContentResult;
+        var expectedResponse = new HomeMemberResponseModel(homeMember);
+
+        var expected = new CreatedAtActionResult("AddMemberToHome", "AddMemberToHome", new { Id = homeMember.HomeMemberId }, expectedResponse);
+        var result = homeController.AddHomeMemberToHome(home.Id, userId) as CreatedAtActionResult;
 
         // ASSERT
+
         homeLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
