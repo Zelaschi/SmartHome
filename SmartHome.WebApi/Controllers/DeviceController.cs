@@ -7,6 +7,8 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using Microsoft.Identity.Client;
 using SmartHome.WebApi.WebModels.UserModels.Out;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.WebApi.WebModels.Businesses.Out;
+using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -65,13 +67,7 @@ public sealed class DeviceController : ControllerBase
                 .ToList();
 
             devicesResponse = pagedData.Select(device => new DeviceResponseModel(device)).ToList();
-            return Ok(new
-            {
-                Data = devicesResponse,
-                TotalCount = totalCount,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            });
+            return Ok(new PaginatedResponse<DeviceResponseModel>(devicesResponse, totalCount, (int)pageNumber, (int)pageSize));
         }
         else
         {
