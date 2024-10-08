@@ -9,6 +9,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.WebApi.WebModels.QueryParams;
 using SmartHome.WebApi.WebModels.UserModels.Out;
 using System.Linq;
+using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -62,7 +63,7 @@ public sealed class BusinessesController : ControllerBase
         }
 
         var totalCount = query.Count();
-        List<BusinessesResponseModel> usersResponse;
+        List<BusinessesResponseModel> businessesResponse;
         if (pageNumber != null && pageSize != null)
         {
             var pagedData = query
@@ -70,19 +71,13 @@ public sealed class BusinessesController : ControllerBase
             .Take((int)pageSize)
             .ToList();
 
-            usersResponse = pagedData.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
-            return Ok(new
-            {
-                Data = usersResponse,
-                TotalCount = totalCount,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            });
+            businessesResponse = pagedData.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
+            return Ok(new PaginatedResponse<BusinessesResponseModel>(businessesResponse, totalCount, (int)pageNumber, (int)pageSize));
         }
         else
         {
-            usersResponse = query.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
-            return Ok(usersResponse);
+            businessesResponse = query.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
+            return Ok(businessesResponse);
         }
     }
 }
