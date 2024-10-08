@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SmartHome.BusinessLogic.Domain;
-using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
+﻿using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 

@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
-using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using Device = SmartHome.BusinessLogic.Domain.Device;
 using User = SmartHome.BusinessLogic.Domain.User;
 
@@ -183,7 +174,7 @@ public class HomeControllerTest
         var device1 = new Device() { Id = Guid.NewGuid(), Name = "A", Type = "A", ModelNumber = "1", Description = "A", Photos = "jpg", Business = business };
         var device2 = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = business };
         var homeDevice1 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device1 };
-        var homeDevice2 = new HomeDevice(){ Id = Guid.NewGuid(), Online = true, Device = device2 };
+        var homeDevice2 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device2 };
         var homeDevices = new List<HomeDevice>() { homeDevice1, homeDevice2 };
         var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
         home1.Devices = homeDevices;

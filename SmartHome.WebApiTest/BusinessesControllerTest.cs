@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -11,7 +6,6 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.WebApi.WebModels.Businesses.Out;
-using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApiTest;
@@ -33,7 +27,7 @@ public class BusinessesControllerTest
     {
         var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwner };
         var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
-        var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = businessOwner};
+        var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = businessOwner };
         var company2 = new Business() { Id = Guid.NewGuid(), Name = "kolke", Logo = "logo2", RUT = "rut2", BusinessOwner = user2 };
 
         IEnumerable<Business> companies = new List<Business>()
@@ -51,7 +45,7 @@ public class BusinessesControllerTest
         });
         List<BusinessesResponseModel> expectedObject = (expected.Value as List<BusinessesResponseModel>)!;
 
-        var result = businessesController.GetAllBusinesses(null, null,null,null) as OkObjectResult;
+        var result = businessesController.GetAllBusinesses(null, null, null, null) as OkObjectResult;
         var objectResult = (result.Value as List<BusinessesResponseModel>)!;
 
         businessesLogicMock.VerifyAll();

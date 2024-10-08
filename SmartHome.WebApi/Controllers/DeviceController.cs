@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.DeviceModels.In;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
-using SmartHome.WebApi.Filters;
-using SmartHome.BusinessLogic.InitialSeedData;
-using Microsoft.Identity.Client;
-using SmartHome.WebApi.WebModels.UserModels.Out;
-using SmartHome.BusinessLogic.Domain;
-using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
@@ -88,6 +85,6 @@ public sealed class DeviceController : ControllerBase
         }
 
         var response = new DeviceResponseModel(_deviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user));
-        return CreatedAtAction("CreateDevice", new {response.Id }, response);
+        return CreatedAtAction("CreateDevice", new { response.Id }, response);
     }
 }

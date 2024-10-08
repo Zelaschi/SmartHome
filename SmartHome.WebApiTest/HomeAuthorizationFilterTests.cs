@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using SmartHome.WebApi.Filters;
-using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Domain;
-using System.Net;
+using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.Filters;
 
 namespace SmartHome.WebApiTest;
 

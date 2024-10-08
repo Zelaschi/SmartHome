@@ -1,13 +1,10 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SmartHome.BusinessLogic.Interfaces;
-using SmartHome.WebApi.WebModels.Businesses.Out;
-using SmartHome.WebApi.Filters;
-using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
-using SmartHome.WebApi.WebModels.UserModels.Out;
-using System.Linq;
+using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.Filters;
+using SmartHome.WebApi.WebModels.Businesses.In;
+using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;

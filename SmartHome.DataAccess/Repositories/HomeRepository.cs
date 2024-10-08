@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SmartHome.BusinessLogic.GenericRepositoryInterface;
-using SmartHome.BusinessLogic.Domain;
-using SmartHome.DataAccess.Contexts;
-using Microsoft.Data.SqlClient;
-using SmartHome.DataAccess.CustomExceptions;
-using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
-using SmartHome.BusinessLogic.CustomExceptions;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
+using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.DataAccess.Contexts;
+using SmartHome.DataAccess.CustomExceptions;
 
 namespace SmartHome.DataAccess.Repositories;
 public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
@@ -68,7 +62,7 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            return _repository.Homes.Include(x => x.Members).ThenInclude(x => x.User).Include(x => x.Members).ThenInclude(x => x.HomePermissions).Include(x => x.Devices).ThenInclude(x=>x.Device).FirstOrDefault(filter);
+            return _repository.Homes.Include(x => x.Members).ThenInclude(x => x.User).Include(x => x.Members).ThenInclude(x => x.HomePermissions).Include(x => x.Devices).ThenInclude(x => x.Device).FirstOrDefault(filter);
         }
         catch (SqlException)
         {

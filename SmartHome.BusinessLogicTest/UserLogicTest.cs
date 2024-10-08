@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
-using SmartHome.BusinessLogic.InitialSeedData;
 
 namespace SmartHome.BusinessLogicTest;
 
@@ -389,7 +383,7 @@ public class UserLogicTest
         };
         var adminList = new List<User> { admin, admin2 };
 
-        userRepositoryMock.Setup(x=> x.FindAll()).Returns(adminList);
+        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);
         userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(admin);
         roleLogicMock.Setup(x => x.GetAdminRole()).Returns(adminRole);

@@ -2,8 +2,6 @@
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
-using SmartHome.WebApi.WebModels.AdminModels.In;
-using SmartHome.WebApi.WebModels.AdminModels.Out;
 using SmartHome.WebApi.WebModels.NotificationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;

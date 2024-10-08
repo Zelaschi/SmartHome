@@ -1,5 +1,4 @@
 ﻿using SmartHome.BusinessLogic.Domain;
-using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Moq;
+﻿using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
@@ -362,7 +356,7 @@ public class HomeServiceTest
         Assert.AreEqual("Home Id does not match any home", ex.Message);
     }
 
-        [TestMethod]
+    [TestMethod]
     public void Add_Permissions_To_HomeMember_Test()
     {
         var homeId = Guid.NewGuid();
@@ -478,7 +472,7 @@ public class HomeServiceTest
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
         homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(new List<HomePermission> { notificationPermission });
-        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission,bool>>())).Returns(notificationPermission);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
 
         homeService.CreateHome(home1, ownerId);
         homeService.CreateHome(home2, ownerId);

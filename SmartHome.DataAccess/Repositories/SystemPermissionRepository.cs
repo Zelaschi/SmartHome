@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -11,14 +6,13 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
 using SmartHome.WebApi.WebModels.NotificationModels.Out;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SmartHome.WebApiTest;
 [TestClass]
 public class MeControllerTest
 {
     private Mock<INotificationLogic>? _notificationLogicMock;
-    private  Mock<IHomeLogic>? _homeLogicMock;
+    private Mock<IHomeLogic>? _homeLogicMock;
     private MeController? _meController;
     private Role? homeOwner;
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SmartHome.BusinessLogic.CustomExceptions;
+﻿using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;

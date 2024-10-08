@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using SmartHome.BusinessLogic.CustomExceptions;
+﻿using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
@@ -225,7 +218,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
             if (unReadNotifications.Any())
             {
-               MarkNotificationsAsRead(homeMember.HomeMemberNotifications, unReadNotifications);
+                MarkNotificationsAsRead(homeMember.HomeMemberNotifications, unReadNotifications);
 
                 notifications.AddRange(unReadNotifications);
             }

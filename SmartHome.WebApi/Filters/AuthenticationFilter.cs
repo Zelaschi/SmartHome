@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Net.Http.Headers;
-using SmartHome.BusinessLogic.Services;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.WebApi.Filters;

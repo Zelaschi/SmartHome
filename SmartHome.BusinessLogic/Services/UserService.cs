@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SmartHome.BusinessLogic.Domain;
-using SmartHome.BusinessLogic.Interfaces;
-using SmartHome.BusinessLogic.GenericRepositoryInterface;
-using System.Net.NetworkInformation;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using SmartHome.BusinessLogic.CustomExceptions;
-using SmartHome.BusinessLogic.InitialSeedData;
+using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLogic, IAdminLogic

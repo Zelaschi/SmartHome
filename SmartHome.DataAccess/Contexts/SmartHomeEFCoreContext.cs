@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
-using static Azure.Core.HttpHeader;
 
 namespace SmartHome.DataAccess.Contexts;
 public sealed class SmartHomeEFCoreContext : DbContext

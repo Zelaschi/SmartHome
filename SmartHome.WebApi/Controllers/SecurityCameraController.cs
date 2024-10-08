@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 using SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
-using SmartHome.WebApi.Filters;
-using SmartHome.BusinessLogic.InitialSeedData;
-using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.Controllers;
 
