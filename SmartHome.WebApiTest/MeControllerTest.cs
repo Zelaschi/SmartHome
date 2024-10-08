@@ -10,6 +10,7 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
+using SmartHome.WebApi.WebModels.NotificationModels.Out;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SmartHome.WebApiTest;
@@ -48,7 +49,7 @@ public class MeControllerTest
             new Notification() { Id = Guid.NewGuid(), Event = "Event2", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
             new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now }
         };
-
+        var expectedNotifications = notifications.Select(noti => new NotificationResponseModel(noti)).ToList();
         var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = new List<HomePermission>() };
 
         _notificationLogicMock.Setup(n => n.GetUsersNotifications(user1)).Returns(notifications);
@@ -72,13 +73,13 @@ public class MeControllerTest
 
         var result = _meController.GetUsersNotifications() as OkObjectResult;
 
-        var objectResult = result.Value as List<Notification>;
+        var objectResult = result.Value as List<NotificationResponseModel>;
 
         _notificationLogicMock.VerifyAll();
 
         Assert.IsNotNull(objectResult);
 
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.First().Equals(notifications.First()));
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.First().Equals(expectedNotifications.First()));
     }
 
     [TestMethod]
