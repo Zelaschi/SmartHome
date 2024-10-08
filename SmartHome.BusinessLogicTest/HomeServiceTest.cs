@@ -72,7 +72,7 @@ public class HomeServiceTest
         var memberId = Guid.NewGuid();
         var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
 
-        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(new HomeMember(member));
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
 
@@ -246,8 +246,10 @@ public class HomeServiceTest
         homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(member);
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(new HomeMember(member));
 
         HomeMember homeMember = homeService.AddHomeMemberToHome(home.Id, memberId);
+        home.Members.Add(homeMember);
 
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
@@ -259,6 +261,7 @@ public class HomeServiceTest
 
         var homeOwner = result.Members.Find(x => x.User == owner);
 
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
         homeMemberRepositoryMock
             .SetupSequence(x => x.Find(It.IsAny<Func<HomeMember, bool>>()))
@@ -297,13 +300,13 @@ public class HomeServiceTest
         var device = new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = business };
         var homeDeviceId = Guid.NewGuid();
         var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId };
+        home.Devices.Add(homeDevice);
 
-        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(device);
+        homeDeviceRepositoryMock.Setup(x => x.Add(It.IsAny<HomeDevice>())).Returns(homeDevice);
 
         homeService.AddDeviceToHome(homeId, deviceId);
-
         homeRepositoryMock.VerifyAll();
         userRepositoryMock.VerifyAll();
 
@@ -319,7 +322,6 @@ public class HomeServiceTest
         var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
         var deviceId = Guid.NewGuid();
 
-        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns((Device)null);
 
         var ex = new HomeDeviceException("PlaceHolder");
@@ -344,6 +346,7 @@ public class HomeServiceTest
         var deviceId = Guid.NewGuid();
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
+        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = new Business { BusinessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = new Role { Name = "BusinessOwner" } }, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" } });
 
         var ex = new HomeException("PlaceHolder");
         try
@@ -359,7 +362,7 @@ public class HomeServiceTest
         Assert.AreEqual("Home Id does not match any home", ex.Message);
     }
 
-    [TestMethod]
+        [TestMethod]
     public void Add_Permissions_To_HomeMember_Test()
     {
         var homeId = Guid.NewGuid();
@@ -371,8 +374,11 @@ public class HomeServiceTest
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(user);
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(new HomeMember(user));
 
         var returnedMember = homeService.AddHomeMemberToHome(homeId, userId);
+        home.Members.Add(returnedMember);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
 
         homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(returnedMember);
         homeMemberRepositoryMock.Setup(x => x.Update(It.IsAny<HomeMember>())).Returns(returnedMember);
@@ -413,10 +419,11 @@ public class HomeServiceTest
         var user = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = userId, Role = homeOwnerRole };
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
-        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(user);
-
-        var returnedMember = homeService.AddHomeMemberToHome(homeId, userId);
+        var returnedMember = new HomeMember(user);
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(returnedMember);
+        returnedMember = homeService.AddHomeMemberToHome(homeId, userId);
+        home.Members.Add(returnedMember);
 
         homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(returnedMember);
         homeMemberRepositoryMock.Setup(x => x.Update(It.IsAny<HomeMember>())).Returns(returnedMember);
@@ -479,6 +486,7 @@ public class HomeServiceTest
         homeRepositoryMock.SetupSequence(x => x.Update(It.IsAny<Home>())).Returns(home1).Returns(home2);
         homeRepositoryMock.SetupSequence(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home1).Returns(home2);
         deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(device);
+        homeDeviceRepositoryMock.Setup(x => x.Add(It.IsAny<HomeDevice>())).Returns(new HomeDevice { Device = device, Id = homeDeviceId, HomeId = home1Id, Online = true });
 
         var homeDevice1 = homeService.AddDeviceToHome(home1Id, deviceId);
         var homeDevice2 = homeService.AddDeviceToHome(home2Id, deviceId);
@@ -490,15 +498,20 @@ public class HomeServiceTest
         var noti1 = homeService.CreatePersonDetectionNotification(home1.Id, ownerId);
         var noti2 = homeService.CreateMovementDetectionNotification(home2.Id);
         var homeMember1 = home1.Members.FirstOrDefault(x => x.User.Id == ownerId);
+        var homeNoti1 = new HomeMemberNotification { HomeMemberId = ownerId, NotificationId = noti1.Id, Read = false, Notification = noti1, HomeMember = homeMember1 };
         homeMember1.Notifications.Add(noti1);
+        homeMember1.HomeMemberNotifications.Add(homeNoti1);
         var homeMember2 = home2.Members.FirstOrDefault(x => x.User.Id == ownerId);
+        var homeNoti2 = new HomeMemberNotification { HomeMemberId = ownerId, NotificationId = noti2.Id, Read = false, Notification = noti2, HomeMember = homeMember2 };
         homeMember2.Notifications.Add(noti2);
+        homeMember2.HomeMemberNotifications.Add(homeNoti2);
         home1.Members.Clear();
         home1.Members.Add(homeMember1);
         home2.Members.Clear();
         home2.Members.Add(homeMember2);
 
         homeRepositoryMock.Setup(x => x.FindAll()).Returns(new List<Home> { home1, home2 });
+        homeMemberRepositoryMock.Setup(x => x.Update(It.IsAny<HomeMember>())).Returns(homeMember1);
 
         var notifications = homeService.GetUsersNotifications(owner);
         Assert.IsTrue(notifications.Count == 2);
@@ -647,11 +660,13 @@ public class HomeServiceTest
         var memberId = Guid.NewGuid();
         var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
 
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(new HomeMember(member));
         homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(member);
 
         HomeMember homeMember = homeService.AddHomeMemberToHome(home.Id, memberId);
+        home.Members.Add(homeMember);
 
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
@@ -663,6 +678,7 @@ public class HomeServiceTest
 
         var homeOwner = result.Members.Find(x => x.User == owner);
 
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
         homeMemberRepositoryMock
             .SetupSequence(x => x.Find(It.IsAny<Func<HomeMember, bool>>()))
@@ -719,15 +735,18 @@ public class HomeServiceTest
         var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
         var memberId = Guid.NewGuid();
         var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        var homeMember = new HomeMember(member);
 
-        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(homeMember);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(member);
         Exception exception = null;
 
         try
         {
             homeService.AddHomeMemberToHome(home.Id, memberId);
+            home.Members.Add(homeMember);
+            homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
             homeService.AddHomeMemberToHome(home.Id, memberId);
         }
         catch (Exception e)
@@ -747,17 +766,19 @@ public class HomeServiceTest
         var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 1, Owner = owner };
         var member1Id = Guid.NewGuid();
         var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = member1Id, Role = homeOwnerRole };
+        var homeMember = new HomeMember(member1);
 
-        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
-        userRepositoryMock.Setup(x => x.Find(It.Is<Func<User, bool>>(f => f(member1)))).Returns(member1);
-        userRepositoryMock.Setup(x => x.Find(It.Is<Func<User, bool>>(f => f(owner)))).Returns(owner);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(member1);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(homeMember);
 
         Exception exception = null;
 
         try
         {
             homeService.AddHomeMemberToHome(home.Id, member1Id);
+            home.Members.Add(homeMember);
             homeService.AddHomeMemberToHome(home.Id, ownerId);
         }
         catch (Exception e)

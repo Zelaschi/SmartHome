@@ -16,6 +16,7 @@ namespace SmartHome.BusinessLogicTest;
 public class DeviceServiceTest
 {
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
+    private Mock<IGenericRepository<Business>>? businessRepositoryMock;
     private Mock<IDeviceTypeRepository>? deviceTypeRepositoryMock;
     private DeviceService? deviceService;
 
@@ -25,7 +26,8 @@ public class DeviceServiceTest
     {
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
         deviceTypeRepositoryMock = new Mock<IDeviceTypeRepository>();
-        deviceService = new DeviceService(deviceRepositoryMock.Object, deviceTypeRepositoryMock.Object);
+        businessRepositoryMock = new Mock<IGenericRepository<Business>>();
+        deviceService = new DeviceService(businessRepositoryMock.Object, deviceRepositoryMock.Object, deviceTypeRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -99,6 +101,14 @@ public class DeviceServiceTest
 
     public void Create_SecurityCamera_Test()
     {
+        var bonwer = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedrorod@gmail.com"
+        };
         var securityCamera = new SecurityCamera
         {
             Id = Guid.NewGuid(),
@@ -114,17 +124,24 @@ public class DeviceServiceTest
                 Name = "Kolke",
                 Logo = "Logo1",
                 RUT = "1234",
-                BusinessOwner = new User
-                {
-                    Name = "Pedro",
-                    Surname = "Rodriguez",
-                    Password = "Password@1234",
-                    CreationDate = DateTime.Today,
-                    Email = "pedrorod@gmail.com"
-                }
+                BusinessOwner = bonwer
             }
         };
-
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Kolke",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = new User
+            {
+                Name = "Pedro",
+                Surname = "Rodriguez",
+                Password = "Password@1234",
+                CreationDate = DateTime.Today,
+                Email = "pedrorod@gmail.com"
+            }
+        };
         var expected = new SecurityCamera
         {
             Id = securityCamera.Id,
@@ -134,26 +151,13 @@ public class DeviceServiceTest
             Photos = "Photo1",
             Type = "SecurityCamera",
             Outdoor = true,
-            Business = new Business
-            {
-                Id = Guid.NewGuid(),
-                Name = "Kolke",
-                Logo = "Logo1",
-                RUT = "1234",
-                BusinessOwner = new User
-                {
-                    Name = "Pedro",
-                    Surname = "Rodriguez",
-                    Password = "Password@1234",
-                    CreationDate = DateTime.Today,
-                    Email = "pedrorod@gmail.com"
-                }
-            }
+            Business = business
         };
 
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
         deviceRepositoryMock.Setup(x => x.Add(securityCamera)).Returns(expected);
 
-        var result = deviceService.CreateSecurityCamera(securityCamera);
+        var result = deviceService.CreateSecurityCamera(securityCamera, bonwer);
 
         deviceRepositoryMock.Verify(x => x.Add(securityCamera), Times.Once);
 
@@ -164,6 +168,22 @@ public class DeviceServiceTest
 
     public void Create_WindowSensor_Test()
     {
+        var bowner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = bowner
+        };
         var windowSensor = new Device
         {
             Id = Guid.NewGuid(),
@@ -171,21 +191,7 @@ public class DeviceServiceTest
             Description = "Window Sensor",
             ModelNumber = "1234",
             Photos = "Photo1",
-            Business = new Business
-            {
-                Id = Guid.NewGuid(),
-                Name = "HikVision",
-                Logo = "Logo1",
-                RUT = "1234",
-                BusinessOwner = new User
-                {
-                    Name = "Juan",
-                    Surname = "Perez",
-                    Password = "Password@1234",
-                    CreationDate = DateTime.Today,
-                    Email = "juanperez@gmail.com"
-                }
-            }
+            Business = business
         };
 
         var expected = new Device
@@ -211,10 +217,11 @@ public class DeviceServiceTest
                 }
             }
         };
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
 
         deviceRepositoryMock.Setup(x => x.Add(windowSensor)).Returns(expected);
 
-        var result = deviceService.CreateDevice(windowSensor);
+        var result = deviceService.CreateDevice(windowSensor, bowner);
 
         deviceRepositoryMock.Verify(x => x.Add(windowSensor), Times.Once);
 
@@ -252,12 +259,13 @@ public class DeviceServiceTest
             Business = business
         };
 
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
         deviceRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Device, bool>>())).Returns(windowSensor);
         Exception exception = null;
 
         try
         {
-            deviceService.CreateDevice(windowSensor);
+            deviceService.CreateDevice(windowSensor, businessOwner);
         }
         catch (Exception e)
         {
@@ -304,11 +312,12 @@ public class DeviceServiceTest
         };
 
         deviceRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Device, bool>>())).Returns(securityCamera);
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
         Exception exception = null;
 
         try
         {
-            deviceService.CreateSecurityCamera(securityCamera);
+            deviceService.CreateSecurityCamera(securityCamera, businessOwner);
         }
         catch (Exception e)
         {

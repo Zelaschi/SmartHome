@@ -208,27 +208,46 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public List<Notification> GetUsersNotifications(User user)
     {
-        var homes = _homeRepository.FindAll().ToList();
-        var userHomes = homes.Where(home => home.Members.Any(member => member.User.Id == user.Id)).ToList();
+        var userHomeMembers = _homeRepository
+            .FindAll()
+            .SelectMany(home => home.Members)
+            .Where(member => member.User.Id == user.Id)
+            .ToList();
+
         var notifications = new List<Notification>();
-        foreach (var home in userHomes)
+
+        foreach (var homeMember in userHomeMembers)
         {
-            var homeMember = home.Members
-                .FirstOrDefault(member => member.User.Id == user.Id);
+            var unReadNotifications = homeMember.HomeMemberNotifications
+                .Where(hmn => !hmn.Read)
+                .Select(hmn => hmn.Notification)
+                .ToList();
 
-            // MarkNotificationsAsRead(unReadNotifications, homeMember); y validar que te de las unread noti esten sin leer
-            if (homeMember != null)
+            if (unReadNotifications.Any())
             {
-                var unReadNotifications = homeMember.Notifications
-                    .ToList();
-
-                // MarkNotificationsAsRead(unReadNotifications, homeMember);
+               MarkNotificationsAsRead(homeMember.HomeMemberNotifications, unReadNotifications);
 
                 notifications.AddRange(unReadNotifications);
             }
+
+            _homeMemberRepository.Update(homeMember);
         }
 
         return notifications;
+    }
+
+    private void MarkNotificationsAsRead(IEnumerable<HomeMemberNotification> homeMemberNotifications, List<Notification> notifications)
+    {
+        foreach (var notification in notifications)
+        {
+            var homeMemberNotification = homeMemberNotifications
+                .FirstOrDefault(hmn => hmn.NotificationId == notification.Id);
+
+            if (homeMemberNotification != null)
+            {
+                homeMemberNotification.Read = true;
+            }
+        }
     }
 
     public bool HasPermission(Guid homeMemberid, Guid homePermissionId)
@@ -342,11 +361,21 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return notification;
     }
 
+    private void VerifyHomeExistance(Guid homeId)
+    {
+        var home = _homeRepository.Find(x => x.Id == homeId);
+        if (home == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+    }
+
     public HomeDevice AddDeviceToHome(Guid homeId, Guid deviceId)
     {
         var device = FindDeviceById(deviceId);
 
         var homeDevice = CreateHomeDevice(homeId, device);
+        VerifyHomeExistance(homeId);
 
         _homeDeviceRepository.Add(homeDevice);
         return homeDevice;
