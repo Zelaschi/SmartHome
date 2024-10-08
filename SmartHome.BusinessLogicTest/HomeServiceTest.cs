@@ -1037,4 +1037,60 @@ public class HomeServiceTest
         Assert.AreEqual("User is not a member of this home", exception.Message);
     }
 
+    [TestMethod]
+    public void HasPermission_HomePermission_Not_Found_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var homeId = Guid.NewGuid();
+        var member1Id = Guid.NewGuid();
+
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner
+        };
+
+        var permissions = new List<HomePermission>();
+
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(permissions);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns((HomePermission)null);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns((HomeMember)null);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(member1Id, homeId, fakePermissionId));
+
+        Assert.AreEqual("HomePermission was not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_HomeMemberId_Not_Found_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var homeId = Guid.NewGuid();
+        var invalidMemberId = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner
+        };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns((HomeMember)null);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns((HomePermission)null);
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(invalidMemberId, fakePermissionId));
+
+        Assert.AreEqual("Home Member Id does not match any home member", exception.Message);
+    }
 }
