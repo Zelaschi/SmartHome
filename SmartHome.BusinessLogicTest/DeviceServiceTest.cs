@@ -398,4 +398,58 @@ public class DeviceServiceTest
 
         CollectionAssert.AreEqual(deviceTypes, result);
     }
+
+    [TestMethod]
+    public void Create_WindowSensor_Business_Not_Found_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var user = new User
+        {
+            Name = "Diego",
+            Surname = "Forlan",
+            Password = "Goleador",
+            CreationDate = DateTime.Today,
+            Email = "df10@gmail.com"
+        };
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner
+        };
+        var windowSensor = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Window Sensor",
+            Description = "Window Sensor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Business = business
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns((Business)null);
+        Exception exception = null;
+
+        try
+        {
+            deviceService.CreateDevice(windowSensor, user);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Business was not found for the user", exception.Message);
+    }
 }
