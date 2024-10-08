@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using SmartHome.DataAccess.Contexts;
-using Microsoft.EntityFrameworkCore.Design;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
@@ -36,6 +35,7 @@ services.AddScoped<IBusinessesLogic, BusinessService>();
 services.AddScoped<IDeviceLogic, DeviceService>();
 services.AddScoped<ISecurityCameraLogic, DeviceService>();
 services.AddScoped<IHomeLogic, HomeService>();
+services.AddScoped<IHomePermissionLogic, HomeService>();
 services.AddScoped<IHomeMemberLogic, HomeService>();
 services.AddScoped<INotificationLogic, HomeService>();
 services.AddScoped<ISessionLogic, SessionService>();

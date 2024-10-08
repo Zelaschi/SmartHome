@@ -19,16 +19,6 @@ public sealed class Role
         SystemPermissions = new List<SystemPermission>();
     }
 
-    public void AddPermission(SystemPermission permission)
-    {
-        SystemPermissions.Add(permission);
-    }
-
-    public void RemovePermission(SystemPermission permission)
-    {
-        SystemPermissions.Remove(permission);
-    }
-
     public bool HasPermission(SystemPermission permission)
     {
         return SystemPermissions.Contains(permission);

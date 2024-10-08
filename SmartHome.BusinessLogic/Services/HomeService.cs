@@ -13,7 +13,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLogic
+public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLogic, IHomePermissionLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Home> _homeRepository;
@@ -248,6 +248,34 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
                 homeMemberNotification.Read = true;
             }
         }
+    }
+
+    public bool HasPermission(Guid userId, Guid homeId, Guid permissionId)
+    {
+        var home = _homeRepository.Find(x => x.Id == homeId);
+        if (home == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+
+        var homeMember = home.Members.FirstOrDefault(x => x.User.Id == userId);
+        if (homeMember == null)
+        {
+            throw new HomeException("User is not a member of this home");
+        }
+
+        var homePermission = _homePermissionRepository.Find(x => x.Id == permissionId);
+        if (homePermission == null)
+        {
+            throw new HomeException("HomePermission was not found");
+        }
+
+        if (homeMember.HomePermissions.Contains(homePermission))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public bool HasPermission(Guid homeMemberid, Guid homePermissionId)

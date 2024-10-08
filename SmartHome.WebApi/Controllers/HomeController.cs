@@ -25,6 +25,7 @@ public sealed class HomeController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HomeAuthorizationFilter(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID)]
     [HttpPost("{homeId}/homeDevices")]
     public IActionResult AddDeviceToHome([FromRoute] Guid homeId, [FromBody] Guid deviceId)
     {
@@ -33,6 +34,7 @@ public sealed class HomeController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HomeAuthorizationFilter(SeedDataConstants.ADD_MEMBER_TO_HOME_HOMEPERMISSION_ID)]
     [HttpPost("{homeId}/members")]
     public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, [FromBody] Guid userId)
     {
@@ -55,6 +57,7 @@ public sealed class HomeController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HomeAuthorizationFilter(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID)]
     [HttpGet("{homeId}/homeDevices")]
     public IActionResult GetAllHomeDevices([FromRoute] Guid homeId)
     {
