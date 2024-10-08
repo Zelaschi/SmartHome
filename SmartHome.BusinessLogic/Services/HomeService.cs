@@ -316,7 +316,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var home = _homeRepository.Find(x => x.Id == homeId);
         if (home == null)
         {
-            throw new HomeException("Home Id does not match any home");
+            throw new HomeException("HomeId does not match any home");
         }
 
         return home;

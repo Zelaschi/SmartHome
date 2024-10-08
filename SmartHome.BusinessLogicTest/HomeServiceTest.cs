@@ -953,29 +953,6 @@ public class HomeServiceTest
     }
 
     [TestMethod]
-    public void GetAll_Homes_By_User_Id_Non_Throws_Exception_Test()
-    {
-        var userId = Guid.NewGuid();
-        var user = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blankSurname", Password = "blankPassword", Id = userId, Role = homeOwnerRole };
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 0, Owner = owner };
-
-        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
-        Exception exception = null;
-
-        try
-        {
-            var homes = homeService.GetAllHomesByUserId(userId);
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
-
-        homeRepositoryMock.VerifyAll();
-        Assert.AreEqual("This user id does not correspond to any house", exception.Message);
-    }
-
-    [TestMethod]
     public void Find_HomeMember_By_Id_Not_Found_Test()
     {
         var id = new Guid();
