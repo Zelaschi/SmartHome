@@ -80,7 +80,13 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            return _repository.Homes.ToList();
+            return _repository.Homes
+                .Include(home => home.Members)
+                    .ThenInclude(member => member.User)
+                .Include(home => home.Members)
+                    .ThenInclude(member => member.HomeMemberNotifications)
+                        .ThenInclude(hmn => hmn.Notification)
+                .ToList();
         }
         catch (SqlException)
         {
