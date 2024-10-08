@@ -791,4 +791,22 @@ public class HomeServiceTest
         Assert.IsInstanceOfType(exception, typeof(HomeException));
         Assert.AreEqual("Home has no more space", exception.Message);
     }
+
+    [TestMethod]
+    public void Add_HomeMember_To_Home_Find_User_Throws_Exception_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 1, Owner = owner };
+        var member1Id = Guid.NewGuid();
+        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = member1Id, Role = homeOwnerRole };
+        var homeMember = new HomeMember(member1);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(homeMember);
+
+        var exception = Assert.ThrowsException<HomeException>(() =>
+            homeService.AddHomeMemberToHome(home.Id, member1Id));
+
+        Assert.AreEqual("User Id does not match any user", exception.Message);
+    }
 }
