@@ -837,4 +837,26 @@ public class HomeServiceTest
 
         Assert.AreEqual("Home Id does not match any home", exception.Message);
     }
+
+    [TestMethod]
+    public void GetAll_HomeDevices_EmptyHomeDevices_Throws_Exception_Test()
+    {
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "-1",
+            Longitude = "1",
+            MaxMembers = 6,
+            Owner = owner,
+            Devices = new List<HomeDevice>()
+        };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.GetAllHomeDevices(home.Id));
+
+        Assert.AreEqual("Home devices is empty", exception.Message);
+    }
 }

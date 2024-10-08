@@ -119,9 +119,9 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("Home Id does not match any home");
         }
 
-        if (home.Devices == null)
+        if (home.Devices == null || !home.Devices.Any())
         {
-            throw new HomeException("Home devices was not found");
+            throw new HomeException("Home devices is empty");
         }
 
         return home.Devices.ToList();
