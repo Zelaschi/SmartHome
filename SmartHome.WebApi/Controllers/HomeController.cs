@@ -29,7 +29,7 @@ public sealed class HomeController : ControllerBase
     public IActionResult AddDeviceToHome([FromRoute] Guid homeId, [FromBody] Guid deviceId)
     {
         var response = new HomeDeviceResponseModel(_homeLogic.AddDeviceToHome(homeId, deviceId));
-        return CreatedAtAction("AddDeviceToHome", new { response.HardwardId }, response);
+        return CreatedAtAction("AddDeviceToHome", new { response.HardwareId }, response);
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]

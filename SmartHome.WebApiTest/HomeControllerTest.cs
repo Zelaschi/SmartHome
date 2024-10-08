@@ -199,6 +199,6 @@ public class HomeControllerTest
 
         // ASSERT
         homeLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().HardwardId.Equals(objectResult.First().HardwardId));
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().HardwareId.Equals(objectResult.First().HardwareId));
     }
 }
