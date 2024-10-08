@@ -3,7 +3,8 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.UserModels.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.InitialSeedData;
-using SmartHome.WebApi.WebModels.QueryParams;
+using SmartHome.WebApi.WebModels.Businesses.Out;
+using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -22,7 +23,7 @@ public sealed class UsersController : ControllerBase
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_ACCOUNTS_PERMISSION_ID)]
     [HttpGet]
     public IActionResult GetAllUsers(
-    [FromQuery] Pagination paginationParams, [FromQuery] string? role = null, [FromQuery] string? fullName = null)
+    [FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null, [FromQuery] string? role = null, [FromQuery] string? fullName = null)
     {
         var query = _usersLogic.GetAllUsers();
 
@@ -43,21 +44,15 @@ public sealed class UsersController : ControllerBase
         var totalCount = query.Count();
         List<UserResponseModel> usersResponse;
 
-        if (paginationParams != null)
+        if (pageNumber != null && pageSize != null)
         {
             var pagedData = query
-                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-                .Take(paginationParams.PageSize)
-                .ToList();
+            .Skip(((int)pageNumber - 1) * (int)pageSize)
+            .Take((int)pageSize)
+            .ToList();
 
             usersResponse = pagedData.Select(user => new UserResponseModel(user)).ToList();
-            return Ok(new
-            {
-                Data = usersResponse,
-                TotalCount = totalCount,
-                PageNumber = paginationParams.PageNumber,
-                PageSize = paginationParams.PageSize
-            });
+            return Ok(new PaginatedResponse<UserResponseModel>(usersResponse, totalCount, (int)pageNumber, (int)pageSize));
         }
         else
         {

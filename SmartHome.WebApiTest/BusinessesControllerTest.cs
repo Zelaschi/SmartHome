@@ -13,7 +13,6 @@ using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
-using SmartHome.WebApi.WebModels.QueryParams;
 
 namespace SmartHome.WebApiTest;
 [TestClass]

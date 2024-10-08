@@ -6,7 +6,6 @@ using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
-using SmartHome.WebApi.WebModels.QueryParams;
 using SmartHome.WebApi.WebModels.UserModels.Out;
 using System.Linq;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
