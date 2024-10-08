@@ -38,7 +38,7 @@ public sealed class HomeController : ControllerBase
     public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, [FromBody] Guid userId)
     {
         var response = new HomeMemberResponseModel(_homeLogic.AddHomeMemberToHome(homeId, userId));
-        return CreatedAtAction("AddMemberToHOme", new { response.HomeMemberId }, response);
+        return CreatedAtAction("AddHomeMemberToHome", new { response.HomeMemberId }, response);
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_HOME_PERMISSION_ID)]

@@ -7,6 +7,7 @@ public sealed class HomeMember
     [JsonIgnore]
     public List<HomePermission> HomePermissions { get; set; }
     public List<Notification> Notifications { get; set; }
+    [JsonIgnore]
     public List<HomeMemberNotification> HomeMemberNotifications { get; set; }
     public User? User { get; set; }
     public Guid HomeId { get; set; }

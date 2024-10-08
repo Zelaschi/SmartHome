@@ -1,4 +1,6 @@
-﻿namespace SmartHome.BusinessLogic.Domain;
+﻿using System.Text.Json.Serialization;
+
+namespace SmartHome.BusinessLogic.Domain;
 public sealed class User
 {
     public Guid? Id { get; set; }
@@ -8,6 +10,7 @@ public sealed class User
     public required string Email { get; set; }
     public bool? Complete { get; set; }
     public string? ProfilePhoto { get; set; }
+    [JsonIgnore]
     public List<Home>? Houses { get; set; }
     public Role? Role { get; set; }
     public Guid RoleId { get; set; }
