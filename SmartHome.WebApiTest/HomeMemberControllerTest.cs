@@ -47,7 +47,7 @@ public class HomeMemberControllerTest
 
         // ACT
         var expected = new NoContentResult();
-        var result = homeMemberController.UpdateHomeMemberPermissions(homeMember.HomeMemberId, homeMemberPermissionsModel) as NoContentResult;
+        var result = homeMemberController.AddHomePermissionsToHomeMember(homeMember.HomeMemberId, homeMemberPermissionsModel) as NoContentResult;
 
         // ASSERT
         homeMemberLogicMock.VerifyAll();

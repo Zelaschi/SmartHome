@@ -18,9 +18,4 @@ public sealed class Role
     {
         SystemPermissions = new List<SystemPermission>();
     }
-
-    public bool HasPermission(SystemPermission permission)
-    {
-        return SystemPermissions.Contains(permission);
-    }
 }

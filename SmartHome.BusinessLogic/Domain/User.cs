@@ -24,14 +24,4 @@ public sealed class User
     {
         Houses = new List<Home>();
     }
-
-    public void AssignRole(Role role)
-    {
-        Role = role;
-    }
-
-    public bool HasPermission(SystemPermission permission)
-    {
-        return Role.HasPermission(permission);
-    }
 }
