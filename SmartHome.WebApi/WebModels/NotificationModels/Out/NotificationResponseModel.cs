@@ -8,16 +8,16 @@ public sealed class NotificationResponseModel
     public HomeDevice HomeDevice { get; set; }
     public string Event { get; set; }
     public bool Read { get; set; } = false;
-    public DateTime Date { get; set; }
-    public DateTime Time { get; set; }
+    public string Date { get; set; }
+    public string Time { get; set; }
 
     public NotificationResponseModel(Notification notification)
     {
         Id = notification.Id;
         HomeDevice = notification.HomeDevice;
         Event = notification.Event;
-        Date = notification.Date;
-        Time = notification.Time;
+        Date = notification.Date.ToString("dd/MM/yyyy");
+        Time = notification.Time.ToString("HH:mm:ss");
     }
 
     public override bool Equals(object? obj)
