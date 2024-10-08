@@ -1020,4 +1020,21 @@ public class HomeServiceTest
 
         Assert.AreEqual("Home Id does not match any home", exception.Message);
     }
+
+    [TestMethod]
+    public void HasPermission_User_Is_Not_Member_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var homeId = Guid.NewGuid();
+        var member1Id = Guid.NewGuid();
+        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(member1Id, homeId, fakePermissionId));
+
+        Assert.AreEqual("User is not a member of this home", exception.Message);
+    }
+
 }
