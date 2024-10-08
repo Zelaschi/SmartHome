@@ -1043,7 +1043,6 @@ public class HomeServiceTest
         var fakePermissionId = Guid.NewGuid();
         var homeId = Guid.NewGuid();
         var member1Id = Guid.NewGuid();
-
         var home = new Home
         {
             Id = homeId,
@@ -1054,6 +1053,8 @@ public class HomeServiceTest
             MaxMembers = 6,
             Owner = owner
         };
+        var homeOwner = new HomeMember(owner);
+        home.Members.Add(homeOwner);
 
         var permissions = new List<HomePermission>();
 
@@ -1061,9 +1062,9 @@ public class HomeServiceTest
         homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns((HomePermission)null);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
-        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns((HomeMember)null);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeOwner);
 
-        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(member1Id, homeId, fakePermissionId));
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(ownerId, homeId, fakePermissionId));
 
         Assert.AreEqual("HomePermission was not found", exception.Message);
     }
