@@ -994,6 +994,30 @@ public class HomeServiceTest
 
         homeRepositoryMock.VerifyAll();
         Assert.AreEqual("Home Member not found", exception.Message);
+    }
 
+    [TestMethod]
+    public void HasPermission_Home_Not_Found_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var fakeHomeId = Guid.NewGuid();
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
+
+        Exception exception = null;
+
+        try
+        {
+            var members = homeService.HasPermission(ownerId, fakeHomeId, fakePermissionId );
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+
+        Assert.AreEqual("Home Id does not match any home", exception.Message);
     }
 }
