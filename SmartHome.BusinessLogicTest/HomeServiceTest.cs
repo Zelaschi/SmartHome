@@ -1094,4 +1094,41 @@ public class HomeServiceTest
 
         Assert.AreEqual("Home Member Id does not match any home member", exception.Message);
     }
+
+    [TestMethod]
+    public void HasPermission_NoHomeId_HomePermission_Not_Found_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var homeId = Guid.NewGuid();
+        var member1Id = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner
+        };
+        var homeOwner = new HomeMember(owner);
+        home.Members.Add(homeOwner);
+
+        var addMemberPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID), Name = "AddMemberPermission" };
+        var addDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID), Name = "AddDevicesPermission" };
+        var listDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID), Name = "ListDevicesPermission" };
+        var notificationsPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationsPermission" };
+
+        var permissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission, notificationsPermission };
+
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(permissions);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns((HomePermission)null);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeOwner);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(ownerId, fakePermissionId));
+
+        Assert.AreEqual("Home Permission Id does not match any home permission", exception.Message);
+    }
 }
