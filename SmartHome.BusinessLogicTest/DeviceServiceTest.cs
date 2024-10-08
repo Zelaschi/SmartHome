@@ -452,4 +452,77 @@ public class DeviceServiceTest
         Assert.IsInstanceOfType(exception, typeof(DeviceException));
         Assert.AreEqual("Business was not found for the user", exception.Message);
     }
+
+    [TestMethod]
+    public void Create_SecurityCamera_Business_Not_Found_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var user = new User
+        {
+            Name = "Diego",
+            Surname = "Forlan",
+            Password = "Goleador",
+            CreationDate = DateTime.Today,
+            Email = "df10@gmail.com"
+        };
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner
+        };
+        var securityCamera = new SecurityCamera
+        {
+            Id = Guid.NewGuid(),
+            Name = "WindowSensor",
+            Description = "Security Camera",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "Security Camera",
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "Kolke",
+                Logo = "Logo1",
+                RUT = "1234",
+                BusinessOwner = new User
+                {
+                    Name = "Pedro",
+                    Surname = "Rodriguez",
+                    Password = "Password@1234",
+                    CreationDate = DateTime.Today,
+                    Email = "pedrorod@gmail.com"
+                }
+            },
+            Outdoor = true,
+            Indoor = true,
+            MovementDetection = true,
+            PersonDetection = true
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns((Business)null);
+        Exception exception = null;
+
+        try
+        {
+            deviceService.CreateSecurityCamera(securityCamera, user);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Business was not found for the user", exception.Message);
+    }
 }
