@@ -859,4 +859,36 @@ public class HomeServiceTest
 
         Assert.AreEqual("Home devices is empty", exception.Message);
     }
+
+    [TestMethod]
+    public void GetAll_HomeMembers_Home_Not_Found_Throws_Exception_Test()
+    {
+        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var homeOwner = new HomeMember(owner);
+        var homeMember1 = new HomeMember(member1);
+        var homeMember2 = new HomeMember(member2);
+        var falseHomeId = Guid.NewGuid();
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        home.Members.Add(homeOwner);
+        home.Members.Add(homeMember1);
+        home.Members.Add(homeMember2);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
+
+        Exception exception = null;
+
+        try
+        {
+            var members = homeService.GetAllHomeMembers(falseHomeId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+
+        Assert.AreEqual("Home Id does not match any home", exception.Message);
+    }
 }
