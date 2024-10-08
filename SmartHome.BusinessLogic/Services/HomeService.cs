@@ -170,7 +170,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     {
         var homes = _homesFromUserRepository.GetAllHomesByUserId(userId);
 
-        if (homes == null)
+        if (homes == null || !homes.Any())
         {
             throw new UserException("This user id does not correspond to any house");
         }
