@@ -785,4 +785,319 @@ public class HomeServiceTest
         Assert.IsInstanceOfType(exception, typeof(HomeException));
         Assert.AreEqual("Home has no more space", exception.Message);
     }
+
+    [TestMethod]
+    public void Add_HomeMember_To_Home_Find_User_Throws_Exception_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 1, Owner = owner };
+        var member1Id = Guid.NewGuid();
+        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = member1Id, Role = homeOwnerRole };
+        var homeMember = new HomeMember(member1);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+        homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(homeMember);
+
+        var exception = Assert.ThrowsException<HomeException>(() =>
+            homeService.AddHomeMemberToHome(home.Id, member1Id));
+
+        Assert.AreEqual("User Id does not match any user", exception.Message);
+    }
+
+    [TestMethod]
+    public void Create_Home_Not_Found_User_Throws_Exception_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var user = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.CreateHome(home, user.Id));
+
+        Assert.AreEqual("User Id does not match any user", exception.Message);
+    }
+
+    [TestMethod]
+    public void GetAll_HomeDevices_Home_Not_Found_Throws_Exception_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var user = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
+        userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(user);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.GetAllHomeDevices(home.Id));
+
+        Assert.AreEqual("Home Id does not match any home", exception.Message);
+    }
+
+    [TestMethod]
+    public void GetAll_HomeDevices_EmptyHomeDevices_Throws_Exception_Test()
+    {
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "-1",
+            Longitude = "1",
+            MaxMembers = 6,
+            Owner = owner,
+            Devices = new List<HomeDevice>()
+        };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.GetAllHomeDevices(home.Id));
+
+        Assert.AreEqual("Home devices is empty", exception.Message);
+    }
+
+    [TestMethod]
+    public void GetAll_HomeMembers_Home_Not_Found_Throws_Exception_Test()
+    {
+        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var homeOwner = new HomeMember(owner);
+        var homeMember1 = new HomeMember(member1);
+        var homeMember2 = new HomeMember(member2);
+        var falseHomeId = Guid.NewGuid();
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        home.Members.Add(homeOwner);
+        home.Members.Add(homeMember1);
+        home.Members.Add(homeMember2);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
+
+        Exception exception = null;
+
+        try
+        {
+            var members = homeService.GetAllHomeMembers(falseHomeId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+
+        Assert.AreEqual("Home Id does not match any home", exception.Message);
+    }
+
+    [TestMethod]
+    public void ValidateHome_MainStreetEmpty_Throws_HomeArgumentException()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = string.Empty, DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var exception = Assert.ThrowsException<HomeArgumentException>(() => homeService.CreateHome(home, ownerId));
+        Assert.AreEqual("Invalid main street, cannot be empty", exception.Message);
+    }
+
+    [TestMethod]
+    public void ValidateHome_DoorNumberEmpty_Throws_HomeArgumentException()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = string.Empty, Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var exception = Assert.ThrowsException<HomeArgumentException>(() => homeService.CreateHome(home, ownerId));
+        Assert.AreEqual("Invalid door number, cannot be empty", exception.Message);
+    }
+
+    [TestMethod]
+    public void ValidateHome_LatitudeEmpty_Throws_HomeArgumentException()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = string.Empty, Longitude = "31", MaxMembers = 6, Owner = owner };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var exception = Assert.ThrowsException<HomeArgumentException>(() => homeService.CreateHome(home, ownerId));
+        Assert.AreEqual("Invalid latitude, cannot be empty", exception.Message);
+    }
+
+    [TestMethod]
+    public void ValidateHome_LongitudeEmpty_Throws_HomeArgumentException()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = string.Empty, MaxMembers = 6, Owner = owner };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var exception = Assert.ThrowsException<HomeArgumentException>(() => homeService.CreateHome(home, ownerId));
+        Assert.AreEqual("Invalid longitude, cannot be empty", exception.Message);
+    }
+
+    [TestMethod]
+    public void ValidateHome_MaxMembersLessThan1_Throws_HomeArgumentException()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 0, Owner = owner };
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var exception = Assert.ThrowsException<HomeArgumentException>(() => homeService.CreateHome(home, ownerId));
+        Assert.AreEqual("Invalid max members, must be at least 1", exception.Message);
+    }
+
+    [TestMethod]
+    public void Find_HomeMember_By_Id_Not_Found_Test()
+    {
+        var id = new Guid();
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns((HomeMember)null);
+        var permissions = new List<HomePermission>();
+        Exception exception = null;
+
+        try
+        {
+            homeService.UpdateHomePermissionsOfHomeMember(id, permissions);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        Assert.AreEqual("Home Member not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_Home_Not_Found_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var fakeHomeId = Guid.NewGuid();
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
+
+        Exception exception = null;
+
+        try
+        {
+            var members = homeService.HasPermission(ownerId, fakeHomeId, fakePermissionId );
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+
+        Assert.AreEqual("Home Id does not match any home", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_User_Is_Not_Member_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var homeId = Guid.NewGuid();
+        var member1Id = Guid.NewGuid();
+        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(member1Id, homeId, fakePermissionId));
+
+        Assert.AreEqual("User is not a member of this home", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_HomePermission_Not_Found_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var homeId = Guid.NewGuid();
+        var member1Id = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner
+        };
+        var homeOwner = new HomeMember(owner);
+        home.Members.Add(homeOwner);
+
+        var permissions = new List<HomePermission>();
+
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(permissions);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns((HomePermission)null);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeOwner);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(ownerId, homeId, fakePermissionId));
+
+        Assert.AreEqual("HomePermission was not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_HomeMemberId_Not_Found_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var homeId = Guid.NewGuid();
+        var invalidMemberId = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner
+        };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns((HomeMember)null);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns((HomePermission)null);
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(invalidMemberId, fakePermissionId));
+
+        Assert.AreEqual("Home Member Id does not match any home member", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_NoHomeId_HomePermission_Not_Found_Throws_Exception_Test()
+    {
+        var fakePermissionId = Guid.NewGuid();
+        var homeId = Guid.NewGuid();
+        var member1Id = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner
+        };
+        var homeOwner = new HomeMember(owner);
+        home.Members.Add(homeOwner);
+
+        var addMemberPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID), Name = "AddMemberPermission" };
+        var addDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID), Name = "AddDevicesPermission" };
+        var listDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID), Name = "ListDevicesPermission" };
+        var notificationsPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationsPermission" };
+
+        var permissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission, notificationsPermission };
+
+        homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(permissions);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns((HomePermission)null);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeOwner);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.HasPermission(ownerId, fakePermissionId));
+
+        Assert.AreEqual("Home Permission Id does not match any home permission", exception.Message);
+    }
 }

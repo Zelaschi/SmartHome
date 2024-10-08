@@ -140,9 +140,9 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("Home Id does not match any home");
         }
 
-        if (home.Devices == null)
+        if (home.Devices == null || !home.Devices.Any())
         {
-            throw new HomeException("Home devices was not found");
+            throw new HomeException("Home devices is empty");
         }
 
         return home.Devices.ToList();
@@ -151,7 +151,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     public IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId)
     {
         var home = _homeRepository.Find(x => x.Id == homeId);
-        if (home.Members == null)
+        if (home == null)
         {
             throw new HomeException("Home Id does not match any home");
         }
@@ -163,7 +163,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     {
         var homes = _homesFromUserRepository.GetAllHomesByUserId(userId);
 
-        if (homes == null)
+        if (homes == null || !homes.Any())
         {
             throw new UserException("This user id does not correspond to any house");
         }
@@ -309,7 +309,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var home = _homeRepository.Find(x => x.Id == homeId);
         if (home == null)
         {
-            throw new HomeException("Home Id does not match any home");
+            throw new HomeException("HomeId does not match any home");
         }
 
         return home;

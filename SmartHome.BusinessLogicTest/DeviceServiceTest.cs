@@ -393,4 +393,152 @@ public class DeviceServiceTest
 
         CollectionAssert.AreEqual(deviceTypes, result);
     }
+
+    [TestMethod]
+    public void Create_WindowSensor_Business_Not_Found_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var user = new User
+        {
+            Name = "Diego",
+            Surname = "Forlan",
+            Password = "Goleador",
+            CreationDate = DateTime.Today,
+            Email = "df10@gmail.com"
+        };
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner
+        };
+        var windowSensor = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Window Sensor",
+            Description = "Window Sensor",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Business = business
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns((Business)null);
+        Exception exception = null;
+
+        try
+        {
+            deviceService.CreateDevice(windowSensor, user);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Business was not found for the user", exception.Message);
+    }
+
+    [TestMethod]
+    public void Create_SecurityCamera_Business_Not_Found_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+        var user = new User
+        {
+            Name = "Diego",
+            Surname = "Forlan",
+            Password = "Goleador",
+            CreationDate = DateTime.Today,
+            Email = "df10@gmail.com"
+        };
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner
+        };
+        var securityCamera = new SecurityCamera
+        {
+            Id = Guid.NewGuid(),
+            Name = "WindowSensor",
+            Description = "Security Camera",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "Security Camera",
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "Kolke",
+                Logo = "Logo1",
+                RUT = "1234",
+                BusinessOwner = new User
+                {
+                    Name = "Pedro",
+                    Surname = "Rodriguez",
+                    Password = "Password@1234",
+                    CreationDate = DateTime.Today,
+                    Email = "pedrorod@gmail.com"
+                }
+            },
+            Outdoor = true,
+            Indoor = true,
+            MovementDetection = true,
+            PersonDetection = true
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns((Business)null);
+        Exception exception = null;
+
+        try
+        {
+            deviceService.CreateSecurityCamera(securityCamera, user);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Business was not found for the user", exception.Message);
+    }
+
+    [TestMethod]
+    public void GetAll_Devices_Empty_List_Throws_Exception_Test()
+    {
+        var devices = new List<Device>();
+        deviceRepositoryMock.Setup(x => x.FindAll()).Returns(devices);
+        Exception exception = null;
+
+        try
+        {
+            var result = deviceService?.GetAllDevices().ToList();
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        deviceRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("There are no devices in the database.", exception.Message);
+    }
 }
