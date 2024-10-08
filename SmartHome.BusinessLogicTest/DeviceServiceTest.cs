@@ -525,4 +525,25 @@ public class DeviceServiceTest
         Assert.IsInstanceOfType(exception, typeof(DeviceException));
         Assert.AreEqual("Business was not found for the user", exception.Message);
     }
+
+    [TestMethod]
+    public void GetAll_Devices_Empty_List_Throws_Exception_Test()
+    {
+        var devices = new List<Device>();
+        deviceRepositoryMock.Setup(x => x.FindAll()).Returns(devices);
+        Exception exception = null;
+
+        try
+        {
+            var result = deviceService?.GetAllDevices().ToList();
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        deviceRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("There are no devices in the database.", exception.Message);
+    }
 }
