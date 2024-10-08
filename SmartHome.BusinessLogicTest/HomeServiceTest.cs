@@ -824,4 +824,17 @@ public class HomeServiceTest
         Assert.AreEqual("User Id does not match any user", exception.Message);
     }
 
+    [TestMethod]
+    public void GetAll_HomeDevices_Home_Not_Found_Throws_Exception_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner };
+        var user = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
+
+        homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
+        userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(user);
+
+        var exception = Assert.ThrowsException<HomeException>(() => homeService.GetAllHomeDevices(home.Id));
+
+        Assert.AreEqual("Home Id does not match any home", exception.Message);
+    }
 }
