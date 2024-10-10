@@ -280,7 +280,7 @@ public sealed class SmartHomeEFCoreContext : DbContext
 
         modelBuilder.Entity<Device>()
             .ToTable("Devices")
-            .HasDiscriminator<string>("DeviceType")
+            .HasDiscriminator<string>("Type")
             .HasValue<Device>("Window Sensor")
             .HasValue<SecurityCamera>("Security Camera");
 
@@ -295,5 +295,33 @@ public sealed class SmartHomeEFCoreContext : DbContext
             .WithOne()
             .HasForeignKey(hd => hd.HomeId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<SecurityCamera>()
+        .Property(c => c.Outdoor)
+        .HasColumnName("Outdoor");
+
+        modelBuilder.Entity<SecurityCamera>()
+            .Property(c => c.Indoor)
+            .HasColumnName("Indoor");
+
+        modelBuilder.Entity<SecurityCamera>()
+            .Property(c => c.MovementDetection)
+            .HasColumnName("MovementDetection");
+
+        modelBuilder.Entity<SecurityCamera>()
+            .Property(c => c.PersonDetection)
+            .HasColumnName("PersonDetection");
+
+        modelBuilder.Entity<HomeMemberNotification>()
+            .HasOne(hmn => hmn.HomeMember)
+            .WithMany(hm => hm.HomeMemberNotifications)
+            .HasForeignKey(hmn => hmn.HomeMemberId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<HomeMemberNotification>()
+            .HasOne(hmn => hmn.Notification)
+            .WithMany(n => n.HomeMemberNotifications)
+            .HasForeignKey(hmn => hmn.NotificationId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

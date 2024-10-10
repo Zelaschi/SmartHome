@@ -12,8 +12,8 @@ using SmartHome.DataAccess.Contexts;
 namespace SmartHome.DataAccess.Migrations
 {
     [DbContext(typeof(SmartHomeEFCoreContext))]
-    [Migration("20241007010018_AddingMissingSystemPermissions")]
-    partial class AddingMissingSystemPermissions
+    [Migration("20241009153416_SecurityCameraCorrections")]
+    partial class SecurityCameraCorrections
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,17 +59,12 @@ namespace SmartHome.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BusinessId")
+                    b.Property<Guid?>("BusinessId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DeviceType")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("ModelNumber")
                         .IsRequired()
@@ -85,7 +80,8 @@ namespace SmartHome.DataAccess.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.HasKey("Id");
 
@@ -93,7 +89,7 @@ namespace SmartHome.DataAccess.Migrations
 
                     b.ToTable("Devices", (string)null);
 
-                    b.HasDiscriminator<string>("DeviceType").HasValue("Window Sensor");
+                    b.HasDiscriminator<string>("Type").HasValue("Window Sensor");
 
                     b.UseTphMappingStrategy();
                 });
@@ -571,16 +567,20 @@ namespace SmartHome.DataAccess.Migrations
                     b.HasBaseType("SmartHome.BusinessLogic.Domain.Device");
 
                     b.Property<bool>("Indoor")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("Indoor");
 
                     b.Property<bool>("MovementDetection")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("MovementDetection");
 
                     b.Property<bool>("Outdoor")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("Outdoor");
 
                     b.Property<bool>("PersonDetection")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("PersonDetection");
 
                     b.HasDiscriminator().HasValue("Security Camera");
                 });
@@ -598,9 +598,7 @@ namespace SmartHome.DataAccess.Migrations
                 {
                     b.HasOne("SmartHome.BusinessLogic.Domain.Business", "Business")
                         .WithMany()
-                        .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BusinessId");
 
                     b.Navigation("Business");
                 });
@@ -651,15 +649,15 @@ namespace SmartHome.DataAccess.Migrations
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomeMemberNotification", b =>
                 {
                     b.HasOne("SmartHome.BusinessLogic.Domain.HomeMember", "HomeMember")
-                        .WithMany()
+                        .WithMany("HomeMemberNotifications")
                         .HasForeignKey("HomeMemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SmartHome.BusinessLogic.Domain.Notification", "Notification")
-                        .WithMany()
+                        .WithMany("HomeMemberNotifications")
                         .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("HomeMember");
@@ -738,6 +736,16 @@ namespace SmartHome.DataAccess.Migrations
                     b.Navigation("Devices");
 
                     b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.HomeMember", b =>
+                {
+                    b.Navigation("HomeMemberNotifications");
+                });
+
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.Notification", b =>
+                {
+                    b.Navigation("HomeMemberNotifications");
                 });
 
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.User", b =>

@@ -63,11 +63,6 @@ namespace SmartHome.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DeviceType")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
                     b.Property<string>("ModelNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -82,7 +77,8 @@ namespace SmartHome.DataAccess.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.HasKey("Id");
 
@@ -90,7 +86,7 @@ namespace SmartHome.DataAccess.Migrations
 
                     b.ToTable("Devices", (string)null);
 
-                    b.HasDiscriminator<string>("DeviceType").HasValue("Window Sensor");
+                    b.HasDiscriminator<string>("Type").HasValue("Window Sensor");
 
                     b.UseTphMappingStrategy();
                 });
@@ -568,16 +564,20 @@ namespace SmartHome.DataAccess.Migrations
                     b.HasBaseType("SmartHome.BusinessLogic.Domain.Device");
 
                     b.Property<bool>("Indoor")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("Indoor");
 
                     b.Property<bool>("MovementDetection")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("MovementDetection");
 
                     b.Property<bool>("Outdoor")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("Outdoor");
 
                     b.Property<bool>("PersonDetection")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("PersonDetection");
 
                     b.HasDiscriminator().HasValue("Security Camera");
                 });
@@ -654,7 +654,7 @@ namespace SmartHome.DataAccess.Migrations
                     b.HasOne("SmartHome.BusinessLogic.Domain.Notification", "Notification")
                         .WithMany("HomeMemberNotifications")
                         .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("HomeMember");

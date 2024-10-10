@@ -114,7 +114,7 @@ public class DeviceRepository : IGenericRepository<Device>, IDeviceTypeRepositor
         try
         {
             return _repository.Devices
-                              .Select(d => EF.Property<string>(d, "DeviceType"))
+                              .Select(d => EF.Property<string>(d, "Type"))
                               .Distinct()
                               .ToList();
         }

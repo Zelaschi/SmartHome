@@ -5,7 +5,7 @@
 namespace SmartHome.DataAccess.Migrations;
 
 /// <inheritdoc />
-public partial class TablePerHierarchy : Migration
+public partial class SecurityCameraCorrections : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
