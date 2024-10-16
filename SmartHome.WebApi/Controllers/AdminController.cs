@@ -40,6 +40,15 @@ public sealed class AdminController : ControllerBase
 
     public IActionResult UpdateAdminRole()
     {
-        throw new NotImplementedException();
+        var user = HttpContext.Items["User"] as User;
+
+        if (user == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        _adminLogic.UpdateAdminRole(user);
+
+        return Ok("Admin Permissions Updated successfully");
     }
 }
