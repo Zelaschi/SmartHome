@@ -32,6 +32,15 @@ public sealed class BusinessOwnerController : ControllerBase
 
     public IActionResult UpdateBusinessOwnerRole()
     {
-        throw new NotImplementedException();
+        var user = HttpContext.Items["User"] as User;
+
+        if (user == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        _businessOwnerLogic.UpdateBusinessOwnerRole(user);
+
+        return Ok("BusinessOwner Permissions Updated successfully");
     }
 }
