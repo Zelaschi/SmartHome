@@ -52,6 +52,16 @@ public sealed class SmartHomeEFCoreContext : DbContext
             {
                 Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID),
                 Name = "BusinessOwner"
+            },
+            new Role
+            {
+                Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                Name = "AdminHomeOwner"
+            },
+            new Role
+            {
+                Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                Name = "BusinessOwnerHomeOwner"
             });
 
         modelBuilder.Entity<SystemPermission>().HasData(
@@ -211,6 +221,76 @@ public sealed class SmartHomeEFCoreContext : DbContext
             {
                 RoleId = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID),
                 SystemPermissionId = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_BUSINESS_OWNER_ACCOUNT_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_ACCOUNTS_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                 RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                 SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_DEVICES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_HOME_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_USERS_NOTIFICATIONS_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_USERS_HOMES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.HOME_RELATED_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)
             }
         );
 

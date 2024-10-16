@@ -467,4 +467,48 @@ public class UserLogicTest
             Assert.AreEqual("Admin not found", e.Message);
         }
     }
+
+    [TestMethod]
+    public void Update_Admin_Role_Test()
+    {
+        // Arrange
+        var adminRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
+        var adminHomeOwnerRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
+        var adminId = Guid.NewGuid();
+
+        var admin = new User
+        {
+            Id = adminId,
+            Name = "Pedro",
+            Surname = "Azambuja",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com",
+            Role = adminRole
+        };
+
+        var adminResult = new User
+        {
+            Id = adminId,
+            Name = "Pedro",
+            Surname = "Azambuja",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com",
+            Role = adminHomeOwnerRole
+        };
+
+        userRepositoryMock.Setup(x => x.Update(It.IsAny<User>()))
+                          .Callback<User>(u => u.Role = adminHomeOwnerRole)
+                          .Returns(adminResult);
+
+        roleLogicMock.Setup(x => x.GetAdminHomeOwnerRole()).Returns(adminHomeOwnerRole);
+
+        userService.UpdateAdminRole(admin);
+
+        userRepositoryMock.Verify(x => x.Update(It.IsAny<User>()), Times.Once);
+        roleLogicMock.Verify(x => x.GetAdminHomeOwnerRole(), Times.Once);
+
+        Assert.AreEqual(adminHomeOwnerRole, admin.Role);
+    }
 }

@@ -36,6 +36,16 @@ public class RoleService : IRoleLogic, ISystemPermissionLogic
         return _roleRepository.Find(role => role.Id == Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID)) ?? throw new RoleException("Role not found");
     }
 
+    public virtual Role GetAdminHomeOwnerRole()
+    {
+        return _roleRepository.Find(role => role.Id == Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID)) ?? throw new RoleException("Role not found");
+    }
+
+    public virtual Role GetBusinessOwnerHomeOwnerRole()
+    {
+        return _roleRepository.Find(role => role.Id == Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID)) ?? throw new RoleException("Role not found");
+    }
+
     public bool HasPermission(Guid roleId, Guid permissionId)
     {
         var role = _roleRepository.Find(x => x.Id == roleId);
