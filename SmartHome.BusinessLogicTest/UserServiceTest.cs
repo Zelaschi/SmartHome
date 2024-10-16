@@ -15,7 +15,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 namespace SmartHome.BusinessLogicTest;
 
 [TestClass]
-public class UserLogicTest
+public class UserServiceTest
 {
     private Mock<IGenericRepository<User>>? userRepositoryMock;
     private Mock<IGenericRepository<Role>>? roleRepositoryMock;
@@ -471,7 +471,6 @@ public class UserLogicTest
     [TestMethod]
     public void Update_Admin_Role_Test()
     {
-        // Arrange
         var adminRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
         var adminHomeOwnerRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
         var adminId = Guid.NewGuid();
@@ -510,5 +509,48 @@ public class UserLogicTest
         roleLogicMock.Verify(x => x.GetAdminHomeOwnerRole(), Times.Once);
 
         Assert.AreEqual(adminHomeOwnerRole, admin.Role);
+    }
+
+    [TestMethod]
+    public void Update_BusinessOwner_Role_Test()
+    {
+        var businessOwnerRole = new Role { Name = "BusinessOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID) };
+        var businessOwnerHomeOwnerRole = new Role { Name = "BusinessOwnerHomeOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID) };
+        var businessOwnerId = Guid.NewGuid();
+
+        var businessOwner = new User
+        {
+            Id = businessOwnerId,
+            Name = "Pedro",
+            Surname = "Azambuja",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com",
+            Role = businessOwnerRole
+        };
+
+        var businessOwnerResult = new User
+        {
+            Id = businessOwnerId,
+            Name = "Pedro",
+            Surname = "Azambuja",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedroRodriguez@gmail.com",
+            Role = businessOwnerHomeOwnerRole
+        };
+
+        userRepositoryMock.Setup(x => x.Update(It.IsAny<User>()))
+                          .Callback<User>(u => u.Role = businessOwnerHomeOwnerRole)
+                          .Returns(businessOwnerResult);
+
+        roleLogicMock.Setup(x => x.GetBusinessOwnerHomeOwnerRole()).Returns(businessOwnerHomeOwnerRole);
+
+        userService.UpdateBusinessOwnerRole(businessOwner);
+
+        userRepositoryMock.Verify(x => x.Update(It.IsAny<User>()), Times.Once);
+        roleLogicMock.Verify(x => x.GetBusinessOwnerHomeOwnerRole(), Times.Once);
+
+        Assert.AreEqual(businessOwnerHomeOwnerRole, businessOwner.Role);
     }
 }
