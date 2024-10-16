@@ -76,6 +76,7 @@ public sealed class HomeController : ControllerBase
 
     public IActionResult UpdateHomeDeviceName([FromRoute] Guid homeId, [FromBody] Guid homeDeviceId, [FromBody] string newName)
     {
-        throw new NotImplementedException();
+        _homeLogic.UpdateHomeDeviceName(homeId, homeDeviceId, newName);
+        return Ok();
     }
 }
