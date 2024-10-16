@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
@@ -33,5 +34,12 @@ public sealed class AdminController : ControllerBase
     {
         _adminLogic.DeleteAdmin(adminId);
         return Ok("The admin was deleted successfully");
+    }
+
+    [HttpPatch("/homeOwnerPermissions")]
+
+    public IActionResult UpdateAdminRole()
+    {
+        throw new NotImplementedException();
     }
 }

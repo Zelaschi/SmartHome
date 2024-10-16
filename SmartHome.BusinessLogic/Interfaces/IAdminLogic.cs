@@ -12,4 +12,5 @@ public interface IAdminLogic
 {
     User CreateAdmin(User user);
     void DeleteAdmin(Guid adminId);
+    void UpdateAdminRole(User user);
 }

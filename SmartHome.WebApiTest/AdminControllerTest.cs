@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -17,7 +18,7 @@ public class AdminControllerTest
 {
     private Mock<IAdminLogic>? adminLogicMock;
     private AdminController? adminController;
-    private readonly Role admin = new Role() { Name = "HomeOwner" };
+    private readonly Role admin = new Role() { Name = "Admin" };
 
     [TestInitialize]
     public void TestInitialize()
@@ -72,5 +73,40 @@ public class AdminControllerTest
         adminLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(200));
         Assert.IsTrue(result.Value.Equals("The admin was deleted successfully"));
+    }
+
+    [TestMethod]
+    public void UpdateAdminRoleTest_OK()
+    {
+        var user = new User()
+        {
+            Id = Guid.NewGuid(),
+            Name = "adminName",
+            Surname = "adminSurname",
+            Password = "adminPassword",
+            Email = "admin@gmail.com",
+            Role = admin
+        };
+
+        var httpContextMock = new Mock<HttpContext>();
+        var items = new Dictionary<object, object>();
+        items["User"] = user;
+
+        httpContextMock.Setup(x => x.Items).Returns(items);
+
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContextMock.Object
+        };
+
+        adminController.ControllerContext = controllerContext;
+
+        adminLogicMock.Setup(a => a.UpdateAdminRole(user)).Verifiable();
+        var result = adminController.UpdateAdminRole() as OkObjectResult;
+
+        adminLogicMock.VerifyAll();
+        Assert.IsNotNull(result);
+        Assert.AreEqual(200, result.StatusCode);
+        Assert.AreEqual("Admin Permissions Updated successfully", result.Value);
     }
 }

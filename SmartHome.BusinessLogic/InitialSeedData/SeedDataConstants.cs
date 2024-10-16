@@ -12,6 +12,8 @@ public static class SeedDataConstants
     public const string HOME_OWNER_ROLE_ID = "5725feee-327f-4147-aad9-ea28b9ff3e7b";
     public const string BUSINESS_OWNER_ROLE_ID = "28a660d2-c86a-49a8-bbeb-587a82415771";
     public const string FIRST_ADMIN_ID = "80e909fb-3c8a-423d-bd46-edde4f85fbe3";
+    public const string ADMIN_HOME_OWNER_ROLE_ID = "f3b3b3b3-3c8a-423d-bd46-edde4f85fbe4";
+    public const string BUSINESS_OWNER_HOME_OWNER_ROLE_ID = "h3b3b3b3-3c8a-423d-bd46-edde4f85fbe3";
 
     public const string CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID = "f22942d7-9bc0-4458-a713-15c9010deaa1";
     public const string CREATE_BUSINESS_OWNER_ACCOUNT_PERMISSION_ID = "b3eef741-8d56-4263-a633-7e176981feec";

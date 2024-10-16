@@ -144,4 +144,9 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         EnsureAdminCannotBeDeletedIfOnlyOneExists();
         _userRepository.Delete(adminId);
     }
+
+    public void UpdateAdminRole(User user)
+    {
+        throw new NotImplementedException();
+    }
 }
