@@ -91,7 +91,7 @@ public class HomeControllerTest
         home.Id = Guid.NewGuid();
         var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
         var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = company };
-        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device, HomeId = home.Id };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device, HomeId = home.Id, Name = device.Name };
 
         homeLogicMock.Setup(h => h.AddDeviceToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(homeDevice);
 
@@ -176,14 +176,13 @@ public class HomeControllerTest
     [TestMethod]
     public void GetAllHomeDevicesTest_Ok()
     {
-        // ARRANGE
         var user1Id = Guid.NewGuid();
         var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var business = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
         var device1 = new Device() { Id = Guid.NewGuid(), Name = "A", Type = "A", ModelNumber = "1", Description = "A", Photos = "jpg", Business = business };
         var device2 = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = business };
-        var homeDevice1 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device1 };
-        var homeDevice2 = new HomeDevice(){ Id = Guid.NewGuid(), Online = true, Device = device2 };
+        var homeDevice1 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device1, Name = device1.Name };
+        var homeDevice2 = new HomeDevice(){ Id = Guid.NewGuid(), Online = true, Device = device2, Name = device2.Name };
         var homeDevices = new List<HomeDevice>() { homeDevice1, homeDevice2 };
         var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
         home1.Devices = homeDevices;
@@ -197,12 +196,36 @@ public class HomeControllerTest
 
         List<HomeDeviceResponseModel> expectedObject = (expected.Value as List<HomeDeviceResponseModel>)!;
 
-        // ACT
         var result = homeController.GetAllHomeDevices(home1.Id) as OkObjectResult;
         var objectResult = (result.Value as List<HomeDeviceResponseModel>)!;
 
-        // ASSERT
         homeLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().HardwardId.Equals(objectResult.First().HardwardId));
+    }
+
+    [TestMethod]
+
+    public void UpdateHomeDeviceNameTest_Ok()
+    {
+        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var homeRequestModel = new CreateHomeRequestModel()
+        {
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "12",
+            Longitude = "34",
+            MaxMembers = 5
+        };
+        Home home = homeRequestModel.ToEntity();
+        home.Id = Guid.NewGuid();
+        var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
+        var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = "photos", Business = company };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device, HomeId = home.Id, Name = device.Name };
+
+        homeLogicMock.Setup(h => h.UpdateHomeDeviceName(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>()));
+
+        var expected = new OkResult();
+
+        var result = homeController.UpdateHomeDeviceName(home.Id, device.Id, "newName") as OkResult;
     }
 }

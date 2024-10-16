@@ -70,4 +70,12 @@ public sealed class HomeController : ControllerBase
     {
         return Ok(_homeLogic.GetAllHomeMembers(homeId).Select(homeMember => new HomeMemberResponseModel(homeMember)).ToList());
     }
+
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HttpPatch("{homeId}/homeDevices")]
+
+    public IActionResult UpdateHomeDeviceName([FromRoute] Guid homeId, [FromBody] Guid homeDeviceId, [FromBody] string newName)
+    {
+        throw new NotImplementedException();
+    }
 }

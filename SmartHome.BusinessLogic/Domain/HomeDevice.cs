@@ -11,4 +11,5 @@ public sealed class HomeDevice
     public required bool Online { get; set; }
     public required Device Device { get; set; }
     public Guid HomeId { get; set; }
+    public required string Name { get; set; }
 }
