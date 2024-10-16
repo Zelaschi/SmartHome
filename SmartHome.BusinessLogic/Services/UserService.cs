@@ -150,4 +150,9 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         user.Role = _roleService.GetAdminHomeOwnerRole();
         _userRepository.Update(user);
     }
+
+    public void UpdateBusinessOwnerRole(User user)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -4,6 +4,7 @@ using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.InitialSeedData;
+using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -25,5 +26,12 @@ public sealed class BusinessOwnerController : ControllerBase
     {
         var createResponse = new BusinessOwnerResponseModel(_businessOwnerLogic.CreateBusinessOwner(businessOwnerRequestModel.ToEntitiy()));
         return CreatedAtAction("CreateBusinessOwner", new { createResponse.Id }, createResponse);
+    }
+
+    [HttpPatch("/homeOwnerPermissions")]
+
+    public IActionResult UpdateBusinessOwnerRole()
+    {
+        throw new NotImplementedException();
     }
 }
