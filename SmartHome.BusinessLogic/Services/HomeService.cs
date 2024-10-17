@@ -506,6 +506,8 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public void UpdateHomeDeviceName(Guid homeDeviceId, string newName)
     {
-        throw new NotImplementedException();
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+        homeDevice.Name = newName;
+        _homeDeviceRepository.Update(homeDevice);
     }
 }
