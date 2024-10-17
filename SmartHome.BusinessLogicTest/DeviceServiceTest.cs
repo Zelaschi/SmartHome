@@ -184,7 +184,7 @@ public class DeviceServiceTest
             RUT = "1234",
             BusinessOwner = bowner
         };
-        var windowSensor = new Device
+        var windowSensor = new WindowSensor
         {
             Id = Guid.NewGuid(),
             Name = "Window Sensor",
@@ -194,7 +194,7 @@ public class DeviceServiceTest
             Business = business
         };
 
-        var expected = new Device
+        var expected = new WindowSensor
         {
             Id = windowSensor.Id,
             Name = "Window Sensor",
@@ -221,7 +221,7 @@ public class DeviceServiceTest
 
         deviceRepositoryMock.Setup(x => x.Add(windowSensor)).Returns(expected);
 
-        var result = deviceService.CreateDevice(windowSensor, bowner);
+        var result = deviceService.CreateWindowSensor(windowSensor, bowner);
 
         deviceRepositoryMock.Verify(x => x.Add(windowSensor), Times.Once);
 
@@ -249,7 +249,7 @@ public class DeviceServiceTest
             RUT = "1234",
             BusinessOwner = businessOwner
         };
-        var windowSensor = new Device
+        var windowSensor = new WindowSensor
         {
             Id = Guid.NewGuid(),
             Name = "Window Sensor",
@@ -265,7 +265,7 @@ public class DeviceServiceTest
 
         try
         {
-            deviceService.CreateDevice(windowSensor, businessOwner);
+            deviceService.CreateWindowSensor(windowSensor, businessOwner);
         }
         catch (Exception e)
         {

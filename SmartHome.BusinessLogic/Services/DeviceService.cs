@@ -24,11 +24,6 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowS
 
     public WindowSensor CreateWindowSensor(WindowSensor device, User user)
     {
-        throw new NotImplementedException();
-    }
-
-    public Device CreateDevice(Device device, User user)
-    {
         var business = _businessRepository.Find(x => x.BusinessOwner == user);
 
         if (business == null)
@@ -43,7 +38,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowS
 
         device.Business = business;
 
-        return _deviceRepository.Add(device);
+        return _deviceRepository.Add(device) as WindowSensor;
     }
 
     private bool RepeatedModelNumber(Device device)
