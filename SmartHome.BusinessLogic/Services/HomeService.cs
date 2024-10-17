@@ -513,6 +513,8 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public void UpdateHomeName(Guid homeId, string newName)
     {
-        throw new NotImplementedException();
+        var home = FindHomeById(homeId);
+        home.Name = newName;
+        _homeRepository.Update(home);
     }
 }
