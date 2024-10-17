@@ -15,4 +15,5 @@ public interface IHomeLogic
     IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId);
     HomeMember AddHomeMemberToHome(Guid homeId, Guid userId);
     void UpdateHomeDeviceName(Guid homeDeviceId, string newName);
+    void UpdateHomeName(Guid homeId, string newName);
 }

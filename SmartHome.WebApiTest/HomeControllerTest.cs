@@ -48,7 +48,8 @@ public class HomeControllerTest
             DoorNumber = "1234",
             Latitude = "12",
             Longitude = "34",
-            MaxMembers = 5
+            MaxMembers = 5,
+            Name = "Home Name"
         };
 
         Home home = homeRequestModel.ToEntity();
@@ -85,7 +86,8 @@ public class HomeControllerTest
             DoorNumber = "1234",
             Latitude = "12",
             Longitude = "34",
-            MaxMembers = 5
+            MaxMembers = 5,
+            Name = "Home Name"
         };
         Home home = homeRequestModel.ToEntity();
         home.Id = Guid.NewGuid();
@@ -113,7 +115,7 @@ public class HomeControllerTest
         var homeMember1 = new HomeMember(user1) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeMember2 = new HomeMember(user2) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeMembers = new List<HomeMember>() { homeMember1, homeMember2 };
-        var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
+        var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1, Name = "Home Name" };
 
         homeLogicMock.Setup(h => h.GetAllHomeMembers(home.Id)).Returns(homeMembers);
 
@@ -147,7 +149,8 @@ public class HomeControllerTest
             DoorNumber = "1234",
             Latitude = "12",
             Longitude = "34",
-            MaxMembers = 5
+            MaxMembers = 5,
+            Name = "Home Name"
         };
         Home home = homeRequestModel.ToEntity();
         home.Id = Guid.NewGuid();
@@ -184,7 +187,7 @@ public class HomeControllerTest
         var homeDevice1 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device1, Name = device1.Name };
         var homeDevice2 = new HomeDevice(){ Id = Guid.NewGuid(), Online = true, Device = device2, Name = device2.Name };
         var homeDevices = new List<HomeDevice>() { homeDevice1, homeDevice2 };
-        var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1 };
+        var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1, Name = "Home Name" };
         home1.Devices = homeDevices;
         homeLogicMock.Setup(h => h.GetAllHomeDevices(home1.Id)).Returns(homeDevices);
 
@@ -214,7 +217,8 @@ public class HomeControllerTest
             DoorNumber = "1234",
             Latitude = "12",
             Longitude = "34",
-            MaxMembers = 5
+            MaxMembers = 5,
+            Name = "Home Name"
         };
         Home home = homeRequestModel.ToEntity();
         home.Id = Guid.NewGuid();
@@ -227,6 +231,36 @@ public class HomeControllerTest
         var expected = new OkResult();
 
         var result = homeController.UpdateHomeDeviceName(device.Id, "newName") as OkResult;
+
+        homeLogicMock.VerifyAll();
+
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
+    }
+
+    [TestMethod]
+
+    public void UpdateHomeNameTest_Ok()
+    {
+        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var homeRequestModel = new CreateHomeRequestModel()
+        {
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "12",
+            Longitude = "34",
+            MaxMembers = 5,
+            Name = "Home Name"
+        };
+        Home home = homeRequestModel.ToEntity();
+        home.Id = Guid.NewGuid();
+
+        var newName = "New home name";
+
+        homeLogicMock.Setup(h => h.UpdateHomeName(It.IsAny<Guid>(), It.IsAny<string>()));
+
+        var expected = new OkResult();
+
+        var result = homeController.UpdateHomeName(home.Id, newName) as OkResult;
 
         homeLogicMock.VerifyAll();
 

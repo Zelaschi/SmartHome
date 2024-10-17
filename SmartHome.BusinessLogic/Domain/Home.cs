@@ -14,6 +14,7 @@ public sealed class Home
     public required string Longitude { get; set; }
     public required int MaxMembers { get; set; }
     public required User Owner { get; set; }
+    public required string Name { get; set; }
     public List<HomeDevice>? Devices { get; set; }
     public List<HomeMember> Members { get; set; }
 
