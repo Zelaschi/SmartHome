@@ -85,6 +85,7 @@ public sealed class HomesController : ControllerBase
     [HttpPatch("{homeId}")]
     public IActionResult UpdateHomeName([FromRoute] Guid homeId, [FromBody] string newName)
     {
-        throw new NotImplementedException();
+        _homeLogic.UpdateHomeName(homeId, newName);
+        return Ok();
     }
 }
