@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowSensorLogic
+public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowSensorLogic, IMovementSensorLogic
 {
     private readonly IGenericRepository<Device> _deviceRepository;
     private readonly IDeviceTypeRepository _deviceTypeRepository;
@@ -80,5 +80,10 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowS
     public IEnumerable<string> GetAllDeviceTypes()
     {
         return _deviceTypeRepository.GetAllDeviceTypes();
+    }
+
+    public Device CreateMovementSensor(Device device, User user)
+    {
+        throw new NotImplementedException();
     }
 }
