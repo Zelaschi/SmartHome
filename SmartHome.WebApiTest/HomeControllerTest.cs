@@ -222,10 +222,14 @@ public class HomeControllerTest
         var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = "photos", Business = company };
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device, HomeId = home.Id, Name = device.Name };
 
-        homeLogicMock.Setup(h => h.UpdateHomeDeviceName(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>()));
+        homeLogicMock.Setup(h => h.UpdateHomeDeviceName(It.IsAny<Guid>(), It.IsAny<string>()));
 
         var expected = new OkResult();
 
-        var result = homeController.UpdateHomeDeviceName(home.Id, device.Id, "newName") as OkResult;
+        var result = homeController.UpdateHomeDeviceName(device.Id, "newName") as OkResult;
+
+        homeLogicMock.VerifyAll();
+
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
 }

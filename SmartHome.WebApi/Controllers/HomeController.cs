@@ -72,11 +72,11 @@ public sealed class HomeController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
-    [HttpPatch("{homeId}/homeDevices")]
+    [HttpPatch("{homeDeviceId}")]
 
-    public IActionResult UpdateHomeDeviceName([FromRoute] Guid homeId, [FromBody] Guid homeDeviceId, [FromBody] string newName)
+    public IActionResult UpdateHomeDeviceName([FromRoute] Guid homeDeviceId, [FromBody] string newName)
     {
-        _homeLogic.UpdateHomeDeviceName(homeId, homeDeviceId, newName);
+        _homeLogic.UpdateHomeDeviceName(homeDeviceId, newName);
         return Ok();
     }
 }
