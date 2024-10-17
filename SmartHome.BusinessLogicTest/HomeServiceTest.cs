@@ -817,4 +817,21 @@ public class HomeServiceTest
 
         Assert.AreEqual(newName, homeDevice.Name);
     }
+
+    [TestMethod]
+
+    public void Update_Home_Name_Test()
+    {
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
+        var newName = "NewName";
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+
+        homeService.UpdateHomeName(home.Id, newName);
+
+        homeRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(newName, home.Name);
+    }
 }
