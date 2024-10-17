@@ -357,6 +357,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     {
         return new HomeDevice
         {
+            Name = device.Name,
             Id = Guid.NewGuid(),
             Device = device,
             HomeId = homeId,
@@ -501,5 +502,12 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
             return notificationClosed;
         }
+    }
+
+    public void UpdateHomeDeviceName(Guid homeDeviceId, string newName)
+    {
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+        homeDevice.Name = newName;
+        _homeDeviceRepository.Update(homeDevice);
     }
 }

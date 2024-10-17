@@ -47,7 +47,7 @@ public class NotificationControllerTest
             Business = company,
         };
 
-        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = securityCamera, Online = true };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = securityCamera, Online = true, Name = securityCamera.Name };
 
         var notification = new Notification() { Id = Guid.NewGuid(), Event = "MovementDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
 
@@ -87,7 +87,7 @@ public class NotificationControllerTest
             Business = company,
         };
 
-        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = securityCamera, Online = true };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = securityCamera, Online = true, Name = securityCamera.Name };
 
         var notification = new Notification() { Id = Guid.NewGuid(), Event = "PersonDetection", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
 
@@ -125,7 +125,7 @@ public class NotificationControllerTest
             Type = "Window Sensor"
         };
 
-        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device, Online = true };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device, Online = true, Name = device.Name };
 
         var notification = new Notification() { Id = Guid.NewGuid(), Event = "OpenedWindow", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
 
@@ -163,7 +163,7 @@ public class NotificationControllerTest
             Type = "Window Sensor"
         };
 
-        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device, Online = true };
+        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device, Online = true, Name = device.Name };
 
         var notification = new Notification() { Id = Guid.NewGuid(), Event = "ClosedWindow", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
 
