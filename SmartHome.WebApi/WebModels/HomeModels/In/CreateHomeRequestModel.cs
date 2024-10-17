@@ -9,6 +9,7 @@ public sealed class CreateHomeRequestModel
     public required string Latitude { get; set; }
     public required string Longitude { get; set; }
     public required int MaxMembers { get; set; }
+    public required string Name { get; set; }
 
     public Home ToEntity()
     {
@@ -19,7 +20,8 @@ public sealed class CreateHomeRequestModel
             DoorNumber = DoorNumber,
             Latitude = Latitude,
             Longitude = Longitude,
-            MaxMembers = MaxMembers
+            MaxMembers = MaxMembers,
+            Name = Name
         };
     }
 }
