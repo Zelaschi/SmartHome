@@ -12,10 +12,10 @@ namespace SmartHome.WebApi.Controllers;
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]
-public sealed class SecurityCameraController : ControllerBase
+public sealed class SecurityCamerasController : ControllerBase
 {
     private readonly ISecurityCameraLogic _securityCameraLogic;
-    public SecurityCameraController(ISecurityCameraLogic securityCameraLogic)
+    public SecurityCamerasController(ISecurityCameraLogic securityCameraLogic)
     {
         _securityCameraLogic = securityCameraLogic;
     }

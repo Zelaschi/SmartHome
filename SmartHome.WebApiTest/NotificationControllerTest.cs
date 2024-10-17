@@ -18,13 +18,13 @@ namespace SmartHome.WebApiTest;
 public class NotificationControllerTest
 {
     private Mock<INotificationLogic>? _notificationLogicMock;
-    private NotificationController? _notificationController;
+    private NotificationsController? _notificationController;
 
     [TestInitialize]
     public void TestInitialize()
     {
         _notificationLogicMock = new Mock<INotificationLogic>();
-        _notificationController = new NotificationController(_notificationLogicMock.Object);
+        _notificationController = new NotificationsController(_notificationLogicMock.Object);
     }
 
     [TestMethod]

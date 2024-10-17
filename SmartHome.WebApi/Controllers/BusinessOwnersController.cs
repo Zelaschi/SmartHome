@@ -12,10 +12,10 @@ namespace SmartHome.WebApi.Controllers;
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]
-public sealed class BusinessOwnerController : ControllerBase
+public sealed class BusinessOwnersController : ControllerBase
 {
     private readonly IBusinessOwnerLogic _businessOwnerLogic;
-    public BusinessOwnerController(IBusinessOwnerLogic businessOwnerLogic)
+    public BusinessOwnersController(IBusinessOwnerLogic businessOwnerLogic)
     {
         _businessOwnerLogic = businessOwnerLogic;
     }

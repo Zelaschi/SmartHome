@@ -19,13 +19,13 @@ namespace SmartHome.WebApiTest;
 public class SecurityCameraControllerTest
 {
     private Mock<ISecurityCameraLogic>? securityCameraLogicMock;
-    private SecurityCameraController? securityCameraController;
+    private SecurityCamerasController? securityCameraController;
 
     [TestInitialize]
     public void TestInitialize()
     {
         securityCameraLogicMock = new Mock<ISecurityCameraLogic>(MockBehavior.Strict);
-        securityCameraController = new SecurityCameraController(securityCameraLogicMock.Object);
+        securityCameraController = new SecurityCamerasController(securityCameraLogicMock.Object);
     }
 
     [TestMethod]
@@ -56,7 +56,7 @@ public class SecurityCameraControllerTest
             HttpContext = httpContext
         };
 
-        securityCameraController = new SecurityCameraController(securityCameraLogicMock.Object) { ControllerContext = controllerContext };
+        securityCameraController = new SecurityCamerasController(securityCameraLogicMock.Object) { ControllerContext = controllerContext };
 
         securityCameraLogicMock.Setup(d => d.CreateSecurityCamera(It.IsAny<SecurityCamera>(), It.IsAny<BusinessLogic.Domain.User>())).Returns(securityCamera);
         var expectedResult = new SecurityCameraResponseModel(securityCamera);

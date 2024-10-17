@@ -18,14 +18,14 @@ namespace SmartHome.WebApiTest;
 public class BusinessOwnerControllerTest
 {
     private Mock<IBusinessOwnerLogic>? businessOwnerLogicMock;
-    private BusinessOwnerController? businessOwnerController;
+    private BusinessOwnersController? businessOwnerController;
     private readonly Role businessOwner = new Role() { Name = "BusinessOwner" };
 
     [TestInitialize]
     public void TestInitialize()
     {
         businessOwnerLogicMock = new Mock<IBusinessOwnerLogic>(MockBehavior.Strict);
-        businessOwnerController = new BusinessOwnerController(businessOwnerLogicMock.Object);
+        businessOwnerController = new BusinessOwnersController(businessOwnerLogicMock.Object);
     }
 
     [TestMethod]

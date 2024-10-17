@@ -12,11 +12,11 @@ namespace SmartHome.WebApi.Controllers;
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]
-public sealed class NotificationController : ControllerBase
+public sealed class NotificationsController : ControllerBase
 {
     private readonly INotificationLogic _notificationLogic;
 
-    public NotificationController(INotificationLogic notificationLogic)
+    public NotificationsController(INotificationLogic notificationLogic)
     {
         _notificationLogic = notificationLogic;
     }

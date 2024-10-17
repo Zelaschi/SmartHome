@@ -17,14 +17,14 @@ namespace SmartHome.WebApiTest;
 public class AdminControllerTest
 {
     private Mock<IAdminLogic>? adminLogicMock;
-    private AdminController? adminController;
+    private AdminsController? adminController;
     private readonly Role admin = new Role() { Name = "Admin" };
 
     [TestInitialize]
     public void TestInitialize()
     {
         adminLogicMock = new Mock<IAdminLogic>(MockBehavior.Strict);
-        adminController = new AdminController(adminLogicMock.Object);
+        adminController = new AdminsController(adminLogicMock.Object);
     }
 
     [TestMethod]

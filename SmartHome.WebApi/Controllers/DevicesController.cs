@@ -16,10 +16,10 @@ namespace SmartHome.WebApi.Controllers;
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]
-public sealed class DeviceController : ControllerBase
+public sealed class DevicesController : ControllerBase
 {
     private readonly IDeviceLogic _deviceLogic;
-    public DeviceController(IDeviceLogic deviceLogic)
+    public DevicesController(IDeviceLogic deviceLogic)
     {
         _deviceLogic = deviceLogic ?? throw new ArgumentNullException(nameof(deviceLogic));
     }

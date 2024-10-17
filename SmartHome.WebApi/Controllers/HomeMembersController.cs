@@ -13,11 +13,11 @@ namespace SmartHome.WebApi.Controllers;
 [AuthenticationFilter]
 [ExceptionFilter]
 [ApiController]
-public sealed class HomeMemberController : ControllerBase
+public sealed class HomeMembersController : ControllerBase
 {
     private readonly IHomeMemberLogic _homeMemberLogic;
 
-    public HomeMemberController(IHomeMemberLogic homeMemberLogic)
+    public HomeMembersController(IHomeMemberLogic homeMemberLogic)
     {
         _homeMemberLogic = homeMemberLogic ?? throw new ArgumentNullException(nameof(homeMemberLogic));
     }

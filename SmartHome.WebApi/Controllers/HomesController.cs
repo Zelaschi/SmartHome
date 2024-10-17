@@ -15,11 +15,11 @@ namespace SmartHome.WebApi.Controllers;
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]
-public sealed class HomeController : ControllerBase
+public sealed class HomesController : ControllerBase
 {
     private readonly IHomeLogic _homeLogic;
 
-    public HomeController(IHomeLogic homeLogic)
+    public HomesController(IHomeLogic homeLogic)
     {
         _homeLogic = homeLogic;
     }

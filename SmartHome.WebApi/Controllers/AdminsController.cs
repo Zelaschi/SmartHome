@@ -12,10 +12,10 @@ namespace SmartHome.WebApi.Controllers;
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]
-public sealed class AdminController : ControllerBase
+public sealed class AdminsController : ControllerBase
 {
     private readonly IAdminLogic _adminLogic;
-    public AdminController(IAdminLogic adminLogic)
+    public AdminsController(IAdminLogic adminLogic)
     {
         _adminLogic = adminLogic;
     }

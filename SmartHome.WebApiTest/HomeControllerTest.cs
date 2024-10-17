@@ -27,14 +27,14 @@ namespace SmartHome.WebApiTest;
 public class HomeControllerTest
 {
     private Mock<IHomeLogic>? homeLogicMock;
-    private HomeController? homeController;
+    private HomesController? homeController;
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
 
     [TestInitialize]
     public void TestInitialize()
     {
         homeLogicMock = new Mock<IHomeLogic>(MockBehavior.Strict);
-        homeController = new HomeController(homeLogicMock.Object);
+        homeController = new HomesController(homeLogicMock.Object);
     }
 
     [TestMethod]
@@ -62,7 +62,7 @@ public class HomeControllerTest
             HttpContext = httpContext
         };
 
-        homeController = new HomeController(homeLogicMock.Object) { ControllerContext = controllerContext };
+        homeController = new HomesController(homeLogicMock.Object) { ControllerContext = controllerContext };
 
         homeLogicMock.Setup(h => h.CreateHome(It.IsAny<Home>(), It.IsAny<Guid>())).Returns(home);
         var expectedResult = new HomeResponseModel(home);
@@ -162,7 +162,7 @@ public class HomeControllerTest
 
         homeLogicMock.Setup(h => h.AddHomeMemberToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(It.IsAny<HomeMember>());
 
-        homeController = new HomeController(homeLogicMock.Object) { ControllerContext = controllerContext };
+        homeController = new HomesController(homeLogicMock.Object) { ControllerContext = controllerContext };
 
         // ACT
         var expected = new NoContentResult();

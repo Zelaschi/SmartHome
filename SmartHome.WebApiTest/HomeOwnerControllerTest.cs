@@ -17,13 +17,13 @@ namespace SmartHome.WebApiTest;
 public class HomeOwnerControllerTest
 {
     private Mock<IHomeOwnerLogic>? homeOwnerLogicMock;
-    private HomeOwnerController? homeOwnerController;
+    private HomeOwnersController? homeOwnerController;
 
     [TestInitialize]
     public void TestInitialize()
     {
         homeOwnerLogicMock = new Mock<IHomeOwnerLogic>(MockBehavior.Strict);
-        homeOwnerController = new HomeOwnerController(homeOwnerLogicMock.Object);
+        homeOwnerController = new HomeOwnersController(homeOwnerLogicMock.Object);
     }
 
     [TestMethod]
