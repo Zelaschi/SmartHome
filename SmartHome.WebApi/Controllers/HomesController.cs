@@ -8,6 +8,7 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.BusinessLogic.InitialSeedData;
+using Microsoft.Identity.Client;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -78,5 +79,12 @@ public sealed class HomesController : ControllerBase
     {
         _homeLogic.UpdateHomeDeviceName(homeDeviceId, newName);
         return Ok();
+    }
+
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HttpPatch("{homeId}")]
+    public IActionResult UpdateHomeName([FromRoute] Guid homeId, [FromBody] string newName)
+    {
+        throw new NotImplementedException();
     }
 }

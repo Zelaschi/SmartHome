@@ -510,4 +510,9 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         homeDevice.Name = newName;
         _homeDeviceRepository.Update(homeDevice);
     }
+
+    public void UpdateHomeName(Guid homeId, string newName)
+    {
+        throw new NotImplementedException();
+    }
 }

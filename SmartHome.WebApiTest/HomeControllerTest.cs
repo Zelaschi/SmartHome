@@ -236,4 +236,34 @@ public class HomeControllerTest
 
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
+
+    [TestMethod]
+
+    public void UpdateHomeNameTest_Ok()
+    {
+        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var homeRequestModel = new CreateHomeRequestModel()
+        {
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "12",
+            Longitude = "34",
+            MaxMembers = 5,
+            Name = "Home Name"
+        };
+        Home home = homeRequestModel.ToEntity();
+        home.Id = Guid.NewGuid();
+
+        var newName = "New home name";
+
+        homeLogicMock.Setup(h => h.UpdateHomeName(It.IsAny<Guid>(), It.IsAny<string>()));
+
+        var expected = new OkResult();
+
+        var result = homeController.UpdateHomeName(home.Id, newName) as OkResult;
+
+        homeLogicMock.VerifyAll();
+
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
+    }
 }
