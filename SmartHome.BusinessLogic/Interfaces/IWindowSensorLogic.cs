@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.BusinessLogic.Interfaces;
-public interface IDeviceLogic
+public interface IWindowSensorLogic
 {
-    IEnumerable<Device> GetAllDevices();
-    IEnumerable<string> GetAllDeviceTypes();
+    WindowSensor CreateWindowSensor(WindowSensor device, User user);
 }

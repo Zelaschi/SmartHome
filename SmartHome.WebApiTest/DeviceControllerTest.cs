@@ -7,7 +7,6 @@ using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
-using SmartHome.WebApi.WebModels.DeviceModels.In;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
@@ -215,48 +214,5 @@ public class DeviceControllerTest
         var objectResult = (result.Value as List<DeviceResponseModel>)!;
         Assert.IsNotNull(result);
         Assert.AreEqual(1, objectResult.Count);
-    }
-
-    [TestMethod]
-    public void CreateDeviceTest_Ok()
-    {
-        // Arrange
-        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
-
-        var deviceRequestModel = new CreateDeviceRequestModel()
-        {
-            Name = "Sensor de ventana 1",
-            Description = "Sensor para ventanas",
-            ModelNumber = "1234",
-            Photos = "foto del sensor"
-        };
-
-        Device device = deviceRequestModel.ToEntity();
-        device.Business = company1;
-        device.Id = Guid.NewGuid();
-
-        var httpContext = new DefaultHttpContext();
-        httpContext.Items.Add("User", user1);
-
-        var controllerContext = new ControllerContext()
-        {
-            HttpContext = httpContext
-        };
-
-        deviceController.ControllerContext = controllerContext;
-
-        deviceLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>())).Returns(device);
-
-        var expectedResult = new DeviceResponseModel(device);
-        var expectedObjectResult = new CreatedAtActionResult("CreateDevice", "Device", new { Id = device.Id }, expectedResult);
-
-        // Act
-        var result = deviceController.CreateDevice(deviceRequestModel) as CreatedAtActionResult;
-        var deviceResult = result.Value as DeviceResponseModel;
-
-        // Assert
-        deviceLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
     }
 }

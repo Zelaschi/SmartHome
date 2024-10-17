@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
+public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowSensorLogic
 {
     private readonly IGenericRepository<Device> _deviceRepository;
     private readonly IDeviceTypeRepository _deviceTypeRepository;
@@ -20,6 +20,11 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic
         _businessRepository = businessRepository;
         _deviceRepository = deviceRepository;
         _deviceTypeRepository = deviceTypeRepository;
+    }
+
+    public WindowSensor CreateWindowSensor(WindowSensor device, User user)
+    {
+        throw new NotImplementedException();
     }
 
     public Device CreateDevice(Device device, User user)

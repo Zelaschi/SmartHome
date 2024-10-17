@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartHome.BusinessLogic.Domain;
 
-namespace SmartHome.WebApi.WebModels.DeviceModels.In;
-public sealed class CreateDeviceRequestModel
+namespace SmartHome.WebApi.WebModels.WindowSensorModels.In;
+
+public sealed class CreateWindowSensorRequestModel
 {
     public required string Name { get; set; }
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
     public required string Photos { get; set; }
+    public bool Open { get; set; } = true;
+    public string? Type { get; set; } = "Window Sensor";
 
-    public Device ToEntity()
+    public WindowSensor ToEntity()
     {
-        return new Device
+        return new WindowSensor
         {
+            Type = Type,
+            Open = Open,
             Name = Name,
             ModelNumber = ModelNumber,
             Description = Description,

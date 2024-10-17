@@ -75,19 +75,4 @@ public sealed class DevicesController : ControllerBase
             return Ok(devicesResponse);
         }
     }
-
-    [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
-    [HttpPost]
-    public IActionResult CreateDevice([FromBody] CreateDeviceRequestModel deviceRequestModel)
-    {
-        var user = HttpContext.Items["User"] as User;
-
-        if (user == null)
-        {
-            return Unauthorized("UserId is missing");
-        }
-
-        var response = new DeviceResponseModel(_deviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user));
-        return CreatedAtAction("CreateDevice", new {response.Id }, response);
-    }
 }
