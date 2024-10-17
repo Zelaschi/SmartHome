@@ -504,23 +504,6 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         }
     }
 
-    public void UpdateHomeDeviceName(Guid homeId, Guid homeDeviceId, string newName)
-    {
-        var home = FindHomeById(homeId);
-        if (home.Devices != null)
-        {
-            var homeDevice = home.Devices.FirstOrDefault(x => x.Id == homeDeviceId);
-
-            if (homeDevice == null)
-            {
-                throw new HomeDeviceException("Home Device Id does not match any home device");
-            }
-
-            homeDevice.Name = newName;
-            _homeRepository.Update(home);
-        }
-    }
-
     public void UpdateHomeDeviceName(Guid homeDeviceId, string newName)
     {
         throw new NotImplementedException();

@@ -809,10 +809,9 @@ public class HomeServiceTest
         home.Members.Add(homeMember);
 
         homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
-        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
-        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeDeviceRepositoryMock.Setup(x => x.Update(It.IsAny<HomeDevice>())).Returns(homeDevice);
 
-        homeService.UpdateHomeDeviceName(home.Id, homeDevice.Id, newName);
+        homeService.UpdateHomeDeviceName(homeDevice.Id, newName);
 
         homeRepositoryMock.VerifyAll();
 
