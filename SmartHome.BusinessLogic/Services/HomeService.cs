@@ -130,6 +130,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     public IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId)
     {
         var home = _homeRepository.Find(x => x.Id == homeId);
+        if (home == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+
         if (home.Members == null)
         {
             throw new HomeException("Home Id does not match any home");
