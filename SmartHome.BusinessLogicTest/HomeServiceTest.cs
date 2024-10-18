@@ -1157,4 +1157,26 @@ public class HomeServiceTest
         Assert.IsTrue(result, "The user should have the permission");
     }
 
+    [TestMethod]
+    public void HasPermission_UserDoesNotHavePermission_Returns_False_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var memberId = Guid.NewGuid();
+        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        home.Members.Add(new HomeMember(member));
+        var permissionId = Guid.NewGuid();
+
+        var differentPermission = new HomePermission { Id = Guid.NewGuid(), Name = "different p" };
+        var homePermission = new HomePermission { Id = permissionId, Name = "permission" };
+        home.Members.First().HomePermissions.Add(differentPermission);
+
+        homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homePermissionRepositoryMock.Setup(hp => hp.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(homePermission);
+
+        var result = homeService.HasPermission(memberId, home.Id, permissionId);
+
+        homeRepositoryMock.VerifyAll();
+        homePermissionRepositoryMock.VerifyAll();
+        Assert.IsFalse(result, "The user should not have the permission");
+    }
 }
