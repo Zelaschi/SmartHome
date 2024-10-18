@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowSensorLogic, IMovementSensorLogic
+public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowSensorLogic, IMovementSensorLogic, IInteligentLampLogic
 {
     private readonly IGenericRepository<Device> _deviceRepository;
     private readonly IDeviceTypeRepository _deviceTypeRepository;
@@ -99,5 +99,22 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowS
         device.Business = business;
 
         return _deviceRepository.Add(device);
+    }
+
+    public InteligentLamp CreateInteligentLamp(InteligentLamp device, User user)
+    {
+        var business = _businessRepository.Find(x => x.BusinessOwner == user);
+        if (business == null)
+        {
+            throw new DeviceException("Business was not found for the user");
+        }
+
+        if (RepeatedModelNumber(device))
+        {
+            throw new DeviceException("Security Camera model already exists");
+        }
+
+        device.Business = business;
+        return _deviceRepository.Add(device) as InteligentLamp;
     }
 }

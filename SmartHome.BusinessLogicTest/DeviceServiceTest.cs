@@ -461,4 +461,70 @@ public class DeviceServiceTest
 
         Assert.AreEqual(movementSensor, result);
     }
+
+    [TestMethod]
+    public void Create_InteligentLamp_Test()
+    {
+        var bonwer = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedrorod@gmail.com"
+        };
+        var inteligentLamp = new InteligentLamp
+        {
+            Id = Guid.NewGuid(),
+            Name = "Inteligent Lamp",
+            Description = "inteligent lamp description",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "Inteligent Lamp",
+            IsOn = true,
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "Kolke",
+                Logo = "Logo1",
+                RUT = "1234",
+                BusinessOwner = bonwer
+            }
+        };
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Kolke",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = new User
+            {
+                Name = "Pedro",
+                Surname = "Rodriguez",
+                Password = "Password@1234",
+                CreationDate = DateTime.Today,
+                Email = "pedrorod@gmail.com"
+            }
+        };
+        var expected = new InteligentLamp
+        {
+            Id = inteligentLamp.Id,
+            Name = "Inteligent Lamp",
+            Description = "inteligent lamp description",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "Inteligent Lamp",
+            Business = business,
+            IsOn = true,
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
+        deviceRepositoryMock.Setup(x => x.Add(inteligentLamp)).Returns(expected);
+
+        var result = deviceService.CreateInteligentLamp(inteligentLamp, bonwer);
+
+        deviceRepositoryMock.Verify(x => x.Add(inteligentLamp), Times.Once);
+
+        Assert.AreEqual(inteligentLamp, result);
+    }
 }
