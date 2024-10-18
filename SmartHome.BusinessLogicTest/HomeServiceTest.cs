@@ -1040,10 +1040,9 @@ public class HomeServiceTest
     [TestMethod]
     public void GetAllHomesByUserId_UserIdDoesNotCorrespondToAnyHouse_Throws_Exception_Test()
     {
-        List<Home> homes = null;
         var id = Guid.NewGuid();
 
-        homesFromUserRepositoryMock.Setup(x => x.GetAllHomesByUserId(id)).Returns(homes);
+        homesFromUserRepositoryMock.Setup(x => x.GetAllHomesByUserId(id)).Returns((List<Home>)null);
         Exception exception = null;
 
         try
@@ -1306,6 +1305,10 @@ public class HomeServiceTest
         userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(detectedPerson);
 
         var result = homeService.CreatePersonDetectionNotification(homeDevice.Id, detectedPersonId);
+        foreach (var homeMember in home.Members)
+        {
+            homeMember.Notifications.Add(notification);
+        }
 
         homeRepositoryMock.VerifyAll();
 
@@ -1325,4 +1328,53 @@ public class HomeServiceTest
         Assert.AreEqual(DateTime.Today, result.Date);
         Assert.IsNull(result.DetectedPerson);
     }
+
+    [TestMethod]
+    public void Add_HomeMember_To_Home_UserNotFound_Throws_Exception()
+    {
+        var homeId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        User user = null;
+
+        userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(user);
+
+        Exception exception = null;
+        try
+        {
+            homeService.AddHomeMemberToHome(homeId, userId);
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("User Id does not match any user", exception.Message);
+    }
+
+    [TestMethod]
+    public void Update_HomePermissions_Of_HomeMember_NotFound_ThrowsHomeException()
+    {
+        var homeMemberId = Guid.NewGuid();
+        var permissions = new List<HomePermission>();
+        HomeMember member = null;
+
+        homeMemberRepositoryMock.Setup(hm => hm.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(member);
+
+        Exception exception = null;
+        try
+        {
+            homeService.UpdateHomePermissionsOfHomeMember(homeMemberId, permissions);
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("Home Member not found", exception.Message);
+    }
+
 }
