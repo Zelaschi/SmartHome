@@ -1206,4 +1206,38 @@ public class HomeServiceTest
         Assert.IsInstanceOfType(exception, typeof(HomeException));
         Assert.AreEqual("Home Member Id does not match any home member", exception.Message);
     }
+
+    [TestMethod]
+    public void HasPermission_HomePermission_Does_Not_Match_Any_Throws_Exception_Test()
+    {
+        var homeMemberId = Guid.NewGuid();
+        var permissionId = Guid.NewGuid();
+
+        var homeMember = new HomeMember
+        {
+            HomeMemberId = homeMemberId,
+            HomePermissions = new List<HomePermission>()
+        };
+
+        HomePermission homePermission = null;
+
+        homeMemberRepositoryMock.Setup(h => h.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeMember);
+        homePermissionRepositoryMock.Setup(hp => hp.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(homePermission);
+
+        Exception exception = null;
+
+        try
+        {
+            homeService.HasPermission(homeMemberId, permissionId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeMemberRepositoryMock.VerifyAll();
+        homePermissionRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("Home Permission Id does not match any home permission", exception.Message);
+    }
 }
