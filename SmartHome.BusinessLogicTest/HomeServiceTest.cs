@@ -1179,4 +1179,31 @@ public class HomeServiceTest
         homePermissionRepositoryMock.VerifyAll();
         Assert.IsFalse(result, "The user should not have the permission");
     }
+
+    [TestMethod]
+    public void HasPermission_HomeMember_Not_Found_Throws_Exception_Test()
+    {
+        var homeMemberId = Guid.NewGuid();
+        var permissionId = Guid.NewGuid();
+
+        HomeMember homeMember = null;
+
+        homeMemberRepositoryMock.Setup(h => h.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeMember);
+        homePermissionRepositoryMock.Setup(hp => hp.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(new HomePermission { Id = permissionId, Name = "Permission" });
+
+        Exception exception = null;
+
+        try
+        {
+            homeService.HasPermission(homeMemberId, permissionId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeMemberRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("Home Member Id does not match any home member", exception.Message);
+    }
 }
