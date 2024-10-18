@@ -35,7 +35,7 @@ public class WindowSensorsControllerTest
         var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
 
-        var deviceRequestModel = new CreateWindowSensorRequestModel()
+        var deviceRequestModel = new WindowSensorRequestModel()
         {
             Name = "Sensor de ventana 1",
             Description = "Sensor para ventanas",
@@ -59,12 +59,12 @@ public class WindowSensorsControllerTest
 
         windowSensorLogicMock.Setup(d => d.CreateWindowSensor(It.IsAny<WindowSensor>(), It.IsAny<User>())).Returns(device);
 
-        var expectedResult = new CreateWindowSensorResponseModel(device);
+        var expectedResult = new WindowSensorResponseModel(device);
         var expectedObjectResult = new CreatedAtActionResult("CreateWindowSensor", "WindowSensor", new { Id = device.Id }, expectedResult);
 
         // Act
         var result = windowSensorController.CreateWindowSensor(deviceRequestModel) as CreatedAtActionResult;
-        var deviceResult = result.Value as CreateWindowSensorResponseModel;
+        var deviceResult = result.Value as WindowSensorResponseModel;
 
         // Assert
         windowSensorLogicMock.VerifyAll();

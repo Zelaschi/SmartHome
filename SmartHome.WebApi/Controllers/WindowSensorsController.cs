@@ -22,7 +22,7 @@ public class WindowSensorsController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
     [HttpPost]
-    public IActionResult CreateWindowSensor(CreateWindowSensorRequestModel deviceRequestModel)
+    public IActionResult CreateWindowSensor(WindowSensorRequestModel deviceRequestModel)
     {
         var user = HttpContext.Items["User"] as User;
 
@@ -31,7 +31,7 @@ public class WindowSensorsController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var result = new CreateWindowSensorResponseModel(_windowSensorLogic.CreateWindowSensor(deviceRequestModel.ToEntity(), user));
+        var result = new WindowSensorResponseModel(_windowSensorLogic.CreateWindowSensor(deviceRequestModel.ToEntity(), user));
         return CreatedAtAction("CreateWindowSensor", new { result.Id }, result);
     }
 }

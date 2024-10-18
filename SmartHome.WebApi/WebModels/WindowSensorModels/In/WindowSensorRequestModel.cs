@@ -3,7 +3,7 @@ using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.WebModels.WindowSensorModels.In;
 
-public sealed class CreateWindowSensorRequestModel
+public sealed class WindowSensorRequestModel
 {
     public required string Name { get; set; }
     public required string ModelNumber { get; set; }

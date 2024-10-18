@@ -3,7 +3,7 @@ using SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
 
 namespace SmartHome.WebApi.WebModels.WindowSensorModels.Out;
 
-public class CreateWindowSensorResponseModel
+public class WindowSensorResponseModel
 {
     public Guid Id { get; set; }
     public string Type { get; set; } = "Window Sensor";
@@ -14,7 +14,7 @@ public class CreateWindowSensorResponseModel
     public bool Open { get; set; }
     public Business? Company { get; set; }
 
-    public CreateWindowSensorResponseModel(WindowSensor sensor)
+    public WindowSensorResponseModel(WindowSensor sensor)
     {
         Id = sensor.Id;
         Type = sensor.Type;
@@ -28,6 +28,6 @@ public class CreateWindowSensorResponseModel
 
     public override bool Equals(object? obj)
     {
-        return obj is CreateWindowSensorResponseModel d && d.Id == Id;
+        return obj is WindowSensorResponseModel d && d.Id == Id;
     }
 }
