@@ -1273,4 +1273,56 @@ public class HomeServiceTest
         Assert.AreEqual(DateTime.Today, result.Date);
         Assert.IsNull(result.DetectedPerson);
     }
+
+    [TestMethod]
+    public void Create_PersonDetectionNotification_AddsNotificationToAllMembers_Test()
+    {
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = true, Name = device.Name };
+        var detectedPersonId = Guid.NewGuid();
+        User detectedPerson = null;
+        HomeMember member = null;
+        var notification = new Notification { Date = DateTime.Today, Event = "Undetected person", HomeDevice = homeDevice, Time = DateTime.Now, DetectedPerson = detectedPerson };
+        home.Devices.Add(homeDevice);
+        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var permission = new HomePermission { Id = Guid.NewGuid(), Name = "A" };
+        var homeMembers = new List<HomeMember>
+        {
+            new HomeMember { HomeMemberId = Guid.NewGuid(), Notifications = new List<Notification>{notification}, HomePermissions = new List<HomePermission> { permission }},
+            new HomeMember { HomeMemberId = Guid.NewGuid(), Notifications = new List<Notification>{notification}, HomePermissions = new List<HomePermission> { permission }},
+            new HomeMember { HomeMemberId = Guid.NewGuid(), Notifications = new List<Notification>{notification}, HomePermissions = new List<HomePermission> { permission }}
+        };
+        home.Members = homeMembers;
+
+        homeDeviceRepositoryMock.Setup(hd => hd.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+        homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homeMemberRepositoryMock.Setup(hm => hm.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeMembers.First());
+        homePermissionRepositoryMock.Setup(hp => hp.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(detectedPerson);
+
+        var result = homeService.CreatePersonDetectionNotification(homeDevice.Id, detectedPersonId);
+
+        homeRepositoryMock.VerifyAll();
+
+        foreach (var homeMember in home.Members)
+        {
+            var addedNotification = homeMember.Notifications.FirstOrDefault(n =>
+                n.Event == result.Event &&
+                n.HomeDevice == result.HomeDevice &&
+                n.Date == result.Date &&
+                n.DetectedPerson == result.DetectedPerson);
+
+            Assert.IsNotNull(addedNotification, $"Notification was not added to member {homeMember.HomeMemberId}");
+        }
+
+        Assert.AreEqual("Undetected person", result.Event);
+        Assert.AreEqual(homeDevice, result.HomeDevice);
+        Assert.AreEqual(DateTime.Today, result.Date);
+        Assert.IsNull(result.DetectedPerson);
+    }
 }
