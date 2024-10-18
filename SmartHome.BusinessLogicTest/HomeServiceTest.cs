@@ -1240,4 +1240,37 @@ public class HomeServiceTest
         Assert.IsInstanceOfType(exception, typeof(HomeException));
         Assert.AreEqual("Home Permission Id does not match any home permission", exception.Message);
     }
+
+    [TestMethod]
+    public void Create_Detected_Person_Notification_Person_Not_Detected_Test()
+    {
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = true, Name = device.Name };
+        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var detectedPersonId = Guid.NewGuid();
+        User detectedPerson = null;
+        HomeMember member = null;
+        var notification = new Notification { Date = DateTime.Today, Event = "Undetected person", HomeDevice = homeDevice, Time = DateTime.Now, DetectedPerson = detectedPerson };
+        home.Devices.Add(homeDevice);
+
+        homeDeviceRepositoryMock.Setup(hd => hd.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+        userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(detectedPerson);
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
+        homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(member);
+        homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
+
+        var result = homeService.CreatePersonDetectionNotification(homeDevice.Id, detectedPersonId);
+
+        userRepositoryMock.VerifyAll();
+        Assert.IsNotNull(result);
+        Assert.AreEqual("Undetected person", result.Event);
+        Assert.AreEqual(homeDevice, result.HomeDevice);
+        Assert.AreEqual(DateTime.Today, result.Date);
+        Assert.IsNull(result.DetectedPerson);
+    }
 }
