@@ -1426,5 +1426,4 @@ public class HomeServiceTest
         Assert.IsInstanceOfType(exception, typeof(HomeException));
         Assert.AreEqual("Home Device Id does not match any home device", exception.Message);
     }
-
 }
