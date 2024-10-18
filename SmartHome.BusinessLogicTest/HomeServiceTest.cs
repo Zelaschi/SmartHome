@@ -1059,4 +1059,80 @@ public class HomeServiceTest
         Assert.IsInstanceOfType(exception, typeof(UserException));
         Assert.AreEqual("This user id does not correspond to any house", exception.Message);
     }
+
+    [TestMethod]
+    public void HasPermission_HomeNotFound_Throws_Exception_Test()
+    {
+        Home home = null;
+        var id1 = Guid.NewGuid();
+        var id2 = Guid.NewGuid();
+        var id3 = Guid.NewGuid();
+        homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        Exception exception = null;
+
+        try
+        {
+            homeService.HasPermission(id1, id2, id3);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("Home Id does not match any home", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_User_Is_Not_HomeMember_Throws_Exception_Test()
+    {
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "0000", Latitude = "31", Longitude = "31", MaxMembers = 2, Owner = owner, Name = "Home Name" };
+        var notMember = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
+        homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        Exception exception = null;
+
+        try
+        {
+            homeService.HasPermission(Guid.NewGuid(), home.Id, Guid.NewGuid());
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("User is not a member of this home", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_HomePermission_Not_Found_Throws_Exception_Test()
+    {
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var memberId = Guid.NewGuid();
+        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        home.Members.Add(new HomeMember(member));
+        var permissionId = Guid.NewGuid();
+
+        homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        homePermissionRepositoryMock.Setup(hp => hp.Find(It.IsAny<Func<HomePermission, bool>>())).Returns((HomePermission)null);
+
+        Exception exception = null;
+
+        try
+        {
+            homeService.HasPermission(memberId, home.Id, permissionId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        homeRepositoryMock.VerifyAll();
+        homePermissionRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("HomePermission was not found", exception.Message);
+    }
+
 }
