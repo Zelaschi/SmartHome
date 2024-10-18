@@ -1377,4 +1377,31 @@ public class HomeServiceTest
         Assert.AreEqual("Home Member not found", exception.Message);
     }
 
+    [TestMethod]
+    public void Create_MovementDetectionNotification_HomeNotFound_ThrowsHomeException()
+    {
+        var homeDeviceId = Guid.NewGuid();
+        var device = new Device { Description = "test", ModelNumber = "test", Name = "test", Photos = "test", Business = new Business { BusinessOwner = new User { Email = "test", Name = "test", Password = "test", Role = new Role { Name = "test" }, Surname = "test" }, Id = Guid.NewGuid(), Logo = "test", Name = "test", RUT = "test" } };
+        Home home = null;
+
+        homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var homeDevice = new HomeDevice { Id = homeDeviceId, HomeId = Guid.NewGuid(), Device = device, Name = "test", Online = true };
+        homeDeviceRepositoryMock.Setup(hd => hd.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+
+        Exception exception = null;
+        try
+        {
+            homeService.CreateMovementDetectionNotification(homeDeviceId);
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("Home Id does not match any home", exception.Message);
+    }
+
 }
