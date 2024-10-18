@@ -98,7 +98,6 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-
     public void Create_SecurityCamera_Test()
     {
         var bonwer = new User
@@ -397,5 +396,69 @@ public class DeviceServiceTest
         deviceTypeRepositoryMock.Verify(x => x.GetAllDeviceTypes(), Times.Once);
 
         CollectionAssert.AreEqual(deviceTypes, result);
+    }
+
+    [TestMethod]
+    public void Create_MovementSensor_Test()
+    {
+        var bonwer = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pedrorod@gmail.com"
+        };
+        var movementSensor = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Movement Sensor",
+            Description = "movement sensor description",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "Movement Sensor",
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "Kolke",
+                Logo = "Logo1",
+                RUT = "1234",
+                BusinessOwner = bonwer
+            }
+        };
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Kolke",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = new User
+            {
+                Name = "Pedro",
+                Surname = "Rodriguez",
+                Password = "Password@1234",
+                CreationDate = DateTime.Today,
+                Email = "pedrorod@gmail.com"
+            }
+        };
+        var expected = new Device
+        {
+            Id = movementSensor.Id,
+            Name = "Movement Sensor",
+            Description = "movement sensor description",
+            ModelNumber = "1234",
+            Photos = "Photo1",
+            Type = "Movement Sensor",
+            Business = business
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
+        deviceRepositoryMock.Setup(x => x.Add(movementSensor)).Returns(expected);
+
+        var result = deviceService.CreateMovementSensor(movementSensor, bonwer);
+
+        deviceRepositoryMock.Verify(x => x.Add(movementSensor), Times.Once);
+
+        Assert.AreEqual(movementSensor, result);
     }
 }

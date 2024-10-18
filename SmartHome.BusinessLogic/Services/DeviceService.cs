@@ -84,6 +84,20 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowS
 
     public Device CreateMovementSensor(Device device, User user)
     {
-        throw new NotImplementedException();
+        var business = _businessRepository.Find(x => x.BusinessOwner == user);
+
+        if (business == null)
+        {
+            throw new DeviceException("Business was not found for the user");
+        }
+
+        if (RepeatedModelNumber(device))
+        {
+            throw new DeviceException("Device model already exists");
+        }
+
+        device.Business = business;
+
+        return _deviceRepository.Add(device);
     }
 }
