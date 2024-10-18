@@ -1404,4 +1404,27 @@ public class HomeServiceTest
         Assert.AreEqual("Home Id does not match any home", exception.Message);
     }
 
+    [TestMethod]
+    public void Create_MovementDetectionNotification_HomeDevice_NotFound_ThrowsHomeException()
+    {
+        var homeDeviceId = Guid.NewGuid();
+        HomeDevice homeDevice = null;
+
+        homeDeviceRepositoryMock.Setup(hd => hd.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+
+        Exception exception = null;
+        try
+        {
+            homeService.CreateMovementDetectionNotification(homeDeviceId);
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(HomeException));
+        Assert.AreEqual("Home Device Id does not match any home device", exception.Message);
+    }
+
 }
