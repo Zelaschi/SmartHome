@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -158,6 +159,7 @@ public class RoleServiceTest
         Assert.IsInstanceOfType(exception, typeof(RoleException));
         Assert.AreEqual("Role not found", exception.Message);
     }
+
     [TestMethod]
     public void Get_BusinessOwnerHomeOwnerRole_RoleExists_ReturnsRole_Test()
     {
@@ -279,5 +281,41 @@ public class RoleServiceTest
 
         Assert.IsNotNull(result);
         Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void Get_SystemPermission_Permission_NotFound_ThrowsRoleException()
+    {
+        SystemPermission permission = null;
+
+        systemPermissionRepositoryMock.Setup(p => p.Find(It.IsAny<Func<SystemPermission, bool>>()))
+                                      .Returns(permission);
+        Exception exception = null;
+        try
+        {
+            roleService.GetSystemPermissionById(Guid.NewGuid());
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(RoleException));
+        Assert.AreEqual("Permission not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void Get_SystemPermission_Permission_Found_ReturnsTrue_Test()
+    {
+        var expectedRolePermission = new SystemPermission { Id = Guid.NewGuid(), Name = "Permission", Description = "Test" };
+
+        systemPermissionRepositoryMock.Setup(p => p.Find(It.IsAny<Func<SystemPermission, bool>>()))
+                                      .Returns(expectedRolePermission);
+
+        var result = roleService.GetSystemPermissionById(expectedRolePermission.Id);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedRolePermission.Id, result.Id);
     }
 }
