@@ -249,4 +249,35 @@ public class RoleServiceTest
         Assert.IsInstanceOfType(exception, typeof(RoleException));
         Assert.AreEqual("Role not found", exception.Message);
     }
+
+    [TestMethod]
+    public void HasPermission_Permission_NotFound_ThrowsRoleException()
+    {
+        var expectedRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
+        roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
+                           .Returns(expectedRole);
+
+        var result = roleService.HasPermission(expectedRole.Id, Guid.NewGuid());
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result);
+    }
+
+    [TestMethod]
+    public void HasPermission_Permission_Found_ReturnsTrue_Test()
+    {
+        var expectedRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
+        var expectedRolePermission = new SystemPermission { Id = Guid.NewGuid(), Name = "Permission", Description = "Test" };
+        expectedRole.SystemPermissions.Add(expectedRolePermission);
+
+        roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
+                           .Returns(expectedRole);
+        systemPermissionRepositoryMock.Setup(p => p.Find(It.IsAny<Func<SystemPermission, bool>>()))
+                                      .Returns(expectedRolePermission);
+
+        var result = roleService.HasPermission(expectedRole.Id, expectedRolePermission.Id);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result);
+    }
 }
