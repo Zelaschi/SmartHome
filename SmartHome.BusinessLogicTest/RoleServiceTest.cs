@@ -55,7 +55,7 @@ public class RoleServiceTest
     }
 
     [TestMethod]
-    public void GetHomeOwnerRole_NotFound_ThrowsRoleException()
+    public void Get_HomeOwnerRole_NotFound_ThrowsRoleException()
     {
         Role role = null;
 
@@ -90,7 +90,7 @@ public class RoleServiceTest
     }
 
     [TestMethod]
-    public void GetBusinessOwnerRole_RoleExists_ReturnsRole_Test()
+    public void Get_BusinessOwnerRole_RoleExists_ReturnsRole_Test()
     {
         var expectedRole = new Role { Name = "BusinessOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID) };
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
@@ -100,5 +100,27 @@ public class RoleServiceTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedRole.Id, result.Id);
+    }
+
+    [TestMethod]
+    public void Get_BusinessOwnerRole_NotFound_ThrowsRoleException()
+    {
+        Role role = null;
+
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+
+        Exception exception = null;
+        try
+        {
+            roleService.GetBusinessOwnerRole();
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(RoleException));
+        Assert.AreEqual("Role not found", exception.Message);
     }
 }
