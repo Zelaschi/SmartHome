@@ -123,4 +123,130 @@ public class RoleServiceTest
         Assert.IsInstanceOfType(exception, typeof(RoleException));
         Assert.AreEqual("Role not found", exception.Message);
     }
+
+    [TestMethod]
+    public void Get_AdminRole_RoleExists_ReturnsRole_Test()
+    {
+        var expectedRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
+        roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
+                           .Returns(expectedRole);
+
+        var result = roleService.GetAdminRole();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedRole.Id, result.Id);
+    }
+
+    [TestMethod]
+    public void Get_AdminRole_NotFound_ThrowsRoleException()
+    {
+        Role role = null;
+
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+
+        Exception exception = null;
+        try
+        {
+            roleService.GetAdminRole();
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(RoleException));
+        Assert.AreEqual("Role not found", exception.Message);
+    }
+    [TestMethod]
+    public void Get_BusinessOwnerHomeOwnerRole_RoleExists_ReturnsRole_Test()
+    {
+        var expectedRole = new Role { Name = "BusinessOwnerHomeOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID) };
+        roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
+                           .Returns(expectedRole);
+
+        var result = roleService.GetBusinessOwnerHomeOwnerRole();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedRole.Id, result.Id);
+    }
+
+    [TestMethod]
+    public void Get_BusinessOwnerHomeOwnerRole_NotFound_ThrowsRoleException()
+    {
+        Role role = null;
+
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+
+        Exception exception = null;
+        try
+        {
+            roleService.GetBusinessOwnerHomeOwnerRole();
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(RoleException));
+        Assert.AreEqual("Role not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void Get_AdminHomeOwnerRole_RoleExists_ReturnsRole_Test()
+    {
+        var expectedRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
+        roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
+                           .Returns(expectedRole);
+
+        var result = roleService.GetAdminHomeOwnerRole();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedRole.Id, result.Id);
+    }
+
+    [TestMethod]
+    public void Get_AdminHomeOwnerRole_NotFound_ThrowsRoleException()
+    {
+        Role role = null;
+
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+
+        Exception exception = null;
+        try
+        {
+            roleService.GetAdminHomeOwnerRole();
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(RoleException));
+        Assert.AreEqual("Role not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void HasPermission_Role_NotFound_ThrowsRoleException()
+    {
+        Role role = null;
+
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+
+        Exception exception = null;
+        try
+        {
+            roleService.HasPermission(Guid.NewGuid(), Guid.NewGuid());
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(RoleException));
+        Assert.AreEqual("Role not found", exception.Message);
+    }
 }
