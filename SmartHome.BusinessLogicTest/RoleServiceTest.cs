@@ -57,13 +57,10 @@ public class RoleServiceTest
     [TestMethod]
     public void GetHomeOwnerRole_NotFound_ThrowsRoleException()
     {
-        // Arrange
-        Role role = null; // Simula que no se encuentra el rol
+        Role role = null;
 
-        // Configura el mock para que el repositorio de roles devuelva null
         roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
 
-        // Act
         Exception exception = null;
         try
         {
@@ -74,16 +71,28 @@ public class RoleServiceTest
             exception = ex;
         }
 
-        // Assert
         Assert.IsNotNull(exception);
         Assert.IsInstanceOfType(exception, typeof(RoleException));
         Assert.AreEqual("Role not found", exception.Message);
     }
 
     [TestMethod]
+    public void Get_HomeOwnerRole_RoleExists_ReturnsRole_Test()
+    {
+        var expectedRole = new Role { Name = "HomeOwner", Id = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID) };
+        roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
+                           .Returns(expectedRole);
+
+        var result = roleService.GetHomeOwnerRole();
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedRole.Id, result.Id);
+    }
+
+    [TestMethod]
     public void GetBusinessOwnerRole_RoleExists_ReturnsRole_Test()
     {
-        var expectedRole = new Role { Name = "HomeOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID) };
+        var expectedRole = new Role { Name = "BusinessOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID) };
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
                            .Returns(expectedRole);
 
