@@ -16,4 +16,9 @@ public sealed class SecurityCamera : Device
     {
         return obj is SecurityCamera camera && camera.Id == Id;
     }
+
+    public SecurityCamera()
+    {
+        Type = "Security Camera";
+    }
 }
