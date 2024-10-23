@@ -6,7 +6,7 @@ using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
-[Route("api/v1/me")]
+[Route("api/v2/me")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]

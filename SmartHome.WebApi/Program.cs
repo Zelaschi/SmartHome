@@ -28,18 +28,25 @@ services.AddScoped<IHomeOwnerLogic, UserService>();
 services.AddScoped<IUsersLogic, UserService>();
 services.AddScoped<IBusinessOwnerLogic, UserService>();
 services.AddScoped<IAdminLogic, UserService>();
+
 services.AddScoped<ILoginLogic, SessionService>();
+services.AddScoped<ISessionLogic, SessionService>();
+
 services.AddScoped<ISystemPermissionLogic, RoleService>();
 services.AddScoped<IRoleLogic, RoleService>();
+
 services.AddScoped<IBusinessesLogic, BusinessService>();
+
 services.AddScoped<IDeviceLogic, DeviceService>();
 services.AddScoped<ISecurityCameraLogic, DeviceService>();
+services.AddScoped<IWindowSensorLogic, DeviceService>();
+services.AddScoped<IMovementSensorLogic, DeviceService>();
+services.AddScoped<IInteligentLampLogic, DeviceService>();
+
 services.AddScoped<IHomeLogic, HomeService>();
 services.AddScoped<IHomePermissionLogic, HomeService>();
 services.AddScoped<IHomeMemberLogic, HomeService>();
 services.AddScoped<INotificationLogic, HomeService>();
-services.AddScoped<ISessionLogic, SessionService>();
-services.AddScoped<ILoginLogic, SessionService>();
 
 services.AddScoped<IGenericRepository<User>, UserRepository>();
 services.AddScoped<IGenericRepository<Session>, SessionRepository>();

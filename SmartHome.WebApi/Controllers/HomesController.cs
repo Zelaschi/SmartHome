@@ -12,7 +12,7 @@ using Microsoft.Identity.Client;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/homes")]
+[Route("api/v2/homes")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]

@@ -9,7 +9,7 @@ using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/homeMembers")]
+[Route("api/v2/homeMembers")]
 [AuthenticationFilter]
 [ExceptionFilter]
 [ApiController]

@@ -8,7 +8,7 @@ using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/securityCameras")]
+[Route("api/v2/securityCameras")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]

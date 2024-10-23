@@ -8,7 +8,7 @@ using SmartHome.WebApi.WebModels.AdminModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/admins")]
+[Route("api/v2/admins")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]

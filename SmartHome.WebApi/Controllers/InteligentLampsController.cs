@@ -22,7 +22,7 @@ public class InteligentLampsController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
     [HttpPost]
-    public IActionResult CreateInteligentLamp(InteligentLampRequestModel deviceRequestModel)
+    public IActionResult CreateInteligentLamp([FromBody] InteligentLampRequestModel deviceRequestModel)
     {
         var user = HttpContext.Items["User"] as User;
 

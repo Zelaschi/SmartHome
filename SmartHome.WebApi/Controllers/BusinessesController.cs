@@ -12,7 +12,7 @@ using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/businesses")]
+[Route("api/v2/businesses")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]

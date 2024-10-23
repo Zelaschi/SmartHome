@@ -6,7 +6,7 @@ using SmartHome.WebApi.WebModels.HomeOwnerModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/homeOwners")]
+[Route("api/v2/homeOwners")]
 [ApiController]
 [ExceptionFilter]
 public sealed class HomeOwnersController : ControllerBase

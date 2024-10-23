@@ -8,7 +8,7 @@ using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
-[Route("api/v1/users")]
+[Route("api/v2/users")]
 [ApiController]
 [AuthenticationFilter]
 [ExceptionFilter]

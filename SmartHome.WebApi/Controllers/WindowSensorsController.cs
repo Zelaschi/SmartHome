@@ -22,7 +22,7 @@ public class WindowSensorsController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
     [HttpPost]
-    public IActionResult CreateWindowSensor(WindowSensorRequestModel deviceRequestModel)
+    public IActionResult CreateWindowSensor([FromBody]WindowSensorRequestModel deviceRequestModel)
     {
         var user = HttpContext.Items["User"] as User;
 
