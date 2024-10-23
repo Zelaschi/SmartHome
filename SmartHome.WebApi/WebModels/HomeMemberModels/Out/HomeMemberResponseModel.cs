@@ -11,13 +11,20 @@ namespace SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 public sealed class HomeMemberResponseModel
 {
     public Guid? HomeMemberId { get; set; }
-    public List<HomePermission>? HomePermissions { get; set; }
-    public List<Notification>? Notifications { get; set; }
+    public List<string>? HomePermissions { get; set; }
+    public List<string>? Notifications { get; set; }
     public HomeMemberResponseModel(HomeMember homeMember)
     {
         HomeMemberId = homeMember.HomeMemberId;
-        HomePermissions = homeMember.HomePermissions;
-        Notifications = homeMember.Notifications;
+        foreach (var homePermission in homeMember.HomePermissions)
+        {
+            HomePermissions.Add(homePermission.Name);
+        }
+
+        foreach (var notification in homeMember.Notifications)
+        {
+            Notifications.Add(notification.ToString());
+        }
     }
 
     public override bool Equals(object? obj)

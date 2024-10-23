@@ -12,15 +12,17 @@ public sealed class HomeDeviceResponseModel
 {
     public Guid? HardwardId { get; set; }
     public bool Online { get; set; }
-    public Device Device { get; set; }
+    public string Device { get; set; }
+    public string Type { get; set; }
     public bool? IsOn { get; set; }
     public bool? Open { get; set; }
 
     public HomeDeviceResponseModel(HomeDevice homeDevice)
     {
+        Type = homeDevice.Device.Type;
         HardwardId = homeDevice.Id;
         Online = homeDevice.Online;
-        Device = homeDevice.Device;
+        Device = homeDevice.Device.Name;
 
         if (homeDevice.Device is InteligentLamp lamp)
         {

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
+using SmartHome.WebApi.WebModels.NotificationModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/me")]
@@ -30,7 +32,7 @@ public class MeController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        return Ok(_notificationLogic.GetUsersNotifications(user));
+        return Ok(_notificationLogic.GetUsersNotifications(user).Select(notification => new NotificationResponseModel(notification)).ToList());
     }
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_USERS_HOMES_PERMISSION_ID)]

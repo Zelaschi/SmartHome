@@ -86,6 +86,7 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
                 .Include(home => home.Members)
                     .ThenInclude(member => member.HomeMemberNotifications)
                         .ThenInclude(hmn => hmn.Notification)
+                            .ThenInclude(notification => notification.HomeDevice)
                 .ToList();
         }
         catch (SqlException)

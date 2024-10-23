@@ -11,7 +11,7 @@ public sealed class HomeOwnerResponseModel
     public string? Password { get; set; }
     public string? ProfilePhoto { get; set; }
     public Guid? Id { get; set; }
-    public Role? Role { get; set; }
+    public string? Role { get; set; }
 
     public HomeOwnerResponseModel(User homeOwner)
     {
@@ -21,7 +21,7 @@ public sealed class HomeOwnerResponseModel
         Password = homeOwner.Password;
         ProfilePhoto = homeOwner.ProfilePhoto;
         Id = homeOwner.Id;
-        Role = homeOwner.Role;
+        Role = homeOwner.Role.Name;
     }
 
     public override bool Equals(object? obj)

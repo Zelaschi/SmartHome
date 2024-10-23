@@ -12,7 +12,7 @@ public class WindowSensorResponseModel
     public string Description { get; set; }
     public string Photos { get; set; }
     public bool Open { get; set; }
-    public Business? Company { get; set; }
+    public string? Company { get; set; }
 
     public WindowSensorResponseModel(WindowSensor sensor)
     {
@@ -23,7 +23,7 @@ public class WindowSensorResponseModel
         Description = sensor.Description;
         Photos = sensor.Photos;
         Open = sensor.Open;
-        Company = sensor.Business;
+        Company = sensor.Business.Name;
     }
 
     public override bool Equals(object? obj)

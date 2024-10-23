@@ -14,7 +14,7 @@ public sealed class SecurityCameraResponseModel
     public bool? OutDoor { get; set; }
     public bool? MovementDetection { get; set; }
     public bool? PersonDetection { get; set; }
-    public Business? Company { get; set; }
+    public string? Company { get; set; }
     public SecurityCameraResponseModel(SecurityCamera securityCamera)
     {
         Id = securityCamera.Id;
@@ -26,7 +26,7 @@ public sealed class SecurityCameraResponseModel
         OutDoor = securityCamera.Outdoor;
         MovementDetection = securityCamera.MovementDetection;
         PersonDetection = securityCamera.PersonDetection;
-        Company = securityCamera.Business;
+        Company = securityCamera.Business.Name;
     }
 
     public override bool Equals(object? obj)

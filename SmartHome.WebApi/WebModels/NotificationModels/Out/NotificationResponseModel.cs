@@ -5,7 +5,7 @@ namespace SmartHome.WebApi.WebModels.NotificationModels.Out;
 public sealed class NotificationResponseModel
 {
     public Guid Id { get; set; }
-    public HomeDevice HomeDevice { get; set; }
+    public string HomeDevice { get; set; }
     public string Event { get; set; }
     public bool Read { get; set; } = false;
     public DateTime Date { get; set; }
@@ -14,7 +14,7 @@ public sealed class NotificationResponseModel
     public NotificationResponseModel(Notification notification)
     {
         Id = notification.Id;
-        HomeDevice = notification.HomeDevice;
+        HomeDevice = notification.HomeDevice.Name;
         Event = notification.Event;
         Date = notification.Date;
         Time = notification.Time;

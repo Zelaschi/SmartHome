@@ -4,7 +4,7 @@ namespace SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 
 public sealed class SecurityCameraRequestModel
 {
-    public string? Type { get; set; } = "Security Camaera";
+    public string? Type { get; set; } = "Security Camera";
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
     public string? Name { get; set; }

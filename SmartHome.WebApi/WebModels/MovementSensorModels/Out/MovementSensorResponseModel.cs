@@ -9,6 +9,7 @@ public sealed class MovementSensorResponseModel
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
     public string? Photos { get; set; }
+    public string? Company { get; set; }
 
     public MovementSensorResponseModel(Device movementSensor)
     {
@@ -16,6 +17,7 @@ public sealed class MovementSensorResponseModel
         ModelNumber = movementSensor.ModelNumber;
         Description = movementSensor.Description;
         Photos = movementSensor.Photos;
+        Company = movementSensor.Business.Name;
     }
 
     public override bool Equals(object? obj)

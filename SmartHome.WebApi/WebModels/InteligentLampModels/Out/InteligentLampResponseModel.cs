@@ -10,7 +10,7 @@ public class InteligentLampResponseModel
     public string? Description { get; set; }
     public string? Photos { get; set; }
     public bool? IsOn { get; set; }
-    public Business? Company { get; set; }
+    public string? Company { get; set; }
     public InteligentLampResponseModel(InteligentLamp lamp)
     {
         Id = lamp.Id;
@@ -19,7 +19,7 @@ public class InteligentLampResponseModel
         Description = lamp.Description;
         Photos = lamp.Photos;
         IsOn = lamp.IsOn;
-        Company = lamp.Business;
+        Company = lamp.Business.Name;
     }
 
     public override bool Equals(object? obj)

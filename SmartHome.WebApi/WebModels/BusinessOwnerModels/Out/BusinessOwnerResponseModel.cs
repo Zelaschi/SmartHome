@@ -10,7 +10,7 @@ public sealed class BusinessOwnerResponseModel
     public string? Email { get; set; }
     public string? Password { get; set; }
     public Guid? Id { get; set; }
-    public Role? Role { get; set; }
+    public string? Role { get; set; }
 
     public BusinessOwnerResponseModel(User homeOwner)
     {
@@ -19,7 +19,7 @@ public sealed class BusinessOwnerResponseModel
         Email = homeOwner.Email;
         Password = homeOwner.Password;
         Id = homeOwner.Id;
-        Role = homeOwner.Role;
+        Role = homeOwner.Role.Name;
     }
 
     public override bool Equals(object? obj)

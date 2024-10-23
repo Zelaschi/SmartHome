@@ -18,4 +18,9 @@ public sealed class Notification
     [JsonIgnore]
     public List<HomeMemberNotification> HomeMemberNotifications { get; set; } = new List<HomeMemberNotification>();
     public User? DetectedPerson { get; set; }
+
+    public override string ToString()
+    {
+        return Event + " thrown by: " + HomeDevice.Name;
+    }
 }
