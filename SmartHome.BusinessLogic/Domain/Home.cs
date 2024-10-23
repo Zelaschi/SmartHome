@@ -17,10 +17,12 @@ public sealed class Home
     public required string Name { get; set; }
     public List<HomeDevice>? Devices { get; set; }
     public List<HomeMember> Members { get; set; }
+    public List<Room>? Rooms { get; set; }
 
     public Home()
     {
         Devices = new List<HomeDevice>();
         Members = new List<HomeMember>();
+        Rooms = new List<Room>();
     }
 }

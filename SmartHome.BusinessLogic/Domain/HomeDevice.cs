@@ -12,4 +12,5 @@ public sealed class HomeDevice
     public required Device Device { get; set; }
     public Guid HomeId { get; set; }
     public required string Name { get; set; }
+    public Room? Room { get; set; }
 }

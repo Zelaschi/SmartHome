@@ -583,8 +583,8 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = true, Name = device.Name };
+        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
         var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
