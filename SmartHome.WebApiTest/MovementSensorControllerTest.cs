@@ -64,7 +64,7 @@ public class MovementSensorControllerTest
         var expectedObjectResult = new CreatedAtActionResult("CreateMovementSensor", "Device", new { Id = device.Id }, expectedResult);
 
         // Act
-        var result = movementSensorController.CreateWindowSensor(deviceRequestModel) as CreatedAtActionResult;
+        var result = movementSensorController.CreateMovementSensor(deviceRequestModel) as CreatedAtActionResult;
         var deviceResult = result.Value as MovementSensorResponseModel;
 
         // Assert

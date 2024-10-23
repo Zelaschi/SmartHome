@@ -11,8 +11,8 @@ namespace SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 public sealed class HomeMemberResponseModel
 {
     public Guid? HomeMemberId { get; set; }
-    public List<string>? HomePermissions { get; set; }
-    public List<string>? Notifications { get; set; }
+    public List<string>? HomePermissions { get; set; } = new List<string>();
+    public List<string>? Notifications { get; set; } = new List<string>();
     public HomeMemberResponseModel(HomeMember homeMember)
     {
         HomeMemberId = homeMember.HomeMemberId;

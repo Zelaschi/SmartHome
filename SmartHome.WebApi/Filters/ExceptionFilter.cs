@@ -57,7 +57,7 @@ public sealed class ExceptionFilter : ExceptionFilterAttribute
         }
         else if (exception is NullReferenceException)
         {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.NoContent };
+            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
         }
         else if (exception is Exception)
         {

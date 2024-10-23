@@ -140,7 +140,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("Home Id does not match any home");
         }
 
-        return home.Members.ToList();
+        return home.Members;
     }
 
     private void ValidateHome(Home home)

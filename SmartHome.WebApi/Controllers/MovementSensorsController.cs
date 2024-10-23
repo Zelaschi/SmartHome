@@ -24,7 +24,7 @@ public class MovementSensorsController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
     [HttpPost]
-    public IActionResult CreateWindowSensor([FromBody]MovementSensorRequestModel deviceRequestModel)
+    public IActionResult CreateMovementSensor([FromBody]MovementSensorRequestModel deviceRequestModel)
     {
         var user = HttpContext.Items["User"] as User;
 
