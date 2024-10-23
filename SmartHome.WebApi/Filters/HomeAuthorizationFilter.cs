@@ -3,6 +3,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.Services;
 
 namespace SmartHome.WebApi.Filters;
 
@@ -83,16 +84,30 @@ public class HomeAuthorizationFilter : Attribute, IAuthorizationFilter
             return;
         }
 
-        var hasPermission = homePermissionService.HasPermission(userLoggedMappedId, parsedHomeId, homePermissionIdGuid);
-        if (!hasPermission)
+        try
+        {
+            var hasPermission = homePermissionService.HasPermission(userLoggedMappedId, parsedHomeId, homePermissionIdGuid);
+            if (!hasPermission)
+            {
+                context.Result = new ObjectResult(new
+                {
+                    InnerCode = "Unauthorized",
+                    Message = "You are not authorized to perform this action"
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.Unauthorized
+                };
+            }
+        }
+        catch (Exception)
         {
             context.Result = new ObjectResult(new
             {
-                InnerCode = "Unauthorized",
-                Message = "You are not authorized to perform this action"
+                InnerCode = "Forbidden",
+                Message = $"HomeId does not exist"
             })
             {
-                StatusCode = (int)HttpStatusCode.Unauthorized
+                StatusCode = (int)HttpStatusCode.BadRequest
             };
         }
     }

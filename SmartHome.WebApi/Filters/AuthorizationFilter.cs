@@ -54,16 +54,30 @@ public sealed class AuthorizationFilter : Attribute, IAuthorizationFilter
         var userLoggedMapped = (User)userLogged;
         var permissionIdGuid = Guid.Parse(permissionId);
         var systemPermission = permissionService.GetSystemPermissionById(permissionIdGuid);
-        var hasPermission = roleService.HasPermission(userLoggedMapped.Role.Id, systemPermission.Id);
-        if (!hasPermission)
+        try
+        {
+            var hasPermission = roleService.HasPermission(userLoggedMapped.Role.Id, systemPermission.Id);
+            if (!hasPermission)
+            {
+                context.Result = new ObjectResult(new
+                {
+                    InnerCode = "Forbidden",
+                    Message = $"Missing permission {systemPermission.Name}"
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.Forbidden
+                };
+            }
+        }
+        catch (Exception)
         {
             context.Result = new ObjectResult(new
             {
                 InnerCode = "Forbidden",
-                Message = $"Missing permission {systemPermission.Name}"
+                Message = $"HomeId does not exist"
             })
             {
-                StatusCode = (int)HttpStatusCode.Forbidden
+                StatusCode = (int)HttpStatusCode.BadRequest
             };
         }
     }
