@@ -375,6 +375,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
 
+        if (homeDevice.Device.Type != "Security Camera")
+        {
+            throw new DeviceException("The device type is not Security Camera");
+        }
+
         CheckDeviceOnline(homeDevice);
 
         var home = FindHomeById(homeDevice.HomeId);
@@ -445,6 +450,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
 
+        if (homeDevice.Device.Type != "Security Camera")
+        {
+            throw new DeviceException("The device type is not Security Camera");
+        }
+
         CheckDeviceOnline(homeDevice);
 
         var home = FindHomeById(homeDevice.HomeId);
@@ -469,6 +479,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     {
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
+
+        if (homeDevice.Device.Type != "Window Sensor")
+        {
+            throw new DeviceException("The device type is not Window Sensor");
+        }
 
         CheckDeviceOnline(homeDevice);
 

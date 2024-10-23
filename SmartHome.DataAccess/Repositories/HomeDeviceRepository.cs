@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;
@@ -65,7 +66,7 @@ public sealed class HomeDeviceRepository : IGenericRepository<HomeDevice>
     {
         try
         {
-            return _repository.HomeDevices.FirstOrDefault(filter);
+            return _repository.HomeDevices.Include(homeDevice => homeDevice.Device).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
