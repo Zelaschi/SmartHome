@@ -29,6 +29,8 @@ public static class SeedDataConstants
     public const string LIST_ALL_USERS_NOTIFICATIONS_PERMISSION_ID = "dde0bac9-e646-4d9f-96f5-c77e7295cb4b";
     public const string CREATE_NOTIFICATION_PERMISSION_ID = "b404659a-35a4-4486-867f-db4c24f9f827";
     public const string ADD_MEMBER_TO_HOME_PERMISSION_ID = "7306a4ce-47fc-4ba8-8aac-60243701cd5b";
+    public const string CREATE_ROOM_PERMISSION_ID = "f3b3b3b3-3c8a-423d-bd46-edde4f85fbe3";
+    public const string ADD_DEVICES_TO_ROOM_PERMISSION_ID = "f3b3b3b3-3c8a-423d-bd46-edde4f85fbe4";
 
     public const string ADD_MEMBER_TO_HOME_HOMEPERMISSION_ID = "98bb8133-688a-4f1d-8587-87c485df6534";
     public const string ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID = "c49f2858-72fc-422d-bd4b-f49b482f80bd";

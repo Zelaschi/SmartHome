@@ -10,7 +10,7 @@ public class WindowSensorResponseModel
     public string Name { get; set; }
     public string ModelNumber { get; set; }
     public string Description { get; set; }
-    public string Photos { get; set; }
+    public List<Photo> Photos { get; set; }
     public bool Open { get; set; }
     public string? Company { get; set; }
 

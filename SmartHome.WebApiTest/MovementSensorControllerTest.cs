@@ -41,7 +41,7 @@ public class MovementSensorControllerTest
             Name = "Sensor de movimiento",
             Description = "Sensor de movimiento",
             ModelNumber = "1234",
-            Photos = "foto del sensor"
+            Photos = []
         };
 
         Device device = deviceRequestModel.ToEntity();
@@ -71,5 +71,4 @@ public class MovementSensorControllerTest
         movementSensorLogicMock.VerifyAll();
         Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
     }
-
 }

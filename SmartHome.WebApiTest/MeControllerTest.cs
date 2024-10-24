@@ -39,7 +39,7 @@ public class MeControllerTest
         var user1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1, Name = "Home Name" };
         var company = new Business() { Id = Guid.NewGuid(), BusinessOwner = companyOwner1, Logo = "logo", Name = "hikvision", RUT = "1234" };
-        var device1 = new BusinessLogic.Domain.Device() { Id = Guid.NewGuid(), Name = "Device1", Type = "Type1", Business = company, Description = "description", ModelNumber = "1234", Photos = "photos" };
+        var device1 = new BusinessLogic.Domain.Device() { Id = Guid.NewGuid(), Name = "Device1", Type = "Type1", Business = company, Description = "description", ModelNumber = "1234", Photos = [] };
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device1, Online = true, Name = device1.Name };
 
         var notifications = new List<Notification>

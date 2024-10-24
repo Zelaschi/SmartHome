@@ -39,7 +39,7 @@ public class NotificationControllerTest
             Name = "SecurityCamera",
             ModelNumber = "modelNumber",
             Description = "description",
-            Photos = "photoPath",
+            Photos = [],
             Indoor = true,
             Outdoor = false,
             MovementDetection = true,
@@ -79,7 +79,7 @@ public class NotificationControllerTest
             Name = "SecurityCamera",
             ModelNumber = "modelNumber",
             Description = "description",
-            Photos = "photoPath",
+            Photos = [],
             Indoor = true,
             Outdoor = false,
             MovementDetection = true,
@@ -120,7 +120,7 @@ public class NotificationControllerTest
             Name = "WindowSensor",
             ModelNumber = "modelNumber",
             Description = "description",
-            Photos = "photoPath",
+            Photos = [],
             Business = company,
             Type = "Window Sensor"
         };
@@ -158,7 +158,7 @@ public class NotificationControllerTest
             Name = "WindowSensor",
             ModelNumber = "modelNumber",
             Description = "description",
-            Photos = "photoPath",
+            Photos = [],
             Business = company,
             Type = "Window Sensor"
         };

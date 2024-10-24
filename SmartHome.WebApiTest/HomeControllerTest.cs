@@ -92,7 +92,7 @@ public class HomeControllerTest
         Home home = homeRequestModel.ToEntity();
         home.Id = Guid.NewGuid();
         var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
-        var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = company };
+        var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = [], Business = company };
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device, HomeId = home.Id, Name = device.Name };
 
         homeLogicMock.Setup(h => h.AddDeviceToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(homeDevice);
@@ -182,8 +182,8 @@ public class HomeControllerTest
         var user1Id = Guid.NewGuid();
         var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var business = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
-        var device1 = new Device() { Id = Guid.NewGuid(), Name = "A", Type = "A", ModelNumber = "1", Description = "A", Photos = "jpg", Business = business };
-        var device2 = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = " ", Business = business };
+        var device1 = new Device() { Id = Guid.NewGuid(), Name = "A", Type = "A", ModelNumber = "1", Description = "A", Photos = [], Business = business };
+        var device2 = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = [], Business = business };
         var homeDevice1 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device1, Name = device1.Name };
         var homeDevice2 = new HomeDevice(){ Id = Guid.NewGuid(), Online = true, Device = device2, Name = device2.Name };
         var homeDevices = new List<HomeDevice>() { homeDevice1, homeDevice2 };
@@ -223,7 +223,7 @@ public class HomeControllerTest
         Home home = homeRequestModel.ToEntity();
         home.Id = Guid.NewGuid();
         var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
-        var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = "photos", Business = company };
+        var device = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = [], Business = company };
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device, HomeId = home.Id, Name = device.Name };
 
         homeLogicMock.Setup(h => h.UpdateHomeDeviceName(It.IsAny<Guid>(), It.IsAny<string>()));

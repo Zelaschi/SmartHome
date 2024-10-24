@@ -8,7 +8,7 @@ public class InteligentLampResponseModel
     public string? Type { get; set; }
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
-    public string? Photos { get; set; }
+    public List<Photo> Photos { get; set; }
     public bool? IsOn { get; set; }
     public string? Company { get; set; }
     public InteligentLampResponseModel(InteligentLamp lamp)

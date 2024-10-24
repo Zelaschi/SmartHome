@@ -36,8 +36,8 @@ public class DeviceControllerTest
 
         IEnumerable<Device> devices = new List<Device>()
         {
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" },
-            new Device() { Id = Guid.NewGuid(), Business = company2, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = "fotos2" }
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = [] },
+            new Device() { Id = Guid.NewGuid(), Business = company2, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = [] }
         };
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);
@@ -70,9 +70,9 @@ public class DeviceControllerTest
 
         IEnumerable<Device> devices = new List<Device>
         {
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" },
-            new Device() { Id = Guid.NewGuid(), Business = company2, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = "fotos2" },
-            new Device() { Id = Guid.NewGuid(), Business = company3, Description = "description3", ModelNumber = "91011", Name = "Sensor3", Photos = "fotos3" }
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = [] },
+            new Device() { Id = Guid.NewGuid(), Business = company2, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = [] },
+            new Device() { Id = Guid.NewGuid(), Business = company3, Description = "description3", ModelNumber = "91011", Name = "Sensor3", Photos = [] }
         };
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);
@@ -100,8 +100,8 @@ public class DeviceControllerTest
 
         IEnumerable<Device> devices = new List<Device>()
         {
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" },
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = "fotos2" }
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = [] },
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = [] }
         };
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);
@@ -125,8 +125,8 @@ public class DeviceControllerTest
 
         IEnumerable<Device> devices = new List<Device>
         {
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" },
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = "fotos2" }
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = [] },
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = [] }
         };
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);
@@ -151,8 +151,8 @@ public class DeviceControllerTest
 
         IEnumerable<Device> devices = new List<Device>
         {
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1" },
-            new Device() { Id = Guid.NewGuid(), Business = company2, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = "fotos2" }
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = [] },
+            new Device() { Id = Guid.NewGuid(), Business = company2, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = [] }
         };
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);
@@ -175,8 +175,8 @@ public class DeviceControllerTest
 
         IEnumerable<Device> devices = new List<Device>
         {
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1", Type = "TypeA" },
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = "fotos2", Type = "TypeB" }
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = [], Type = "TypeA" },
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = [], Type = "TypeB" }
         };
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);
@@ -201,8 +201,8 @@ public class DeviceControllerTest
 
         IEnumerable<Device> devices = new List<Device>
         {
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = "fotos1", Type = "TypeA" },
-            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = "fotos2", Type = "TypeB" }
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description1", ModelNumber = "1234", Name = "Sensor1", Photos = [], Type = "TypeA" },
+            new Device() { Id = Guid.NewGuid(), Business = company1, Description = "description2", ModelNumber = "5678", Name = "Sensor2", Photos = [], Type = "TypeB" }
         };
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);

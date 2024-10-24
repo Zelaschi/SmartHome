@@ -40,7 +40,7 @@ public class WindowSensorsControllerTest
             Name = "Sensor de ventana 1",
             Description = "Sensor para ventanas",
             ModelNumber = "1234",
-            Photos = "foto del sensor"
+            Photos = []
         };
 
         WindowSensor device = deviceRequestModel.ToEntity();

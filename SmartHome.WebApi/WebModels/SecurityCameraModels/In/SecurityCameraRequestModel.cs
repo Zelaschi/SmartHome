@@ -8,7 +8,7 @@ public sealed class SecurityCameraRequestModel
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
     public string? Name { get; set; }
-    public string? Photos { get; set; }
+    public List<Photo>? Photos { get; set; }
     public bool? InDoor { get; set; }
     public bool? OutDoor { get; set; }
     public bool? MovementDetection { get; set; }

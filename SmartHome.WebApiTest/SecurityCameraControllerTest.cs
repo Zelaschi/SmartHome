@@ -38,7 +38,7 @@ public class SecurityCameraControllerTest
         {
             ModelNumber = "modelNumber",
             Description = "description",
-            Photos = "photoPath",
+            Photos = [],
             InDoor = true,
             OutDoor = false,
             MovementDetection = true,

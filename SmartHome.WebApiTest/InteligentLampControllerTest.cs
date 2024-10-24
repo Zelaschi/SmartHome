@@ -40,7 +40,7 @@ public class InteligentLampControllerTest
             Name = "Lampara inteligente",
             Description = "Lampara inteligente",
             ModelNumber = "1234",
-            Photos = "foto de la lampara",
+            Photos = [],
             IsOn = false
         };
 

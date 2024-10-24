@@ -8,7 +8,7 @@ public sealed class MovementSensorResponseModel
     public string Type { get; set; } = "Sensor de Movimiento";
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
-    public string? Photos { get; set; }
+    public List<Photo> Photos { get; set; }
     public string? Company { get; set; }
 
     public MovementSensorResponseModel(Device movementSensor)
