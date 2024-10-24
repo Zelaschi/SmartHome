@@ -42,7 +42,7 @@ public class DeviceServiceTest
                 Name = "WindowSensor",
                 Description = "Window Sensor",
                 ModelNumber = "1234",
-                Photos = "Photo1",
+                Photos = [],
                 Business = new Business
                 {
                     Id = Guid.NewGuid(),
@@ -65,7 +65,7 @@ public class DeviceServiceTest
                 Name = "WindowSensor",
                 Description = "Security Camera",
                 ModelNumber = "1234",
-                Photos = "Photo1",
+                Photos = [],
                 Type = "SecurityCamera",
                 Business = new Business
                 {
@@ -114,7 +114,7 @@ public class DeviceServiceTest
             Name = "Security Camera",
             Description = "Security Camera outdoor",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Type = "SecurityCamera",
             Outdoor = true,
             Business = new Business
@@ -147,7 +147,7 @@ public class DeviceServiceTest
             Name = "Security Camera",
             Description = "Security Camera outdoor",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Type = "SecurityCamera",
             Outdoor = true,
             Business = business
@@ -189,7 +189,7 @@ public class DeviceServiceTest
             Name = "Window Sensor",
             Description = "Window Sensor",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Business = business
         };
 
@@ -199,7 +199,7 @@ public class DeviceServiceTest
             Name = "Window Sensor",
             Description = "Window Sensor",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Business = new Business
             {
                 Id = Guid.NewGuid(),
@@ -254,7 +254,7 @@ public class DeviceServiceTest
             Name = "Window Sensor",
             Description = "Window Sensor",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Business = business
         };
 
@@ -304,7 +304,7 @@ public class DeviceServiceTest
             Name = "Security Camera",
             Description = "Security Camera outdoor",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Type = "SecurityCamera",
             Outdoor = true,
             Business = business
@@ -340,7 +340,7 @@ public class DeviceServiceTest
                 Name = "WindowSensor",
                 Description = "Window Sensor",
                 ModelNumber = "1234",
-                Photos = "Photo1",
+                Photos = [],
                 Business = new Business
                 {
                     Id = Guid.NewGuid(),
@@ -363,7 +363,7 @@ public class DeviceServiceTest
                 Name = "WindowSensor",
                 Description = "Security Camera",
                 ModelNumber = "1234",
-                Photos = "Photo1",
+                Photos = [],
                 Type = "Security Camera",
                 Business = new Business
                 {
@@ -415,7 +415,7 @@ public class DeviceServiceTest
             Name = "Movement Sensor",
             Description = "movement sensor description",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Type = "Movement Sensor",
             Business = new Business
             {
@@ -447,7 +447,7 @@ public class DeviceServiceTest
             Name = "Movement Sensor",
             Description = "movement sensor description",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Type = "Movement Sensor",
             Business = business
         };
@@ -479,7 +479,7 @@ public class DeviceServiceTest
             Name = "Inteligent Lamp",
             Description = "inteligent lamp description",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Type = "Inteligent Lamp",
             IsOn = true,
             Business = new Business
@@ -512,7 +512,7 @@ public class DeviceServiceTest
             Name = "Inteligent Lamp",
             Description = "inteligent lamp description",
             ModelNumber = "1234",
-            Photos = "Photo1",
+            Photos = [],
             Type = "Inteligent Lamp",
             Business = business,
             IsOn = true,

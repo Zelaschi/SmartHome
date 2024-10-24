@@ -112,8 +112,8 @@ public class HomeServiceTest
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
 
-        var device1 = new Device { Id = Guid.NewGuid(), Name = "Device1", Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
-        var device2 = new Device { Id = Guid.NewGuid(), Name = "Device2", Description = "A Device", Business = business, ModelNumber = "123", Photos = "photos" };
+        var device1 = new Device { Id = Guid.NewGuid(), Name = "Device1", Description = "A Device", Business = business, ModelNumber = "123", Photos = [] };
+        var device2 = new Device { Id = Guid.NewGuid(), Name = "Device2", Description = "A Device", Business = business, ModelNumber = "123", Photos = [] };
 
         var homeDevice1 = new HomeDevice { Device = device1, Id = Guid.NewGuid(), Online = true, Name = device1.Name };
         var homeDevice2 = new HomeDevice { Device = device2, Id = Guid.NewGuid(), Online = false, Name = device2.Name };
@@ -137,7 +137,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -170,7 +170,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [] , ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -202,7 +202,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = false, Name = securityCamera.Name };
 
         var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
@@ -254,7 +254,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
 
         home.Devices.Add(homeDevice);
@@ -296,7 +296,7 @@ public class HomeServiceTest
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
         var deviceId = Guid.NewGuid();
-        var device = new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = business };
+        var device = new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = [], Business = business };
         var homeDeviceId = Guid.NewGuid();
         var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId, Name = device.Name };
         home.Devices.Add(homeDevice);
@@ -343,7 +343,7 @@ public class HomeServiceTest
         var deviceId = Guid.NewGuid();
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
-        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = new Business { BusinessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = new Role { Name = "BusinessOwner" } }, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" } });
+        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = [], Business = new Business { BusinessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = new Role { Name = "BusinessOwner" } }, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" } });
 
         var ex = new HomeException("PlaceHolder");
         try
@@ -468,7 +468,7 @@ public class HomeServiceTest
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
         var deviceId = Guid.NewGuid();
-        var securityCamera = new SecurityCamera { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = "photo", Business = business };
+        var securityCamera = new SecurityCamera { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = [], Business = business };
         var homeDeviceId = Guid.NewGuid();
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home1);
@@ -551,7 +551,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -583,7 +583,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -615,7 +615,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = false, Name = windowSensor.Name };
 
         var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
@@ -667,7 +667,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
 
         home.Devices.Add(homeDevice);
@@ -795,7 +795,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = false, Name = device.Name };
         var newName = "NewName";
 
@@ -1247,7 +1247,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
         var detectedPersonId = Guid.NewGuid();
@@ -1280,7 +1280,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = "photo", ModelNumber = "a" };
+        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
         var detectedPersonId = Guid.NewGuid();
         User detectedPerson = null;
@@ -1381,7 +1381,7 @@ public class HomeServiceTest
     public void Create_MovementDetectionNotification_HomeNotFound_ThrowsHomeException()
     {
         var homeDeviceId = Guid.NewGuid();
-        var securityCamera = new SecurityCamera { Description = "test", ModelNumber = "test", Name = "test", Photos = "test", Business = new Business { BusinessOwner = new User { Email = "test", Name = "test", Password = "test", Role = new Role { Name = "test" }, Surname = "test" }, Id = Guid.NewGuid(), Logo = "test", Name = "test", RUT = "test" } };
+        var securityCamera = new SecurityCamera { Description = "test", ModelNumber = "test", Name = "test", Photos = [], Business = new Business { BusinessOwner = new User { Email = "test", Name = "test", Password = "test", Role = new Role { Name = "test" }, Surname = "test" }, Id = Guid.NewGuid(), Logo = "test", Name = "test", RUT = "test" } };
         Home home = null;
 
         homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
