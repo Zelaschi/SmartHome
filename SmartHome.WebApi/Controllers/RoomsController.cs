@@ -26,6 +26,7 @@ public sealed class RoomsController : ControllerBase
     [HttpPost("{homeId}")]
     public IActionResult CreateRoom([FromBody] RoomRequestModel roomRequestModel, [FromRoute] Guid homeId)
     {
-        throw new NotImplementedException();
+        var createResponse = new RoomResponseModel(_roomLogic.CreateRoom(roomRequestModel.ToEntity(), homeId));
+        return CreatedAtAction("CreateRoom", new { createResponse.Id }, createResponse);
     }
 }
