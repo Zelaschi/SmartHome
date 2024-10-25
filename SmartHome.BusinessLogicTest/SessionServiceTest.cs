@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
@@ -81,5 +82,30 @@ public class SessionServiceTest
 
         Assert.IsNotNull(result);
         Assert.AreEqual(existingUser.Id, result.Id);
+    }
+
+    [TestMethod]
+    public void Get_UserOfSession_SessionNotFound_Throws_Exception()
+    {
+        var token = Guid.NewGuid();
+
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns((Session)null);
+
+        Exception exception = null;
+
+        try
+        {
+            var user = sessionService.GetUserOfSession(token);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        sessionRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(SessionException));
+        Assert.AreEqual("The session with token: " + token + " was not found", exception.Message);
     }
 }
