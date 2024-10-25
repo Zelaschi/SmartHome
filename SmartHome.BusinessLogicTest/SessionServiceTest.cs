@@ -55,4 +55,31 @@ public class SessionServiceTest
         Assert.AreEqual(result, sessionAdded.SessionId);
         sessionRepositoryMock.Verify(repo => repo.Add(It.IsAny<Session>()), Times.Once);
     }
+
+    [TestMethod]
+    public void Get_UserOfSession_Test()
+    {
+        var token = Guid.NewGuid();
+        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+        var userId = Guid.NewGuid();
+        var existingUser = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com",
+            Id = userId
+        };
+
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns(session);
+        userRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<User, bool>>()))
+                           .Returns(existingUser);
+
+        var result = sessionService.GetUserOfSession(token);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(existingUser.Id, result.Id);
+    }
 }
