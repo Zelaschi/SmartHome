@@ -135,4 +135,16 @@ public class SessionServiceTest
         Assert.IsInstanceOfType(exception, typeof(SessionException));
         Assert.AreEqual("The user of the session with token: " + token + " was not found", exception.Message);
     }
+
+    [TestMethod]
+    public void IsSessionValid_Session_Not_Valid()
+    {
+        var token = Guid.NewGuid();
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns((Session)null);
+
+        var result = sessionService.IsSessionValid(token);
+
+        Assert.IsFalse(result);
+    }
 }
