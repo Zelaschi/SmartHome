@@ -170,7 +170,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [] , ModelNumber = "a" };
+        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -610,7 +610,7 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Window_Sensor_Notification_On_Off_Device_Throws_Exception()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name"};
+        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
         var homeMember = new HomeMember(owner);
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
@@ -1143,7 +1143,7 @@ public class HomeServiceTest
         home.Members.Add(new HomeMember(member));
         var permissionId = Guid.NewGuid();
 
-        var homePermission = new HomePermission { HomeMembers = home.Members, Name = "Permiso", Id = permissionId};
+        var homePermission = new HomePermission { HomeMembers = home.Members, Name = "Permiso", Id = permissionId };
         home.Members.First().HomePermissions.Add(homePermission);
 
         homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -1425,5 +1425,77 @@ public class HomeServiceTest
         Assert.IsNotNull(exception);
         Assert.IsInstanceOfType(exception, typeof(HomeException));
         Assert.AreEqual("Home Device Id does not match any home device", exception.Message);
+    }
+
+    [TestMethod]
+    public void Create_MovementDetectionNotification_DeviceType_Not_SecurityCamera_ThrowsDeviceException()
+    {
+        var homeDeviceId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            Online = true,
+            Name = "Test Device",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Device",
+                Type = "Other Device",
+                ModelNumber = "12345",
+                Description = "Test Description",
+                Photos = new List<Photo>()
+            }
+        };
+
+        homeDeviceRepositoryMock.Setup(hd => hd.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+
+        Exception exception = null;
+        try
+        {
+            homeService.CreatePersonDetectionNotification(homeDeviceId, userId);
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.AreEqual("The device type is not Security Camera", exception.Message);
+    }
+
+    [TestMethod]
+    public void Create_OpenCloseWindowNotification_DeviceType_Not_WindowSensor_ThrowsDeviceException()
+    {
+        var homeDeviceId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            Online = true,
+            Name = "Test Device",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Device",
+                Type = "Other Device",
+                ModelNumber = "12345",
+                Description = "Test Description",
+                Photos = new List<Photo>()
+            }
+        };
+
+        homeDeviceRepositoryMock.Setup(hd => hd.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
+
+        Exception exception = null;
+        try
+        {
+            homeService.CreateOpenCloseWindowNotification(homeDeviceId, true);
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.AreEqual("The device type is not Window Sensor", exception.Message);
     }
 }

@@ -160,4 +160,26 @@ public class SessionServiceTest
 
         Assert.IsTrue(result);
     }
+
+    [TestMethod]
+    public void LogIn_User_Not_Found_Throws_Exception()
+    {
+        userRepositoryMock.Setup(repo => repo.FindAll())
+                          .Returns(new List<User>());
+
+        Exception exception = null;
+
+        try
+        {
+            var result = sessionService.LogIn("mail@gmail.com", "password");
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(UserException));
+        Assert.AreEqual("User with that email and password does not exist", exception.Message);
+    }
 }
