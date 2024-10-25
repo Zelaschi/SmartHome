@@ -88,7 +88,6 @@ public class SessionServiceTest
     public void Get_UserOfSession_SessionNotFound_Throws_Exception()
     {
         var token = Guid.NewGuid();
-
         sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
                               .Returns((Session)null);
 
@@ -107,5 +106,33 @@ public class SessionServiceTest
         userRepositoryMock.VerifyAll();
         Assert.IsInstanceOfType(exception, typeof(SessionException));
         Assert.AreEqual("The session with token: " + token + " was not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void Get_UserOfSession_UserNotFound_Throws_Exception()
+    {
+        var token = Guid.NewGuid();
+        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns(session);
+        userRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<User, bool>>()))
+                           .Returns((User)null);
+
+        Exception exception = null;
+
+        try
+        {
+            var user = sessionService.GetUserOfSession(token);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        sessionRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(SessionException));
+        Assert.AreEqual("The user of the session with token: " + token + " was not found", exception.Message);
     }
 }
