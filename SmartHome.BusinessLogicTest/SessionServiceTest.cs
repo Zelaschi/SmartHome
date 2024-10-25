@@ -147,4 +147,17 @@ public class SessionServiceTest
 
         Assert.IsFalse(result);
     }
+
+    [TestMethod]
+    public void IsSessionValid_Session_Valid()
+    {
+        var token = Guid.NewGuid();
+        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns(session);
+
+        var result = sessionService.IsSessionValid(token);
+
+        Assert.IsTrue(result);
+    }
 }
