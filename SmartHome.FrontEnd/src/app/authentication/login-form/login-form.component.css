@@ -1,0 +1,77 @@
+/* Estilos generales del contenedor para el formulario de registro */
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #e6f2ff;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* Título */
+h1 {
+  color: #2c3e50;
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Contenedor del formulario */
+app-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 450px;
+  padding: 25px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  gap: 18px;
+}
+
+/* Campos de entrada */
+app-form-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+app-form-input input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd1d9;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #2c3e50;
+  transition: border-color 0.2s ease;
+}
+
+app-form-input input:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+/* Botón de registro */
+app-form-button button {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+app-form-button button:hover {
+  background-color: #2980b9;
+}
+
+app-form-button button:active {
+  background-color: #1f6391;
+}
