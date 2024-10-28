@@ -1,0 +1,19 @@
+<h1>Bienvenido a MyServiceApp</h1>
+
+<app-form [form]="loginForm" [onSubmit]="onSubmit">
+  <app-form-input
+    type="text"
+    placeholder="email@example.com"
+    [name]="formField.email.name"
+    [form]="loginForm"
+    [formField]="formField" />
+
+  <app-form-input
+    type="password"
+    placeholder="*****"
+    [name]="formField.password.name"
+    [form]="loginForm"
+    [formField]="formField" />
+
+  <app-form-button title="Login" />
+</app-form>
