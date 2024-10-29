@@ -1,0 +1,18 @@
+<div *ngIf="options && options.length > 0; else noOptions">
+    <select [value]="value" (change)="onChange($event)">
+      <option *ngIf="placeholder" value="null" [selected]="value === null">
+        {{ placeholder }}
+      </option>
+      <option
+        *ngFor="let option of options"
+        [value]="option.value"
+        [selected]="value == option.value">
+        {{ option.label }}
+      </option>
+    </select>
+  </div>
+  
+  <ng-template #noOptions>
+    <p>{{ emptyMessage }}</p>
+  </ng-template>
+  
