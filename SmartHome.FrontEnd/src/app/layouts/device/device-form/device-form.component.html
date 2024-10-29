@@ -1,0 +1,58 @@
+<h1>Registro de Dispositivo</h1>
+
+<app-form [form]="deviceForm" (onSubmit)="onRegisterDevice($event)">
+  <!-- Campo de Nombre -->
+  <label for="name">Nombre del dispositivo</label>
+  <app-form-input
+    type="text"
+    placeholder="Nombre del dispositivo"
+    [name]="formField.name.name"
+    [form]="deviceForm"
+    [formField]="formField">
+  </app-form-input>
+
+  <!-- Campo de Número de Modelo -->
+  <label for="modelNumber">Número de modelo</label>
+  <app-form-input
+    type="text"
+    placeholder="Número de modelo"
+    [name]="formField.modelNumber.name"
+    [form]="deviceForm"
+    [formField]="formField">
+  </app-form-input>
+
+  <!-- Campo de Descripción -->
+  <label for="description">Descripción del dispositivo</label>
+  <app-form-input
+    type="text"
+    placeholder="Descripción del dispositivo"
+    [name]="formField.description.name"
+    [form]="deviceForm"
+    [formField]="formField">
+  </app-form-input>
+
+  <!-- Campo de Tipo de Dispositivo -->
+  <label for="type">Tipo de Dispositivo</label>
+  <select
+    id="type"
+    [formControl]="deviceForm.controls[formField.type.name]"
+    class="form-select">
+    <option value="">Seleccione el tipo</option>
+    <option value="sensor">Camara de seguridad</option>
+    <option value="actuador">Sensor de ventana</option>
+    <option value="controlador">Sensor de movimiento</option>
+  </select>
+
+  <!-- Campo de Fotografías -->
+  <label for="photos">Fotografías del dispositivo</label>
+  <input
+    type="file"
+    id="photos"
+    name="photos"
+    accept="image/*"
+    multiple
+    (change)="onPhotoUpload($event)">
+
+  <!-- Botón de Registro -->
+  <app-form-button title="Registrar Dispositivo"></app-form-button>
+</app-form>
