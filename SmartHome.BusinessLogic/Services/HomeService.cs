@@ -360,14 +360,44 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     private HomeDevice CreateHomeDevice(Guid homeId, Device device)
     {
-        return new HomeDevice
+        HomeDevice homedevice;
+        switch (device.Type)
         {
-            Name = device.Name,
-            Id = Guid.NewGuid(),
-            Device = device,
-            HomeId = homeId,
-            Online = true
-        };
+            case "Window Sensor":
+                homedevice = new HomeDevice
+                {
+                    Name = device.Name,
+                    Id = Guid.NewGuid(),
+                    Device = device,
+                    HomeId = homeId,
+                    Online = true,
+                    IsOpen = true
+                };
+                break;
+            case "Inteligent Lamp":
+                homedevice = new HomeDevice
+                {
+                    Name = device.Name,
+                    Id = Guid.NewGuid(),
+                    Device = device,
+                    HomeId = homeId,
+                    Online = true,
+                    IsOn = true
+                };
+                break;
+            default:
+                homedevice = new HomeDevice
+                {
+                    Name = device.Name,
+                    Id = Guid.NewGuid(),
+                    Device = device,
+                    HomeId = homeId,
+                    Online = true
+                };
+                break;
+        }
+
+        return homedevice;
     }
 
     public Notification CreateMovementDetectionNotification(Guid homeDeviceId)

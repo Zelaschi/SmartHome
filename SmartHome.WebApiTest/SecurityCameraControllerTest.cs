@@ -47,6 +47,7 @@ public class SecurityCameraControllerTest
 
         var securityCamera = securityCameraRequestModel.ToEntity();
         securityCamera.Id = Guid.NewGuid();
+        securityCamera.Business = company;
 
         HttpContext httpContext = new DefaultHttpContext();
         httpContext.Items.Add("User", businessOwner);

@@ -14,10 +14,10 @@ namespace SmartHome.WebApi.Controllers;
 [ExceptionFilter]
 public class InteligentLampsController : ControllerBase
 {
-    private readonly IInteligentLampLogic _inteligentLampLogic;
-    public InteligentLampsController(IInteligentLampLogic inteligentLampLogic)
+    private readonly ICreateDeviceLogic _createDeviceLogic;
+    public InteligentLampsController(ICreateDeviceLogic createDeviceLogic)
     {
-        _inteligentLampLogic = inteligentLampLogic ?? throw new ArgumentNullException(nameof(inteligentLampLogic));
+        _createDeviceLogic = createDeviceLogic ?? throw new ArgumentNullException(nameof(createDeviceLogic));
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
@@ -31,7 +31,7 @@ public class InteligentLampsController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var result = new InteligentLampResponseModel(_inteligentLampLogic.CreateInteligentLamp(deviceRequestModel.ToEntity(), user));
+        var result = new InteligentLampResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, "Inteligent Lamp"));
         return CreatedAtAction("CreateInteligentLamp", new { result.Id }, result);
     }
 }

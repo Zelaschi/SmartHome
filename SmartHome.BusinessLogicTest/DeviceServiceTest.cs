@@ -183,7 +183,7 @@ public class DeviceServiceTest
             RUT = "1234",
             BusinessOwner = bowner
         };
-        var windowSensor = new WindowSensor
+        var windowSensor = new Device
         {
             Id = Guid.NewGuid(),
             Name = "Window Sensor",
@@ -193,7 +193,7 @@ public class DeviceServiceTest
             Business = business
         };
 
-        var expected = new WindowSensor
+        var expected = new Device
         {
             Id = windowSensor.Id,
             Name = "Window Sensor",
@@ -220,7 +220,7 @@ public class DeviceServiceTest
 
         deviceRepositoryMock.Setup(x => x.Add(windowSensor)).Returns(expected);
 
-        var result = deviceService.CreateWindowSensor(windowSensor, bowner);
+        var result = deviceService.CreateDevice(windowSensor, bowner, "Window Sensor");
 
         deviceRepositoryMock.Verify(x => x.Add(windowSensor), Times.Once);
 
@@ -248,7 +248,7 @@ public class DeviceServiceTest
             RUT = "1234",
             BusinessOwner = businessOwner
         };
-        var windowSensor = new WindowSensor
+        var windowSensor = new Device
         {
             Id = Guid.NewGuid(),
             Name = "Window Sensor",
@@ -264,7 +264,7 @@ public class DeviceServiceTest
 
         try
         {
-            deviceService.CreateWindowSensor(windowSensor, businessOwner);
+            deviceService.CreateDevice(windowSensor, businessOwner, "Window Sensor");
         }
         catch (Exception e)
         {
@@ -455,7 +455,7 @@ public class DeviceServiceTest
         businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
         deviceRepositoryMock.Setup(x => x.Add(movementSensor)).Returns(expected);
 
-        var result = deviceService.CreateMovementSensor(movementSensor, bonwer);
+        var result = deviceService.CreateDevice(movementSensor, bonwer, "Window Sensor");
 
         deviceRepositoryMock.Verify(x => x.Add(movementSensor), Times.Once);
 
@@ -473,7 +473,7 @@ public class DeviceServiceTest
             CreationDate = DateTime.Today,
             Email = "pedrorod@gmail.com"
         };
-        var inteligentLamp = new InteligentLamp
+        var inteligentLamp = new Device
         {
             Id = Guid.NewGuid(),
             Name = "Inteligent Lamp",
@@ -481,7 +481,6 @@ public class DeviceServiceTest
             ModelNumber = "1234",
             Photos = [],
             Type = "Inteligent Lamp",
-            IsOn = true,
             Business = new Business
             {
                 Id = Guid.NewGuid(),
@@ -506,7 +505,7 @@ public class DeviceServiceTest
                 Email = "pedrorod@gmail.com"
             }
         };
-        var expected = new InteligentLamp
+        var expected = new Device
         {
             Id = inteligentLamp.Id,
             Name = "Inteligent Lamp",
@@ -514,14 +513,13 @@ public class DeviceServiceTest
             ModelNumber = "1234",
             Photos = [],
             Type = "Inteligent Lamp",
-            Business = business,
-            IsOn = true,
+            Business = business
         };
 
         businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
         deviceRepositoryMock.Setup(x => x.Add(inteligentLamp)).Returns(expected);
 
-        var result = deviceService.CreateInteligentLamp(inteligentLamp, bonwer);
+        var result = deviceService.CreateDevice(inteligentLamp, bonwer, "Inteligent Lamp");
 
         deviceRepositoryMock.Verify(x => x.Add(inteligentLamp), Times.Once);
 

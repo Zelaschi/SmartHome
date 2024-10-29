@@ -39,9 +39,7 @@ services.AddScoped<IBusinessesLogic, BusinessService>();
 
 services.AddScoped<IDeviceLogic, DeviceService>();
 services.AddScoped<ISecurityCameraLogic, DeviceService>();
-services.AddScoped<IWindowSensorLogic, DeviceService>();
-services.AddScoped<IMovementSensorLogic, DeviceService>();
-services.AddScoped<IInteligentLampLogic, DeviceService>();
+services.AddScoped<ICreateDeviceLogic, DeviceService>();
 
 services.AddScoped<IHomeLogic, HomeService>();
 services.AddScoped<IHomePermissionLogic, HomeService>();

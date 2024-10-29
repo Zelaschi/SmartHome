@@ -24,13 +24,13 @@ public sealed class HomeDeviceResponseModel
         Online = homeDevice.Online;
         Device = homeDevice.Device.Name;
 
-        if (homeDevice.Device is InteligentLamp lamp)
+        if (homeDevice.Device.Type is "Inteligent Lamp")
         {
-            IsOn = lamp.IsOn;
+            IsOn = homeDevice.IsOn;
         }
-        else if (homeDevice.Device is WindowSensor sensor)
+        else if (homeDevice.Device.Type is "Window Sensor")
         {
-            Open = sensor.Open;
+            Open = homeDevice.IsOpen;
         }
     }
 

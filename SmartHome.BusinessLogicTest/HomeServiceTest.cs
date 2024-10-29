@@ -551,7 +551,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
+        var windowSensor = new Device{ Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -583,7 +583,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
+        var windowSensor = new Device {Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -615,7 +615,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
+        var windowSensor = new Device { Type = "Window Sensor",  Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = false, Name = windowSensor.Name };
 
         var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
@@ -667,7 +667,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new WindowSensor { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
+        var windowSensor = new Device { Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
 
         home.Devices.Add(homeDevice);

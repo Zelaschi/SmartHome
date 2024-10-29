@@ -16,10 +16,10 @@ namespace SmartHome.WebApi.Controllers;
 
 public class MovementSensorsController : ControllerBase
 {
-    private readonly IMovementSensorLogic _movementSensorLogic;
-    public MovementSensorsController(IMovementSensorLogic movementSensorLogic)
+    private readonly ICreateDeviceLogic _createDeviceLogic;
+    public MovementSensorsController(ICreateDeviceLogic createDeviceLogic)
     {
-        _movementSensorLogic = movementSensorLogic ?? throw new ArgumentNullException(nameof(movementSensorLogic));
+        _createDeviceLogic = createDeviceLogic ?? throw new ArgumentNullException(nameof(createDeviceLogic));
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
@@ -33,7 +33,7 @@ public class MovementSensorsController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var result = new MovementSensorResponseModel(_movementSensorLogic.CreateMovementSensor(deviceRequestModel.ToEntity(), user));
+        var result = new MovementSensorResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, "Movement Sensor"));
         return CreatedAtAction("CreateMovementSensor", new { result.Id }, result);
     }
 }

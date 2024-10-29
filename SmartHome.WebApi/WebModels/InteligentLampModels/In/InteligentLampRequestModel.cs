@@ -9,12 +9,10 @@ public class InteligentLampRequestModel
     public required string Description { get; set; }
     public required List<Photo> Photos { get; set; }
     public string? Type { get; set; } = "Inteligent Lamp";
-    public required bool IsOn { get; set; }
-    public InteligentLamp ToEntity()
+    public Device ToEntity()
     {
-        return new InteligentLamp
+        return new Device
         {
-            IsOn = IsOn,
             Type = Type,
             Name = Name,
             ModelNumber = ModelNumber,
