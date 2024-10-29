@@ -8,18 +8,17 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.DeviceTypes;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateDeviceLogic
 {
     private readonly IGenericRepository<Device> _deviceRepository;
-    private readonly IDeviceTypeRepository _deviceTypeRepository;
     private readonly IGenericRepository<Business> _businessRepository;
-    public DeviceService(IGenericRepository<Business> businessRepository, IGenericRepository<Device> deviceRepository, IDeviceTypeRepository deviceTypeRepository)
+    public DeviceService(IGenericRepository<Business> businessRepository, IGenericRepository<Device> deviceRepository)
     {
         _businessRepository = businessRepository;
         _deviceRepository = deviceRepository;
-        _deviceTypeRepository = deviceTypeRepository;
     }
 
     private bool RepeatedModelNumber(Device device)
@@ -60,7 +59,13 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
 
     public IEnumerable<string> GetAllDeviceTypes()
     {
-        return _deviceTypeRepository.GetAllDeviceTypes();
+        return new List<string>
+        {
+            DeviceTypesStatic.SecurityCamera,
+            DeviceTypesStatic.IntelligentLamp,
+            DeviceTypesStatic.WindowSensor,
+            DeviceTypesStatic.MovementSensor
+        };
     }
 
     public Device CreateDevice(Device device, User user, string type)

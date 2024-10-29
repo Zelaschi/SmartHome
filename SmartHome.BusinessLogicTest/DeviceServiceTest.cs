@@ -17,7 +17,6 @@ public class DeviceServiceTest
 {
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
     private Mock<IGenericRepository<Business>>? businessRepositoryMock;
-    private Mock<IDeviceTypeRepository>? deviceTypeRepositoryMock;
     private DeviceService? deviceService;
 
     [TestInitialize]
@@ -25,9 +24,8 @@ public class DeviceServiceTest
     public void Initialize()
     {
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
-        deviceTypeRepositoryMock = new Mock<IDeviceTypeRepository>();
         businessRepositoryMock = new Mock<IGenericRepository<Business>>();
-        deviceService = new DeviceService(businessRepositoryMock.Object, deviceRepositoryMock.Object, deviceTypeRepositoryMock.Object);
+        deviceService = new DeviceService(businessRepositoryMock.Object, deviceRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -332,68 +330,9 @@ public class DeviceServiceTest
 
     public void ListAll_DeviceTypes_Test()
     {
-        var devices = new List<Device>
-        {
-            new Device
-            {
-                Id = Guid.NewGuid(),
-                Name = "WindowSensor",
-                Description = "Window Sensor",
-                ModelNumber = "1234",
-                Photos = [],
-                Business = new Business
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "HikVision",
-                    Logo = "Logo1",
-                    RUT = "1234",
-                    BusinessOwner = new User
-                    {
-                        Name = "Juan",
-                        Surname = "Perez",
-                        Password = "Password@1234",
-                        CreationDate = DateTime.Today,
-                        Email = "juanperez@gmail.com"
-                    }
-                }
-            },
-            new SecurityCamera
-            {
-                Id = Guid.NewGuid(),
-                Name = "WindowSensor",
-                Description = "Security Camera",
-                ModelNumber = "1234",
-                Photos = [],
-                Type = "Security Camera",
-                Business = new Business
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Kolke",
-                    Logo = "Logo1",
-                    RUT = "1234",
-                    BusinessOwner = new User
-                    {
-                        Name = "Pedro",
-                        Surname = "Rodriguez",
-                        Password = "Password@1234",
-                        CreationDate = DateTime.Today,
-                        Email = "pedrorod@gmail.com"
-                    }
-                },
-                Outdoor = true,
-                Indoor = true,
-                MovementDetection = true,
-                PersonDetection = true
-            }
-        };
-
-        var deviceTypes = new List<string> { "Window Sensor", "Security Camera" };
-
-        deviceTypeRepositoryMock.Setup(x => x.GetAllDeviceTypes()).Returns(deviceTypes);
+        var deviceTypes = new List<string> {"Security Camera", "Inteligent Lamp",  "Window Sensor", "Movement Sensor" };
 
         var result = deviceService.GetAllDeviceTypes().ToList();
-
-        deviceTypeRepositoryMock.Verify(x => x.GetAllDeviceTypes(), Times.Once);
 
         CollectionAssert.AreEqual(deviceTypes, result);
     }
