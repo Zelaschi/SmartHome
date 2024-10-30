@@ -4,6 +4,7 @@ using JSONImporter.DeviceImporter;
 namespace JSONImporter;
 public class JsonImporterClass : IDeviceImporter
 {
+    public required string Name = "JSON";
     public List<DTODevice> ImportDevicesFromFilePath(string path)
     {
         IDeserializer _jsonDeserializer = new JSONDeserializer();
