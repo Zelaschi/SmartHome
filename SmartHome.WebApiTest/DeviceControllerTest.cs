@@ -195,7 +195,6 @@ public class DeviceControllerTest
     [TestMethod]
     public void GetAllDevicesTest_FilterByDeviceType_Ok()
     {
-        // Arrange
         var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
 
@@ -207,10 +206,8 @@ public class DeviceControllerTest
 
         deviceLogicMock.Setup(d => d.GetAllDevices()).Returns(devices);
 
-        // Act
         var result = deviceController.GetAllDevices(null, null, null, null, null, "TypeA") as OkObjectResult;
 
-        // Assert
         var objectResult = (result.Value as List<DeviceResponseModel>)!;
         Assert.IsNotNull(result);
         Assert.AreEqual(1, objectResult.Count);
