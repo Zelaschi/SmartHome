@@ -17,14 +17,14 @@ namespace SmartHome.WebApiTest;
 [TestClass]
 public class InteligentLampControllerTest
 {
-    private Mock<IInteligentLampLogic>? inteligentLampLogicMock;
+    private Mock<ICreateDeviceLogic>? inteligentLampLogicMock;
     private InteligentLampsController? inteligentLampsController;
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
 
     [TestInitialize]
     public void TestInitialize()
     {
-        inteligentLampLogicMock = new Mock<IInteligentLampLogic>();
+        inteligentLampLogicMock = new Mock<ICreateDeviceLogic>();
         inteligentLampsController = new InteligentLampsController(inteligentLampLogicMock.Object);
     }
 
@@ -40,11 +40,10 @@ public class InteligentLampControllerTest
             Name = "Lampara inteligente",
             Description = "Lampara inteligente",
             ModelNumber = "1234",
-            Photos = [],
-            IsOn = false
+            Photos = []
         };
 
-        InteligentLamp device = deviceRequestModel.ToEntity();
+        Device device = deviceRequestModel.ToEntity();
         device.Business = company1;
         device.Id = Guid.NewGuid();
 
@@ -58,7 +57,7 @@ public class InteligentLampControllerTest
 
         inteligentLampsController = new InteligentLampsController(inteligentLampLogicMock.Object) { ControllerContext = controllerContext };
 
-        inteligentLampLogicMock.Setup(d => d.CreateInteligentLamp(It.IsAny<InteligentLamp>(), It.IsAny<User>())).Returns(device);
+        inteligentLampLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>())).Returns(device);
 
         var expectedResult = new InteligentLampResponseModel(device);
         var expectedObjectResult = new CreatedAtActionResult("CreateInteligentLamp", "InteligentLamp", new { Id = device.Id }, expectedResult);

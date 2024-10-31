@@ -17,14 +17,14 @@ namespace SmartHome.WebApiTest;
 [TestClass]
 public class WindowSensorsControllerTest
 {
-    private Mock<IWindowSensorLogic>? windowSensorLogicMock;
+    private Mock<ICreateDeviceLogic>? windowSensorLogicMock;
     private WindowSensorsController? windowSensorController;
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
 
     [TestInitialize]
     public void TestInitialize()
     {
-        windowSensorLogicMock = new Mock<IWindowSensorLogic>(MockBehavior.Strict);
+        windowSensorLogicMock = new Mock<ICreateDeviceLogic>(MockBehavior.Strict);
         windowSensorController = new WindowSensorsController(windowSensorLogicMock.Object);
     }
 
@@ -43,7 +43,7 @@ public class WindowSensorsControllerTest
             Photos = []
         };
 
-        WindowSensor device = deviceRequestModel.ToEntity();
+        Device device = deviceRequestModel.ToEntity();
         device.Business = company1;
         device.Id = Guid.NewGuid();
 
@@ -57,7 +57,7 @@ public class WindowSensorsControllerTest
 
         windowSensorController = new WindowSensorsController(windowSensorLogicMock.Object) { ControllerContext = controllerContext };
 
-        windowSensorLogicMock.Setup(d => d.CreateWindowSensor(It.IsAny<WindowSensor>(), It.IsAny<User>())).Returns(device);
+        windowSensorLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>())).Returns(device);
 
         var expectedResult = new WindowSensorResponseModel(device);
         var expectedObjectResult = new CreatedAtActionResult("CreateWindowSensor", "WindowSensor", new { Id = device.Id }, expectedResult);

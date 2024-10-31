@@ -18,14 +18,14 @@ namespace SmartHome.WebApiTest;
 [TestClass]
 public class MovementSensorControllerTest
 {
-    private Mock<IMovementSensorLogic>? movementSensorLogicMock;
+    private Mock<ICreateDeviceLogic>? movementSensorLogicMock;
     private MovementSensorsController? movementSensorController;
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
 
     [TestInitialize]
     public void TestInitialize()
     {
-        movementSensorLogicMock = new Mock<IMovementSensorLogic>(MockBehavior.Strict);
+        movementSensorLogicMock = new Mock<ICreateDeviceLogic>(MockBehavior.Strict);
         movementSensorController = new MovementSensorsController(movementSensorLogicMock.Object);
     }
 
@@ -58,7 +58,7 @@ public class MovementSensorControllerTest
 
         movementSensorController = new MovementSensorsController(movementSensorLogicMock.Object) { ControllerContext = controllerContext };
 
-        movementSensorLogicMock.Setup(d => d.CreateMovementSensor(It.IsAny<Device>(), It.IsAny<User>())).Returns(device);
+        movementSensorLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>())).Returns(device);
 
         var expectedResult = new MovementSensorResponseModel(device);
         var expectedObjectResult = new CreatedAtActionResult("CreateMovementSensor", "Device", new { Id = device.Id }, expectedResult);

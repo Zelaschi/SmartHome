@@ -8,37 +8,17 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.DeviceTypes;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowSensorLogic, IMovementSensorLogic, IInteligentLampLogic
+public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateDeviceLogic
 {
     private readonly IGenericRepository<Device> _deviceRepository;
-    private readonly IDeviceTypeRepository _deviceTypeRepository;
     private readonly IGenericRepository<Business> _businessRepository;
-    public DeviceService(IGenericRepository<Business> businessRepository, IGenericRepository<Device> deviceRepository, IDeviceTypeRepository deviceTypeRepository)
+    public DeviceService(IGenericRepository<Business> businessRepository, IGenericRepository<Device> deviceRepository)
     {
         _businessRepository = businessRepository;
         _deviceRepository = deviceRepository;
-        _deviceTypeRepository = deviceTypeRepository;
-    }
-
-    public WindowSensor CreateWindowSensor(WindowSensor device, User user)
-    {
-        var business = _businessRepository.Find(x => x.BusinessOwner == user);
-
-        if (business == null)
-        {
-            throw new DeviceException("Business was not found for the user");
-        }
-
-        if (RepeatedModelNumber(device))
-        {
-            throw new DeviceException("Device model already exists");
-        }
-
-        device.Business = business;
-
-        return _deviceRepository.Add(device) as WindowSensor;
     }
 
     private bool RepeatedModelNumber(Device device)
@@ -79,13 +59,18 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowS
 
     public IEnumerable<string> GetAllDeviceTypes()
     {
-        return _deviceTypeRepository.GetAllDeviceTypes();
+        return new List<string>
+        {
+            DeviceTypesStatic.SecurityCamera,
+            DeviceTypesStatic.IntelligentLamp,
+            DeviceTypesStatic.WindowSensor,
+            DeviceTypesStatic.MovementSensor
+        };
     }
 
-    public Device CreateMovementSensor(Device device, User user)
+    public Device CreateDevice(Device device, User user, string type)
     {
         var business = _businessRepository.Find(x => x.BusinessOwner == user);
-
         if (business == null)
         {
             throw new DeviceException("Business was not found for the user");
@@ -97,24 +82,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, IWindowS
         }
 
         device.Business = business;
-
+        device.Type = type;
         return _deviceRepository.Add(device);
-    }
-
-    public InteligentLamp CreateInteligentLamp(InteligentLamp device, User user)
-    {
-        var business = _businessRepository.Find(x => x.BusinessOwner == user);
-        if (business == null)
-        {
-            throw new DeviceException("Business was not found for the user");
-        }
-
-        if (RepeatedModelNumber(device))
-        {
-            throw new DeviceException("Security Camera model already exists");
-        }
-
-        device.Business = business;
-        return _deviceRepository.Add(device) as InteligentLamp;
     }
 }

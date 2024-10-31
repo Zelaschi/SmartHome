@@ -9,15 +9,13 @@ public sealed class WindowSensorRequestModel
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
     public required List<Photo> Photos { get; set; }
-    public bool Open { get; set; } = true;
     public string? Type { get; set; } = "Window Sensor";
 
-    public WindowSensor ToEntity()
+    public Device ToEntity()
     {
-        return new WindowSensor
+        return new Device
         {
             Type = Type,
-            Open = Open,
             Name = Name,
             ModelNumber = ModelNumber,
             Description = Description,

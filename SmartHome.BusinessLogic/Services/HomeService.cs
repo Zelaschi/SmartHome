@@ -360,14 +360,44 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     private HomeDevice CreateHomeDevice(Guid homeId, Device device)
     {
-        return new HomeDevice
+        HomeDevice homedevice;
+        switch (device.Type)
         {
-            Name = device.Name,
-            Id = Guid.NewGuid(),
-            Device = device,
-            HomeId = homeId,
-            Online = true
-        };
+            case "Window Sensor":
+                homedevice = new HomeDevice
+                {
+                    Name = device.Name,
+                    Id = Guid.NewGuid(),
+                    Device = device,
+                    HomeId = homeId,
+                    Online = true,
+                    IsOpen = true
+                };
+                break;
+            case "Inteligent Lamp":
+                homedevice = new HomeDevice
+                {
+                    Name = device.Name,
+                    Id = Guid.NewGuid(),
+                    Device = device,
+                    HomeId = homeId,
+                    Online = true,
+                    IsOn = true
+                };
+                break;
+            default:
+                homedevice = new HomeDevice
+                {
+                    Name = device.Name,
+                    Id = Guid.NewGuid(),
+                    Device = device,
+                    HomeId = homeId,
+                    Online = true
+                };
+                break;
+        }
+
+        return homedevice;
     }
 
     public Notification CreateMovementDetectionNotification(Guid homeDeviceId)
@@ -475,7 +505,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return notification;
     }
 
-    public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId, bool opened)
+    public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId)
     {
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
@@ -490,7 +520,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var home = FindHomeById(homeDevice.HomeId);
         var homeMembers = home.Members;
 
-        if (opened)
+        if (homeDevice.IsOpen == true)
         {
             var notificationOpened = CreateNotification("Window Opened", homeDevice);
 

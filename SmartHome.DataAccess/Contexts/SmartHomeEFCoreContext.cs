@@ -360,11 +360,8 @@ public sealed class SmartHomeEFCoreContext : DbContext
 
         modelBuilder.Entity<Device>()
             .ToTable("Devices")
-            .HasDiscriminator<string>("Type")
-            .HasValue<Device>("Movement Sensor")
-            .HasValue<SecurityCamera>("Security Camera")
-            .HasValue<WindowSensor>("Window Sensor")
-            .HasValue<InteligentLamp>("Inteligent Lamp");
+            .HasDiscriminator(d => d.Type)
+            .IsComplete(false);
 
         modelBuilder.Entity<Home>()
             .HasMany(h => h.Members)
@@ -393,14 +390,6 @@ public sealed class SmartHomeEFCoreContext : DbContext
         modelBuilder.Entity<SecurityCamera>()
             .Property(c => c.PersonDetection)
             .HasColumnName("PersonDetection");
-
-        modelBuilder.Entity<WindowSensor>()
-            .Property(ws => ws.Open)
-            .HasColumnName("Open");
-
-        modelBuilder.Entity<InteligentLamp>()
-            .Property(il => il.IsOn)
-            .HasColumnName("IsOn");
 
         modelBuilder.Entity<HomeMemberNotification>()
             .HasOne(hmn => hmn.HomeMember)

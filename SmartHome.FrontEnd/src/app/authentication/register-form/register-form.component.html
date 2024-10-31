@@ -1,0 +1,46 @@
+<h1>Registro en SmartHomeApp</h1>
+
+<app-form [form]="registerForm" (onSubmit)="onRegister($event)">
+  <!-- Campo de Nombre -->
+  <app-form-input
+    type="text"
+    placeholder="Nombre"
+    [name]="formField.firstName.name"
+    [form]="registerForm"
+    [formField]="formField" />
+
+  <!-- Campo de Apellido -->
+  <app-form-input
+    type="text"
+    placeholder="Apellido"
+    [name]="formField.lastName.name"
+    [form]="registerForm"
+    [formField]="formField" />
+
+  <!-- Campo de Email -->
+  <app-form-input
+    type="text"
+    placeholder="email@example.com"
+    [name]="formField.email.name"
+    [form]="registerForm"
+    [formField]="formField" />
+
+  <!-- Campo de Contraseña -->
+  <app-form-input
+    type="password"
+    placeholder="*****"
+    [name]="formField.password.name"
+    [form]="registerForm"
+    [formField]="formField" />
+
+  <!-- Campo de URL de Imagen (opcional) -->
+  <app-form-input
+    type="text"
+    placeholder="URL de imagen (opcional)"
+    [name]="formField.imageUrl.name"
+    [form]="registerForm"
+    [formField]="formField" />
+
+  <!-- Botón de Registro -->
+  <app-form-button title="Register" />
+</app-form>

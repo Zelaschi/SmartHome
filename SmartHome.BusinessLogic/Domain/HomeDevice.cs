@@ -13,4 +13,6 @@ public sealed class HomeDevice
     public Guid HomeId { get; set; }
     public required string Name { get; set; }
     public Room? Room { get; set; }
+    public bool? IsOn { get; set; }
+    public bool? IsOpen { get; set; }
 }

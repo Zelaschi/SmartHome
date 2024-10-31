@@ -14,10 +14,10 @@ namespace SmartHome.WebApi.Controllers;
 [ExceptionFilter]
 public class WindowSensorsController : ControllerBase
 {
-    private readonly IWindowSensorLogic _windowSensorLogic;
-    public WindowSensorsController(IWindowSensorLogic windowSensorLogic)
+    private readonly ICreateDeviceLogic _createDeviceLogic;
+    public WindowSensorsController(ICreateDeviceLogic createDeviceLogic)
     {
-        _windowSensorLogic = windowSensorLogic ?? throw new ArgumentNullException(nameof(windowSensorLogic));
+        _createDeviceLogic = createDeviceLogic ?? throw new ArgumentNullException(nameof(createDeviceLogic));
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
@@ -31,7 +31,7 @@ public class WindowSensorsController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var result = new WindowSensorResponseModel(_windowSensorLogic.CreateWindowSensor(deviceRequestModel.ToEntity(), user));
+        var result = new WindowSensorResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, "Window Sensor"));
         return CreatedAtAction("CreateWindowSensor", new { result.Id }, result);
     }
 }

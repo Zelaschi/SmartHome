@@ -11,10 +11,9 @@ public class WindowSensorResponseModel
     public string ModelNumber { get; set; }
     public string Description { get; set; }
     public List<Photo> Photos { get; set; }
-    public bool Open { get; set; }
     public string? Company { get; set; }
 
-    public WindowSensorResponseModel(WindowSensor sensor)
+    public WindowSensorResponseModel(Device sensor)
     {
         Id = sensor.Id;
         Type = sensor.Type;
@@ -22,7 +21,6 @@ public class WindowSensorResponseModel
         ModelNumber = sensor.ModelNumber;
         Description = sensor.Description;
         Photos = sensor.Photos;
-        Open = sensor.Open;
         Company = sensor.Business.Name;
     }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.BusinessLogic.Interfaces;
-public interface IInteligentLampLogic
+public interface ICreateDeviceLogic
 {
-    InteligentLamp CreateInteligentLamp(InteligentLamp device, User user);
+    Device CreateDevice(Device device, User user, string type);
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartHome.DataAccess.Contexts;
 
@@ -11,9 +12,11 @@ using SmartHome.DataAccess.Contexts;
 namespace SmartHome.DataAccess.Migrations
 {
     [DbContext(typeof(SmartHomeEFCoreContext))]
-    partial class SmartHomeEFCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20241028163311_RoomsCreation")]
+    partial class RoomsCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +85,7 @@ namespace SmartHome.DataAccess.Migrations
 
                     b.ToTable("Devices", (string)null);
 
-                    b.HasDiscriminator<string>("Type").IsComplete(false).HasValue("Device");
+                    b.HasDiscriminator<string>("Type").HasValue("Movement Sensor");
 
                     b.UseTphMappingStrategy();
                 });
@@ -137,12 +140,6 @@ namespace SmartHome.DataAccess.Migrations
 
                     b.Property<Guid>("HomeId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("IsOn")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsOpen")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -694,6 +691,17 @@ namespace SmartHome.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.InteligentLamp", b =>
+                {
+                    b.HasBaseType("SmartHome.BusinessLogic.Domain.Device");
+
+                    b.Property<bool>("IsOn")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsOn");
+
+                    b.HasDiscriminator().HasValue("Inteligent Lamp");
+                });
+
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.SecurityCamera", b =>
                 {
                     b.HasBaseType("SmartHome.BusinessLogic.Domain.Device");
@@ -714,7 +722,18 @@ namespace SmartHome.DataAccess.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("PersonDetection");
 
-                    b.HasDiscriminator().HasValue("SecurityCamera");
+                    b.HasDiscriminator().HasValue("Security Camera");
+                });
+
+            modelBuilder.Entity("SmartHome.BusinessLogic.Domain.WindowSensor", b =>
+                {
+                    b.HasBaseType("SmartHome.BusinessLogic.Domain.Device");
+
+                    b.Property<bool>("Open")
+                        .HasColumnType("bit")
+                        .HasColumnName("Open");
+
+                    b.HasDiscriminator().HasValue("Window Sensor");
                 });
 
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.Business", b =>

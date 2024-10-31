@@ -39,9 +39,7 @@ services.AddScoped<IBusinessesLogic, BusinessService>();
 
 services.AddScoped<IDeviceLogic, DeviceService>();
 services.AddScoped<ISecurityCameraLogic, DeviceService>();
-services.AddScoped<IWindowSensorLogic, DeviceService>();
-services.AddScoped<IMovementSensorLogic, DeviceService>();
-services.AddScoped<IInteligentLampLogic, DeviceService>();
+services.AddScoped<ICreateDeviceLogic, DeviceService>();
 
 services.AddScoped<IHomeLogic, HomeService>();
 services.AddScoped<IHomePermissionLogic, HomeService>();
@@ -55,7 +53,6 @@ services.AddScoped<IHomesFromUserRepository, HomeRepository>();
 services.AddScoped<IGenericRepository<Role>, RoleRepository>();
 services.AddScoped<IGenericRepository<HomePermission>, HomePermissionRepository>();
 services.AddScoped<IGenericRepository<Device>, DeviceRepository>();
-services.AddScoped<IDeviceTypeRepository, DeviceRepository>();
 services.AddScoped<IGenericRepository<Business>, BusinessRepository>();
 services.AddScoped<IGenericRepository<HomeDevice>, HomeDeviceRepository>();
 services.AddScoped<IGenericRepository<HomeMember>, HomeMemberRepository>();
