@@ -8,5 +8,5 @@ using SmartHome.BusinessLogic.Domain;
 namespace SmartHome.BusinessLogic.Interfaces;
 public interface IDeviceImportLogic
 {
-    List<Device> ImportDevices(string dllName, string fileName, User user);
+    int ImportDevices(string dllName, string fileName, User user);
 }

@@ -6,12 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="DeviceImporter\DevicesFiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SmartHome.ImporterCommon\SmartHome.ImporterCommon.csproj" />
-  </ItemGroup>
-
 </Project>

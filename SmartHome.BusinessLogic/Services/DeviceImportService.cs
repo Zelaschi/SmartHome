@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using SmartHome.BusinessLogic.DeviceImporter;
 using SmartHome.BusinessLogic.DeviceTypes;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.ImporterCommon;
+using SmartHome.BusinessLogic.DeviceImporter.TypeMap;
+using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class DeviceImportService : IDeviceImportLogic
 {
-    private readonly string _importerPath = @"..\DeviceImporter\ImporterDLLs";
-    private readonly string _devicesFilesPath = @"..\DeviceImporter\DevicesFiles";
+    private readonly string _importerPath = @"..\SmartHome.BusinessLogic\DeviceImporter\ImporterDLLs";
+    private readonly string _devicesFilesPath = @"..\SmartHome.BusinessLogic\DeviceImporter\DevicesFiles";
     private readonly ICreateDeviceLogic _createDeviceLogic;
 
     public DeviceImportService(ICreateDeviceLogic createDeviceLogic)
@@ -23,7 +26,26 @@ public sealed class DeviceImportService : IDeviceImportLogic
         _createDeviceLogic = createDeviceLogic;
     }
 
-    public List<Device> ImportDevices(string dllName, string fileName, User user)
+    private void JSONDeviceTypeMapper(ref DTODevice device)
+    {
+        switch (device.Type)
+        {
+            case JSONTypeMap.SecurityCamera:
+                device.Type = DeviceTypesStatic.SecurityCamera;
+                break;
+            case JSONTypeMap.IntelligentLamp:
+                device.Type = DeviceTypesStatic.IntelligentLamp;
+                break;
+            case JSONTypeMap.WindowSensor:
+                device.Type = DeviceTypesStatic.WindowSensor;
+                break;
+            case JSONTypeMap.MovementSensor:
+                device.Type = DeviceTypesStatic.MovementSensor;
+                break;
+        }
+    }
+
+    public int ImportDevices(string dllName, string fileName, User user)
     {
         var dllFiles = Directory.GetFiles(_importerPath, "*.dll");
 
@@ -33,9 +55,16 @@ public sealed class DeviceImportService : IDeviceImportLogic
             var assembly = Assembly.LoadFrom(dllFile);
             foreach (var type in assembly.GetTypes())
             {
-                if (type.GetInterface("IDeviceImporter") != null && type.Name == dllName)
+                if (type.GetInterface("IDeviceImporter") != null)
                 {
-                    importadorType = type;
+                    var importerInstance = Activator.CreateInstance(type);
+                    var dllNameValue = type.GetField("DllName").GetValue(importerInstance);
+                    if (dllNameValue.Equals(dllName))
+                    {
+                        importadorType = type;
+                    }
+
+                    break;
                 }
             }
         }
@@ -46,18 +75,26 @@ public sealed class DeviceImportService : IDeviceImportLogic
         }
 
         var importer = (IDeviceImporter)Activator.CreateInstance(importadorType);
-        var inputFullPath = _devicesFilesPath + "\\" + fileName;
+        var inputFileFullPath = _devicesFilesPath + "\\" + fileName;
 
-        List<DTODevice> dtodevices = importer.ImportDevicesFromFilePath(inputFullPath);
+        List<DTODevice> dtodevices = importer.ImportDevicesFromFilePath(inputFileFullPath);
 
-        var devices = new List<Device>();
+        var addedDevices = dtodevices.Count;
 
-        foreach (var dtodevice in dtodevices)
+        for (var i= 0; i< dtodevices.Count; i++)
         {
+            var dtodevice = dtodevices[i];
             var photos = new List<Photo>();
             foreach (var photo in dtodevice.Photos)
             {
                 photos.Add(new Photo { Path = photo.Path });
+            }
+
+            switch (dllName)
+            {
+                case "JSON":
+                    JSONDeviceTypeMapper(ref dtodevice);
+                    break;
             }
 
             if (dtodevice.Type.Equals(DeviceTypesStatic.SecurityCamera))
@@ -72,7 +109,14 @@ public sealed class DeviceImportService : IDeviceImportLogic
                     PersonDetection = dtodevice.PersonDetection ?? false,
                     MovementDetection = dtodevice.MovementDetection ?? false
                 };
-                devices.Add(_createDeviceLogic.CreateDevice(camera, user, camera.Type));
+                try
+                {
+                    _createDeviceLogic.CreateDevice(camera, user, dtodevice.Type);
+                }
+                catch (DeviceException)
+                {
+                    addedDevices--;
+                }
             }
             else
             {
@@ -84,11 +128,17 @@ public sealed class DeviceImportService : IDeviceImportLogic
                     Description = string.Empty,
                     Photos = photos
                 };
-
-                devices.Add(_createDeviceLogic.CreateDevice(device, user, device.Type));
+                try
+                {
+                    _createDeviceLogic.CreateDevice(device, user, dtodevice.Type);
+                }
+                catch (DeviceException)
+                {
+                    addedDevices--;
+                }
             }
         }
 
-        return devices;
+        return addedDevices;
     }
 }

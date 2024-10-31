@@ -1,7 +1,8 @@
-﻿using JSONImporter.IncomingData;
-using JSONImporter.DeviceImporter;
+﻿using SmartHome.JSONImporter.IncomingData;
 
-namespace JSONImporter;
+using SmartHome.ImporterCommon;
+
+namespace SmartHome.JSONImporter;
 public class JsonImporterClass : IDeviceImporter
 {
     public required string DllName = "JSON";

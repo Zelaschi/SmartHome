@@ -41,6 +41,8 @@ services.AddScoped<IDeviceLogic, DeviceService>();
 services.AddScoped<ISecurityCameraLogic, DeviceService>();
 services.AddScoped<ICreateDeviceLogic, DeviceService>();
 
+services.AddScoped<IDeviceImportLogic, DeviceImportService>();
+
 services.AddScoped<IHomeLogic, HomeService>();
 services.AddScoped<IHomePermissionLogic, HomeService>();
 services.AddScoped<IHomeMemberLogic, HomeService>();
