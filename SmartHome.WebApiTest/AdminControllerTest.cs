@@ -109,4 +109,19 @@ public class AdminControllerTest
         Assert.AreEqual(200, result.StatusCode);
         Assert.AreEqual("Admin Permissions Updated successfully", result.Value);
     }
+
+    [TestMethod]
+    public void UpdateAdminRole_UserIsMissing_ReturnsUnauthorized()
+    {
+        HttpContext httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext() { HttpContext = httpContext };
+
+        adminController.ControllerContext = controllerContext;
+
+        var result = adminController.UpdateAdminRole() as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
+    }
 }
