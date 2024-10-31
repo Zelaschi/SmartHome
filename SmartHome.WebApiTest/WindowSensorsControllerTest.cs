@@ -99,4 +99,17 @@ public class WindowSensorsControllerTest
         Assert.AreEqual(401, result.StatusCode);
         Assert.AreEqual("UserId is missing", result.Value);
     }
+
+    [TestMethod]
+    public void WindowSensorsController_NullCreateDeviceLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new WindowSensorsController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("createDeviceLogic", ex.ParamName);
+        }
+    }
 }

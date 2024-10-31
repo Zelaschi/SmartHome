@@ -104,5 +104,4 @@ public class InteligentLampControllerTest
             Assert.AreEqual("createDeviceLogic", ex.ParamName);
         }
     }
-
 }
