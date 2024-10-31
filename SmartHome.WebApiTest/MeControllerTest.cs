@@ -171,7 +171,7 @@ public class MeControllerTest
     [TestMethod]
     public void GetUsersNotifications_UserIsMissing_ReturnsUnauthorized()
     {
-        HttpContext httpContext = new DefaultHttpContext(); // No user added
+        HttpContext httpContext = new DefaultHttpContext();
         _meController.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
         var result = _meController.GetUsersNotifications() as UnauthorizedObjectResult;
