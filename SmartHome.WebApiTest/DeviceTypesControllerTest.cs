@@ -47,4 +47,17 @@ public class DeviceTypesControllerTest
         deviceLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Type.Equals(objectResult.First().Type));
     }
+
+    [TestMethod]
+    public void DeviceTypesController_NullDeviceLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new DeviceTypesController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("deviceLogic", ex.ParamName);
+        }
+    }
 }
