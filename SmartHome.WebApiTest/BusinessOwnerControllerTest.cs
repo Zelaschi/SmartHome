@@ -103,5 +103,4 @@ public class BusinessOwnerControllerTest
         Assert.AreEqual(401, result.StatusCode);
         Assert.AreEqual("UserId is missing", result.Value);
     }
-
 }
