@@ -288,7 +288,7 @@ public class HomeServiceTest
     }
 
     [TestMethod]
-    public void Register_Device_To_Home_Test()
+    public void Register_Default_Device_To_Home_Test()
     {
         var homeId = Guid.NewGuid();
         var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
@@ -1484,7 +1484,7 @@ public class HomeServiceTest
         Exception exception = null;
         try
         {
-            homeService.CreateOpenCloseWindowNotification(homeDeviceId, true);
+            homeService.CreateOpenCloseWindowNotification(homeDeviceId);
         }
         catch (Exception ex)
         {
@@ -1492,5 +1492,59 @@ public class HomeServiceTest
         }
 
         Assert.AreEqual("The device type is not Window Sensor", exception.Message);
+    }
+
+    [TestMethod]
+    public void Register_WindowSensor_Device_To_Home_Test()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var deviceId = Guid.NewGuid();
+        var device = new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = [], Business = business };
+        device.Type = "Window Sensor";
+        var homeDeviceId = Guid.NewGuid();
+        var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId, Name = device.Name };
+        home.Devices.Add(homeDevice);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(device);
+        homeDeviceRepositoryMock.Setup(x => x.Add(It.IsAny<HomeDevice>())).Returns(homeDevice);
+
+        homeService.AddDeviceToHome(homeId, deviceId);
+        homeRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(home.Devices);
+        Assert.AreEqual(1, home.Devices.Count);
+    }
+
+    [TestMethod]
+    public void Register_IntelligentLamp_Device_To_Home_Test()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var businessOwnerRole = new Role { Name = "BusinessOwner" };
+        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
+        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var deviceId = Guid.NewGuid();
+        var device = new Device { Id = deviceId, Name = "Inteligent Lamp", ModelNumber = "1234", Description = "Inteligent lamp for home", Photos = [], Business = business };
+        device.Type = "Inteligent Lamp";
+        var homeDeviceId = Guid.NewGuid();
+        var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId, Name = device.Name };
+        home.Devices.Add(homeDevice);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(device);
+        homeDeviceRepositoryMock.Setup(x => x.Add(It.IsAny<HomeDevice>())).Returns(homeDevice);
+
+        homeService.AddDeviceToHome(homeId, deviceId);
+        homeRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(home.Devices);
+        Assert.AreEqual(1, home.Devices.Count);
     }
 }

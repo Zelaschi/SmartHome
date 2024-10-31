@@ -384,6 +384,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
                     Online = true,
                     IsOn = true
                 };
+
                 break;
             default:
                 homedevice = new HomeDevice
