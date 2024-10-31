@@ -226,4 +226,17 @@ public class UsersControllerTest
         Assert.IsNotNull(resultValue);
         Assert.AreEqual(0, resultValue.Count);
     }
+
+    [TestMethod]
+    public void UsersController_NullUsersLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new UsersController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("usersLogic", ex.ParamName);
+        }
+    }
 }

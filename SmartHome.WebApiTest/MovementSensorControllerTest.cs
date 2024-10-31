@@ -110,5 +110,4 @@ public class MovementSensorControllerTest
         Assert.AreEqual(401, result.StatusCode);
         Assert.AreEqual("UserId is missing", result.Value);
     }
-
 }
