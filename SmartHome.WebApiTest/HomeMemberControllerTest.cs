@@ -80,4 +80,17 @@ public class HomeMemberControllerTest
         homeMemberLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
+
+    [TestMethod]
+    public void HomeMembersController_NullHomeMemberLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new HomeMembersController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("homeMemberLogic", ex.ParamName);
+        }
+    }
 }
