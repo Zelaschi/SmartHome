@@ -71,4 +71,17 @@ public class MovementSensorControllerTest
         movementSensorLogicMock.VerifyAll();
         Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
     }
+
+    [TestMethod]
+    public void MovementSensorController_NullMovementSensorLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new MovementSensorsController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("createDeviceLogic", ex.ParamName);
+        }
+    }
 }
