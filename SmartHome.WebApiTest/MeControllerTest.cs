@@ -167,4 +167,17 @@ public class MeControllerTest
         Assert.AreEqual(401, result.StatusCode);
         Assert.AreEqual("UserId is missing", result.Value);
     }
+
+    [TestMethod]
+    public void GetUsersNotifications_UserIsMissing_ReturnsUnauthorized()
+    {
+        HttpContext httpContext = new DefaultHttpContext(); // No user added
+        _meController.ControllerContext = new ControllerContext { HttpContext = httpContext };
+
+        var result = _meController.GetUsersNotifications() as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
+    }
 }
