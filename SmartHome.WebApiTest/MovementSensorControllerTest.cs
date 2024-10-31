@@ -84,4 +84,31 @@ public class MovementSensorControllerTest
             Assert.AreEqual("createDeviceLogic", ex.ParamName);
         }
     }
+
+    [TestMethod]
+    public void CreateMovementSensor_UserIdMissing_ReturnsUnauthorized()
+    {
+        // Arrange
+        var deviceRequestModel = new MovementSensorRequestModel
+        {
+            Name = "Movement Sensor Test",
+            Description = "A test movement sensor",
+            ModelNumber = "MS-1234",
+            Photos = new List<Photo>()
+        };
+
+        var httpContext = new DefaultHttpContext(); // No user added to context
+        var controllerContext = new ControllerContext { HttpContext = httpContext };
+
+        movementSensorController.ControllerContext = controllerContext;
+
+        // Act
+        var result = movementSensorController.CreateMovementSensor(deviceRequestModel) as UnauthorizedObjectResult;
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
+    }
+
 }
