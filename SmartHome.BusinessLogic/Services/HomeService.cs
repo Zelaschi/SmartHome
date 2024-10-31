@@ -505,7 +505,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return notification;
     }
 
-    public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId, bool opened)
+    public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId)
     {
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
@@ -520,7 +520,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var home = FindHomeById(homeDevice.HomeId);
         var homeMembers = home.Members;
 
-        if (opened)
+        if (homeDevice.IsOpen == true)
         {
             var notificationOpened = CreateNotification("Window Opened", homeDevice);
 

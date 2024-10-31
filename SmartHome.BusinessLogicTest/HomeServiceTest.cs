@@ -555,6 +555,7 @@ public class HomeServiceTest
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
+        homeDevice.IsOpen = false;
         var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
         home.Devices.Add(homeDevice);
         home.Members.Add(homeMember);
@@ -565,7 +566,7 @@ public class HomeServiceTest
         homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeMember);
         homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
 
-        homeService.CreateOpenCloseWindowNotification(homeDevice.Id, true);
+        homeService.CreateOpenCloseWindowNotification(homeDevice.Id);
 
         homeMember.Notifications.Add(notification);
         homeRepositoryMock.VerifyAll();
@@ -587,6 +588,7 @@ public class HomeServiceTest
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
+        homeDevice.IsOpen = true;
         var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
         home.Devices.Add(homeDevice);
         home.Members.Add(homeMember);
@@ -597,7 +599,7 @@ public class HomeServiceTest
         homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeMember);
         homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
 
-        homeService.CreateOpenCloseWindowNotification(homeDevice.Id, false);
+        homeService.CreateOpenCloseWindowNotification(homeDevice.Id);
 
         homeMember.Notifications.Add(notification);
         homeRepositoryMock.VerifyAll();
@@ -627,7 +629,7 @@ public class HomeServiceTest
         var ex = new HomeDeviceException("PlaceHolder");
         try
         {
-            homeService.CreateOpenCloseWindowNotification(homeDevice.Id, false);
+            homeService.CreateOpenCloseWindowNotification(homeDevice.Id);
         }
         catch (Exception e)
         {
@@ -641,8 +643,6 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Window_Sensor_Notification_Should_Only_Be_Added_To_HomeMember_If_He_Has_Notification_Permission()
     {
-        // ASSERT
-
         var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -682,19 +682,14 @@ public class HomeServiceTest
             .Returns(homeMember);
         homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
 
-        // ACCTION
-
-        homeService.CreateOpenCloseWindowNotification(homeDevice.Id, true);
+        homeService.CreateOpenCloseWindowNotification(homeDevice.Id);
 
         IEnumerable<HomeMember> homeMembers = (List<HomeMember>)homeService.GetAllHomeMembers(home.Id);
         var ownerFound = homeMembers.First(x => x.User == owner);
         var memberFound = homeMembers.First(x => x.User == member);
 
-        // ASSERT
-
         Assert.IsTrue(ownerFound.Notifications.Count > 0);
         Assert.IsTrue(memberFound.Notifications.Count == 0);
-
         homeRepositoryMock.VerifyAll();
         userRepositoryMock.VerifyAll();
         homeRepositoryMock.VerifyAll();
