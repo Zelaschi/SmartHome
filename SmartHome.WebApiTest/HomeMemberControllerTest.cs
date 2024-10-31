@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -43,11 +44,11 @@ public class HomeMemberControllerTest
             NotificationsPermission = true
         };
 
-        homeMemberLogicMock.Setup(h => h.UpdateHomePermissionsOfHomeMember(It.IsAny<Guid>(), It.IsAny<List<HomePermission>>()));
+        homeMemberLogicMock.Setup(h => h.AddHomePermissionsToHomeMember(It.IsAny<Guid>(), It.IsAny<List<HomePermission>>()));
 
         // ACT
         var expected = new NoContentResult();
-        var result = homeMemberController.UpdateHomeMemberPermissions(homeMember.HomeMemberId, homeMemberPermissionsModel) as NoContentResult;
+        var result = homeMemberController.AddHomePermissionsToHomeMember(homeMember.HomeMemberId, homeMemberPermissionsModel) as NoContentResult;
 
         // ASSERT
         homeMemberLogicMock.VerifyAll();
