@@ -215,4 +215,17 @@ public class DeviceControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(1, objectResult.Count);
     }
+
+    [TestMethod]
+    public void DevicesController_NullDeviceLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new DevicesController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("deviceLogic", ex.ParamName);
+        }
+    }
 }
