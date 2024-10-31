@@ -119,4 +119,52 @@ public class MeControllerTest
 
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Equals(objectResult.First()));
     }
+
+    [TestMethod]
+    public void GetAllHomesByUserId_UserIsMissing_ReturnsUnauthorized()
+    {
+        HttpContext httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext() { HttpContext = httpContext };
+
+        _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var result = _meController.GetAllHomesByUserId() as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
+    }
+
+    [TestMethod]
+    public void GetAllHomesByUserId_UserIdIsNull_ReturnsUnauthorized()
+    {
+        var userWithNullId = new BusinessLogic.Domain.User
+        {
+            Id = null,
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "user1@gmail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+
+        HttpContext httpContext = new DefaultHttpContext();
+        httpContext.Items.Add("User", userWithNullId);
+        var controllerContext = new ControllerContext() { HttpContext = httpContext };
+
+        _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var result = _meController.GetAllHomesByUserId() as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
+    }
 }

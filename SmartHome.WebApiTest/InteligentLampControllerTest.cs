@@ -66,7 +66,6 @@ public class InteligentLampControllerTest
     [TestMethod]
     public void CreateInteligentLampTest_UserIdMissing()
     {
-        // Arrange
         var deviceRequestModel = new InteligentLampRequestModel()
         {
             Name = "Lampara inteligente",
@@ -75,7 +74,6 @@ public class InteligentLampControllerTest
             Photos = []
         };
 
-        // Configuramos el contexto de la solicitud sin el usuario
         var httpContext = new DefaultHttpContext();
         var controllerContext = new ControllerContext()
         {
@@ -87,10 +85,8 @@ public class InteligentLampControllerTest
             ControllerContext = controllerContext
         };
 
-        // Act
         var result = inteligentLampsController.CreateInteligentLamp(deviceRequestModel) as UnauthorizedObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(401, result.StatusCode);
         Assert.AreEqual("UserId is missing", result.Value);
