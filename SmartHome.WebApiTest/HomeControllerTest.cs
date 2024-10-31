@@ -266,4 +266,29 @@ public class HomeControllerTest
 
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
+
+    [TestMethod]
+    public void CreateHome_UserIdMissing_ReturnsUnauthorized()
+    {
+        var homeRequestModel = new CreateHomeRequestModel
+        {
+            Name = "Test Home",
+            MainStreet = "123 Main St",
+            DoorNumber = "456",
+            Latitude = "10.000",
+            Longitude = "-10.000",
+            MaxMembers = 5
+        };
+
+        HttpContext httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext { HttpContext = httpContext };
+
+        homeController.ControllerContext = controllerContext;
+
+        var result = homeController.CreateHome(homeRequestModel) as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
+    }
 }
