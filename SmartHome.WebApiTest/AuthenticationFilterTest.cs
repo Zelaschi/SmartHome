@@ -175,7 +175,6 @@ public class AuthenticationFilterTests
     [TestMethod]
     public void OnAuthorization_WhenSessionIsValid_ShouldAddUserToContext()
     {
-        // Arrange
         var authToken = Guid.NewGuid();
         var user = new User
         {
@@ -196,10 +195,8 @@ public class AuthenticationFilterTests
 
         Assert.IsNotNull(_context);
 
-        // Act
         _attribute.OnAuthorization(_context);
 
-        // Assert
         Assert.IsTrue(_httpContextMock.Object.Items.ContainsKey("User"), "User should be added to the context.");
         Assert.AreEqual(user, _httpContextMock.Object.Items["User"], "The user in the context should be the same as returned by GetUserOfSession.");
     }
