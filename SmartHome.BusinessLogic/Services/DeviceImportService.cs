@@ -13,6 +13,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.ImporterCommon;
 using SmartHome.BusinessLogic.DeviceImporter.TypeMap;
 using SmartHome.BusinessLogic.CustomExceptions;
+using System.Runtime.CompilerServices;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class DeviceImportService : IDeviceImportLogic
@@ -45,11 +46,11 @@ public sealed class DeviceImportService : IDeviceImportLogic
         }
     }
 
-    public List<Device> ImportDevices(string dllName, string fileName, User user)
+    private Type GetImporterType(string dllName)
     {
+        Type returnedType = null;
         var dllFiles = Directory.GetFiles(_importerPath, "*.dll");
 
-        Type importadorType = null;
         foreach (var dllFile in dllFiles)
         {
             var assembly = Assembly.LoadFrom(dllFile);
@@ -61,7 +62,7 @@ public sealed class DeviceImportService : IDeviceImportLogic
                     var dllNameValue = type.GetField("DllName").GetValue(importerInstance);
                     if (dllNameValue.Equals(dllName))
                     {
-                        importadorType = type;
+                        returnedType = type;
                     }
 
                     break;
@@ -69,18 +70,17 @@ public sealed class DeviceImportService : IDeviceImportLogic
             }
         }
 
-        if (importadorType == null)
+        if (returnedType == null)
         {
-            throw new Exception("placeholder");
+            throw new DeviceImporterException("DLL was not found!");
         }
 
-        var importer = (IDeviceImporter)Activator.CreateInstance(importadorType);
-        var inputFileFullPath = _devicesFilesPath + "\\" + fileName;
+        return returnedType;
+    }
 
-        List<DTODevice> dtodevices = importer.ImportDevicesFromFilePath(inputFileFullPath);
-
+    private List<Device> RegisterDevicesInDatabaseFromDTODevies(List<DTODevice> dtodevices, string dllName, User user)
+    {
         var addedDevices = new List<Device>();
-
         for (var i = 0; i < dtodevices.Count; i++)
         {
             var dtodevice = dtodevices[i];
@@ -124,6 +124,20 @@ public sealed class DeviceImportService : IDeviceImportLogic
                 addedDevices.Add(_createDeviceLogic.CreateDevice(device, user, dtodevice.Type));
             }
         }
+
+        return addedDevices;
+    }
+
+    public List<Device> ImportDevices(string dllName, string fileName, User user)
+    {
+        Type importerType = GetImporterType(dllName);
+
+        var importer = (IDeviceImporter)Activator.CreateInstance(importerType);
+        var inputFileFullPath = _devicesFilesPath + "\\" + fileName;
+
+        List<DTODevice> dtodevices = importer.ImportDevicesFromFilePath(inputFileFullPath);
+
+        var addedDevices = RegisterDevicesInDatabaseFromDTODevies(dtodevices, dllName, user);
 
         return addedDevices;
     }
