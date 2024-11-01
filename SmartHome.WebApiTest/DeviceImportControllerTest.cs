@@ -21,7 +21,6 @@ public class DeviceImportControllerTest
     private DeviceImportController? _deviceImportController;
     private readonly Role businessOwner = new Role() { Name = "businessOwner" };
 
-
     [TestInitialize]
     public void TestInitialize()
     {
@@ -71,20 +70,49 @@ public class DeviceImportControllerTest
             ControllerContext = controllerContext
         };
 
-        _deviceImportService.Setup(d => d.ImportDevices(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<User>())).Returns(2);
+        var device1 = new SecurityCamera()
+        {
+            Id = Guid.Parse("69508433-1569-47a4-9591-447c3c4bdcbd"),
+            Name = "Business G235",
+            Description = "Camera 1",
+            ModelNumber = "G235",
+            Type = DeviceTypesStatic.SecurityCamera,
+            Business = company1,
+            Photos = new List<Photo>()
+        };
+        var device2 = new Device
+        {
+            Id = Guid.Parse("cc077ab4-432b-43b9-85d3-d256dcc887fb"),
+            Name = "Kasa A540",
+            Description = "Window Sensor 1",
+            ModelNumber = "A540",
+            Business = company1,
+            Photos = new List<Photo>(),
+            Type = DeviceTypesStatic.WindowSensor,
+        };
 
-        var expectedResult = new CreatedAtActionResult("ImportDevice", "DeviceImport", new { Id = string.Empty }, 2);
+        var devices = new List<Device>
+        {
+            device1,
+            device2
+        };
+
+        var devicesDTO = devices.Select(device => new DeviceWithoutPhotosResponseModel(device)).ToList();
+
+        _deviceImportService.Setup(d => d.ImportDevices(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<User>())).Returns(devices);
+
+        var expectedResult = new CreatedAtActionResult("ImportDevice", "DeviceImport", new { Id = string.Empty }, devicesDTO);
 
         // Act
 
         var result = _deviceImportController.ImportDevice(deviceImportRequestModel) as CreatedAtActionResult;
-        var intResult = result.Value as int?;
+        var objectResult = result.Value as List<DeviceWithoutPhotosResponseModel>;
 
         // Assert
         _deviceImportService.VerifyAll();
 
         Assert.IsNotNull(result);
         Assert.IsInstanceOfType(result, typeof(CreatedAtActionResult));
-        Assert.AreEqual(intResult, 2);
+        CollectionAssert.AreEqual(objectResult, devicesDTO);
     }
 }

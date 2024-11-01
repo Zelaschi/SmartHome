@@ -27,7 +27,7 @@ public sealed class DeviceImportController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var response = deviceImportLogic.ImportDevices(deviceImportRequestModel.DllName, deviceImportRequestModel.FileName, user);
-        return CreatedAtAction("ImportDevices", new { Id = string.Empty}, response.Count);
+        var response = deviceImportLogic.ImportDevices(deviceImportRequestModel.DllName, deviceImportRequestModel.FileName, user).Select(d => new DeviceWithoutPhotosResponseModel(d)).ToList();
+        return CreatedAtAction("ImportDevices", new { Id = string.Empty}, response);
     }
 }
