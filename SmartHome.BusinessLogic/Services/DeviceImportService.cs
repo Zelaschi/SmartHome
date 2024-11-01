@@ -19,9 +19,9 @@ public sealed class DeviceImportService : IDeviceImportLogic
 {
     private readonly string _importerPath = @"..\SmartHome.BusinessLogic\DeviceImporter\ImporterDLLs";
     private readonly string _devicesFilesPath = @"..\SmartHome.BusinessLogic\DeviceImporter\DevicesFiles";
-    private readonly ICreateDeviceLogic _createDeviceLogic;
+    private readonly DeviceService _createDeviceLogic;
 
-    public DeviceImportService(ICreateDeviceLogic createDeviceLogic)
+    public DeviceImportService(DeviceService createDeviceLogic)
     {
         _createDeviceLogic = createDeviceLogic;
     }
@@ -45,7 +45,7 @@ public sealed class DeviceImportService : IDeviceImportLogic
         }
     }
 
-    public int ImportDevices(string dllName, string fileName, User user)
+    public List<Device> ImportDevices(string dllName, string fileName, User user)
     {
         var dllFiles = Directory.GetFiles(_importerPath, "*.dll");
 
@@ -79,9 +79,9 @@ public sealed class DeviceImportService : IDeviceImportLogic
 
         List<DTODevice> dtodevices = importer.ImportDevicesFromFilePath(inputFileFullPath);
 
-        var addedDevices = dtodevices.Count;
+        var addedDevices = new List<Device>();
 
-        for (var i= 0; i< dtodevices.Count; i++)
+        for (var i = 0; i < dtodevices.Count; i++)
         {
             var dtodevice = dtodevices[i];
             var photos = new List<Photo>();
@@ -109,14 +109,7 @@ public sealed class DeviceImportService : IDeviceImportLogic
                     PersonDetection = dtodevice.PersonDetection ?? false,
                     MovementDetection = dtodevice.MovementDetection ?? false
                 };
-                try
-                {
-                    _createDeviceLogic.CreateDevice(camera, user, dtodevice.Type);
-                }
-                catch (DeviceException)
-                {
-                    addedDevices--;
-                }
+                addedDevices.Add(_createDeviceLogic.CreateDevice(camera, user, dtodevice.Type));
             }
             else
             {
@@ -128,14 +121,7 @@ public sealed class DeviceImportService : IDeviceImportLogic
                     Description = string.Empty,
                     Photos = photos
                 };
-                try
-                {
-                    _createDeviceLogic.CreateDevice(device, user, dtodevice.Type);
-                }
-                catch (DeviceException)
-                {
-                    addedDevices--;
-                }
+                addedDevices.Add(_createDeviceLogic.CreateDevice(device, user, dtodevice.Type));
             }
         }
 

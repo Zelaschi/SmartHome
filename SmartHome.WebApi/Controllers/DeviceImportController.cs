@@ -28,6 +28,6 @@ public sealed class DeviceImportController : ControllerBase
         }
 
         var response = deviceImportLogic.ImportDevices(deviceImportRequestModel.DllName, deviceImportRequestModel.FileName, user);
-        return CreatedAtAction("ImportDevices", new { Id = string.Empty}, response);
+        return CreatedAtAction("ImportDevices", new { Id = string.Empty}, response.Count);
     }
 }
