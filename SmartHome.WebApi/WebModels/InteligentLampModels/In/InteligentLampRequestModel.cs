@@ -13,6 +13,7 @@ public class InteligentLampRequestModel
     {
         return new Device
         {
+            Id = Guid.NewGuid(),
             Type = Type,
             Name = Name,
             ModelNumber = ModelNumber,

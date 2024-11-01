@@ -14,6 +14,7 @@ public sealed class MovementSensorRequestModel
     {
         return new Device()
         {
+            Id = Guid.NewGuid(),
             Name = Name,
             Type = Type,
             ModelNumber = ModelNumber,

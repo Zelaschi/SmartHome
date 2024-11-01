@@ -18,6 +18,7 @@ public sealed class SecurityCameraRequestModel
     {
         return new SecurityCamera()
         {
+            Id = Guid.NewGuid(),
             Name = Name,
             Type = Type,
             ModelNumber = ModelNumber,

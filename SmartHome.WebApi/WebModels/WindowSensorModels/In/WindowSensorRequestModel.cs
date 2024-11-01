@@ -15,6 +15,7 @@ public sealed class WindowSensorRequestModel
     {
         return new Device
         {
+            Id = Guid.NewGuid(),
             Type = Type,
             Name = Name,
             ModelNumber = ModelNumber,

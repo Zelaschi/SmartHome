@@ -20,9 +20,9 @@ public sealed class DeviceImportService : IDeviceImportLogic
 {
     private readonly string _importerPath = @"..\SmartHome.BusinessLogic\DeviceImporter\ImporterDLLs";
     private readonly string _devicesFilesPath = @"..\SmartHome.BusinessLogic\DeviceImporter\DevicesFiles";
-    private readonly DeviceService _createDeviceLogic;
+    private readonly ICreateDeviceLogic _createDeviceLogic;
 
-    public DeviceImportService(DeviceService createDeviceLogic)
+    public DeviceImportService(ICreateDeviceLogic createDeviceLogic)
     {
         _createDeviceLogic = createDeviceLogic;
     }
