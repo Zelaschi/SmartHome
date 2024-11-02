@@ -11,6 +11,7 @@ using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Services;
+using FluentAssertions;
 
 namespace SmartHome.BusinessLogicTest;
 
@@ -551,7 +552,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new Device{ Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
+        var windowSensor = new Device { Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -584,7 +585,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new Device {Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
+        var windowSensor = new Device { Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
         var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
 
@@ -617,7 +618,7 @@ public class HomeServiceTest
         var businessOwnerRole = new Role { Name = "BusinessOwner" };
         var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
         var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new Device { Type = "Window Sensor",  Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
+        var windowSensor = new Device { Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
         var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = false, Name = windowSensor.Name };
 
         var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
@@ -1547,4 +1548,122 @@ public class HomeServiceTest
         Assert.IsNotNull(home.Devices);
         Assert.AreEqual(1, home.Devices.Count);
     }
+
+    [TestMethod]
+    public void Create_Room_Test()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>()
+        };
+
+        var room = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "Room",
+            Home = home
+        };
+
+        homeRepositoryMock.Setup(x => x.Find(It.Is<Func<Home, bool>>(predicate => predicate(home))))
+            .Returns(home);
+
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>()))
+            .Returns(home);
+
+        var result = homeService.CreateRoom(room, homeId);
+
+        result.Should().NotBeNull("the method must return the room created");
+        result.Name.Should().Be("Room", "the returned room must have the assigned name");
+        result.Home.Id.Should().Be(homeId, "the home's ID should match the provided homeId");
+        home.Rooms.Should().ContainSingle(x => x.Name == "Room", "there should be only one room with the name 'Room' in the home");
+        home.Rooms.Should().HaveCount(1, "the number of rooms in the home should be exactly 1");
+
+        homeRepositoryMock.Verify(x => x.Update(It.IsAny<Home>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void CreateRoom_WhenHomeDoesNotExist_ThrowsHomeException()
+    {
+        var nonExistentHomeId = Guid.NewGuid();
+        var nonExistentHome = new Home
+        {
+            Id = nonExistentHomeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>()
+        };
+        var room = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "Room",
+            Home = nonExistentHome
+        };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>()))
+            .Returns((Home)null);
+
+        var exception = Assert.ThrowsException<HomeException>(
+            () => homeService.CreateRoom(room, nonExistentHomeId)
+        );
+
+        exception.Message.Should().Be("Home Id does not match any home");
+        homeRepositoryMock.Verify(x => x.Update(It.IsAny<Home>()), Times.Never);
+    }
+
+    [TestMethod]
+    public void CreateRoom_WhenRoomWithSameNameExists_ThrowsRoomException()
+    {
+        var homeId = Guid.NewGuid();
+        var homeRooms = new List<Room>();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = homeRooms
+        };
+        var existingRoom = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "ExistingRoom",
+            Home = home
+        };
+        homeRooms.Add(existingRoom);
+        var newRoom = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "ExistingRoom",
+            Home = home
+        };
+
+        homeRepositoryMock.Setup(x => x.Find(It.Is<Func<Home, bool>>(predicate => predicate(home))))
+            .Returns(home);
+
+        var exception = Assert.ThrowsException<RoomException>(
+            () => homeService.CreateRoom(newRoom, homeId)
+        );
+
+        exception.Message.Should().Be("Room already exists");
+        homeRepositoryMock.Verify(x => x.Update(It.IsAny<Home>()), Times.Never);
+    }
+
 }

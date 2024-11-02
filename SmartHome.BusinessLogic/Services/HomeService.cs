@@ -13,7 +13,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLogic, IHomePermissionLogic
+public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLogic, IHomePermissionLogic, IRoomLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Home> _homeRepository;
@@ -584,5 +584,10 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         member.HomePermissions = foundPermissions;
         _homeMemberRepository.Update(member);
+    }
+
+    public Room CreateRoom(Room room, Guid homeId)
+    {
+        throw new NotImplementedException();
     }
 }
