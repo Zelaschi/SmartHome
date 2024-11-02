@@ -588,11 +588,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public Room CreateRoom(Room room, Guid homeId)
     {
-        var home = _homeRepository.Find(x => x.Id == homeId);
-        if (home == null)
-        {
-            throw new HomeException("Home Id does not match any home");
-        }
+        var home = FindHomeById(homeId);
 
         if (home.Rooms == null)
         {

@@ -1665,5 +1665,4 @@ public class HomeServiceTest
         exception.Message.Should().Be("Room already exists");
         homeRepositoryMock.Verify(x => x.Update(It.IsAny<Home>()), Times.Never);
     }
-
 }
