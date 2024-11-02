@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
+using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.RoomModels.In;
 using SmartHome.WebApi.WebModels.RoomModels.Out;
 
@@ -28,5 +29,12 @@ public sealed class RoomsController : ControllerBase
     {
         var createResponse = new RoomResponseModel(_roomLogic.CreateRoom(roomRequestModel.ToEntity(), homeId));
         return CreatedAtAction("CreateRoom", new { createResponse.Id }, createResponse);
+    }
+
+    [AuthorizationFilter(SeedDataConstants.ADD_DEVICES_TO_ROOM_PERMISSION_ID)]
+    [HttpPost("{roomId}/homeDevices")]
+    public IActionResult AddDevicesToRoom([FromBody] Guid homeDeviceId, [FromRoute] Guid roomId)
+    {
+        throw new NotImplementedException();
     }
 }

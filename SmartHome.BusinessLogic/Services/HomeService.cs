@@ -605,4 +605,9 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homeRepository.Update(home);
         return room;
     }
+
+    public HomeDevice AddDevicesToRoom(Guid homeDeviceId, Guid roomId)
+    {
+        throw new NotImplementedException();
+    }
 }
