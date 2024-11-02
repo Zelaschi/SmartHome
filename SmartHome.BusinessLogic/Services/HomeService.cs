@@ -21,11 +21,12 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     private readonly IGenericRepository<HomeDevice> _homeDeviceRepository;
     private readonly IGenericRepository<HomeMember> _homeMemberRepository;
     private readonly IGenericRepository<Device> _deviceRepository;
+    private readonly IGenericRepository<Room> _roomRepository;
     private readonly IHomesFromUserRepository _homesFromUserRepository;
 
     public HomeService(IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<HomeDevice> homeDeviceRepository,
         IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository,
-        IGenericRepository<HomePermission> homePermissionRepository, IGenericRepository<Device> deviceRepository,
+        IGenericRepository<HomePermission> homePermissionRepository, IGenericRepository<Device> deviceRepository, IGenericRepository<Room> roomRepository,
         IHomesFromUserRepository homesFromUserRepository)
     {
         _homeMemberRepository = homeMemberRepository;
@@ -35,6 +36,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homeDeviceRepository = homeDeviceRepository;
         _deviceRepository = deviceRepository;
         _homesFromUserRepository = homesFromUserRepository;
+        _roomRepository = roomRepository;
     }
 
     private User FindUserById(Guid? userId)

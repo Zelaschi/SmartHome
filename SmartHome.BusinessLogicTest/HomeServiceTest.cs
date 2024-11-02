@@ -24,6 +24,7 @@ public class HomeServiceTest
     private Mock<IGenericRepository<HomeDevice>>? homeDeviceRepositoryMock;
     private Mock<IGenericRepository<HomeMember>>? homeMemberRepositoryMock;
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
+    private Mock<IGenericRepository<Room>>? roomRepositoryMock;
     private Mock<IHomesFromUserRepository>? homesFromUserRepositoryMock;
     private HomeService? homeService;
     private Role? homeOwnerRole;
@@ -39,10 +40,11 @@ public class HomeServiceTest
         homeDeviceRepositoryMock = new Mock<IGenericRepository<HomeDevice>>(MockBehavior.Strict);
         homeMemberRepositoryMock = new Mock<IGenericRepository<HomeMember>>(MockBehavior.Strict);
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>(MockBehavior.Strict);
+        roomRepositoryMock = new Mock<IGenericRepository<Room>>(MockBehavior.Strict);
         homesFromUserRepositoryMock = new Mock<IHomesFromUserRepository>(MockBehavior.Strict);
         homeService = new HomeService(homeMemberRepositoryMock.Object, homeDeviceRepositoryMock.Object, homeRepositoryMock.Object,
                                       userRepositoryMock.Object, homePermissionRepositoryMock.Object, deviceRepositoryMock.Object,
-                                      homesFromUserRepositoryMock.Object);
+                                      roomRepositoryMock.Object, homesFromUserRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
         ownerId = Guid.NewGuid();
         owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
@@ -1664,5 +1666,273 @@ public class HomeServiceTest
 
         exception.Message.Should().Be("Room already exists");
         homeRepositoryMock.Verify(x => x.Update(It.IsAny<Home>()), Times.Never);
+    }
+
+    [TestMethod]
+    public void Add_Device_To_Room_Test()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>(),
+            Devices = new List<HomeDevice>()
+        };
+
+        var room = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "Room",
+            Home = home,
+            HomeDevices = new List<HomeDevice>()
+        };
+
+        var deviceId = Guid.NewGuid();
+        var device = new Device
+        {
+            Id = deviceId,
+            Name = "Device",
+            ModelNumber = "1234",
+            Description = "Device for home",
+            Photos = [],
+            Business = new Business
+            {
+                BusinessOwner = new User
+                {
+                    Email = "test",
+                    Name = "test",
+                    Password = "test",
+                    Role = new Role
+                    {
+                        Name = "test"
+                    },
+                    Surname = "test"
+                },
+                Id = Guid.NewGuid(),
+                Logo = "test",
+                Name = "test",
+                RUT = "test"
+            }
+        };
+
+        var homeDeviceId = Guid.NewGuid();
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            Online = true,
+            Device = device,
+            HomeId = homeId,
+            Name = device.Name
+        };
+
+        home.Devices.Add(homeDevice);
+        home.Rooms.Add(room);
+
+        roomRepositoryMock.Setup(x => x.Find(It.Is<Func<Room, bool>>(predicate => predicate(room))))
+            .Returns(room);
+        roomRepositoryMock.Setup(x => x.Update(room))
+            .Returns(room)
+            .Verifiable();
+
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.Is<Func<HomeDevice, bool>>(predicate => predicate(homeDevice))))
+            .Returns(homeDevice);
+
+        var result = homeService.AddDevicesToRoom(homeDeviceId, room.Id);
+
+        result.Should().NotBeNull("the method must return the home device");
+        result.Should().Be(homeDevice, "the returned device should be the one we added");
+        result.Name.Should().Be("Device", "the returned device must have the assigned name");
+
+        room.HomeDevices.Should().ContainSingle(x => x.Id == homeDeviceId,
+            "there should be only one device with the specified ID in the room");
+        room.HomeDevices.Should().HaveCount(1,
+            "the number of devices in the room should be exactly 1");
+
+        roomRepositoryMock.Verify(x => x.Find(It.IsAny<Func<Room, bool>>()), Times.Once(),
+            "Find should be called exactly once");
+        roomRepositoryMock.Verify(x => x.Update(room), Times.Once(),
+            "Update should be called exactly once with the modified room");
+        homeDeviceRepositoryMock.Verify(x => x.Find(It.IsAny<Func<HomeDevice, bool>>()), Times.Once(),
+            "FindHomeDeviceById should be called exactly once");
+    }
+
+    [TestMethod]
+    public void Add_Device_To_Room_When_Device_Already_Exists_Should_ThrowException()
+    {
+        var homeId = Guid.NewGuid();
+        var roomId = Guid.NewGuid();
+        var homeDeviceId = Guid.NewGuid();
+        var deviceId = Guid.NewGuid();
+
+        var owner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Owner Name",
+            Email = "owner@example.com",
+            Password = "password",
+            Role = new Role { Name = "Admin" },
+            Surname = "OwnerSurname"
+        };
+
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>(),
+            Devices = new List<HomeDevice>()
+        };
+
+        var room = new Room
+        {
+            Id = roomId,
+            Name = "Room",
+            Home = home,
+            HomeDevices = new List<HomeDevice>()
+        };
+
+        var device = new Device
+        {
+            Id = deviceId,
+            Name = "Device",
+            ModelNumber = "1234",
+            Description = "Device for home",
+            Photos = [],
+            Business = new Business
+            {
+                BusinessOwner = new User
+                {
+                    Email = "businessowner@example.com",
+                    Name = "Business Owner",
+                    Password = "password",
+                    Role = new Role { Name = "Owner" },
+                    Surname = "BusinessOwnerSurname"
+                },
+                Id = Guid.NewGuid(),
+                Logo = "logo.png",
+                Name = "Business Name",
+                RUT = "12345678-9"
+            }
+        };
+
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            Online = true,
+            Device = device,
+            HomeId = homeId,
+            Name = device.Name
+        };
+
+        room.HomeDevices.Add(homeDevice);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>()))
+            .Returns((Func<Home, bool> predicate) => predicate(home) ? home : null);
+
+        roomRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Room, bool>>()))
+            .Returns((Func<Room, bool> predicate) => predicate(room) ? room : null);
+
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>()))
+            .Returns((Func<HomeDevice, bool> predicate) => predicate(homeDevice) ? homeDevice : null);
+
+        homeService.Invoking(s => s.AddDevicesToRoom(homeDeviceId, roomId))
+            .Should().Throw<RoomException>()
+            .WithMessage("Device already exists in room");
+
+        roomRepositoryMock.Verify(x => x.Update(It.IsAny<Room>()), Times.Never(),
+            "Update should not be called when device already exists");
+    }
+
+    [TestMethod]
+    public void Add_Device_To_Room_When_Room_Not_Found_Should_ThrowException()
+    {
+        var roomId = Guid.NewGuid();
+        var homeDeviceId = Guid.NewGuid();
+
+        var owner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Owner Name",
+            Email = "owner@example.com",
+            Password = "password",
+            Role = new Role { Name = "Admin" },
+            Surname = "OwnerSurname"
+        };
+
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>(),
+            Devices = new List<HomeDevice>()
+        };
+
+        var device = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Device",
+            ModelNumber = "1234",
+            Description = "Device for home",
+            Photos = [],
+            Business = new Business
+            {
+                BusinessOwner = new User
+                {
+                    Email = "businessowner@example.com",
+                    Name = "Business Owner",
+                    Password = "password",
+                    Role = new Role { Name = "Owner" },
+                    Surname = "BusinessOwnerSurname"
+                },
+                Id = Guid.NewGuid(),
+                Logo = "logo.png",
+                Name = "Business Name",
+                RUT = "12345678-9"
+            }
+        };
+
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            Online = true,
+            Device = device,
+            HomeId = home.Id,
+            Name = device.Name
+        };
+
+        home.Devices.Add(homeDevice);
+
+        homeDeviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeDevice, bool>>()))
+            .Returns((Func<HomeDevice, bool> predicate) => predicate(homeDevice) ? homeDevice : null);
+
+        roomRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Room, bool>>()))
+            .Returns((Room)null);
+
+        homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>()))
+            .Verifiable();
+
+        homeService.Invoking(s => s.AddDevicesToRoom(homeDeviceId, roomId))
+            .Should().Throw<RoomException>()
+            .WithMessage("Room not found");
+
+        roomRepositoryMock.Verify(x => x.Update(It.IsAny<Room>()), Times.Never());
     }
 }

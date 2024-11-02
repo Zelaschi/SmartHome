@@ -28,6 +28,7 @@ public class RoleServiceTest
     private Mock<IGenericRepository<Role>>? roleRepositoryMock;
     private Mock<IHomesFromUserRepository>? homesFromUserRepositoryMock;
     private Mock<IGenericRepository<SystemPermission>>? systemPermissionRepositoryMock;
+    private Mock<IGenericRepository<Room>>? roomRepositoryMock;
     private HomeService? homeService;
     private RoleService? roleService;
     private Role? homeOwnerRole;
@@ -46,9 +47,10 @@ public class RoleServiceTest
         homeMemberRepositoryMock = new Mock<IGenericRepository<HomeMember>>(MockBehavior.Strict);
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>(MockBehavior.Strict);
         homesFromUserRepositoryMock = new Mock<IHomesFromUserRepository>(MockBehavior.Strict);
+        roomRepositoryMock = new Mock<IGenericRepository<Room>>(MockBehavior.Strict);
         homeService = new HomeService(homeMemberRepositoryMock.Object, homeDeviceRepositoryMock.Object, homeRepositoryMock.Object,
                                       userRepositoryMock.Object, homePermissionRepositoryMock.Object, deviceRepositoryMock.Object,
-                                      homesFromUserRepositoryMock.Object);
+                                      roomRepositoryMock.Object, homesFromUserRepositoryMock.Object);
         roleService = new RoleService(roleRepositoryMock.Object, systemPermissionRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
         ownerId = Guid.NewGuid();
