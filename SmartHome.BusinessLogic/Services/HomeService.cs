@@ -588,6 +588,25 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public Room CreateRoom(Room room, Guid homeId)
     {
-        throw new NotImplementedException();
+        var home = _homeRepository.Find(x => x.Id == homeId);
+        if (home == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+
+        if (home.Rooms == null)
+        {
+            home.Rooms = new List<Room>();
+        }
+
+        if (home.Rooms.Any(x => x.Name == room.Name))
+        {
+            throw new RoomException("Room already exists");
+        }
+
+        room.Home.Id = homeId;
+        home.Rooms.Add(room);
+        _homeRepository.Update(home);
+        return room;
     }
 }
