@@ -610,6 +610,26 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public HomeDevice AddDevicesToRoom(Guid homeDeviceId, Guid roomId)
     {
-        throw new NotImplementedException();
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+        var room = _roomRepository.Find(x => x.Id == roomId);
+
+        if (room == null)
+        {
+            throw new RoomException("Room not found");
+        }
+
+        if (room.HomeDevices == null)
+        {
+            room.HomeDevices = new List<HomeDevice>();
+        }
+
+        if (room.HomeDevices.Any(x => x.Id == homeDeviceId))
+        {
+            throw new RoomException("Device already exists in room");
+        }
+
+        room.HomeDevices.Add(homeDevice);
+        _roomRepository.Update(room);
+        return homeDevice;
     }
 }
