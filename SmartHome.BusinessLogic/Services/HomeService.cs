@@ -608,15 +608,21 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return room;
     }
 
-    public HomeDevice AddDevicesToRoom(Guid homeDeviceId, Guid roomId)
+    public Room FindRoomById(Guid roomId)
     {
-        var homeDevice = FindHomeDeviceById(homeDeviceId);
         var room = _roomRepository.Find(x => x.Id == roomId);
-
         if (room == null)
         {
             throw new RoomException("Room not found");
         }
+
+        return room;
+    }
+
+    public HomeDevice AddDevicesToRoom(Guid homeDeviceId, Guid roomId)
+    {
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+        var room = FindRoomById(roomId);
 
         if (room.HomeDevices == null)
         {
