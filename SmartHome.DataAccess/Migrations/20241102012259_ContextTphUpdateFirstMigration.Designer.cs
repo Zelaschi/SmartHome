@@ -12,8 +12,8 @@ using SmartHome.DataAccess.Contexts;
 namespace SmartHome.DataAccess.Migrations
 {
     [DbContext(typeof(SmartHomeEFCoreContext))]
-    [Migration("20241029043303_DevicesTypesFix")]
-    partial class DevicesTypesFix
+    [Migration("20241102012259_ContextTphUpdateFirstMigration")]
+    partial class ContextTphUpdateFirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,11 @@ namespace SmartHome.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("ModelNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -76,16 +81,15 @@ namespace SmartHome.DataAccess.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("Devices", (string)null);
+                    b.ToTable("Devices");
 
-                    b.HasDiscriminator<string>("Type").IsComplete(false).HasValue("Device");
+                    b.HasDiscriminator().HasValue("Device");
 
                     b.UseTphMappingStrategy();
                 });

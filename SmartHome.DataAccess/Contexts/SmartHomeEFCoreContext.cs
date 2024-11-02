@@ -359,11 +359,6 @@ public sealed class SmartHomeEFCoreContext : DbContext
               .WithMany(m => m.HomeMemberNotifications)
               .HasForeignKey(x => x.HomeMemberId));
 
-        modelBuilder.Entity<Device>()
-            .ToTable("Devices")
-            .HasDiscriminator(d => d.Type)
-            .IsComplete(false);
-
         modelBuilder.Entity<Home>()
             .HasMany(h => h.Members)
             .WithOne()
@@ -377,18 +372,22 @@ public sealed class SmartHomeEFCoreContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<SecurityCamera>()
+            .HasBaseType<Device>()
         .Property(c => c.Outdoor)
         .HasColumnName("Outdoor");
 
         modelBuilder.Entity<SecurityCamera>()
+            .HasBaseType<Device>()
             .Property(c => c.Indoor)
             .HasColumnName("Indoor");
 
         modelBuilder.Entity<SecurityCamera>()
+            .HasBaseType<Device>()
             .Property(c => c.MovementDetection)
             .HasColumnName("MovementDetection");
 
         modelBuilder.Entity<SecurityCamera>()
+            .HasBaseType<Device>()
             .Property(c => c.PersonDetection)
             .HasColumnName("PersonDetection");
 

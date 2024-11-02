@@ -63,6 +63,11 @@ namespace SmartHome.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("ModelNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -73,16 +78,15 @@ namespace SmartHome.DataAccess.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("Devices", (string)null);
+                    b.ToTable("Devices");
 
-                    b.HasDiscriminator<string>("Type").HasValue("Movement Sensor");
+                    b.HasDiscriminator().HasValue("Device");
 
                     b.UseTphMappingStrategy();
                 });
@@ -714,7 +718,7 @@ namespace SmartHome.DataAccess.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("PersonDetection");
 
-                    b.HasDiscriminator().HasValue("Security Camera");
+                    b.HasDiscriminator().HasValue("SecurityCamera");
                 });
 
             modelBuilder.Entity("SmartHome.BusinessLogic.Domain.Business", b =>
