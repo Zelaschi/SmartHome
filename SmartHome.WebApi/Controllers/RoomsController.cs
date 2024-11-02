@@ -35,6 +35,7 @@ public sealed class RoomsController : ControllerBase
     [HttpPost("{roomId}/homeDevices")]
     public IActionResult AddDevicesToRoom([FromBody] Guid homeDeviceId, [FromRoute] Guid roomId)
     {
-        throw new NotImplementedException();
+        var createResponse = new HomeDeviceResponseModel(_roomLogic.AddDevicesToRoom(homeDeviceId, roomId));
+        return CreatedAtAction("RoomAddedToHome", new { createResponse.HardwardId }, createResponse);
     }
 }
