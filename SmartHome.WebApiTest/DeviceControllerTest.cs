@@ -10,7 +10,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class DeviceControllerTest

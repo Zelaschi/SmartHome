@@ -9,7 +9,7 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
 
-namespace SmartHome.BusinessLogicTest;
+namespace SmartHome.BusinessLogic.Test;
 
 [TestClass]
 public class SessionServiceTest

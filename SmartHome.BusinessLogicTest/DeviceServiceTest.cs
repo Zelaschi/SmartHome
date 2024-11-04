@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
 
-namespace SmartHome.BusinessLogicTest;
+namespace SmartHome.BusinessLogic.Test;
 
 [TestClass]
 public class DeviceServiceTest

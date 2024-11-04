@@ -15,7 +15,7 @@ using SmartHome.WebApi.WebModels.RoomModels.In;
 using SmartHome.WebApi.WebModels.RoomModels.Out;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class RoomsControllerTest
 {

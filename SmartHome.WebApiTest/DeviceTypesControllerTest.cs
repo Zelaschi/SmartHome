@@ -9,7 +9,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class DeviceTypesControllerTest

@@ -14,7 +14,7 @@ using SmartHome.WebApi.WebModels.MovementSensorModels.Out;
 using SmartHome.WebApi.WebModels.WindowSensorModels.In;
 using SmartHome.WebApi.WebModels.WindowSensorModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class MovementSensorControllerTest
 {

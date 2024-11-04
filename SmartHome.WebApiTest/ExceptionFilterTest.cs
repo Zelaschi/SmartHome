@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Routing;
 using Moq;
 using SmartHome.WebApi.Filters;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class ExceptionFilterTests

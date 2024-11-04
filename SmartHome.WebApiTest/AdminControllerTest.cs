@@ -12,7 +12,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.AdminModels.In;
 using SmartHome.WebApi.WebModels.AdminModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class AdminControllerTest
 {
@@ -42,7 +42,7 @@ public class AdminControllerTest
         adminLogicMock.Setup(a => a.CreateAdmin(It.IsAny<User>())).Returns(admin);
 
         var expectedResult = new AdminResponseModel(admin);
-        var expectedObjecResult = new CreatedAtActionResult("CreateAdmin", "CreateAdmin", new { Id = admin.Id }, expectedResult);
+        var expectedObjecResult = new CreatedAtActionResult("CreateAdmin", "CreateAdmin", new { admin.Id }, expectedResult);
 
         var result = adminController.CreateAdmin(adminRequestModel) as CreatedAtActionResult;
         var adminResult = result.Value as AdminResponseModel;

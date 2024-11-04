@@ -13,7 +13,7 @@ using SmartHome.WebApi.WebModels.HomeMemberModels.In;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class HomeMemberControllerTest

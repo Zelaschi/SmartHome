@@ -12,7 +12,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
 using SmartHome.BusinessLogic.InitialSeedData;
 
-namespace SmartHome.BusinessLogicTest;
+namespace SmartHome.BusinessLogic.Test;
 
 [TestClass]
 public class UserServiceTest

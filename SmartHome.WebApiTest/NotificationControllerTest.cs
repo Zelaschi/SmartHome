@@ -12,7 +12,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.NotificationModels.Out;
 using SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class NotificationControllerTest

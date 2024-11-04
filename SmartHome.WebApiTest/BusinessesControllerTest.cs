@@ -14,7 +14,7 @@ using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class BusinessesControllerTest
 {

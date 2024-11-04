@@ -12,7 +12,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.InteligentLampModels.In;
 using SmartHome.WebApi.WebModels.InteligentLampModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class InteligentLampControllerTest

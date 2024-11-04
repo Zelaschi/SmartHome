@@ -10,7 +10,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Domain;
 using System.Net;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class HomeAuthorizationFilterTests

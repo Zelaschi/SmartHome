@@ -14,7 +14,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
 
-namespace SmartHome.BusinessLogicTest;
+namespace SmartHome.BusinessLogic.Test;
 
 [TestClass]
 public class RoleServiceTest

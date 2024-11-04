@@ -13,7 +13,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Services;
 using FluentAssertions;
 
-namespace SmartHome.BusinessLogicTest;
+namespace SmartHome.BusinessLogic.Test;
 
 [TestClass]
 public class HomeServiceTest

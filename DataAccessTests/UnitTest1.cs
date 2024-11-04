@@ -1,4 +1,4 @@
-namespace SmartHome.DataAccessTest;
+namespace SmartHome.DataAccess.Test;
 
 [TestClass]
 public class UnitTest1

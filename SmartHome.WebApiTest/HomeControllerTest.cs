@@ -20,7 +20,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 using Device = SmartHome.BusinessLogic.Domain.Device;
 using User = SmartHome.BusinessLogic.Domain.User;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 

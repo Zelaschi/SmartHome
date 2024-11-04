@@ -15,7 +15,7 @@ using SmartHome.WebApi.WebModels.HomeOwnerModels.Out;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using User = SmartHome.BusinessLogic.Domain.User;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class BusinessOwnerControllerTest
 {

@@ -12,7 +12,7 @@ using System.Net;
 using SmartHome.BusinessLogic.Domain;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class AuthenticationFilterTests

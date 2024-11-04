@@ -11,7 +11,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 using SmartHome.WebApi.WebModels.UserModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class UsersControllerTest

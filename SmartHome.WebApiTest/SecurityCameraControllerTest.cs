@@ -14,7 +14,7 @@ using SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 using SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class SecurityCameraControllerTest
 {

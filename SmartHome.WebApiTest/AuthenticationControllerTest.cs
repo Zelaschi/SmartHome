@@ -13,7 +13,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.LoginModels.In;
 using SmartHome.WebApi.WebModels.LoginModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class AuthenticationControllerTest
