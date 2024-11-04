@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{331CD65E-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.WebApi.Test", "SmartHome.WebApiTest\SmartHome.WebApi.Test.csproj", "{1BCA30B0-9C50-4D5E-BF14-F47356F1EA23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.DataAccess.Test", "DataAccessTests\SmartHome.DataAccess.Test.csproj", "{E2D64ED1-0B4A-4F0D-AFC9-ED32FC5779B8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,10 +43,6 @@ Global
 		{1BCA30B0-9C50-4D5E-BF14-F47356F1EA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BCA30B0-9C50-4D5E-BF14-F47356F1EA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BCA30B0-9C50-4D5E-BF14-F47356F1EA23}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2D64ED1-0B4A-4F0D-AFC9-ED32FC5779B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2D64ED1-0B4A-4F0D-AFC9-ED32FC5779B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2D64ED1-0B4A-4F0D-AFC9-ED32FC5779B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2D64ED1-0B4A-4F0D-AFC9-ED32FC5779B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,7 +53,6 @@ Global
 		{64ED751B-0B32-44F7-A08B-35A6E6FC4132} = {6F5CE8DB-CAF8-4FDA-8C9A-FE38B5C982D0}
 		{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61} = {331CD65E-38A2-487F-8C62-7C426783D8E8}
 		{1BCA30B0-9C50-4D5E-BF14-F47356F1EA23} = {331CD65E-38A2-487F-8C62-7C426783D8E8}
-		{E2D64ED1-0B4A-4F0D-AFC9-ED32FC5779B8} = {331CD65E-38A2-487F-8C62-7C426783D8E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33EA29AF-1491-4185-92D4-3D7C8BA080AA}
