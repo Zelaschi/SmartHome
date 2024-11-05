@@ -101,4 +101,27 @@ public class DeviceRepositoryTest
         _context.Devices.FirstOrDefault(b => b.Id == device.Id).Should().BeNull();
     }
     #endregion
+
+    #region Find
+    [TestMethod]
+    public void Find_WhenDeviceExists_ShouldReturnDevice()
+    {
+        var device = new Device
+        {
+            Description = "Test Description",
+            Id = Guid.NewGuid(),
+            ModelNumber = "Test Model Number",
+            Name = "Test Device",
+            Photos = new List<Photo>()
+        };
+        _context.Devices.Add(device);
+        _context.SaveChanges();
+
+        var result = _deviceRepository.Find(b => b.Id == device.Id);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(device.Id);
+        result.Name.Should().Be(device.Name);
+    }
+    #endregion
 }
