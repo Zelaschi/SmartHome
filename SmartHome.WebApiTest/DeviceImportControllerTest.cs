@@ -7,13 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Constants;
-using SmartHome.BusinessLogic.DeviceTypes;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.DeviceImportModels.In;
 using SmartHome.WebApi.WebModels.DeviceImportModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class DeviceImportControllerTest
