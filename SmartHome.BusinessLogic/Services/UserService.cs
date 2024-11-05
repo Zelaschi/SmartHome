@@ -89,11 +89,6 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
         }
     }
 
-    public IEnumerable<User> GetAllUsers()
-    {
-        return _userRepository.FindAll();
-    }
-
     public User CreateBusinessOwner(User user)
     {
         ValidateUser(user);

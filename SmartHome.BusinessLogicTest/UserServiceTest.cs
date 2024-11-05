@@ -272,44 +272,6 @@ public class UserServiceTest
 
     [TestMethod]
 
-    public void GetAll_Users_Test()
-    {
-        var homeOwner = new User
-        {
-            Name = "Juan",
-            Surname = "Perez",
-            Password = "Password@1234",
-            CreationDate = DateTime.Today,
-            Email = "juanperez@gmail.com",
-            Role = new Role { Name = "HomeOwner" }
-        };
-
-        var admin = new User
-        {
-            Name = "Raul",
-            Surname = "Gonzales",
-            Password = "Password@1234",
-            CreationDate = DateTime.Today,
-            Email = "juanperez@gmail.com",
-            Role = new Role { Name = "Administrator" }
-        };
-
-        IEnumerable<User> users = new List<User>
-        {
-            homeOwner,
-            admin
-        };
-
-        userRepositoryMock.Setup(x => x.FindAll()).Returns((IList<User>)users);
-
-        IEnumerable<User> usersResult = userService.GetAllUsers();
-
-        userRepositoryMock.VerifyAll();
-        Assert.AreEqual(users, usersResult);
-    }
-
-    [TestMethod]
-
     public void Create_BusinessOwner_Test()
     {
         var businessOwner = new User
