@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
@@ -20,7 +21,7 @@ public sealed class DeviceImportController : ControllerBase
     [HttpPost]
     public IActionResult ImportDevice(DeviceImportRequestModel deviceImportRequestModel)
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items[UserStatic.User] as User;
 
         if (user == null)
         {

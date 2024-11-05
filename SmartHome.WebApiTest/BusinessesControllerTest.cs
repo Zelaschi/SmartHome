@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
@@ -317,7 +318,7 @@ public class BusinessesControllerTest
         var business = businessRequestModel.ToEntity();
 
         HttpContext httpContext = new DefaultHttpContext();
-        httpContext.Items.Add("User", user);
+        httpContext.Items.Add(UserStatic.User, user);
 
         var controllerContext = new ControllerContext()
         {

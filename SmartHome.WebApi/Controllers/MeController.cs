@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
@@ -26,7 +27,7 @@ public class MeController : ControllerBase
     [HttpGet("notifications")]
     public IActionResult GetUsersNotifications()
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items[UserStatic.User] as User;
         if (user == null)
         {
             return Unauthorized("UserId is missing");
@@ -39,7 +40,7 @@ public class MeController : ControllerBase
     [HttpGet("homes")]
     public IActionResult GetAllHomesByUserId()
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items[UserStatic.User] as User;
         if (user == null)
         {
             return Unauthorized("UserId is missing");

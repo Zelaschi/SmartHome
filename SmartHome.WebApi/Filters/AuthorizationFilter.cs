@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 
@@ -37,7 +38,7 @@ public sealed class AuthorizationFilter : Attribute, IAuthorizationFilter
 
         var permissionService = context.HttpContext.RequestServices.GetRequiredService<ISystemPermissionLogic>();
         var roleService = context.HttpContext.RequestServices.GetRequiredService<IRoleLogic>();
-        var userLogged = context.HttpContext.Items["User"];
+        var userLogged = context.HttpContext.Items[UserStatic.User];
         if (userLogged == null)
         {
             context.Result = new ObjectResult(new

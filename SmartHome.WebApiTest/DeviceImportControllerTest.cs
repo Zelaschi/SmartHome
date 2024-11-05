@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.DeviceTypes;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
@@ -58,7 +59,7 @@ public class DeviceImportControllerTest
         };
 
         var httpContext = new DefaultHttpContext();
-        httpContext.Items.Add("User", user1);
+        httpContext.Items.Add(UserStatic.User, user1);
 
         var controllerContext = new ControllerContext()
         {

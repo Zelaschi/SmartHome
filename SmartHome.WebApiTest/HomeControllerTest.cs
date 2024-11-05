@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
@@ -57,7 +58,7 @@ public class HomeControllerTest
         home.Id = Guid.NewGuid();
 
         HttpContext httpContext = new DefaultHttpContext();
-        httpContext.Items.Add("User", user1);
+        httpContext.Items.Add(UserStatic.User, user1);
 
         var controllerContext = new ControllerContext()
         {
@@ -157,7 +158,7 @@ public class HomeControllerTest
         home.Id = Guid.NewGuid();
 
         HttpContext httpContext = new DefaultHttpContext();
-        httpContext.Items.Add("User", user);
+        httpContext.Items.Add(UserStatic.User, user);
 
         var controllerContext = new ControllerContext()
         {

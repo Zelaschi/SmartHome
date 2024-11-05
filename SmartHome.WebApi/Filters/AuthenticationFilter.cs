@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Net.Http.Headers;
 using SmartHome.BusinessLogic.Services;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Filters;
 
@@ -60,7 +61,7 @@ public sealed class AuthenticationFilter
         try
         {
             var userOfAuthorization = sessionService.GetUserOfSession(authHeaderGuid);
-            context.HttpContext.Items.Add("User", userOfAuthorization);
+            context.HttpContext.Items.Add(UserStatic.User, userOfAuthorization);
         }
         catch (Exception)
         {

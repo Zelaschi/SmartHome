@@ -5,6 +5,7 @@ using SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -24,7 +25,7 @@ public sealed class SecurityCamerasController : ControllerBase
     [HttpPost]
     public IActionResult CreateSecurityCamera([FromBody] SecurityCameraRequestModel securityCameraRequestModel)
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items[UserStatic.User] as User;
 
         if (user == null)
         {

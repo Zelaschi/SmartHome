@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartHome.BusinessLogic.DeviceTypes;
+namespace SmartHome.BusinessLogic.Constants;
 public static class DeviceTypesStatic
 {
     public const string SecurityCamera = "Security Camera";

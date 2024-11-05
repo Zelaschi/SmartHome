@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Services;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Filters;
 
@@ -54,7 +55,7 @@ public class HomeAuthorizationFilter : Attribute, IAuthorizationFilter
         var parsedHomeId = Guid.Parse(homeId);
 
         var homePermissionService = context.HttpContext.RequestServices.GetRequiredService<IHomePermissionLogic>();
-        var userLogged = context.HttpContext.Items["User"];
+        var userLogged = context.HttpContext.Items[UserStatic.User];
         if (userLogged == null)
         {
             context.Result = new ObjectResult(new

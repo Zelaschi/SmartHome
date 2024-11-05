@@ -9,6 +9,7 @@ using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.BusinessLogic.InitialSeedData;
 using Microsoft.Identity.Client;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -47,7 +48,7 @@ public sealed class HomesController : ControllerBase
     [HttpPost]
     public IActionResult CreateHome([FromBody] CreateHomeRequestModel homeRequestModel)
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items[UserStatic.User] as User;
         if (user == null)
         {
             return Unauthorized("UserId is missing");

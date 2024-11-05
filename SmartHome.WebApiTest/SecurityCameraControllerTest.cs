@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
@@ -50,7 +51,7 @@ public class SecurityCameraControllerTest
         securityCamera.Business = company;
 
         HttpContext httpContext = new DefaultHttpContext();
-        httpContext.Items.Add("User", businessOwner);
+        httpContext.Items.Add(UserStatic.User, businessOwner);
 
         var controllerContext = new ControllerContext()
         {

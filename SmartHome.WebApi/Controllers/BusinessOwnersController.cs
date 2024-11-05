@@ -5,6 +5,7 @@ using SmartHome.WebApi.WebModels.BusinessOwnerModels.Out;
 using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -32,7 +33,7 @@ public sealed class BusinessOwnersController : ControllerBase
 
     public IActionResult UpdateBusinessOwnerRole()
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items[UserStatic.User] as User;
 
         if (user == null)
         {

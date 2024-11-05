@@ -9,6 +9,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.WebApi.WebModels.UserModels.Out;
 using System.Linq;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -29,7 +30,7 @@ public sealed class BusinessesController : ControllerBase
     [HttpPost]
     public IActionResult CreateBusiness([FromBody] BusinessRequestModel businessRequestModel)
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items[UserStatic.User] as User;
 
         if (user == null)
         {

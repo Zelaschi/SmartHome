@@ -9,6 +9,7 @@ using SmartHome.WebApi.Filters;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Domain;
 using System.Net;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Test;
 
@@ -83,7 +84,7 @@ public class HomeAuthorizationFilterTests
         // Arrange
         var permissionGuid = Guid.NewGuid();
         _attribute = new HomeAuthorizationFilter(permissionGuid.ToString());
-        _httpContextMock.Setup(h => h.Items["User"]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
+        _httpContextMock.Setup(h => h.Items[UserStatic.User]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
 
         var homeGuid = Guid.NewGuid();
         _context.RouteData.Values["homeId"] = homeGuid.ToString();
@@ -111,7 +112,7 @@ public class HomeAuthorizationFilterTests
         _attribute = new HomeAuthorizationFilter(permissionGuid.ToString());
         var homeGuid = Guid.NewGuid();
         _context.RouteData.Values["homeId"] = homeGuid.ToString();
-        _httpContextMock.Setup(h => h.Items["User"]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
+        _httpContextMock.Setup(h => h.Items[UserStatic.User]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
 
         Assert.IsNotNull(_context);
 
@@ -134,7 +135,7 @@ public class HomeAuthorizationFilterTests
         _attribute = new HomeAuthorizationFilter(Guid.NewGuid().ToString());
         var guid = Guid.NewGuid();
         _context.RouteData.Values["homeId"] = guid.ToString();
-        _httpContextMock.Setup(h => h.Items["User"]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
+        _httpContextMock.Setup(h => h.Items[UserStatic.User]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
 
         _homePermissionServiceMock.Setup(s => s.HasPermission(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(false);
 

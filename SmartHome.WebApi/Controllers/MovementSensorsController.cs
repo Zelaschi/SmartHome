@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
@@ -26,7 +27,7 @@ public class MovementSensorsController : ControllerBase
     [HttpPost]
     public IActionResult CreateMovementSensor([FromBody]MovementSensorRequestModel deviceRequestModel)
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items[UserStatic.User] as User;
 
         if (user == null)
         {

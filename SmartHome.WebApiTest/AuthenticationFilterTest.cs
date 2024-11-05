@@ -11,6 +11,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using System.Net;
 using SmartHome.BusinessLogic.Domain;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Test;
 
@@ -197,7 +198,7 @@ public class AuthenticationFilterTests
 
         _attribute.OnAuthorization(_context);
 
-        Assert.IsTrue(_httpContextMock.Object.Items.ContainsKey("User"), "User should be added to the context.");
-        Assert.AreEqual(user, _httpContextMock.Object.Items["User"], "The user in the context should be the same as returned by GetUserOfSession.");
+        Assert.IsTrue(_httpContextMock.Object.Items.ContainsKey(UserStatic.User), "User should be added to the context.");
+        Assert.AreEqual(user, _httpContextMock.Object.Items[UserStatic.User], "The user in the context should be the same as returned by GetUserOfSession.");
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
@@ -69,7 +70,7 @@ public class BusinessOwnerControllerTest
 
         var httpContextMock = new Mock<HttpContext>();
         var items = new Dictionary<object, object>();
-        items["User"] = user;
+        items[UserStatic.User] = user;
 
         httpContextMock.Setup(x => x.Items).Returns(items);
 
