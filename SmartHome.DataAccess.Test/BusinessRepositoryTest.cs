@@ -155,6 +155,23 @@ public class BusinessRepositoryTest
         updatedEntityInDb.Should().NotBeNull();
         updatedEntityInDb.Name.Should().Be("Updated Name");
     }
+
+    [TestMethod]
+    public void Update_WhenBusinessDoesNotExist_ShouldThrowDatabaseException()
+    {
+        var nonExistingBusiness = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Non-existing Business",
+            Logo = "Non-existing Logo",
+            RUT = "Non-existing RUT"
+        };
+
+        Action action = () => _businessRepository.Update(nonExistingBusiness);
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Business does not exist in the Data Base.");
+    }
     #endregion
 }
 
