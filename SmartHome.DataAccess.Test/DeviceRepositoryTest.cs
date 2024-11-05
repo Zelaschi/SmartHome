@@ -80,4 +80,25 @@ public class DeviceRepositoryTest
         devices[0].Name.Should().Be(device.Name);
     }
     #endregion
+
+    #region Delete
+    [TestMethod]
+    public void Delete_WhenDeviceExists_ShouldRemoveFromDatabase()
+    {
+        var device = new Device
+        {
+            Description = "Test Description",
+            Id = Guid.NewGuid(),
+            ModelNumber = "Test Model Number",
+            Name = "Test Device",
+            Photos = new List<Photo>()
+        };
+        _context.Devices.Add(device);
+        _context.SaveChanges();
+
+        _deviceRepository.Delete(device.Id);
+
+        _context.Devices.FirstOrDefault(b => b.Id == device.Id).Should().BeNull();
+    }
+    #endregion
 }
