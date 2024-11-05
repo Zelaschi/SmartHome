@@ -111,7 +111,7 @@ public class DeviceRepository : IGenericRepository<Device>
             }
             else
             {
-                throw new DatabaseException("The Business does not exist in the Data Base.");
+                throw new DatabaseException("The Device does not exist in the Data Base.");
             }
         }
         catch (SqlException)

@@ -159,5 +159,23 @@ public class DeviceRepositoryTest
         updatedEntityInDb.Should().NotBeNull();
         updatedEntityInDb.Name.Should().Be("Updated Device");
     }
+
+    [TestMethod]
+    public void Update_WhenDeviceDoesNotExist_ShouldThrowDatabaseException()
+    {
+        var nonExistingDevice = new Device
+        {
+            Description = "Non-existing Description",
+            Id = Guid.NewGuid(),
+            ModelNumber = "Non-existing Model Number",
+            Name = "Non-existing Device",
+            Photos = new List<Photo>()
+        };
+
+        Action action = () => _deviceRepository.Update(nonExistingDevice);
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Device does not exist in the Data Base.");
+    }
     #endregion
 }
