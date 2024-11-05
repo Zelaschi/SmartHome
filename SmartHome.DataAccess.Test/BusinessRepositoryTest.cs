@@ -52,31 +52,32 @@ public class BusinessRepositoryTest
         businessesSaved.Count.Should().Be(1);
         var businessSaved = businessesSaved[0];
         businessSaved.Id.Should().Be(business.Id);
+        businessSaved.Name.Should().Be(business.Name);
     }
 
     #endregion
     #endregion
 
     #region GetAll
-    ////[TestMethod]
-    ////public void GetAll_WhenExistOnlyOne_ShouldReturnOne()
-    ////{
-    ////    var expectedEntity = new EntityTest
-    ////    {
-    ////        Name = "dummy"
-    ////    };
-    ////    using var context = DbContextBuilder.BuildTestDbContext();
-    ////    context.Add(expectedEntity);
-    ////    context.SaveChanges();
+    [TestMethod]
+    public void GetAll_WhenExistOnlyOne_ShouldReturnOne()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Sample Business",
+            Logo = "Sample Logo",
+            RUT = "Sample RUT"
+        };
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
 
-    ////    var entitiesSaved = _repository.GetAll();
+        var businesses = _businessRepository.FindAll();
 
-    ////    entitiesSaved.Count.Should().Be(1);
-
-    ////    var entitySaved = entitiesSaved[0];
-    ////    entitySaved.Id.Should().Be(expectedEntity.Id);
-    ////    entitySaved.Name.Should().Be(expectedEntity.Name);
-    ////}
+        businesses.Count.Should().Be(1);
+        businesses[0].Id.Should().Be(business.Id);
+        businesses[0].Name.Should().Be(business.Name);
+    }
     #endregion
 }
 
