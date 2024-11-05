@@ -124,4 +124,40 @@ public class DeviceRepositoryTest
         result.Name.Should().Be(device.Name);
     }
     #endregion
+
+    #region Update
+    [TestMethod]
+    public void Update_WhenDeviceExists_ShouldUpdateInDatabase()
+    {
+        var device = new Device
+        {
+            Description = "Test Description",
+            Id = Guid.NewGuid(),
+            ModelNumber = "Test Model Number",
+            Name = "Test Device",
+            Photos = new List<Photo>()
+        };
+        _context.Devices.Add(device);
+        _context.SaveChanges();
+
+        var updatedDevice = new Device
+        {
+            Description = "Updated Description",
+            Id = device.Id,
+            ModelNumber = "Updated Model Number",
+            Name = "Updated Device",
+            Photos = new List<Photo>()
+        };
+
+        var result = _deviceRepository.Update(updatedDevice);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(device.Id);
+        result.Name.Should().Be("Updated Device");
+
+        var updatedEntityInDb = _context.Devices.FirstOrDefault(b => b.Id == device.Id);
+        updatedEntityInDb.Should().NotBeNull();
+        updatedEntityInDb.Name.Should().Be("Updated Device");
+    }
+    #endregion
 }
