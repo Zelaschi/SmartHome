@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SmartHome.BusinessLogic.Constants;
+using SmartHome.BusinessLogic.Services;
 
 namespace SmartHome.BusinessLogic.Domain;
 public sealed class SecurityCamera : Device
@@ -19,6 +21,6 @@ public sealed class SecurityCamera : Device
 
     public SecurityCamera()
     {
-        Type = "Security Camera";
+        Type = DeviceTypesStatic.SecurityCamera;
     }
 }

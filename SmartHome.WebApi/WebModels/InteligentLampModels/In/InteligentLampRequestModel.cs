@@ -1,4 +1,5 @@
-﻿using SmartHome.BusinessLogic.Domain;
+﻿using SmartHome.BusinessLogic.Constants;
+using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.WebModels.InteligentLampModels.In;
 
@@ -8,7 +9,7 @@ public class InteligentLampRequestModel
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
     public required List<Photo> Photos { get; set; }
-    public string? Type { get; set; } = "Inteligent Lamp";
+    public string? Type { get; set; } = DeviceTypesStatic.InteligentLamp;
     public Device ToEntity()
     {
         return new Device

@@ -32,7 +32,7 @@ public class WindowSensorsController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var result = new WindowSensorResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, "Window Sensor"));
+        var result = new WindowSensorResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, DeviceTypesStatic.WindowSensor));
         return CreatedAtAction("CreateWindowSensor", new { result.Id }, result);
     }
 }

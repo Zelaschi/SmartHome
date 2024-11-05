@@ -1,10 +1,11 @@
-﻿using SmartHome.BusinessLogic.Domain;
+﻿using SmartHome.BusinessLogic.Constants;
+using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 
 public sealed class SecurityCameraRequestModel
 {
-    public string? Type { get; set; } = "Security Camera";
+    public string? Type { get; set; } = DeviceTypesStatic.SecurityCamera;
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
     public string? Name { get; set; }

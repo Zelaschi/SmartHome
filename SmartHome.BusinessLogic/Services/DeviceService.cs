@@ -8,7 +8,7 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
-using SmartHome.BusinessLogic.DeviceTypes;
+using SmartHome.BusinessLogic.Constants;
 using System.Linq.Expressions;
 
 namespace SmartHome.BusinessLogic.Services;

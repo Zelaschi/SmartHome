@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
@@ -372,7 +373,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         HomeDevice homedevice;
         switch (device.Type)
         {
-            case "Window Sensor":
+            case DeviceTypesStatic.WindowSensor:
                 homedevice = new HomeDevice
                 {
                     Name = device.Name,
@@ -383,7 +384,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
                     IsOpen = true
                 };
                 break;
-            case "Inteligent Lamp":
+            case DeviceTypesStatic.InteligentLamp:
                 homedevice = new HomeDevice
                 {
                     Name = device.Name,
@@ -415,7 +416,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
 
-        if (homeDevice.Device.Type != "Security Camera")
+        if (homeDevice.Device.Type != DeviceTypesStatic.SecurityCamera)
         {
             throw new DeviceException("The device type is not Security Camera");
         }
@@ -490,7 +491,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
 
-        if (homeDevice.Device.Type != "Security Camera")
+        if (homeDevice.Device.Type != DeviceTypesStatic.SecurityCamera)
         {
             throw new DeviceException("The device type is not Security Camera");
         }
@@ -520,7 +521,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
 
-        if (homeDevice.Device.Type != "Window Sensor")
+        if (homeDevice.Device.Type != DeviceTypesStatic.WindowSensor)
         {
             throw new DeviceException("The device type is not Window Sensor");
         }

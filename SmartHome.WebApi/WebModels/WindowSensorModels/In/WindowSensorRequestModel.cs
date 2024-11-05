@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.Internal;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.WebModels.WindowSensorModels.In;
@@ -9,7 +10,7 @@ public sealed class WindowSensorRequestModel
     public required string ModelNumber { get; set; }
     public required string Description { get; set; }
     public required List<Photo> Photos { get; set; }
-    public string? Type { get; set; } = "Window Sensor";
+    public string? Type { get; set; } = DeviceTypesStatic.WindowSensor;
 
     public Device ToEntity()
     {

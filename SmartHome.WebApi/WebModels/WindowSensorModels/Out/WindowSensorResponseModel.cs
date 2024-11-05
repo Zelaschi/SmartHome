@@ -6,7 +6,7 @@ namespace SmartHome.WebApi.WebModels.WindowSensorModels.Out;
 public class WindowSensorResponseModel
 {
     public Guid Id { get; set; }
-    public string Type { get; set; } = "Window Sensor";
+    public string Type { get; set; }
     public string Name { get; set; }
     public string ModelNumber { get; set; }
     public string Description { get; set; }

@@ -34,7 +34,7 @@ public class MovementSensorsController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var result = new MovementSensorResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, "Movement Sensor"));
+        var result = new MovementSensorResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, DeviceTypesStatic.MovementSensor));
         return CreatedAtAction("CreateMovementSensor", new { result.Id }, result);
     }
 }

@@ -32,7 +32,7 @@ public class InteligentLampsController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var result = new InteligentLampResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, "Inteligent Lamp"));
+        var result = new InteligentLampResponseModel(_createDeviceLogic.CreateDevice(deviceRequestModel.ToEntity(), user, DeviceTypesStatic.InteligentLamp));
         return CreatedAtAction("CreateInteligentLamp", new { result.Id }, result);
     }
 }

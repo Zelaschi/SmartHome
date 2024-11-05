@@ -6,7 +6,7 @@ namespace SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
 public sealed class SecurityCameraResponseModel
 {
     public Guid Id { get; set; }
-    public string Type { get; set; } = "Security Camera";
+    public string Type { get; set; }
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
     public List<Photo> Photos { get; set; }

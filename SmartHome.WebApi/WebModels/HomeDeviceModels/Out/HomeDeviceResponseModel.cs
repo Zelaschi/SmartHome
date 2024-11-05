@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 
@@ -24,11 +25,11 @@ public sealed class HomeDeviceResponseModel
         Online = homeDevice.Online;
         Device = homeDevice.Device.Name;
 
-        if (homeDevice.Device.Type is "Inteligent Lamp")
+        if (homeDevice.Device.Type is DeviceTypesStatic.InteligentLamp)
         {
             IsOn = homeDevice.IsOn;
         }
-        else if (homeDevice.Device.Type is "Window Sensor")
+        else if (homeDevice.Device.Type is DeviceTypesStatic.WindowSensor)
         {
             Open = homeDevice.IsOpen;
         }
