@@ -9,10 +9,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from '../../components/form/form/form.component';
 import { FormButtonComponent } from '../../components/form/form-button/form-button.component';
 import { FormInputComponent } from '../../components/form/form-input/form-input.component';
+import { DeviceListComponent } from './device-list/device-list.component';
 
 @NgModule({
   declarations: [
     DeviceFormComponent,
+    DeviceListComponent,
   ],
   imports: [
     CommonModule,

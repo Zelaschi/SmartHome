@@ -1,21 +1,32 @@
-<h1>Bienvenido a SmartHomeApp</h1>
+<h1 class="text-center my-4">Bienvenido a SmartHomeApp</h1>
 
-<app-form [form]="loginForm" (onSubmit)="onSubmit($event)">
-  <app-form-input
-    type="text"
-    placeholder="email@example.com"
-    [name]="formField.email.name"
-    [form]="loginForm"
-    [formField]="formField" />
+<div class="container d-flex justify-content-center">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
+    <app-form [form]="loginForm" (onSubmit)="onSubmit($event)">
+      <div class="form-group">
+        <app-form-input
+          type="text"
+          placeholder="email@example.com"
+          [name]="formField.email.name"
+          [form]="loginForm"
+          [formField]="formField"
+          class="form-control mb-3" />
+      </div>
 
-  <app-form-input
-    type="password"
-    placeholder="*****"
-    [name]="formField.password.name"
-    [form]="loginForm"
-    [formField]="formField" />
+      <div class="form-group">
+        <app-form-input
+          type="password"
+          placeholder="*****"
+          [name]="formField.password.name"
+          [form]="loginForm"
+          [formField]="formField"
+          class="form-control mb-3" />
+      </div>
 
-  <app-form-button title="Login" />
-
-  <app-form-button title="Register" (click)="goToRegister()"/>
-</app-form>
+      <div class="d-grid gap-2">
+        <app-form-button title="Login" class="btn btn-primary btn-block" />
+        <app-form-button title="Register" (click)="goToRegister()" class="btn btn-secondary btn-block" />
+      </div>
+    </app-form>
+  </div>
+</div>
