@@ -1,9 +1,5 @@
 using FluentAssertions;
-using Microsoft.Data.SqlClient;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
-using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.DataAccess.Repositories;
