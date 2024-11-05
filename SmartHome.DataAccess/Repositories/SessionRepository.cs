@@ -13,12 +13,12 @@ using SmartHome.DataAccess.CustomExceptions;
 namespace SmartHome.DataAccess.Repositories;
 public class SessionRepository : IGenericRepository<Session>
 {
-    private readonly SmartHomeEFCoreContext _repository;
-    public SessionRepository(SmartHomeEFCoreContext repository)
+    private readonly SmartHomeEFCoreContext _context;
+    public SessionRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -30,9 +30,9 @@ public class SessionRepository : IGenericRepository<Session>
     {
         try
         {
-            _repository.Sessions.Add(entity);
-            _repository.SaveChanges();
-            return _repository.Sessions.FirstOrDefault(s => s.SessionId == entity.SessionId);
+            _context.Sessions.Add(entity);
+            _context.SaveChanges();
+            return _context.Sessions.FirstOrDefault(s => s.SessionId == entity.SessionId);
         }
         catch (SqlException)
         {
@@ -44,11 +44,11 @@ public class SessionRepository : IGenericRepository<Session>
     {
         try
         {
-            Session sessionToDelete = _repository.Sessions.FirstOrDefault(s => s.SessionId == id);
+            Session sessionToDelete = _context.Sessions.FirstOrDefault(s => s.SessionId == id);
             if (sessionToDelete != null)
             {
-                _repository.Sessions.Remove(sessionToDelete);
-                _repository.SaveChanges();
+                _context.Sessions.Remove(sessionToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -65,7 +65,7 @@ public class SessionRepository : IGenericRepository<Session>
     {
         try
         {
-            return _repository.Sessions.FirstOrDefault(filter);
+            return _context.Sessions.FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -77,7 +77,7 @@ public class SessionRepository : IGenericRepository<Session>
     {
         try
         {
-            return _repository.Sessions.ToList();
+            return _context.Sessions.ToList();
         }
         catch (SqlException)
         {
@@ -99,13 +99,13 @@ public class SessionRepository : IGenericRepository<Session>
     {
         try
         {
-            Session foundSession = _repository.Sessions.FirstOrDefault(s => s.SessionId == updatedEntity.SessionId);
+            Session foundSession = _context.Sessions.FirstOrDefault(s => s.SessionId == updatedEntity.SessionId);
 
             if (foundSession != null)
             {
-                _repository.Entry(foundSession).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.Sessions.FirstOrDefault(s => s.SessionId == updatedEntity.SessionId);
+                _context.Entry(foundSession).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.Sessions.FirstOrDefault(s => s.SessionId == updatedEntity.SessionId);
             }
             else
             {

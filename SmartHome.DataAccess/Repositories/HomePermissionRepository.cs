@@ -13,12 +13,12 @@ using SmartHome.DataAccess.CustomExceptions;
 namespace SmartHome.DataAccess.Repositories;
 public class HomePermissionRepository : IGenericRepository<HomePermission>
 {
-    public readonly SmartHomeEFCoreContext _repository;
-    public HomePermissionRepository(SmartHomeEFCoreContext repository)
+    public readonly SmartHomeEFCoreContext _context;
+    public HomePermissionRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -30,9 +30,9 @@ public class HomePermissionRepository : IGenericRepository<HomePermission>
     {
         try
         {
-            _repository.HomePermissions.Add(entity);
-            _repository.SaveChanges();
-            return _repository.HomePermissions.FirstOrDefault(b => b.Id == entity.Id);
+            _context.HomePermissions.Add(entity);
+            _context.SaveChanges();
+            return _context.HomePermissions.FirstOrDefault(b => b.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -44,11 +44,11 @@ public class HomePermissionRepository : IGenericRepository<HomePermission>
     {
         try
         {
-            HomePermission homePermissionToDelete = _repository.HomePermissions.FirstOrDefault(p => p.Id == id);
+            HomePermission homePermissionToDelete = _context.HomePermissions.FirstOrDefault(p => p.Id == id);
             if (homePermissionToDelete != null)
             {
-                _repository.HomePermissions.Remove(homePermissionToDelete);
-                _repository.SaveChanges();
+                _context.HomePermissions.Remove(homePermissionToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -65,7 +65,7 @@ public class HomePermissionRepository : IGenericRepository<HomePermission>
     {
         try
         {
-            return _repository.HomePermissions.FirstOrDefault(filter);
+            return _context.HomePermissions.FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -77,7 +77,7 @@ public class HomePermissionRepository : IGenericRepository<HomePermission>
     {
         try
         {
-            return _repository.HomePermissions.ToList();
+            return _context.HomePermissions.ToList();
         }
         catch (SqlException)
         {
@@ -99,13 +99,13 @@ public class HomePermissionRepository : IGenericRepository<HomePermission>
     {
         try
         {
-            HomePermission foundHomePermission = _repository.HomePermissions.FirstOrDefault(p => p.Id == updatedEntity.Id);
+            HomePermission foundHomePermission = _context.HomePermissions.FirstOrDefault(p => p.Id == updatedEntity.Id);
 
             if (foundHomePermission != null)
             {
-                _repository.Entry(foundHomePermission).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.HomePermissions.FirstOrDefault(p => p.Id == updatedEntity.Id);
+                _context.Entry(foundHomePermission).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.HomePermissions.FirstOrDefault(p => p.Id == updatedEntity.Id);
             }
             else
             {

@@ -14,13 +14,13 @@ using SmartHome.DataAccess.CustomExceptions;
 namespace SmartHome.DataAccess.Repositories;
 public sealed class RoleRepository : IGenericRepository<Role>
 {
-    private readonly SmartHomeEFCoreContext _repository;
+    private readonly SmartHomeEFCoreContext _context;
 
-    public RoleRepository(SmartHomeEFCoreContext repository)
+    public RoleRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -32,9 +32,9 @@ public sealed class RoleRepository : IGenericRepository<Role>
     {
         try
         {
-            _repository.Roles.Add(entity);
-            _repository.SaveChanges();
-            return _repository.Roles.FirstOrDefault(r => r.Id == entity.Id);
+            _context.Roles.Add(entity);
+            _context.SaveChanges();
+            return _context.Roles.FirstOrDefault(r => r.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -46,11 +46,11 @@ public sealed class RoleRepository : IGenericRepository<Role>
     {
         try
         {
-            Role roleToDelete = _repository.Roles.FirstOrDefault(r => r.Id == id);
+            Role roleToDelete = _context.Roles.FirstOrDefault(r => r.Id == id);
             if (roleToDelete != null)
             {
-                _repository.Roles.Remove(roleToDelete);
-                _repository.SaveChanges();
+                _context.Roles.Remove(roleToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -67,7 +67,7 @@ public sealed class RoleRepository : IGenericRepository<Role>
     {
         try
         {
-            return _repository.Roles.Include(r => r.SystemPermissions).FirstOrDefault(filter);
+            return _context.Roles.Include(r => r.SystemPermissions).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -79,7 +79,7 @@ public sealed class RoleRepository : IGenericRepository<Role>
     {
         try
         {
-            return _repository.Roles.ToList();
+            return _context.Roles.ToList();
         }
         catch (SqlException)
         {
@@ -101,13 +101,13 @@ public sealed class RoleRepository : IGenericRepository<Role>
     {
         try
         {
-            Role foundRole = _repository.Roles.FirstOrDefault(r => r.Id == updatedEntity.Id);
+            Role foundRole = _context.Roles.FirstOrDefault(r => r.Id == updatedEntity.Id);
 
             if (foundRole != null)
             {
-                _repository.Entry(foundRole).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.Roles.FirstOrDefault(r => r.Id == updatedEntity.Id);
+                _context.Entry(foundRole).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.Roles.FirstOrDefault(r => r.Id == updatedEntity.Id);
             }
             else
             {

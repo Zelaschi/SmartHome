@@ -13,12 +13,12 @@ using SmartHome.DataAccess.CustomExceptions;
 namespace SmartHome.DataAccess.Repositories;
 public sealed class BusinessRepository : IGenericRepository<Business>
 {
-    private readonly SmartHomeEFCoreContext _repository;
-    public BusinessRepository(SmartHomeEFCoreContext repository)
+    private readonly SmartHomeEFCoreContext _context;
+    public BusinessRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -30,9 +30,9 @@ public sealed class BusinessRepository : IGenericRepository<Business>
     {
         try
         {
-            _repository.Businesses.Add(entity);
-            _repository.SaveChanges();
-            return _repository.Businesses.FirstOrDefault(b => b.Id == entity.Id);
+            _context.Businesses.Add(entity);
+            _context.SaveChanges();
+            return _context.Businesses.FirstOrDefault(b => b.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -44,11 +44,11 @@ public sealed class BusinessRepository : IGenericRepository<Business>
     {
         try
         {
-            Business businessToDelete = _repository.Businesses.FirstOrDefault(b => b.Id == id);
+            Business businessToDelete = _context.Businesses.FirstOrDefault(b => b.Id == id);
             if (businessToDelete != null)
             {
-                _repository.Businesses.Remove(businessToDelete);
-                _repository.SaveChanges();
+                _context.Businesses.Remove(businessToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -65,7 +65,7 @@ public sealed class BusinessRepository : IGenericRepository<Business>
     {
         try
         {
-            return _repository.Businesses.FirstOrDefault(filter);
+            return _context.Businesses.FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -77,7 +77,7 @@ public sealed class BusinessRepository : IGenericRepository<Business>
     {
         try
         {
-            return _repository.Businesses.ToList();
+            return _context.Businesses.ToList();
         }
         catch (SqlException)
         {
@@ -87,7 +87,7 @@ public sealed class BusinessRepository : IGenericRepository<Business>
 
     public IList<Business> FindAllFiltered(Expression<Func<Business, bool>> filter, int pageNumber, int pageSize)
     {
-        var query = _repository.Businesses.AsQueryable();
+        var query = _context.Businesses.AsQueryable();
 
         if (filter != null)
         {
@@ -102,7 +102,7 @@ public sealed class BusinessRepository : IGenericRepository<Business>
 
     public IList<Business> FindAllFiltered(Expression<Func<Business, bool>> filter)
     {
-        var query = _repository.Businesses.AsQueryable();
+        var query = _context.Businesses.AsQueryable();
 
         if (filter != null)
         {
@@ -116,13 +116,13 @@ public sealed class BusinessRepository : IGenericRepository<Business>
     {
         try
         {
-            Business foundBusiness = _repository.Businesses.FirstOrDefault(b => b.Id == updatedEntity.Id);
+            Business foundBusiness = _context.Businesses.FirstOrDefault(b => b.Id == updatedEntity.Id);
 
             if (foundBusiness != null)
             {
-                _repository.Entry(foundBusiness).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.Businesses.FirstOrDefault(b => b.Id == updatedEntity.Id);
+                _context.Entry(foundBusiness).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.Businesses.FirstOrDefault(b => b.Id == updatedEntity.Id);
             }
             else
             {

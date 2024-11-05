@@ -14,13 +14,13 @@ using SmartHome.DataAccess.CustomExceptions;
 namespace SmartHome.DataAccess.Repositories;
 public sealed class HomeDeviceRepository : IGenericRepository<HomeDevice>
 {
-    public readonly SmartHomeEFCoreContext _repository;
+    public readonly SmartHomeEFCoreContext _context;
 
-    public HomeDeviceRepository(SmartHomeEFCoreContext repository)
+    public HomeDeviceRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -32,9 +32,9 @@ public sealed class HomeDeviceRepository : IGenericRepository<HomeDevice>
     {
         try
         {
-            _repository.HomeDevices.Add(entity);
-            _repository.SaveChanges();
-            return _repository.HomeDevices.FirstOrDefault(b => b.Id == entity.Id);
+            _context.HomeDevices.Add(entity);
+            _context.SaveChanges();
+            return _context.HomeDevices.FirstOrDefault(b => b.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -46,11 +46,11 @@ public sealed class HomeDeviceRepository : IGenericRepository<HomeDevice>
     {
         try
         {
-            HomeDevice homeDeviceToDelete = _repository.HomeDevices.FirstOrDefault(b => b.Id == id);
+            HomeDevice homeDeviceToDelete = _context.HomeDevices.FirstOrDefault(b => b.Id == id);
             if (homeDeviceToDelete != null)
             {
-                _repository.HomeDevices.Remove(homeDeviceToDelete);
-                _repository.SaveChanges();
+                _context.HomeDevices.Remove(homeDeviceToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -67,7 +67,7 @@ public sealed class HomeDeviceRepository : IGenericRepository<HomeDevice>
     {
         try
         {
-            return _repository.HomeDevices.Include(homeDevice => homeDevice.Device).FirstOrDefault(filter);
+            return _context.HomeDevices.Include(homeDevice => homeDevice.Device).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -79,7 +79,7 @@ public sealed class HomeDeviceRepository : IGenericRepository<HomeDevice>
     {
         try
         {
-            return _repository.HomeDevices.ToList();
+            return _context.HomeDevices.ToList();
         }
         catch (SqlException)
         {
@@ -101,13 +101,13 @@ public sealed class HomeDeviceRepository : IGenericRepository<HomeDevice>
     {
         try
         {
-            HomeDevice foundHomeDevice = _repository.HomeDevices.FirstOrDefault(b => b.Id == updatedEntity.Id);
+            HomeDevice foundHomeDevice = _context.HomeDevices.FirstOrDefault(b => b.Id == updatedEntity.Id);
 
             if (foundHomeDevice != null)
             {
-                _repository.Entry(foundHomeDevice).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.HomeDevices.FirstOrDefault(b => b.Id == updatedEntity.Id);
+                _context.Entry(foundHomeDevice).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.HomeDevices.FirstOrDefault(b => b.Id == updatedEntity.Id);
             }
             else
             {

@@ -15,12 +15,12 @@ using SmartHome.DataAccess.CustomExceptions;
 namespace SmartHome.DataAccess.Repositories;
 public class DeviceRepository : IGenericRepository<Device>
 {
-    private readonly SmartHomeEFCoreContext _repository;
-    public DeviceRepository(SmartHomeEFCoreContext repository)
+    private readonly SmartHomeEFCoreContext _context;
+    public DeviceRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -32,9 +32,9 @@ public class DeviceRepository : IGenericRepository<Device>
     {
         try
         {
-            _repository.Devices.Add(entity);
-            _repository.SaveChanges();
-            return _repository.Devices.FirstOrDefault(d => d.Id == entity.Id);
+            _context.Devices.Add(entity);
+            _context.SaveChanges();
+            return _context.Devices.FirstOrDefault(d => d.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -46,11 +46,11 @@ public class DeviceRepository : IGenericRepository<Device>
     {
         try
         {
-            Device deviceToDelete = _repository.Devices.FirstOrDefault(d => d.Id == id);
+            Device deviceToDelete = _context.Devices.FirstOrDefault(d => d.Id == id);
             if (deviceToDelete != null)
             {
-                _repository.Devices.Remove(deviceToDelete);
-                _repository.SaveChanges();
+                _context.Devices.Remove(deviceToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -67,7 +67,7 @@ public class DeviceRepository : IGenericRepository<Device>
     {
         try
         {
-            return _repository.Devices.Include(x => x.Business).FirstOrDefault(filter);
+            return _context.Devices.Include(x => x.Business).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -79,7 +79,7 @@ public class DeviceRepository : IGenericRepository<Device>
     {
         try
         {
-            return _repository.Devices.Include(x => x.Business).ToList();
+            return _context.Devices.Include(x => x.Business).ToList();
         }
         catch (SqlException)
         {
@@ -101,13 +101,13 @@ public class DeviceRepository : IGenericRepository<Device>
     {
         try
         {
-            Device foundDevice = _repository.Devices.FirstOrDefault(b => b.Id == updatedEntity.Id);
+            Device foundDevice = _context.Devices.FirstOrDefault(b => b.Id == updatedEntity.Id);
 
             if (foundDevice != null)
             {
-                _repository.Entry(foundDevice).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.Devices.FirstOrDefault(b => b.Id == updatedEntity.Id);
+                _context.Entry(foundDevice).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.Devices.FirstOrDefault(b => b.Id == updatedEntity.Id);
             }
             else
             {

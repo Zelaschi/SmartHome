@@ -13,12 +13,12 @@ using SmartHome.DataAccess.CustomExceptions;
 namespace SmartHome.DataAccess.Repositories;
 public sealed class RoomRepository : IGenericRepository<Room>
 {
-    private readonly SmartHomeEFCoreContext _repository;
-    public RoomRepository(SmartHomeEFCoreContext repository)
+    private readonly SmartHomeEFCoreContext _context;
+    public RoomRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -30,9 +30,9 @@ public sealed class RoomRepository : IGenericRepository<Room>
     {
         try
         {
-            _repository.Rooms.Add(entity);
-            _repository.SaveChanges();
-            return _repository.Rooms.FirstOrDefault(r => r.Id == entity.Id);
+            _context.Rooms.Add(entity);
+            _context.SaveChanges();
+            return _context.Rooms.FirstOrDefault(r => r.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -44,11 +44,11 @@ public sealed class RoomRepository : IGenericRepository<Room>
     {
         try
         {
-            Room roomToDelete = _repository.Rooms.FirstOrDefault(r => r.Id == id);
+            Room roomToDelete = _context.Rooms.FirstOrDefault(r => r.Id == id);
             if (roomToDelete != null)
             {
-                _repository.Rooms.Remove(roomToDelete);
-                _repository.SaveChanges();
+                _context.Rooms.Remove(roomToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -65,7 +65,7 @@ public sealed class RoomRepository : IGenericRepository<Room>
     {
         try
         {
-            return _repository.Rooms.FirstOrDefault(filter);
+            return _context.Rooms.FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -77,7 +77,7 @@ public sealed class RoomRepository : IGenericRepository<Room>
     {
         try
         {
-            return _repository.Rooms.ToList();
+            return _context.Rooms.ToList();
         }
         catch (SqlException)
         {
@@ -99,12 +99,12 @@ public sealed class RoomRepository : IGenericRepository<Room>
     {
         try
         {
-            Room roomToUpdate = _repository.Rooms.FirstOrDefault(r => r.Id == updatedEntity.Id);
+            Room roomToUpdate = _context.Rooms.FirstOrDefault(r => r.Id == updatedEntity.Id);
             if (roomToUpdate != null)
             {
                 roomToUpdate.Name = updatedEntity.Name;
-                _repository.SaveChanges();
-                return _repository.Rooms.FirstOrDefault(r => r.Id == updatedEntity.Id);
+                _context.SaveChanges();
+                return _context.Rooms.FirstOrDefault(r => r.Id == updatedEntity.Id);
             }
             else
             {

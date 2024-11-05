@@ -15,19 +15,19 @@ namespace SmartHome.DataAccess.Repositories;
 
 public sealed class UserRepository : IGenericRepository<User>
 {
-    private readonly SmartHomeEFCoreContext _repository;
-    public UserRepository(SmartHomeEFCoreContext repository)
+    private readonly SmartHomeEFCoreContext _context;
+    public UserRepository(SmartHomeEFCoreContext context)
     {
-        _repository = repository;
+        _context = context;
     }
 
     public User Add(User user)
     {
         try
         {
-            _repository.Users.Add(user);
-            _repository.SaveChanges();
-            return _repository.Users.FirstOrDefault(u => u.Id == user.Id);
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return _context.Users.FirstOrDefault(u => u.Id == user.Id);
         }
         catch (SqlException)
         {
@@ -39,11 +39,11 @@ public sealed class UserRepository : IGenericRepository<User>
     {
         try
         {
-            User userToDelete = _repository.Users.FirstOrDefault(b => b.Id == id);
+            User userToDelete = _context.Users.FirstOrDefault(b => b.Id == id);
             if (userToDelete != null)
             {
-                _repository.Users.Remove(userToDelete);
-                _repository.SaveChanges();
+                _context.Users.Remove(userToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -60,7 +60,7 @@ public sealed class UserRepository : IGenericRepository<User>
     {
         try
         {
-            return _repository.Users.Include(u => u.Role).FirstOrDefault(filter);
+            return _context.Users.Include(u => u.Role).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -72,7 +72,7 @@ public sealed class UserRepository : IGenericRepository<User>
     {
         try
         {
-            return _repository.Users.ToList();
+            return _context.Users.ToList();
         }
         catch (SqlException)
         {
@@ -82,7 +82,7 @@ public sealed class UserRepository : IGenericRepository<User>
 
     public IList<User> FindAllFiltered(Expression<Func<User, bool>> filter, int pageNumber, int pageSize)
     {
-        var query = _repository.Users.AsQueryable();
+        var query = _context.Users.AsQueryable();
 
         if (filter != null)
         {
@@ -97,7 +97,7 @@ public sealed class UserRepository : IGenericRepository<User>
 
     public IList<User> FindAllFiltered(Expression<Func<User, bool>> filter)
     {
-        var query = _repository.Users.AsQueryable();
+        var query = _context.Users.AsQueryable();
 
         if (filter != null)
         {
@@ -111,13 +111,13 @@ public sealed class UserRepository : IGenericRepository<User>
     {
         try
         {
-            User foundUser = _repository.Users.FirstOrDefault(u => u.Id == updatedEntity.Id);
+            User foundUser = _context.Users.FirstOrDefault(u => u.Id == updatedEntity.Id);
 
             if (foundUser != null)
             {
-                _repository.Entry(foundUser).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.Users.FirstOrDefault(u => u.Id == updatedEntity.Id);
+                _context.Entry(foundUser).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.Users.FirstOrDefault(u => u.Id == updatedEntity.Id);
             }
             else
             {

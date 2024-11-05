@@ -16,13 +16,13 @@ using System.Linq.Expressions;
 namespace SmartHome.DataAccess.Repositories;
 public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
 {
-    private readonly SmartHomeEFCoreContext _repository;
+    private readonly SmartHomeEFCoreContext _context;
 
-    public HomeRepository(SmartHomeEFCoreContext repository)
+    public HomeRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -34,9 +34,9 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            _repository.Homes.Add(entity);
-            _repository.SaveChanges();
-            return _repository.Homes.FirstOrDefault(h => h.Id == entity.Id);
+            _context.Homes.Add(entity);
+            _context.SaveChanges();
+            return _context.Homes.FirstOrDefault(h => h.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -48,11 +48,11 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            Home homeToDelete = _repository.Homes.FirstOrDefault(h => h.Id == id);
+            Home homeToDelete = _context.Homes.FirstOrDefault(h => h.Id == id);
             if (homeToDelete != null)
             {
-                _repository.Homes.Remove(homeToDelete);
-                _repository.SaveChanges();
+                _context.Homes.Remove(homeToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -69,7 +69,7 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            return _repository.Homes.Include(x => x.Members).ThenInclude(x => x.User).Include(x => x.Members).ThenInclude(x => x.HomePermissions).Include(x => x.Devices).ThenInclude(x=>x.Device).FirstOrDefault(filter);
+            return _context.Homes.Include(x => x.Members).ThenInclude(x => x.User).Include(x => x.Members).ThenInclude(x => x.HomePermissions).Include(x => x.Devices).ThenInclude(x=>x.Device).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -81,7 +81,7 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            return _repository.Homes
+            return _context.Homes
                 .Include(home => home.Members)
                     .ThenInclude(member => member.User)
                 .Include(home => home.Members)
@@ -110,7 +110,7 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            return _repository.Homes
+            return _context.Homes
                         .Where(home => home.Members.Any(member => member.User != null && member.User.Id == userId))
                         .ToList();
         }
@@ -124,8 +124,8 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
     {
         try
         {
-            _repository.Update(updatedEntity);
-            _repository.SaveChanges();
+            _context.Update(updatedEntity);
+            _context.SaveChanges();
             return updatedEntity;
         }
         catch (SqlException)

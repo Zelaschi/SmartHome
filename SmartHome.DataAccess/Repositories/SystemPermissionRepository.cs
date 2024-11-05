@@ -12,13 +12,13 @@ namespace SmartHome.DataAccess.Repositories;
 
 public class SystemPermissionRepository : IGenericRepository<SystemPermission>
 {
-    private readonly SmartHomeEFCoreContext _repository;
+    private readonly SmartHomeEFCoreContext _context;
 
-    public SystemPermissionRepository(SmartHomeEFCoreContext repository)
+    public SystemPermissionRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -30,9 +30,9 @@ public class SystemPermissionRepository : IGenericRepository<SystemPermission>
     {
         try
         {
-            _repository.SystemPermissions.Add(entity);
-            _repository.SaveChanges();
-            return _repository.SystemPermissions.FirstOrDefault(sp => sp.Id == entity.Id);
+            _context.SystemPermissions.Add(entity);
+            _context.SaveChanges();
+            return _context.SystemPermissions.FirstOrDefault(sp => sp.Id == entity.Id);
         }
         catch (SqlException)
         {
@@ -44,11 +44,11 @@ public class SystemPermissionRepository : IGenericRepository<SystemPermission>
     {
         try
         {
-            SystemPermission permissionToDelete = _repository.SystemPermissions.FirstOrDefault(sp => sp.Id == id);
+            SystemPermission permissionToDelete = _context.SystemPermissions.FirstOrDefault(sp => sp.Id == id);
             if (permissionToDelete != null)
             {
-                _repository.SystemPermissions.Remove(permissionToDelete);
-                _repository.SaveChanges();
+                _context.SystemPermissions.Remove(permissionToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -65,7 +65,7 @@ public class SystemPermissionRepository : IGenericRepository<SystemPermission>
     {
         try
         {
-            return _repository.SystemPermissions.FirstOrDefault(filter);
+            return _context.SystemPermissions.FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -77,7 +77,7 @@ public class SystemPermissionRepository : IGenericRepository<SystemPermission>
     {
         try
         {
-            return _repository.SystemPermissions.ToList();
+            return _context.SystemPermissions.ToList();
         }
         catch (SqlException)
         {
@@ -99,13 +99,13 @@ public class SystemPermissionRepository : IGenericRepository<SystemPermission>
     {
         try
         {
-            SystemPermission foundPermission = _repository.SystemPermissions.FirstOrDefault(sp => sp.Id == updatedEntity.Id);
+            SystemPermission foundPermission = _context.SystemPermissions.FirstOrDefault(sp => sp.Id == updatedEntity.Id);
 
             if (foundPermission != null)
             {
-                _repository.Entry(foundPermission).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.SystemPermissions.FirstOrDefault(sp => sp.Id == updatedEntity.Id);
+                _context.Entry(foundPermission).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.SystemPermissions.FirstOrDefault(sp => sp.Id == updatedEntity.Id);
             }
             else
             {

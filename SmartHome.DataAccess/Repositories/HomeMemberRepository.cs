@@ -14,12 +14,12 @@ using SmartHome.DataAccess.CustomExceptions;
 namespace SmartHome.DataAccess.Repositories;
 public sealed class HomeMemberRepository : IGenericRepository<HomeMember>
 {
-    public readonly SmartHomeEFCoreContext _repository;
-    public HomeMemberRepository(SmartHomeEFCoreContext repository)
+    public readonly SmartHomeEFCoreContext _context;
+    public HomeMemberRepository(SmartHomeEFCoreContext context)
     {
         try
         {
-            _repository = repository;
+            _context = context;
         }
         catch (SqlException)
         {
@@ -31,9 +31,9 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>
     {
         try
         {
-            _repository.HomeMembers.Add(entity);
-            _repository.SaveChanges();
-            return _repository.HomeMembers.FirstOrDefault(b => b.HomeMemberId == entity.HomeMemberId);
+            _context.HomeMembers.Add(entity);
+            _context.SaveChanges();
+            return _context.HomeMembers.FirstOrDefault(b => b.HomeMemberId == entity.HomeMemberId);
         }
         catch (SqlException)
         {
@@ -45,11 +45,11 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>
     {
         try
         {
-            HomeMember homeMemberToDelete = _repository.HomeMembers.FirstOrDefault(b => b.HomeMemberId == id);
+            HomeMember homeMemberToDelete = _context.HomeMembers.FirstOrDefault(b => b.HomeMemberId == id);
             if (homeMemberToDelete != null)
             {
-                _repository.HomeMembers.Remove(homeMemberToDelete);
-                _repository.SaveChanges();
+                _context.HomeMembers.Remove(homeMemberToDelete);
+                _context.SaveChanges();
             }
             else
             {
@@ -66,7 +66,7 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>
     {
         try
         {
-            return _repository.HomeMembers.Include(x=>x.HomePermissions).Include(x=> x.Notifications).FirstOrDefault(filter);
+            return _context.HomeMembers.Include(x=>x.HomePermissions).Include(x=> x.Notifications).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
@@ -78,7 +78,7 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>
     {
         try
         {
-            return _repository.HomeMembers.ToList();
+            return _context.HomeMembers.ToList();
         }
         catch (SqlException)
         {
@@ -100,14 +100,14 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>
     {
         try
         {
-            HomeMember foundHomeMember = _repository.HomeMembers.FirstOrDefault(b => b.HomeMemberId == updatedEntity.HomeMemberId);
+            HomeMember foundHomeMember = _context.HomeMembers.FirstOrDefault(b => b.HomeMemberId == updatedEntity.HomeMemberId);
 
             if (foundHomeMember != null)
             {
                 foundHomeMember.HomePermissions = updatedEntity.HomePermissions;
-                _repository.Entry(foundHomeMember).CurrentValues.SetValues(updatedEntity);
-                _repository.SaveChanges();
-                return _repository.HomeMembers.FirstOrDefault(b => b.HomeMemberId == updatedEntity.HomeMemberId);
+                _context.Entry(foundHomeMember).CurrentValues.SetValues(updatedEntity);
+                _context.SaveChanges();
+                return _context.HomeMembers.FirstOrDefault(b => b.HomeMemberId == updatedEntity.HomeMemberId);
             }
             else
             {
