@@ -34,8 +34,8 @@ public sealed class DeviceImportService : IDeviceImportLogic
             case JSONTypeMap.SecurityCamera:
                 device.Type = DeviceTypesStatic.SecurityCamera;
                 break;
-            case JSONTypeMap.IntelligentLamp:
-                device.Type = DeviceTypesStatic.IntelligentLamp;
+            case JSONTypeMap.InteligentLamp:
+                device.Type = DeviceTypesStatic.InteligentLamp;
                 break;
             case JSONTypeMap.WindowSensor:
                 device.Type = DeviceTypesStatic.WindowSensor;

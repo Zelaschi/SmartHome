@@ -62,7 +62,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
         return new List<string>
         {
             DeviceTypesStatic.SecurityCamera,
-            DeviceTypesStatic.IntelligentLamp,
+            DeviceTypesStatic.InteligentLamp,
             DeviceTypesStatic.WindowSensor,
             DeviceTypesStatic.MovementSensor
         };
