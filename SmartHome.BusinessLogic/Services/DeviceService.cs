@@ -22,24 +22,12 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
         _deviceRepository = deviceRepository;
     }
 
-    private bool RepeatedModelNumber(Device device)
-    {
-        var reapeatedDevice = _deviceRepository.Find(d => d.ModelNumber == device.ModelNumber);
-        if (reapeatedDevice != null) return true;
-        return false;
-    }
-
     public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera, User bOwner)
     {
         var business = _businessRepository.Find(x => x.BusinessOwner == bOwner);
         if (business == null)
         {
             throw new DeviceException("Business was not found for the user");
-        }
-
-        if (RepeatedModelNumber(securityCamera))
-        {
-            throw new DeviceException("Security Camera model already exists");
         }
 
         securityCamera.Business = business;
@@ -63,11 +51,6 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
         if (business == null)
         {
             throw new DeviceException("Business was not found for the user");
-        }
-
-        if (RepeatedModelNumber(device))
-        {
-            throw new DeviceException("Device model already exists");
         }
 
         device.Business = business;
