@@ -26,7 +26,7 @@ public sealed class HomeMembersController : ControllerBase
     [HttpPost("{homeMemberId}/permissions")]
     public IActionResult AddHomePermissionsToHomeMember([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
     {
-        _homeMemberLogic.UpdateHomePermissionsOfHomeMember(homeMemberId, permissions.ToHomePermissionList());
+        _homeMemberLogic.AddHomePermissionsToHomeMember(homeMemberId, permissions.ToHomePermissionList());
         return NoContent();
     }
 

@@ -9,7 +9,7 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class DeviceTypesControllerTest
@@ -46,5 +46,18 @@ public class DeviceTypesControllerTest
 
         deviceLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Type.Equals(objectResult.First().Type));
+    }
+
+    [TestMethod]
+    public void DeviceTypesController_NullDeviceLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new DeviceTypesController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("deviceLogic", ex.ParamName);
+        }
     }
 }

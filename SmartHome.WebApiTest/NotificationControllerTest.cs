@@ -12,7 +12,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.NotificationModels.Out;
 using SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class NotificationControllerTest
@@ -126,15 +126,16 @@ public class NotificationControllerTest
         };
 
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device, Online = true, Name = device.Name };
+        homeDevice.IsOpen = false;
 
         var notification = new Notification() { Id = Guid.NewGuid(), Event = "OpenedWindow", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
 
         var notificationResponseModel = new NotificationResponseModel(notification);
 
-        _notificationLogicMock.Setup(n => n.CreateOpenCloseWindowNotification(It.IsAny<Guid>(), true)).Returns(notification);
+        _notificationLogicMock.Setup(n => n.CreateOpenCloseWindowNotification(It.IsAny<Guid>())).Returns(notification);
 
         var expected = new CreatedAtActionResult("CreateOpenedWindowNotification", "CreateOpenedWindowNotification", new { notificationResponseModel.Id }, notificationResponseModel);
-        var result = _notificationController.CreateOpenCloseWindowNotification(homeDevice.Id, true) as CreatedAtActionResult;
+        var result = _notificationController.CreateOpenCloseWindowNotification(homeDevice.Id) as CreatedAtActionResult;
         var objectResult = result.Value as NotificationResponseModel;
 
         _notificationLogicMock.VerifyAll();
@@ -164,15 +165,16 @@ public class NotificationControllerTest
         };
 
         var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device, Online = true, Name = device.Name };
+        homeDevice.IsOpen = true;
 
         var notification = new Notification() { Id = Guid.NewGuid(), Event = "ClosedWindow", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now };
 
         var notificationResponseModel = new NotificationResponseModel(notification);
 
-        _notificationLogicMock.Setup(n => n.CreateOpenCloseWindowNotification(It.IsAny<Guid>(), false)).Returns(notification);
+        _notificationLogicMock.Setup(n => n.CreateOpenCloseWindowNotification(It.IsAny<Guid>())).Returns(notification);
 
         var expected = new CreatedAtActionResult("CreateClosedWindowNotification", "CreateClosedWindowNotification", new { notificationResponseModel.Id }, notificationResponseModel);
-        var result = _notificationController.CreateOpenCloseWindowNotification(homeDevice.Id, false) as CreatedAtActionResult;
+        var result = _notificationController.CreateOpenCloseWindowNotification(homeDevice.Id) as CreatedAtActionResult;
         var objectResult = result.Value as NotificationResponseModel;
 
         _notificationLogicMock.VerifyAll();

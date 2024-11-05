@@ -13,7 +13,7 @@ using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.WindowSensorModels.In;
 using SmartHome.WebApi.WebModels.WindowSensorModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class WindowSensorsControllerTest
 {
@@ -69,5 +69,47 @@ public class WindowSensorsControllerTest
         // Assert
         windowSensorLogicMock.VerifyAll();
         Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
+    }
+
+    [TestMethod]
+    public void CreateWindowSensor_UserIdMissing_ReturnsUnauthorized()
+    {
+        var deviceRequestModel = new WindowSensorRequestModel()
+        {
+            Name = "Window Sensor",
+            Description = "Window sensor for home",
+            ModelNumber = "1234",
+            Photos = []
+        };
+
+        var httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+
+        windowSensorController = new WindowSensorsController(windowSensorLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var result = windowSensorController.CreateWindowSensor(deviceRequestModel) as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
+    }
+
+    [TestMethod]
+    public void WindowSensorsController_NullCreateDeviceLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new WindowSensorsController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("createDeviceLogic", ex.ParamName);
+        }
     }
 }

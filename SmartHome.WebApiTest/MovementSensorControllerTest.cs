@@ -14,7 +14,7 @@ using SmartHome.WebApi.WebModels.MovementSensorModels.Out;
 using SmartHome.WebApi.WebModels.WindowSensorModels.In;
 using SmartHome.WebApi.WebModels.WindowSensorModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class MovementSensorControllerTest
 {
@@ -70,5 +70,44 @@ public class MovementSensorControllerTest
         // Assert
         movementSensorLogicMock.VerifyAll();
         Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
+    }
+
+    [TestMethod]
+    public void MovementSensorController_NullMovementSensorLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new MovementSensorsController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("createDeviceLogic", ex.ParamName);
+        }
+    }
+
+    [TestMethod]
+    public void CreateMovementSensor_UserIdMissing_ReturnsUnauthorized()
+    {
+        // Arrange
+        var deviceRequestModel = new MovementSensorRequestModel
+        {
+            Name = "Movement Sensor Test",
+            Description = "A test movement sensor",
+            ModelNumber = "MS-1234",
+            Photos = new List<Photo>()
+        };
+
+        var httpContext = new DefaultHttpContext(); // No user added to context
+        var controllerContext = new ControllerContext { HttpContext = httpContext };
+
+        movementSensorController.ControllerContext = controllerContext;
+
+        // Act
+        var result = movementSensorController.CreateMovementSensor(deviceRequestModel) as UnauthorizedObjectResult;
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
     }
 }

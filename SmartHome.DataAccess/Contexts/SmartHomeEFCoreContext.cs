@@ -23,6 +23,7 @@ public sealed class SmartHomeEFCoreContext : DbContext
     public DbSet<Business> Businesses { get; set; }
     public DbSet<HomeDevice> HomeDevices { get; set; }
     public DbSet<Device> Devices { get; set; }
+    public DbSet<Room> Rooms { get; set; }
 
     public SmartHomeEFCoreContext(DbContextOptions<SmartHomeEFCoreContext> options)
     : base(options)

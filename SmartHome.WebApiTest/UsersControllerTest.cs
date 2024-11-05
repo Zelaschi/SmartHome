@@ -11,7 +11,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 using SmartHome.WebApi.WebModels.UserModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class UsersControllerTest
@@ -225,5 +225,18 @@ public class UsersControllerTest
         var resultValue = result.Value as List<UserResponseModel>;
         Assert.IsNotNull(resultValue);
         Assert.AreEqual(0, resultValue.Count);
+    }
+
+    [TestMethod]
+    public void UsersController_NullUsersLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new UsersController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("usersLogic", ex.ParamName);
+        }
     }
 }

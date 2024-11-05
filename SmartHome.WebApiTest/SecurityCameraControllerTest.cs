@@ -14,7 +14,7 @@ using SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 using SmartHome.WebApi.WebModels.SecurityCameraModels.Out;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class SecurityCameraControllerTest
 {
@@ -68,5 +68,31 @@ public class SecurityCameraControllerTest
 
         securityCameraLogicMock.VerifyAll();
         Assert.IsTrue(expectedSecurityCameraResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(securityCameraResult));
+    }
+
+    [TestMethod]
+    public void CreateSecurityCamera_UserIdMissing_ReturnsUnauthorized()
+    {
+        var securityCameraRequestModel = new SecurityCameraRequestModel
+        {
+            ModelNumber = "modelNumber",
+            Description = "description",
+            Photos = new List<Photo>(),
+            InDoor = true,
+            OutDoor = false,
+            MovementDetection = true,
+            PersonDetection = true
+        };
+
+        HttpContext httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext { HttpContext = httpContext };
+
+        securityCameraController.ControllerContext = controllerContext;
+
+        var result = securityCameraController.CreateSecurityCamera(securityCameraRequestModel) as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
     }
 }

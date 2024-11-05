@@ -13,7 +13,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 
 namespace SmartHome.BusinessLogic.Services;
-public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLogic, IHomePermissionLogic
+public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLogic, IHomePermissionLogic, IRoomLogic
 {
     private readonly IGenericRepository<User> _userRepository;
     private readonly IGenericRepository<Home> _homeRepository;
@@ -21,11 +21,12 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     private readonly IGenericRepository<HomeDevice> _homeDeviceRepository;
     private readonly IGenericRepository<HomeMember> _homeMemberRepository;
     private readonly IGenericRepository<Device> _deviceRepository;
+    private readonly IGenericRepository<Room> _roomRepository;
     private readonly IHomesFromUserRepository _homesFromUserRepository;
 
     public HomeService(IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<HomeDevice> homeDeviceRepository,
         IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository,
-        IGenericRepository<HomePermission> homePermissionRepository, IGenericRepository<Device> deviceRepository,
+        IGenericRepository<HomePermission> homePermissionRepository, IGenericRepository<Device> deviceRepository, IGenericRepository<Room> roomRepository,
         IHomesFromUserRepository homesFromUserRepository)
     {
         _homeMemberRepository = homeMemberRepository;
@@ -35,6 +36,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homeDeviceRepository = homeDeviceRepository;
         _deviceRepository = deviceRepository;
         _homesFromUserRepository = homesFromUserRepository;
+        _roomRepository = roomRepository;
     }
 
     private User FindUserById(Guid? userId)
@@ -384,6 +386,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
                     Online = true,
                     IsOn = true
                 };
+
                 break;
             default:
                 homedevice = new HomeDevice
@@ -505,7 +508,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return notification;
     }
 
-    public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId, bool opened)
+    public Notification CreateOpenCloseWindowNotification(Guid homeDeviceId)
     {
         var notificationPermission = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID);
         var homeDevice = FindHomeDeviceById(homeDeviceId);
@@ -520,7 +523,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var home = FindHomeById(homeDevice.HomeId);
         var homeMembers = home.Members;
 
-        if (opened)
+        if (homeDevice.IsOpen == true)
         {
             var notificationOpened = CreateNotification("Window Opened", homeDevice);
 
@@ -566,5 +569,73 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var home = FindHomeById(homeId);
         home.Name = newName;
         _homeRepository.Update(home);
+    }
+
+    public void AddHomePermissionsToHomeMember(Guid homeMemberId, List<HomePermission> permissions)
+    {
+        var member = FindHomeMemberById(homeMemberId);
+        var allPermissions = _homePermissionRepository.FindAll().ToList();
+        var foundPermissions = allPermissions
+                .Where(permission => permissions.Any(p => p.Id == permission.Id))  // Comparación por Id o cualquier otra propiedad
+                .ToList();
+        if (member.HomePermissions.Count > 0)
+        {
+            member.HomePermissions.Clear();
+            _homeMemberRepository.Update(member);
+        }
+
+        member.HomePermissions = foundPermissions;
+        _homeMemberRepository.Update(member);
+    }
+
+    public Room CreateRoom(Room room, Guid homeId)
+    {
+        var home = FindHomeById(homeId);
+
+        if (home.Rooms == null)
+        {
+            home.Rooms = new List<Room>();
+        }
+
+        if (home.Rooms.Any(x => x.Name == room.Name))
+        {
+            throw new RoomException("Room already exists");
+        }
+
+        room.Home.Id = homeId;
+        home.Rooms.Add(room);
+        _homeRepository.Update(home);
+        return room;
+    }
+
+    public Room FindRoomById(Guid roomId)
+    {
+        var room = _roomRepository.Find(x => x.Id == roomId);
+        if (room == null)
+        {
+            throw new RoomException("Room not found");
+        }
+
+        return room;
+    }
+
+    public HomeDevice AddDevicesToRoom(Guid homeDeviceId, Guid roomId)
+    {
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+        var room = FindRoomById(roomId);
+
+        if (room.HomeDevices == null)
+        {
+            room.HomeDevices = new List<HomeDevice>();
+        }
+
+        if (room.HomeDevices.Any(x => x.Id == homeDeviceId))
+        {
+            throw new RoomException("Device already exists in room");
+        }
+
+        room.HomeDevices.Add(homeDevice);
+        _roomRepository.Update(room);
+        return homeDevice;
     }
 }

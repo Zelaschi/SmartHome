@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
 
-namespace SmartHome.BusinessLogicTest;
+namespace SmartHome.BusinessLogic.Test;
 
 [TestClass]
 public class SessionServiceTest
@@ -54,5 +55,131 @@ public class SessionServiceTest
         Assert.AreEqual(userId, sessionAdded.UserId);
         Assert.AreEqual(result, sessionAdded.SessionId);
         sessionRepositoryMock.Verify(repo => repo.Add(It.IsAny<Session>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void Get_UserOfSession_Test()
+    {
+        var token = Guid.NewGuid();
+        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+        var userId = Guid.NewGuid();
+        var existingUser = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com",
+            Id = userId
+        };
+
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns(session);
+        userRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<User, bool>>()))
+                           .Returns(existingUser);
+
+        var result = sessionService.GetUserOfSession(token);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(existingUser.Id, result.Id);
+    }
+
+    [TestMethod]
+    public void Get_UserOfSession_SessionNotFound_Throws_Exception()
+    {
+        var token = Guid.NewGuid();
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns((Session)null);
+
+        Exception exception = null;
+
+        try
+        {
+            var user = sessionService.GetUserOfSession(token);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        sessionRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(SessionException));
+        Assert.AreEqual("The session with token: " + token + " was not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void Get_UserOfSession_UserNotFound_Throws_Exception()
+    {
+        var token = Guid.NewGuid();
+        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns(session);
+        userRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<User, bool>>()))
+                           .Returns((User)null);
+
+        Exception exception = null;
+
+        try
+        {
+            var user = sessionService.GetUserOfSession(token);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        sessionRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(SessionException));
+        Assert.AreEqual("The user of the session with token: " + token + " was not found", exception.Message);
+    }
+
+    [TestMethod]
+    public void IsSessionValid_Session_Not_Valid()
+    {
+        var token = Guid.NewGuid();
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns((Session)null);
+
+        var result = sessionService.IsSessionValid(token);
+
+        Assert.IsFalse(result);
+    }
+
+    [TestMethod]
+    public void IsSessionValid_Session_Valid()
+    {
+        var token = Guid.NewGuid();
+        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+        sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
+                              .Returns(session);
+
+        var result = sessionService.IsSessionValid(token);
+
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void LogIn_User_Not_Found_Throws_Exception()
+    {
+        userRepositoryMock.Setup(repo => repo.FindAll())
+                          .Returns(new List<User>());
+
+        Exception exception = null;
+
+        try
+        {
+            var result = sessionService.LogIn("mail@gmail.com", "password");
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(UserException));
+        Assert.AreEqual("User with that email and password does not exist", exception.Message);
     }
 }

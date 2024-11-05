@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -12,7 +13,7 @@ using SmartHome.WebApi.WebModels.HomeMemberModels.In;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class HomeMemberControllerTest
@@ -43,11 +44,11 @@ public class HomeMemberControllerTest
             NotificationsPermission = true
         };
 
-        homeMemberLogicMock.Setup(h => h.UpdateHomePermissionsOfHomeMember(It.IsAny<Guid>(), It.IsAny<List<HomePermission>>()));
+        homeMemberLogicMock.Setup(h => h.AddHomePermissionsToHomeMember(It.IsAny<Guid>(), It.IsAny<List<HomePermission>>()));
 
         // ACT
         var expected = new NoContentResult();
-        var result = homeMemberController.UpdateHomeMemberPermissions(homeMember.HomeMemberId, homeMemberPermissionsModel) as NoContentResult;
+        var result = homeMemberController.AddHomePermissionsToHomeMember(homeMember.HomeMemberId, homeMemberPermissionsModel) as NoContentResult;
 
         // ASSERT
         homeMemberLogicMock.VerifyAll();
@@ -78,5 +79,18 @@ public class HomeMemberControllerTest
         // ASSERT
         homeMemberLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
+    }
+
+    [TestMethod]
+    public void HomeMembersController_NullHomeMemberLogic_ThrowsArgumentNullException()
+    {
+        try
+        {
+            var controller = new HomeMembersController(null);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.AreEqual("homeMemberLogic", ex.ParamName);
+        }
     }
 }

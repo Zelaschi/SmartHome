@@ -14,7 +14,7 @@ using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class BusinessesControllerTest
 {
@@ -340,5 +340,30 @@ public class BusinessesControllerTest
 
         businessesLogicMock.VerifyAll();
         Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(businessResult));
+    }
+
+    [TestMethod]
+    public void CreateBusiness_UserIdMissing_ReturnsUnauthorized()
+    {
+        var businessRequestModel = new BusinessRequestModel
+        {
+            Name = "Business Test",
+            Logo = "LogoUrl",
+            RUT = "123456789"
+        };
+
+        HttpContext httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext { HttpContext = httpContext };
+
+        var businessController = new BusinessesController(businessesLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var result = businessController.CreateBusiness(businessRequestModel) as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
     }
 }

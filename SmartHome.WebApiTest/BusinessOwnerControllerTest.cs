@@ -12,8 +12,10 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.Out;
 using SmartHome.WebApi.WebModels.HomeOwnerModels.Out;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+using User = SmartHome.BusinessLogic.Domain.User;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class BusinessOwnerControllerTest
 {
@@ -85,5 +87,20 @@ public class BusinessOwnerControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(200, result.StatusCode);
         Assert.AreEqual("BusinessOwner Permissions Updated successfully", result.Value);
+    }
+
+    [TestMethod]
+    public void UpdateBusinessOwnerRole_UserIdMissing_ReturnsUnauthorized()
+    {
+        var httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext { HttpContext = httpContext };
+
+        businessOwnerController.ControllerContext = controllerContext;
+
+        var result = businessOwnerController.UpdateBusinessOwnerRole() as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
     }
 }

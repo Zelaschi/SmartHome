@@ -38,9 +38,9 @@ public sealed class NotificationsController : ControllerBase
     }
 
     [HttpPost("{homeDeviceId}/openClosedStatus")]
-    public IActionResult CreateOpenCloseWindowNotification([FromRoute] Guid homeDeviceId, [FromBody] bool opened)
+    public IActionResult CreateOpenCloseWindowNotification([FromRoute] Guid homeDeviceId)
     {
-        var createResponse = new NotificationResponseModel(_notificationLogic.CreateOpenCloseWindowNotification(homeDeviceId, opened));
+        var createResponse = new NotificationResponseModel(_notificationLogic.CreateOpenCloseWindowNotification(homeDeviceId));
         return CreatedAtAction("CreateOpenCloseWindowNotification", new { createResponse.Id }, createResponse);
     }
 }

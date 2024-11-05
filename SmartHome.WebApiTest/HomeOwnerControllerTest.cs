@@ -11,7 +11,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.HomeOwnerModels.In;
 using SmartHome.WebApi.WebModels.HomeOwnerModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 
 [TestClass]
 public class HomeOwnerControllerTest

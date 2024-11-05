@@ -12,7 +12,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.AdminModels.In;
 using SmartHome.WebApi.WebModels.AdminModels.Out;
 
-namespace SmartHome.WebApiTest;
+namespace SmartHome.WebApi.Test;
 [TestClass]
 public class AdminControllerTest
 {
@@ -42,7 +42,7 @@ public class AdminControllerTest
         adminLogicMock.Setup(a => a.CreateAdmin(It.IsAny<User>())).Returns(admin);
 
         var expectedResult = new AdminResponseModel(admin);
-        var expectedObjecResult = new CreatedAtActionResult("CreateAdmin", "CreateAdmin", new { Id = admin.Id }, expectedResult);
+        var expectedObjecResult = new CreatedAtActionResult("CreateAdmin", "CreateAdmin", new { admin.Id }, expectedResult);
 
         var result = adminController.CreateAdmin(adminRequestModel) as CreatedAtActionResult;
         var adminResult = result.Value as AdminResponseModel;
@@ -108,5 +108,20 @@ public class AdminControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(200, result.StatusCode);
         Assert.AreEqual("Admin Permissions Updated successfully", result.Value);
+    }
+
+    [TestMethod]
+    public void UpdateAdminRole_UserIsMissing_ReturnsUnauthorized()
+    {
+        HttpContext httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext() { HttpContext = httpContext };
+
+        adminController.ControllerContext = controllerContext;
+
+        var result = adminController.UpdateAdminRole() as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
     }
 }
