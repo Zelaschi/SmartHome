@@ -57,4 +57,27 @@ public class DeviceRepositoryTest
 
     #endregion
     #endregion
+
+    #region GetAll
+    [TestMethod]
+    public void GetAll_WhenExistOnlyOne_ShouldReturnOne()
+    {
+        var device = new Device
+        {
+            Description = "Test Description",
+            Id = Guid.NewGuid(),
+            ModelNumber = "Test Model Number",
+            Name = "Test Device",
+            Photos = new List<Photo>()
+        };
+        _context.Devices.Add(device);
+        _context.SaveChanges();
+
+        var devices = _deviceRepository.FindAll();
+
+        devices.Count.Should().Be(1);
+        devices[0].Id.Should().Be(device.Id);
+        devices[0].Name.Should().Be(device.Name);
+    }
+    #endregion
 }
