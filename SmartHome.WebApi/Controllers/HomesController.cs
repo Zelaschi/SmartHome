@@ -60,9 +60,9 @@ public sealed class HomesController : ControllerBase
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HomeAuthorizationFilter(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID)]
     [HttpGet("{homeId}/homeDevices")]
-    public IActionResult GetAllHomeDevices([FromRoute] Guid homeId)
+    public IActionResult GetAllHomeDevices([FromRoute] Guid homeId, [FromQuery] string? room = null)
     {
-        return Ok(_homeLogic.GetAllHomeDevices(homeId).Select(homeDevice => new HomeDeviceResponseModel(homeDevice)).ToList());
+        return Ok(_homeLogic.GetAllHomeDevices(homeId, room).Select(homeDevice => new HomeDeviceResponseModel(homeDevice)).ToList());
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]

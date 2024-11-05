@@ -113,7 +113,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return home;
     }
 
-    public IEnumerable<HomeDevice> GetAllHomeDevices(Guid homeId)
+    public IEnumerable<HomeDevice> GetAllHomeDevices(Guid homeId, string? room)
     {
         var home = _homeRepository.Find(x => x.Id == homeId);
         if (home == null)
@@ -126,7 +126,14 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("Home devices was not found");
         }
 
-        return home.Devices.ToList();
+        var homeDevicesToReturn = home.Devices;
+
+        if (room != null && homeDevicesToReturn != null)
+        {
+            homeDevicesToReturn = (List<HomeDevice>)homeDevicesToReturn.Where(x => x.Room != null && x.Room.Name == room).ToList();
+        }
+
+        return homeDevicesToReturn;
     }
 
     public IEnumerable<HomeMember> GetAllHomeMembers(Guid homeId)

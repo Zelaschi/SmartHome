@@ -125,7 +125,7 @@ public class HomeServiceTest
         home.Devices.Add(homeDevice2);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
 
-        IEnumerable<HomeDevice> homeDevices = homeService.GetAllHomeDevices(home.Id);
+        IEnumerable<HomeDevice> homeDevices = homeService.GetAllHomeDevices(home.Id, null);
         homeRepositoryMock.VerifyAll();
 
         Assert.AreEqual(home.Devices.First(), homeDevices.First());
@@ -857,7 +857,7 @@ public class HomeServiceTest
 
         try
         {
-            homeService.GetAllHomeDevices(Guid.NewGuid());
+            homeService.GetAllHomeDevices(Guid.NewGuid(), null);
         }
         catch (Exception e)
         {
@@ -879,7 +879,7 @@ public class HomeServiceTest
 
         try
         {
-            homeService.GetAllHomeDevices(home.Id);
+            homeService.GetAllHomeDevices(home.Id, null);
         }
         catch (Exception e)
         {
@@ -1934,5 +1934,284 @@ public class HomeServiceTest
             .WithMessage("Room not found");
 
         roomRepositoryMock.Verify(x => x.Update(It.IsAny<Room>()), Times.Never());
+    }
+
+    [TestMethod]
+    public void GetAllHomeDevices_WithoutRoomFilter_ReturnsAllDevices()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>(),
+            Devices = new List<HomeDevice>()
+        };
+
+        var device1 = new HomeDevice
+        {
+            Online = true,
+            Id = Guid.NewGuid(),
+            Name = "Device 1",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Device 1",
+                ModelNumber = "1234",
+                Description = "Device 1 for home",
+                Photos = new List<Photo>(),
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Business 1",
+                    Logo = "logo1.png",
+                    RUT = "12345678-9",
+                    BusinessOwner = new User
+                    {
+                        Email = "mail@mail.com",
+                        Name = "Owner 1",
+                        Password = "password",
+                        Role = new Role { Name = "Admin" },
+                        Surname = "Surname 1"
+                    }
+                }
+            }
+        };
+
+        var device2 = new HomeDevice
+        {
+            Online = true,
+            Id = Guid.NewGuid(),
+            Name = "Device 2",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Device 2",
+                ModelNumber = "1234",
+                Description = "Device 2 for home",
+                Photos = new List<Photo>(),
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Business 2",
+                    Logo = "logo2.png",
+                    RUT = "12345678-9",
+                    BusinessOwner = new User
+                    {
+                        Email = "mail@mail.com",
+                        Name = "Owner 1",
+                        Password = "password",
+                        Role = new Role { Name = "Admin" },
+                        Surname = "Surname 1"
+                    }
+                }
+            }
+        };
+
+        home.Devices = new List<HomeDevice>() { device1, device2 };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var result = homeService.GetAllHomeDevices(homeId, null);
+
+        Assert.AreEqual(2, result.Count());
+    }
+
+    [TestMethod]
+    public void GetAllHomeDevices_WithRoomFilter_ReturnsFilteredDevices()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>(),
+            Devices = new List<HomeDevice>()
+        };
+
+        var room = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "Living Room",
+            Home = home
+        };
+
+        var device1 = new HomeDevice
+        {
+            Online = true,
+            Id = Guid.NewGuid(),
+            Name = "Device 1",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Device 1",
+                ModelNumber = "1234",
+                Description = "Device 1 for home",
+                Photos = new List<Photo>(),
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Business 1",
+                    Logo = "logo1.png",
+                    RUT = "12345678-9",
+                    BusinessOwner = new User
+                    {
+                        Email = "mail@mail.com",
+                        Name = "Owner 1",
+                        Password = "password",
+                        Role = new Role { Name = "Admin" },
+                        Surname = "Surname 1"
+                    }
+                }
+            }
+        };
+
+        var device2 = new HomeDevice
+        {
+            Room = room,
+            Online = true,
+            Id = Guid.NewGuid(),
+            Name = "Device 2",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Device 2",
+                ModelNumber = "1234",
+                Description = "Device 2 for home",
+                Photos = new List<Photo>(),
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Business 2",
+                    Logo = "logo2.png",
+                    RUT = "12345678-9",
+                    BusinessOwner = new User
+                    {
+                        Email = "mail@mail.com",
+                        Name = "Owner 1",
+                        Password = "password",
+                        Role = new Role { Name = "Admin" },
+                        Surname = "Surname 1"
+                    }
+                }
+            }
+        };
+
+        home.Devices = new List<HomeDevice>() { device1, device2 };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        // Act
+        var result = homeService.GetAllHomeDevices(homeId, "Living Room");
+
+        // Assert
+        Assert.AreEqual(1, result.Count());
+        Assert.AreEqual("Living Room", result.First().Room.Name);
+    }
+
+    [TestMethod]
+    public void GetAllHomeDevices_WithNonExistingRoomFilter_ReturnsEmpty()
+    {
+        var homeId = Guid.NewGuid();
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>(),
+            Devices = new List<HomeDevice>()
+        };
+
+        var room = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "Living Room",
+            Home = home
+        };
+
+        var device1 = new HomeDevice
+        {
+            Room = room,
+            Online = true,
+            Id = Guid.NewGuid(),
+            Name = "Device 1",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Device 1",
+                ModelNumber = "1234",
+                Description = "Device 1 for home",
+                Photos = new List<Photo>(),
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Business 1",
+                    Logo = "logo1.png",
+                    RUT = "12345678-9",
+                    BusinessOwner = new User
+                    {
+                        Email = "mail@mail.com",
+                        Name = "Owner 1",
+                        Password = "password",
+                        Role = new Role { Name = "Admin" },
+                        Surname = "Surname 1"
+                    }
+                }
+            }
+        };
+
+        var device2 = new HomeDevice
+        {
+            Room = room,
+            Online = true,
+            Id = Guid.NewGuid(),
+            Name = "Device 2",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Device 2",
+                ModelNumber = "1234",
+                Description = "Device 2 for home",
+                Photos = new List<Photo>(),
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Business 2",
+                    Logo = "logo2.png",
+                    RUT = "12345678-9",
+                    BusinessOwner = new User
+                    {
+                        Email = "mail@mail.com",
+                        Name = "Owner 1",
+                        Password = "password",
+                        Role = new Role { Name = "Admin" },
+                        Surname = "Surname 1"
+                    }
+                }
+            }
+        };
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+
+        var result = homeService.GetAllHomeDevices(homeId, "Kitchen");
+
+        Assert.AreEqual(0, result.Count());
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.Services;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
@@ -189,7 +190,7 @@ public class HomeControllerTest
         var homeDevices = new List<HomeDevice>() { homeDevice1, homeDevice2 };
         var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1, Name = "Home Name" };
         home1.Devices = homeDevices;
-        homeLogicMock.Setup(h => h.GetAllHomeDevices(home1.Id)).Returns(homeDevices);
+        homeLogicMock.Setup(h => h.GetAllHomeDevices(home1.Id, null)).Returns(homeDevices);
 
         var expected = new OkObjectResult(new List<HomeDeviceResponseModel>
         {
@@ -290,5 +291,101 @@ public class HomeControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(401, result.StatusCode);
         Assert.AreEqual("UserId is missing", result.Value);
+    }
+
+    [TestMethod]
+    public void GetAllHomeDevices_WithRoomFilter_ReturnsFilteredDevices()
+    {
+        var homeId = Guid.NewGuid();
+        var owner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Owner 1",
+            Surname = "Surname 1",
+            Email = "mail@mail.com",
+            Password = "password",
+            Role = new Role { Name = "Admin" }
+        };
+
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name",
+            Rooms = new List<Room>(),
+            Devices = new List<HomeDevice>()
+        };
+
+        var room = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "Living Room",
+            Home = home
+        };
+
+        var device1 = new HomeDevice
+        {
+            Online = true,
+            Id = Guid.NewGuid(),
+            Name = "Device 1",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Device 1",
+                ModelNumber = "1234",
+                Description = "Device 1 for home",
+                Photos = new List<Photo>(),
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Business 1",
+                    Logo = "logo1.png",
+                    RUT = "12345678-9",
+                    BusinessOwner = owner
+                }
+            }
+        };
+
+        var device2 = new HomeDevice
+        {
+            Room = room,
+            Online = true,
+            Id = Guid.NewGuid(),
+            Name = "Device 2",
+            Device = new Device
+            {
+                Id = Guid.NewGuid(),
+                Name = "Device 2",
+                ModelNumber = "1234",
+                Description = "Device 2 for home",
+                Photos = new List<Photo>(),
+                Business = new Business
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Business 2",
+                    Logo = "logo2.png",
+                    RUT = "12345678-9",
+                    BusinessOwner = owner
+                }
+            }
+        };
+
+        home.Devices = new List<HomeDevice> { device1, device2 };
+
+        homeLogicMock.Setup(h => h.GetAllHomeDevices(home.Id, room.Name)).Returns(new List<HomeDevice>() { device1 });
+
+        // Act
+        var result = homeController.GetAllHomeDevices(homeId, room.Name) as OkObjectResult;
+
+        // Assert
+        Assert.IsNotNull(result);
+        var resultValue = result.Value as List<HomeDeviceResponseModel>;
+        Assert.IsNotNull(resultValue);
+        Assert.AreEqual(1, resultValue.Count);
     }
 }
