@@ -79,6 +79,26 @@ public class BusinessRepositoryTest
         businesses[0].Name.Should().Be(business.Name);
     }
     #endregion
+
+    #region Delete
+    [TestMethod]
+    public void Delete_WhenBusinessExists_ShouldRemoveFromDatabase()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Business to Delete",
+            Logo = "Test Logo",
+            RUT = "Test RUT"
+        };
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
+
+        _businessRepository.Delete(business.Id);
+
+        _context.Businesses.FirstOrDefault(b => b.Id == business.Id).Should().BeNull();
+    }
+    #endregion
 }
 
 internal sealed class TestDbContext(DbContextOptions options)
