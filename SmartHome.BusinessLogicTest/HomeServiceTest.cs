@@ -2113,10 +2113,8 @@ public class HomeServiceTest
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
 
-        // Act
         var result = homeService.GetAllHomeDevices(homeId, "Living Room");
 
-        // Assert
         Assert.AreEqual(1, result.Count());
         Assert.AreEqual("Living Room", result.First().Room.Name);
     }

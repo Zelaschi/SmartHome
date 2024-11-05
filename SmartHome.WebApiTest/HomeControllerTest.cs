@@ -379,10 +379,8 @@ public class HomeControllerTest
 
         homeLogicMock.Setup(h => h.GetAllHomeDevices(home.Id, room.Name)).Returns(new List<HomeDevice>() { device1 });
 
-        // Act
         var result = homeController.GetAllHomeDevices(homeId, room.Name) as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
         var resultValue = result.Value as List<HomeDeviceResponseModel>;
         Assert.IsNotNull(resultValue);
