@@ -99,6 +99,28 @@ public class BusinessRepositoryTest
         _context.Businesses.FirstOrDefault(b => b.Id == business.Id).Should().BeNull();
     }
     #endregion
+
+    #region Find
+    [TestMethod]
+    public void Find_WhenBusinessExists_ShouldReturnBusiness()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Find Business",
+            Logo = "Test Logo",
+            RUT = "Test RUT"
+        };
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
+
+        var result = _businessRepository.Find(b => b.Id == business.Id);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(business.Id);
+        result.Name.Should().Be(business.Name);
+    }
+    #endregion
 }
 
 internal sealed class TestDbContext(DbContextOptions options)
