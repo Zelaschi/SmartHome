@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;
+using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.DataAccess.Repositories;
 
 namespace SmartHome.DataAccess.Test;
@@ -119,6 +120,40 @@ public class BusinessRepositoryTest
         result.Should().NotBeNull();
         result.Id.Should().Be(business.Id);
         result.Name.Should().Be(business.Name);
+    }
+    #endregion
+
+    #region Update
+    [TestMethod]
+    public void Update_WhenBusinessExists_ShouldUpdateInDatabase()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name",
+            Logo = "Original Logo",
+            RUT = "Original RUT"
+        };
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
+
+        var updatedBusiness = new Business
+        {
+            Id = business.Id,
+            Name = "Updated Name",
+            Logo = "Updated Logo",
+            RUT = "Updated RUT"
+        };
+
+        var result = _businessRepository.Update(updatedBusiness);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(business.Id);
+        result.Name.Should().Be("Updated Name");
+
+        var updatedEntityInDb = _context.Businesses.FirstOrDefault(b => b.Id == business.Id);
+        updatedEntityInDb.Should().NotBeNull();
+        updatedEntityInDb.Name.Should().Be("Updated Name");
     }
     #endregion
 }
