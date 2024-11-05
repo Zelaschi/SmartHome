@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
@@ -84,6 +85,16 @@ public class DeviceRepository : IGenericRepository<Device>
         {
             throw new DatabaseException("Error related to the Data Base, please validate the connection.");
         }
+    }
+
+    public IList<Device> FindAllFiltered(Expression<Func<Device, bool>> filter, int pageNumber, int pageSize)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IList<Device> FindAllFiltered(Expression<Func<Device, bool>> filter)
+    {
+        throw new NotImplementedException();
     }
 
     public Device? Update(Device updatedEntity)

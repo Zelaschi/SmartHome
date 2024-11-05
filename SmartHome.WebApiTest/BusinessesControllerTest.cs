@@ -42,7 +42,7 @@ public class BusinessesControllerTest
             company2
         };
 
-        businessesLogicMock.Setup(b => b.GetAllBusinesses()).Returns(companies);
+        businessesLogicMock.Setup(b => b.GetBusinesses(null, null, null, null)).Returns(companies);
 
         var expected = new OkObjectResult(new List<BusinessesResponseModel>
         {
@@ -51,7 +51,7 @@ public class BusinessesControllerTest
         });
         List<BusinessesResponseModel> expectedObject = (expected.Value as List<BusinessesResponseModel>)!;
 
-        var result = businessesController.GetAllBusinesses(null, null,null,null) as OkObjectResult;
+        var result = businessesController.GetBusinesses(null, null,null,null) as OkObjectResult;
         var objectResult = (result.Value as List<BusinessesResponseModel>)!;
 
         businessesLogicMock.VerifyAll();
@@ -103,15 +103,14 @@ public class BusinessesControllerTest
         {
         company1,
         company2,
-        company3
         };
-
-        businessesLogicMock.Setup(b => b.GetAllBusinesses()).Returns(companies);
-
-        // Act
         var pageNumber = 1;
         var pageSize = 2;
-        var result = businessesController.GetAllBusinesses(pageNumber, pageSize, null, null) as OkObjectResult;
+
+        businessesLogicMock.Setup(b => b.GetBusinesses(pageNumber, pageSize, null, null)).Returns(companies);
+
+        // Act
+        var result = businessesController.GetBusinesses(pageNumber, pageSize, null, null) as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);
@@ -134,6 +133,7 @@ public class BusinessesControllerTest
     public void GetBusinessesTest_FilterByBusinessName_OK()
     {
         // Arrange
+        var hikvision = "hikvision";
         var user1 = new User()
         {
             Id = Guid.NewGuid(),
@@ -147,7 +147,7 @@ public class BusinessesControllerTest
         var company1 = new Business()
         {
             Id = Guid.NewGuid(),
-            Name = "hikvision",
+            Name = hikvision,
             Logo = "logo1",
             RUT = "rut1",
             BusinessOwner = user1
@@ -172,16 +172,14 @@ public class BusinessesControllerTest
         };
 
         IEnumerable<Business> companies = new List<Business>
-    {
-        company1,
-        company2,
-        company3
-    };
+        {
+            company1
+        };
 
-        businessesLogicMock.Setup(b => b.GetAllBusinesses()).Returns(companies);
+        businessesLogicMock.Setup(b => b.GetBusinesses(null, null, hikvision, null)).Returns(companies);
 
         // Act
-        var result = businessesController.GetAllBusinesses(null, null, "hikvision", null) as OkObjectResult;
+        var result = businessesController.GetBusinesses(null, null, hikvision, null) as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);
@@ -245,15 +243,14 @@ public class BusinessesControllerTest
 
         IEnumerable<Business> companies = new List<Business>
         {
-        company1,
         company2,
         company3
         };
 
-        businessesLogicMock.Setup(b => b.GetAllBusinesses()).Returns(companies);
+        businessesLogicMock.Setup(b => b.GetBusinesses(null, null, null, "John Doe")).Returns(companies);
 
         // Act
-        var result = businessesController.GetAllBusinesses(null, null, null, "John Doe") as OkObjectResult;
+        var result = businessesController.GetBusinesses(null, null, null, "John Doe") as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);
@@ -288,14 +285,15 @@ public class BusinessesControllerTest
         };
 
         IEnumerable<Business> companies = new List<Business>
-    {
-        company1
-    };
+        {
+            company1
+        };
+        IEnumerable<Business> returnedCompanies = new List<Business>();
 
-        businessesLogicMock.Setup(b => b.GetAllBusinesses()).Returns(companies);
+        businessesLogicMock.Setup(b => b.GetBusinesses(null, null, null, "John Doe")).Returns(returnedCompanies);
 
         // Act
-        var result = businessesController.GetAllBusinesses(null, null, null, "John Doe") as OkObjectResult;
+        var result = businessesController.GetBusinesses(null, null, null, "John Doe") as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);

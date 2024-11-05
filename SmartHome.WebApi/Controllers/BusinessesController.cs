@@ -42,40 +42,17 @@ public sealed class BusinessesController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)]
     [HttpGet]
-    public IActionResult GetAllBusinesses(
+    public IActionResult GetBusinesses(
         [FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null, [FromQuery] string? businessName = null, [FromQuery] string? fullName = null)
     {
-        var query = _businessesLogic.GetAllBusinesses();
-
-        if (!string.IsNullOrEmpty(businessName))
-        {
-            query = query.Where(u => u.Name == businessName);
-        }
-
-        if (!string.IsNullOrEmpty(fullName))
-        {
-            var searchTerm = fullName.ToLower();
-            query = query.Where(u =>
-                (u.BusinessOwner.Name.ToLower() + " " + u.BusinessOwner.Surname.ToLower()).Contains(searchTerm) ||
-                (u.BusinessOwner.Surname.ToLower() + " " + u.BusinessOwner.Name.ToLower()).Contains(searchTerm)
-            );
-        }
-
-        var totalCount = query.Count();
-        List<BusinessesResponseModel> businessesResponse;
+        var query = _businessesLogic.GetBusinesses(pageNumber, pageSize, businessName, fullName);
+        var businessesResponse = query.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
         if (pageNumber != null && pageSize != null)
         {
-            var pagedData = query
-            .Skip(((int)pageNumber - 1) * (int)pageSize)
-            .Take((int)pageSize)
-            .ToList();
-
-            businessesResponse = pagedData.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
-            return Ok(new PaginatedResponse<BusinessesResponseModel>(businessesResponse, totalCount, (int)pageNumber, (int)pageSize));
+            return Ok(new PaginatedResponse<BusinessesResponseModel>(businessesResponse, query.Count(), (int)pageNumber, (int)pageSize));
         }
         else
         {
-            businessesResponse = query.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
             return Ok(businessesResponse);
         }
     }

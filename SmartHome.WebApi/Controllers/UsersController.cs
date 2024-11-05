@@ -25,6 +25,17 @@ public sealed class UsersController : ControllerBase
     public IActionResult GetAllUsers(
     [FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null, [FromQuery] string? role = null, [FromQuery] string? fullName = null)
     {
+        var query = _usersLogic.GetAllUsers(pageNumber, pageSize, role, fullName);
+        var usersResponse = query.Select(user => new UserResponseModel(user)).ToList();
+        if (pageNumber != null && pageSize != null)
+        {
+            return Ok(new PaginatedResponse<UserResponseModel>(usersResponse, query.Count(), (int)pageNumber, (int)pageSize));
+        }
+        else
+        {
+            return Ok(usersResponse);
+        }
+
         var query = _usersLogic.GetAllUsers();
 
         if (!string.IsNullOrEmpty(role))

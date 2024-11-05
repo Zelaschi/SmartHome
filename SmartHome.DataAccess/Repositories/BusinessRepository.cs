@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
@@ -82,6 +83,33 @@ public sealed class BusinessRepository : IGenericRepository<Business>
         {
             throw new DatabaseException("Error related to the Data Base, please validate the connection.");
         }
+    }
+
+    public IList<Business> FindAllFiltered(Expression<Func<Business, bool>> filter, int pageNumber, int pageSize)
+    {
+        var query = _repository.Businesses.AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+    }
+
+    public IList<Business> FindAllFiltered(Expression<Func<Business, bool>> filter)
+    {
+        var query = _repository.Businesses.AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return query.ToList();
     }
 
     public Business? Update(Business updatedEntity)

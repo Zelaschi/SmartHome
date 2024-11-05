@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
@@ -82,6 +83,16 @@ public class HomePermissionRepository : IGenericRepository<HomePermission>
         {
             throw new DatabaseException("Error related to the Data Base, please validate the connection.");
         }
+    }
+
+    public IList<HomePermission> FindAllFiltered(Expression<Func<HomePermission, bool>> filter, int pageNumber, int pageSize)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IList<HomePermission> FindAllFiltered(Expression<Func<HomePermission, bool>> filter)
+    {
+        throw new NotImplementedException();
     }
 
     public HomePermission? Update(HomePermission updatedEntity)

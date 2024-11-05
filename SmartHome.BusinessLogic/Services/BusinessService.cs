@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using SmartHome.BusinessLogic.CustomExceptions;
@@ -43,8 +44,19 @@ public sealed class BusinessService : IBusinessesLogic
         return AssignOwnerToBusiness(business, user);
     }
 
-    public IEnumerable<Business> GetAllBusinesses()
+    public IEnumerable<Business> GetBusinesses(int? pageNumber, int? pageSize, string? businessName, string? fullName)
     {
-        return _businessRepository.FindAll();
+        Expression<Func<Business, bool>> filter = business =>
+            (string.IsNullOrEmpty(businessName) || business.Name == businessName) &&
+            (string.IsNullOrEmpty(fullName) ||
+                (business.BusinessOwner.Name.ToLower() + " " + business.BusinessOwner.Surname.ToLower()).Contains(fullName.ToLower()) ||
+                (business.BusinessOwner.Surname.ToLower() + " " + business.BusinessOwner.Name.ToLower()).Contains(fullName.ToLower()));
+
+        if (pageNumber == null && pageSize == null)
+        {
+            return _businessRepository.FindAllFiltered(filter);
+        }
+
+        return _businessRepository.FindAllFiltered(filter, pageNumber ?? 1, pageSize ?? 10);
     }
 }

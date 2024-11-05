@@ -11,6 +11,7 @@ using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.CustomExceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace SmartHome.DataAccess.Repositories;
 public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
@@ -93,6 +94,16 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
         {
             throw new DatabaseException("Error related to the Data Base, please validate the connection.");
         }
+    }
+
+    public IList<Home> FindAllFiltered(Expression<Func<Home, bool>> filter, int pageNumber, int pageSize)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IList<Home> FindAllFiltered(Expression<Func<Home, bool>> filter)
+    {
+        throw new NotImplementedException();
     }
 
     public IEnumerable<Home> GetAllHomesByUserId(Guid userId)

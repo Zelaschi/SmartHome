@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.Data.SqlClient;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
@@ -82,6 +83,16 @@ public class SystemPermissionRepository : IGenericRepository<SystemPermission>
         {
             throw new DatabaseException("Error related to the Data Base, please validate the connection.");
         }
+    }
+
+    public IList<SystemPermission> FindAllFiltered(Expression<Func<SystemPermission, bool>> filter, int pageNumber, int pageSize)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IList<SystemPermission> FindAllFiltered(Expression<Func<SystemPermission, bool>> filter)
+    {
+        throw new NotImplementedException();
     }
 
     public SystemPermission? Update(SystemPermission updatedEntity)

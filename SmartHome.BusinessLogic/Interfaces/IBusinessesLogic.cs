@@ -9,5 +9,5 @@ namespace SmartHome.BusinessLogic.Interfaces;
 public interface IBusinessesLogic
 {
     Business CreateBusiness(Business business, User user);
-    IEnumerable<Business> GetAllBusinesses();
+    IEnumerable<Business> GetBusinesses(int? pageNumber, int? pageSize, string? businessName, string? fullName);
 }

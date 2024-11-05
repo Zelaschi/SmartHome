@@ -10,6 +10,7 @@ using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.InitialSeedData;
+using System.Linq.Expressions;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLogic, IAdminLogic
@@ -155,5 +156,21 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
     {
         user.Role = _roleService.GetBusinessOwnerHomeOwnerRole();
         _userRepository.Update(user);
+    }
+
+    public IEnumerable<User> GetUsers(int? pageNumber, int? pageSize, string? role, string? fullName)
+    {
+        Expression<Func<User, bool>> filter = user =>
+                    (string.IsNullOrEmpty(role) || user.Role.Name == role) &&
+                    (string.IsNullOrEmpty(fullName) ||
+                        (user.Name.ToLower() + " " + user.Surname.ToLower()).Contains(fullName.ToLower()) ||
+                        (user.Surname.ToLower() + " " + user.Name.ToLower()).Contains(fullName.ToLower()));
+
+        if (pageNumber == null && pageSize == null)
+        {
+            return _userRepository.FindAllFiltered(filter);
+        }
+
+        return _userRepository.FindAllFiltered(filter, pageNumber ?? 1, pageSize ?? 10);
     }
 }

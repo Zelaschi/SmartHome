@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
@@ -25,55 +26,6 @@ public class BusinessServiceTest
         businessRepositoryMock = new Mock<IGenericRepository<Business>>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
         businessService = new BusinessService(businessRepositoryMock.Object, userRepositoryMock.Object);
-    }
-
-    [TestMethod]
-
-    public void GetAll_Businesses_Test()
-    {
-        var businessOwner = new Role { Name = "BusinessOwner" };
-        var businesses = new List<Business>
-        {
-            new Business
-            {
-                Id = Guid.NewGuid(),
-                Name = "HikVision",
-                Logo = "Logo1",
-                RUT = "1234",
-                BusinessOwner = new User
-                {
-                    Name = "Juan",
-                    Surname = "Perez",
-                    Password = "Password@1234",
-                    CreationDate = DateTime.Today,
-                    Email = "juanperez@gmail.com",
-                    Role = businessOwner
-                }
-            },
-            new Business
-            {
-                Id = Guid.NewGuid(),
-                Name = "Kolke",
-                Logo = "Logo2",
-                RUT = "5678",
-                BusinessOwner = new User
-                {
-                    Name = "Pedro",
-                    Surname = "Rodriguez",
-                    Password = "Password@1234",
-                    CreationDate = DateTime.Today,
-                    Email = "pedrorodriguez@gmail.com",
-                    Role = businessOwner
-                }
-            }
-        };
-
-        businessRepositoryMock.Setup(x => x.FindAll()).Returns(businesses);
-
-        var businessesResult = businessService.GetAllBusinesses();
-
-        businessRepositoryMock.VerifyAll();
-        Assert.AreEqual(businesses, businessesResult);
     }
 
     [TestMethod]
@@ -149,5 +101,164 @@ public class BusinessServiceTest
             Assert.IsInstanceOfType(e, typeof(UserException));
             Assert.AreEqual("User is already owner of a business", e.Message);
         }
+    }
+
+    [TestMethod]
+    public void GetBusinesses_WithoutFilters_ReturnsAllBusinesses()
+    {
+        var businesses = new List<Business>
+        {
+            new Business
+            {
+                Name = "Business1",
+                BusinessOwner = new User
+                                {
+                                    Name = "Juan",
+                                    Surname = "Perez",
+                                    Password = "Password@1234",
+                                    Email = "mail@mail.com"
+                                },
+                Id = Guid.NewGuid(),
+                Logo = "Logo1",
+                RUT = "1234"
+            },
+            new Business
+            {
+                Name = "Business2",
+                BusinessOwner = new User
+                                {
+                                    Name = "Pedro",
+                                    Surname = "Rodriguez",
+                                    Password = "Password@1234",
+                                    Email = "mail@mail.com"
+                                },
+                Id = Guid.NewGuid(),
+                Logo = "Logo1",
+                RUT = "1234"
+            },
+        };
+
+        businessRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>())).Returns(businesses);
+
+        var result = businessService.GetBusinesses(null, null, null, null);
+
+        businessRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>()), Times.Once);
+        Assert.AreEqual(2, result.Count());
+    }
+
+    [TestMethod]
+    public void GetBusinesses_WithBusinessNameFilter_ReturnsFilteredBusinesses()
+    {
+        var businesses = new List<Business>
+        {
+            new Business
+            {
+                Name = "HikVision",
+                BusinessOwner = new User
+                                    {
+                                        Name = "Juan",
+                                        Surname = "Perez",
+                                        Password = "Password@1234",
+                                        Email = "mail@mail.com"
+                                    },
+                Id = Guid.NewGuid(),
+                Logo = "Logo1",
+                RUT = "1234"
+            }
+        };
+
+        businessRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>())).Returns(businesses);
+
+        var result = businessService.GetBusinesses(null, null, "HikVision", null);
+
+        businessRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>()), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetBusinesses_WithFullNameFilter_ReturnsFilteredBusinesses()
+    {
+        var businesses = new List<Business>
+        {
+            new Business
+            {
+                Name = "Business1",
+                BusinessOwner = new User
+                                {
+                                    Name = "Juan",
+                                    Surname = "Perez",
+                                    Password = "Password@1234",
+                                    Email = "mail@mail.com"
+                                },
+                Id = Guid.NewGuid(),
+                Logo = "Logo1",
+                RUT = "1234"
+            }
+        };
+
+        businessRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>())).Returns(businesses);
+
+        var result = businessService.GetBusinesses(null, null, null, "Juan Perez");
+
+        businessRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>()), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetBusinesses_WithFiltersAndPagination_ReturnsPagedFilteredBusinesses()
+    {
+        var businesses = new List<Business>
+        {
+            new Business
+            {
+                Name = "HikVision",
+                BusinessOwner = new User
+                                {
+                                    Name = "Juan",
+                                    Surname = "Perez",
+                                    Password = "Password@1234",
+                                    Email = "mail@mail.com"
+                                },
+                Id = Guid.NewGuid(),
+                Logo = "Logo1",
+                RUT = "1234"
+            }
+        };
+
+        businessRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1)).Returns(businesses);
+
+        var result = businessService.GetBusinesses(1, 1, "HikVision", "Juan Perez");
+
+        businessRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetBusinesses_WithPaginationOnly_ReturnsPagedBusinesses()
+    {
+        var businesses = new List<Business>
+        {
+            new Business
+            {
+                Name = "Business1",
+                BusinessOwner = new User
+                                {
+                                    Name = "Juan",
+                                    Surname = "Perez",
+                                    Password = "Password@1234",
+                                    Email = "mail@mail.com"
+                                },
+                Id = Guid.NewGuid(),
+                Logo = "Logo1",
+                RUT = "1234"
+            }
+        };
+
+        businessRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1)).Returns(businesses);
+
+        var result = businessService.GetBusinesses(1, 1, null, null);
+
+        businessRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1), Times.Once);
+        Assert.AreEqual(1, result.Count());
     }
 }

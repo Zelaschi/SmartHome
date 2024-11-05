@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
@@ -82,6 +83,16 @@ public sealed class RoomRepository : IGenericRepository<Room>
         {
             throw new DatabaseException("Error related to the Data Base, please validate the connection.");
         }
+    }
+
+    public IList<Room> FindAllFiltered(Expression<Func<Room, bool>> filter, int pageNumber, int pageSize)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IList<Room> FindAllFiltered(Expression<Func<Room, bool>> filter)
+    {
+        throw new NotImplementedException();
     }
 
     public Room? Update(Room updatedEntity)
