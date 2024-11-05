@@ -9,6 +9,7 @@ using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.DeviceTypes;
+using System.Linq.Expressions;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateDeviceLogic
@@ -45,18 +46,6 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
         return _deviceRepository.Add(securityCamera) as SecurityCamera;
     }
 
-    public IEnumerable<Device> GetAllDevices()
-    {
-        var allDevices = _deviceRepository.FindAll().ToList();
-
-        if (allDevices.Count == 0)
-        {
-            throw new DeviceException("There are no devices in the database.");
-        }
-
-        return allDevices;
-    }
-
     public IEnumerable<string> GetAllDeviceTypes()
     {
         return new List<string>
@@ -84,5 +73,21 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
         device.Business = business;
         device.Type = type;
         return _deviceRepository.Add(device);
+    }
+
+    public IEnumerable<Device> GetDevices(int? pageNumber, int? pageSize, string? deviceName, string? deviceModel, string? businessName, string? deviceType)
+    {
+        Expression<Func<Device, bool>> filter = device =>
+            (string.IsNullOrEmpty(deviceName) || device.Name == deviceName) &&
+            (string.IsNullOrEmpty(deviceModel) || device.ModelNumber == deviceModel) &&
+            (string.IsNullOrEmpty(businessName) || device.Business.Name == businessName) &&
+            (string.IsNullOrEmpty(deviceType) || device.Type == deviceType);
+
+        if (pageNumber == null && pageSize == null)
+        {
+            return _deviceRepository.FindAllFiltered(filter);
+        }
+
+        return _deviceRepository.FindAllFiltered(filter, pageNumber ?? 1, pageSize ?? 10);
     }
 }

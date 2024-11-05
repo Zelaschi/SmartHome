@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
@@ -26,73 +27,6 @@ public class DeviceServiceTest
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
         businessRepositoryMock = new Mock<IGenericRepository<Business>>();
         deviceService = new DeviceService(businessRepositoryMock.Object, deviceRepositoryMock.Object);
-    }
-
-    [TestMethod]
-
-    public void GetAll_Devices_Test()
-    {
-        var devices = new List<Device>
-        {
-            new Device
-            {
-                Id = Guid.NewGuid(),
-                Name = "WindowSensor",
-                Description = "Window Sensor",
-                ModelNumber = "1234",
-                Photos = [],
-                Business = new Business
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "HikVision",
-                    Logo = "Logo1",
-                    RUT = "1234",
-                    BusinessOwner = new User
-                    {
-                        Name = "Juan",
-                        Surname = "Perez",
-                        Password = "Password@1234",
-                        CreationDate = DateTime.Today,
-                        Email = "juanperez@gmail.com"
-                    }
-                }
-            },
-            new SecurityCamera
-            {
-                Id = Guid.NewGuid(),
-                Name = "WindowSensor",
-                Description = "Security Camera",
-                ModelNumber = "1234",
-                Photos = [],
-                Type = "SecurityCamera",
-                Business = new Business
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Kolke",
-                    Logo = "Logo1",
-                    RUT = "1234",
-                    BusinessOwner = new User
-                    {
-                        Name = "Pedro",
-                        Surname = "Rodriguez",
-                        Password = "Password@1234",
-                        CreationDate = DateTime.Today,
-                        Email = "pedrorod@gmail.com"
-                    }
-                },
-                Outdoor = true,
-                Indoor = true,
-                MovementDetection = true,
-                PersonDetection = true
-            }
-        };
-
-        deviceRepositoryMock.Setup(x => x.FindAll()).Returns(devices);
-
-        var result = deviceService.GetAllDevices().ToList();
-
-        deviceRepositoryMock.VerifyAll();
-        CollectionAssert.AreEqual(devices, result);
     }
 
     [TestMethod]
@@ -463,5 +397,230 @@ public class DeviceServiceTest
         deviceRepositoryMock.Verify(x => x.Add(inteligentLamp), Times.Once);
 
         Assert.AreEqual(inteligentLamp, result);
+    }
+
+    [TestMethod]
+    public void GetDevices_WithoutFilters_ReturnsAllDevices()
+    {
+        var devices = new List<Device>
+        {
+            new Device
+            {
+                Description = " ",
+                Photos = new List<Photo>(),
+                Name = "Device1",
+                ModelNumber = "Model1",
+                Business = new Business
+                {
+                    Name = "Business1",
+                    Id = Guid.NewGuid(),
+                    Logo = "Logo1",
+                    RUT = "1234",
+                },
+                Type = "Type1"
+            },
+            new Device
+            {
+                Description = " ",
+                Photos = new List<Photo>(),
+                Name = "Device2",
+                ModelNumber = "Model2",
+                Business = new Business
+                {
+                    Name = "Business1",
+                    Id = Guid.NewGuid(),
+                    Logo = "Logo1",
+                    RUT = "1234",
+                },
+                Type = "Type2"
+            },
+        };
+
+        deviceRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>())).Returns(devices);
+
+        var result = deviceService.GetDevices(null, null, null, null, null, null);
+
+        deviceRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>()), Times.Once);
+        Assert.AreEqual(2, result.Count());
+    }
+
+    [TestMethod]
+    public void GetDevices_WithDeviceNameFilter_ReturnsFilteredDevices()
+    {
+        var devices = new List<Device>
+        {
+            new Device
+            {
+                Description = " ",
+                Photos = new List<Photo>(),
+                Name = "Device1",
+                ModelNumber = "Model1",
+                Business = new Business
+                {
+                    Name = "Business1",
+                    Id = Guid.NewGuid(),
+                    Logo = "Logo1",
+                    RUT = "1234",
+                },
+                Type = "Type1"
+            }
+        };
+
+        deviceRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>())).Returns(devices);
+
+        var result = deviceService.GetDevices(null, null, "Device1", null, null, null);
+
+        deviceRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>()), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetDevices_WithDeviceModelFilter_ReturnsFilteredDevices()
+    {
+        var devices = new List<Device>
+        {
+            new Device
+            {
+                Description = " ",
+                Photos = new List<Photo>(),
+                Name = "Device1",
+                ModelNumber = "Model1",
+                Business = new Business
+                {
+                    Name = "Business1",
+                    Id = Guid.NewGuid(),
+                    Logo = "Logo1",
+                    RUT = "1234",
+                },
+                Type = "Type1"
+            }
+        };
+
+        deviceRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>())).Returns(devices);
+
+        var result = deviceService.GetDevices(null, null, null, "Model1", null, null);
+
+        deviceRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>()), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetDevices_WithBusinessNameFilter_ReturnsFilteredDevices()
+    {
+        var devices = new List<Device>
+        {
+           new Device
+            {
+                Description = " ",
+                Photos = new List<Photo>(),
+                Name = "Device1",
+                ModelNumber = "Model1",
+                Business = new Business
+                {
+                    Name = "Business1",
+                    Id = Guid.NewGuid(),
+                    Logo = "Logo1",
+                    RUT = "1234",
+                },
+                Type = "Type1"
+            }
+        };
+
+        deviceRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>())).Returns(devices);
+
+        var result = deviceService.GetDevices(null, null, null, null, "Business1", null);
+
+        deviceRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>()), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetDevices_WithDeviceTypeFilter_ReturnsFilteredDevices()
+    {
+        var devices = new List<Device>
+        {
+           new Device
+            {
+                Description = " ",
+                Photos = new List<Photo>(),
+                Name = "Device1",
+                ModelNumber = "Model1",
+                Business = new Business
+                {
+                    Name = "Business1",
+                    Id = Guid.NewGuid(),
+                    Logo = "Logo1",
+                    RUT = "1234",
+                },
+                Type = "Type1"
+            }
+        };
+
+        deviceRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>())).Returns(devices);
+
+        var result = deviceService.GetDevices(null, null, null, null, null, "Type1");
+
+        deviceRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>()), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetDevices_WithFiltersAndPagination_ReturnsPagedFilteredDevices()
+    {
+        var devices = new List<Device>
+        {
+           new Device
+            {
+                Description = " ",
+                Photos = new List<Photo>(),
+                Name = "Device1",
+                ModelNumber = "Model1",
+                Business = new Business
+                {
+                    Name = "Business1",
+                    Id = Guid.NewGuid(),
+                    Logo = "Logo1",
+                    RUT = "1234",
+                },
+                Type = "Type1"
+            }
+        };
+
+        deviceRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>(), 1, 1)).Returns(devices);
+
+        var result = deviceService.GetDevices(1, 1, "Device1", "Model1", "Business1", "Type1");
+
+        deviceRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>(), 1, 1), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetDevices_WithPaginationOnly_ReturnsPagedDevices()
+    {
+        var devices = new List<Device>
+        {
+            new Device
+            {
+                Description = " ",
+                Photos = new List<Photo>(),
+                Name = "Device1",
+                ModelNumber = "Model1",
+                Business = new Business
+                {
+                    Name = "Business1",
+                    Id = Guid.NewGuid(),
+                    Logo = "Logo1",
+                    RUT = "1234",
+                },
+                Type = "Type1"
+            }
+        };
+
+        deviceRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>(), 1, 1)).Returns(devices);
+
+        var result = deviceService.GetDevices(1, 1, null, null, null, null);
+
+        deviceRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Device, bool>>>(), 1, 1), Times.Once);
+        Assert.AreEqual(1, result.Count());
     }
 }

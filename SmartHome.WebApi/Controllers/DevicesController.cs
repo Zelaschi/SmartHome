@@ -33,44 +33,14 @@ public sealed class DevicesController : ControllerBase
     [FromQuery] string? businessName = null,
     [FromQuery] string? deviceType = null)
     {
-        var query = _deviceLogic.GetAllDevices();
-
-        if (!string.IsNullOrEmpty(deviceName))
-        {
-            query = query.Where(d => d.Name.Contains(deviceName));
-        }
-
-        if (!string.IsNullOrEmpty(deviceModel))
-        {
-            query = query.Where(d => d.ModelNumber.Contains(deviceModel));
-        }
-
-        if (!string.IsNullOrEmpty(businessName))
-        {
-            query = query.Where(d => d.Business.Name.Contains(businessName));
-        }
-
-        if (!string.IsNullOrEmpty(deviceType))
-        {
-            query = query.Where(d => d.Type == deviceType);
-        }
-
-        var totalCount = query.Count();
-        List<DeviceResponseModel> devicesResponse;
-
+        var query = _deviceLogic.GetDevices(pageNumber, pageSize, deviceName, deviceModel, businessName, deviceType);
+        var devicesResponse = query.Select(device => new DeviceResponseModel(device)).ToList();
         if (pageNumber != null && pageSize != null)
         {
-            var pagedData = query
-                .Skip(((int)pageNumber - 1) * (int)pageSize)
-                .Take((int)pageSize)
-                .ToList();
-
-            devicesResponse = pagedData.Select(device => new DeviceResponseModel(device)).ToList();
-            return Ok(new PaginatedResponse<DeviceResponseModel>(devicesResponse, totalCount, (int)pageNumber, (int)pageSize));
+            return Ok(new PaginatedResponse<DeviceResponseModel>(devicesResponse, query.Count(), (int)pageNumber, (int)pageSize));
         }
         else
         {
-            devicesResponse = query.Select(device => new DeviceResponseModel(device)).ToList();
             return Ok(devicesResponse);
         }
     }

@@ -362,7 +362,7 @@ public class UserServiceTest
         var expectedAdminList = new List<User> { admin2 };
 
         userRepositoryMock.Setup(x => x.FindAll()).Returns(expectedAdminList);
-        var adminListResult = userService.GetAllUsers();
+        var adminListResult = userService.GetUsers(null, null, null, null);
 
         userRepositoryMock.VerifyAll();
         Assert.AreEqual(expectedAdminList, adminListResult);

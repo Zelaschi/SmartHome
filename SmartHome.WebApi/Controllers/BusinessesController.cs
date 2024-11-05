@@ -43,7 +43,7 @@ public sealed class BusinessesController : ControllerBase
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)]
     [HttpGet]
     public IActionResult GetBusinesses(
-        [FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null, [FromQuery] string? businessName = null, [FromQuery] string? fullName = null)
+    [FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null, [FromQuery] string? businessName = null, [FromQuery] string? fullName = null)
     {
         var query = _businessesLogic.GetBusinesses(pageNumber, pageSize, businessName, fullName);
         var businessesResponse = query.Select(businesses => new BusinessesResponseModel(businesses)).ToList();
