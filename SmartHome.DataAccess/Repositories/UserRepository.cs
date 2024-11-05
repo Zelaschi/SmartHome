@@ -80,14 +80,31 @@ public sealed class UserRepository : IGenericRepository<User>
         }
     }
 
-    public IList<User> FindAllFiltered(Expression<Func<User, bool>> function, int pageNumber, int pageSize)
+    public IList<User> FindAllFiltered(Expression<Func<User, bool>> filter, int pageNumber, int pageSize)
     {
-        throw new NotImplementedException();
+        var query = _repository.Users.AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
     }
 
     public IList<User> FindAllFiltered(Expression<Func<User, bool>> filter)
     {
-        throw new NotImplementedException();
+        var query = _repository.Users.AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return query.ToList();
     }
 
     public User? Update(User updatedEntity)

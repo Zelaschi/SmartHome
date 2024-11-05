@@ -11,6 +11,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
 using SmartHome.BusinessLogic.InitialSeedData;
+using System.Linq.Expressions;
 
 namespace SmartHome.BusinessLogic.Test;
 
@@ -552,5 +553,128 @@ public class UserServiceTest
         roleLogicMock.Verify(x => x.GetBusinessOwnerHomeOwnerRole(), Times.Once);
 
         Assert.AreEqual(businessOwnerHomeOwnerRole, businessOwner.Role);
+    }
+
+    [TestMethod]
+    public void GetUsers_WithoutFilters_ReturnsAllUsers()
+    {
+        var users = new List<User>
+        {
+            new User
+            {
+                Password = "Password@1234",
+                Name = "Juan",
+                Surname = "Perez",
+                Role = new Role { Name = "Admin" },
+                Email = "juan@example.com"
+            },
+            new User
+            {
+                Password = "Password@1234",
+                Name = "Pedro",
+                Surname = "Rodriguez",
+                Role = new Role { Name = "User" },
+                Email = "pedro@example.com"
+            },
+        };
+
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>())).Returns(users);
+
+        var result = userService.GetUsers(null, null, null, null);
+
+        userRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
+        Assert.AreEqual(2, result.Count());
+    }
+
+    [TestMethod]
+    public void GetUsers_WithRoleFilter_ReturnsFilteredUsers()
+    {
+        var users = new List<User>
+        {
+            new User
+            {
+                Password = "Password1234",
+                Name = "Juan",
+                Surname = "Perez",
+                Role = new Role { Name = "Admin" },
+                Email = "juan@example.com"
+            }
+        };
+
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>())).Returns(users);
+
+        var result = userService.GetUsers(null, null, "Admin", null);
+
+        userRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetUsers_WithFullNameFilter_ReturnsFilteredUsers()
+    {
+        var users = new List<User>
+        {
+            new User
+            {
+                Password = "Password1234",
+                Name = "Juan",
+                Surname = "Perez",
+                Role = new Role { Name = "Admin" },
+                Email = "juan@example.com"
+            }
+        };
+
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>())).Returns(users);
+
+        var result = userService.GetUsers(null, null, null, "Juan Perez");
+
+        userRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetUsers_WithFiltersAndPagination_ReturnsPagedFilteredUsers()
+    {
+        var users = new List<User>
+        {
+            new User
+            {
+                Password = "Password1234",
+                Name = "Juan",
+                Surname = "Perez",
+                Role = new Role { Name = "Admin" },
+                Email = "juan@example.com"
+            }
+        };
+
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>(), 1, 10)).Returns(users);
+
+        var result = userService.GetUsers(1, 10, "Admin", "Juan Perez");
+
+        userRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>(), 1, 10), Times.Once);
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void GetUsers_WithPaginationOnly_ReturnsPagedUsers()
+    {
+        var users = new List<User>
+        {
+            new User
+            {
+                Password = "Password1234",
+                Name = "Pedro",
+                Surname = "Rodriguez",
+                Role = new Role { Name = "User" },
+                Email = "pedro@example.com"
+            }
+        };
+
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>(), 1, 10)).Returns(users);
+
+        var result = userService.GetUsers(1, 10, null, null);
+
+        userRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>(), 1, 10), Times.Once);
+        Assert.AreEqual(1, result.Count());
     }
 }

@@ -22,10 +22,10 @@ public sealed class UsersController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_ACCOUNTS_PERMISSION_ID)]
     [HttpGet]
-    public IActionResult GetAllUsers(
+    public IActionResult GetUsers(
     [FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null, [FromQuery] string? role = null, [FromQuery] string? fullName = null)
     {
-        var query = _usersLogic.GetAllUsers(pageNumber, pageSize, role, fullName);
+        var query = _usersLogic.GetUsers(pageNumber, pageSize, role, fullName);
         var usersResponse = query.Select(user => new UserResponseModel(user)).ToList();
         if (pageNumber != null && pageSize != null)
         {
@@ -33,41 +33,6 @@ public sealed class UsersController : ControllerBase
         }
         else
         {
-            return Ok(usersResponse);
-        }
-
-        var query = _usersLogic.GetAllUsers();
-
-        if (!string.IsNullOrEmpty(role))
-        {
-            query = query.Where(u => u.Role.Name == role);
-        }
-
-        if (!string.IsNullOrEmpty(fullName))
-        {
-            var searchTerm = fullName.ToLower();
-            query = query.Where(u =>
-                (u.Name.ToLower() + " " + u.Surname.ToLower()).Contains(searchTerm) ||
-                (u.Surname.ToLower() + " " + u.Name.ToLower()).Contains(searchTerm)
-            );
-        }
-
-        var totalCount = query.Count();
-        List<UserResponseModel> usersResponse;
-
-        if (pageNumber != null && pageSize != null)
-        {
-            var pagedData = query
-            .Skip(((int)pageNumber - 1) * (int)pageSize)
-            .Take((int)pageSize)
-            .ToList();
-
-            usersResponse = pagedData.Select(user => new UserResponseModel(user)).ToList();
-            return Ok(new PaginatedResponse<UserResponseModel>(usersResponse, totalCount, (int)pageNumber, (int)pageSize));
-        }
-        else
-        {
-            usersResponse = query.Select(user => new UserResponseModel(user)).ToList();
             return Ok(usersResponse);
         }
     }

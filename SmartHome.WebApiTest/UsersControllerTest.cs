@@ -39,7 +39,7 @@ public class UsersControllerTest
             new User() { Id = Guid.NewGuid(), Name = "e", Surname = "f", Password = "psw", Email = "mail3@mail.com", Role = homeOwner, CreationDate = DateTime.Today }
         };
 
-        usersLogicMock.Setup(a => a.GetAllUsers()).Returns(users);
+        usersLogicMock.Setup(a => a.GetUsers(null, null, null, null)).Returns(users);
 
         var expected = new OkObjectResult(new List<UserResponseModel>
         {
@@ -50,7 +50,7 @@ public class UsersControllerTest
         List<UserResponseModel> expectedObject = (expected.Value as List<UserResponseModel>)!;
 
         // ACT
-        var result = usersController.GetAllUsers(null, null, null) as OkObjectResult;
+        var result = usersController.GetUsers(null, null, null, null) as OkObjectResult;
         var objectResult = (result.Value as List<UserResponseModel>)!;
 
         // ASSERT
@@ -91,14 +91,15 @@ public class UsersControllerTest
             Email = "charlie@mail.com",
             Role = businessOwner
         };
-
-        IEnumerable<User> users = new List<User> { user1, user2, user3 };
-        usersLogicMock.Setup(u => u.GetAllUsers()).Returns(users);
-
-        // Act
         var pageNumber = 1;
         var pageSize = 2;
-        var result = usersController.GetAllUsers(pageNumber, pageSize, null, null) as OkObjectResult;
+        IEnumerable<User> users = new List<User> { user1, user2, user3 };
+        var expectedReturnedUsers = new List<User> { user1, user2 };
+        usersLogicMock.Setup(u => u.GetUsers(pageNumber, pageSize, null, null)).Returns(expectedReturnedUsers);
+
+        // Act
+
+        var result = usersController.GetUsers(pageNumber, pageSize, null, null) as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);
@@ -108,7 +109,7 @@ public class UsersControllerTest
         var totalCount = resultValue.TotalCount;
 
         Assert.AreEqual(pageSize, returnedUsers.Count);
-        Assert.AreEqual(totalCount, users.Count());
+        Assert.AreEqual(totalCount, expectedReturnedUsers.Count);
         Assert.AreEqual(user1.Name, returnedUsers[0].Name);
         Assert.AreEqual(user2.Name, returnedUsers[1].Name);
         Assert.AreEqual(pageNumber, resultValue.PageNumber);
@@ -150,10 +151,11 @@ public class UsersControllerTest
         };
 
         IEnumerable<User> users = new List<User> { user1, user2, user3 };
-        usersLogicMock.Setup(u => u.GetAllUsers()).Returns(users);
+        var expectedReturnedUsers = new List<User> { user1, user3 };
+        usersLogicMock.Setup(u => u.GetUsers(null, null, businessOwner.Name, null)).Returns(expectedReturnedUsers);
 
         // Act
-        var result = usersController.GetAllUsers(null, null, businessOwner.Name, null) as OkObjectResult;
+        var result = usersController.GetUsers(null, null, businessOwner.Name, null) as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);
@@ -187,10 +189,11 @@ public class UsersControllerTest
         };
 
         IEnumerable<User> users = new List<User> { user1, user2 };
-        usersLogicMock.Setup(u => u.GetAllUsers()).Returns(users);
+        var expectedReturnedUsers = new List<User> { user1 };
+        usersLogicMock.Setup(u => u.GetUsers(null, null, null, "Alice Smith")).Returns(expectedReturnedUsers);
 
         // Act
-        var result = usersController.GetAllUsers(null, null, null, "Alice Smith") as OkObjectResult;
+        var result = usersController.GetUsers(null, null, null, "Alice Smith") as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);
@@ -215,10 +218,11 @@ public class UsersControllerTest
         };
 
         IEnumerable<User> users = new List<User> { user1 };
-        usersLogicMock.Setup(u => u.GetAllUsers()).Returns(users);
+        var expectedReturnedUsers = new List <User>();
+        usersLogicMock.Setup(u => u.GetUsers(null, null, null, "John Doe")).Returns(expectedReturnedUsers);
 
         // Act
-        var result = usersController.GetAllUsers(null, null, null, "John Doe") as OkObjectResult;
+        var result = usersController.GetUsers(null, null, null, "John Doe") as OkObjectResult;
 
         // Assert
         Assert.IsNotNull(result);
