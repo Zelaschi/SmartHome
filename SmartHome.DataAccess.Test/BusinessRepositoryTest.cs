@@ -1,4 +1,6 @@
 using FluentAssertions;
+using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
@@ -172,24 +174,6 @@ public class BusinessRepositoryTest
         action.Should().Throw<DatabaseException>()
             .WithMessage("The Business does not exist in the Data Base.");
     }
+
     #endregion
-}
-
-internal sealed class TestDbContext(DbContextOptions options)
-    : DbContext(options)
-{
-    public DbSet<EntityTest> EntitiesTest { get; set; }
-}
-
-internal sealed record class EntityTest()
-{
-    public string Id { get; init; } = Guid.NewGuid().ToString();
-
-    public string Name { get; init; } = null!;
-
-    public EntityTest(string name)
-        : this()
-    {
-        Name = name;
-    }
 }
