@@ -1,4 +1,4 @@
-<!-- Dropdown para filtrar dispositivos por estado de conexión -->
+<!--
 <app-dropdown 
   [options]="filterOptions" 
   placeholder="Filtrar por estado"
@@ -6,7 +6,6 @@
   (valueChange)="onFilterChange($event)">
 </app-dropdown>
 
-<!-- Campo de búsqueda usando FormInputComponent -->
 <app-form-input
   [type]="'text'"
   [label]="'Buscar dispositivo'"
@@ -17,7 +16,6 @@
   (input)="onSearch()">
 </app-form-input>
 
-<!-- Tabla de dispositivos -->
 <div *ngIf="devices.length > 0; else noDevices">
   <table class="table table-dark table-striped">
     <thead>
@@ -45,4 +43,4 @@
 
 <ng-template #noDevices>
   <p>No hay dispositivos instalados en este hogar.</p>
-</ng-template>
+</ng-template> -->

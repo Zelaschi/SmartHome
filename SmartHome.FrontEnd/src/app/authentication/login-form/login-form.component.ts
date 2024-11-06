@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../backend/repositories/auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -32,11 +33,17 @@ export class LoginFormComponent {
     ]),
   });
 
-  constructor(private readonly _router: Router) {}
+  constructor(private readonly _router: Router, private authService : AuthService) {}
 
   public onSubmit(values: any) {
-    console.log(values);
-    localStorage.setItem('isLoggedIn', 'true');
+    this.authService.login(values.email, values.password).subscribe(
+      () => {
+        this._router.navigate(['/home']);
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    )
     this._router.navigate(['/home']);
   }
 

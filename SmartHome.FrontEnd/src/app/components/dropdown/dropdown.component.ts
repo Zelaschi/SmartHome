@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import DropdownOption from './models/DropDownOption';
+import DropdownOption from './models/DropdownOption';
 import { CommonModule } from '@angular/common';
 
 @Component({

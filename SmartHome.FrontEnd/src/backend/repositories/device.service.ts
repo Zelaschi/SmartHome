@@ -17,8 +17,7 @@ export class DeviceService {
     return this.http.post<Device>('${Envoriment.api}/api/v2/windowSensor', device);
   }
   createInteligentLamp(device : Device): Observable<Device> {
-    return this.http.post<Device>('${Envoriment.api}/api/v2/inteligentLamp', device);
-
+    return this.http.post<Device>('${Envoriment.api}/api/v2/inteligentLamp', device);   
   }
   createSecurityCamera(camera : SecurityCamera): Observable<SecurityCamera> {
     return this.http.post<SecurityCamera>('${Envoriment.api}/api/v2/securityCamera', camera);
