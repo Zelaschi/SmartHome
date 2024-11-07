@@ -198,19 +198,15 @@ public class HomeRepositoryTest
         _context.Homes.Add(home);
         _context.SaveChanges();
 
-        var updatedHome = new Home
-        {
-            Id = home.Id,
-            Name = "Updated Home",
-            MainStreet = "Updated Street",
-            DoorNumber = "321",
-            Latitude = "1.0000",
-            Longitude = "1.0000",
-            MaxMembers = 2,
-            Owner = owner
-        };
+        // Usar la entidad ya rastreada en lugar de crear una nueva instancia
+        home.Name = "Updated Home";
+        home.MainStreet = "Updated Street";
+        home.DoorNumber = "321";
+        home.Latitude = "1.0000";
+        home.Longitude = "1.0000";
+        home.MaxMembers = 2;
 
-        var result = _homeRepository.Update(updatedHome);
+        var result = _homeRepository.Update(home);
 
         result.Should().NotBeNull();
         result.Id.Should().Be(home.Id);
@@ -220,6 +216,7 @@ public class HomeRepositoryTest
         updatedEntityInDb.Should().NotBeNull();
         updatedEntityInDb.Name.Should().Be("Updated Home");
     }
+
     #endregion
 
     #region Find
