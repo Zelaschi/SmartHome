@@ -32,6 +32,26 @@ public class HomePermissionRepositoryTest
     }
 
     #region Add
+    [TestMethod]
+    public void Add_WhenInfoIsProvided_ShouldAddedToDatabase()
+    {
+        _context.HomePermissions.RemoveRange(_context.HomePermissions);
+        var homePermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home Permission"
+        };
+
+        _homePermissionRepository.Add(homePermission);
+
+        using var otherContext = DbContextBuilder.BuildTestDbContext();
+        var homePermissionsSaved = otherContext.HomePermissions.ToList();
+
+        homePermissionsSaved.Count.Should().Be(1);
+        var homePermissionSaved = homePermissionsSaved[0];
+        homePermissionSaved.Id.Should().Be(homePermission.Id);
+        homePermissionSaved.Name.Should().Be(homePermission.Name);
+    }
     #endregion
 
     #region Delete
