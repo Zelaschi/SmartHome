@@ -72,7 +72,7 @@ public sealed class UserRepository : IGenericRepository<User>
     {
         try
         {
-            return _context.Users.ToList();
+            return _context.Users.Include(u => u.Role.SystemPermissions).ToList();
         }
         catch (SqlException)
         {
