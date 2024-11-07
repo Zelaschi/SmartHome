@@ -57,7 +57,7 @@ public class BusinessRepositoryTest
     #endregion
     #endregion
 
-    #region GetAll
+    #region FindAll
     [TestMethod]
     public void GetAll_WhenExistOnlyOne_ShouldReturnOne()
     {
@@ -96,6 +96,23 @@ public class BusinessRepositoryTest
         _businessRepository.Delete(business.Id);
 
         _context.Businesses.FirstOrDefault(b => b.Id == business.Id).Should().BeNull();
+    }
+
+    [TestMethod]
+    public void Delete_WhenBusinessDoesNotExists_ShouldRemoveFromDatabase()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Business to Delete",
+            Logo = "Test Logo",
+            RUT = "Test RUT"
+        };
+
+        Action action = () => _businessRepository.Delete(business.Id);
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Business does not exist in the Data Base.");
     }
     #endregion
 

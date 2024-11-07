@@ -100,6 +100,24 @@ public class DeviceRepositoryTest
 
         _context.Devices.FirstOrDefault(b => b.Id == device.Id).Should().BeNull();
     }
+
+    [TestMethod]
+    public void Delete_WhenDeviceDoesNotExists_ShouldRemoveFromDatabase()
+    {
+        var device = new Device
+        {
+            Description = "Test Description",
+            Id = Guid.NewGuid(),
+            ModelNumber = "Test Model Number",
+            Name = "Test Device",
+            Photos = new List<Photo>()
+        };
+
+        Action action = () => _deviceRepository.Delete(device.Id);
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Device does not exist in the Data Base.");
+    }
     #endregion
 
     #region Find
