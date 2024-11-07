@@ -276,6 +276,106 @@ public class HomeRepositoryTest
     #endregion
 
     #region Find
+    [TestMethod]
+    public void Find_WhenHomeExists_ShouldReturnHomeWithAllRelatedEntities()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User Role"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var owner = new User
+        {
+            Name = "Test Owner",
+            Surname = "Owner Surname",
+            Password = "TestPassword123",
+            Email = "owner@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(owner);
+        _context.SaveChanges();
+
+        var memberUser = new User
+        {
+            Name = "Test Member",
+            Surname = "Member Surname",
+            Password = "MemberPassword123",
+            Email = "member@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(memberUser);
+        _context.SaveChanges();
+
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home",
+            MainStreet = "Test Street",
+            DoorNumber = "123",
+            Latitude = "0.0000",
+            Longitude = "0.0000",
+            MaxMembers = 4,
+            Owner = owner
+        };
+        _context.Homes.Add(home);
+        _context.SaveChanges();
+
+        var homePermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "View Devices"
+        };
+        _context.HomePermissions.Add(homePermission);
+        _context.SaveChanges();
+
+        var homeMember = new HomeMember
+        {
+            HomeMemberId = Guid.NewGuid(),
+            HomeId = home.Id,
+            User = memberUser,
+            HomePermissions = new List<HomePermission> { homePermission }
+        };
+        _context.HomeMembers.Add(homeMember);
+        _context.SaveChanges();
+
+        var device = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Device",
+            ModelNumber = "Device123",
+            Description = "Test Description",
+            Photos = new List<Photo>()
+        };
+        _context.Devices.Add(device);
+        _context.SaveChanges();
+
+        var homeDevice = new HomeDevice
+        {
+            Id = Guid.NewGuid(),
+            Name = "Home Device",
+            HomeId = home.Id,
+            Device = device,
+            Online = true
+        };
+        _context.HomeDevices.Add(homeDevice);
+        _context.SaveChanges();
+
+        var result = _homeRepository.Find(h => h.Id == home.Id);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(home.Id);
+        result.Name.Should().Be("Test Home");
+
+        result.Members.Should().NotBeNullOrEmpty();
+        result.Members.First().User.Should().NotBeNull();
+        result.Members.First().User.Name.Should().Be("Test Member");
+        result.Members.First().HomePermissions.Should().NotBeNullOrEmpty();
+        result.Devices.Should().NotBeNullOrEmpty();
+        result.Devices.First().Device.Name.Should().Be("Test Device");
+    }
     #endregion
 
     #region GetAll
