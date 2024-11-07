@@ -162,6 +162,64 @@ public class HomeRepositoryTest
     #endregion
 
     #region Update
+    [TestMethod]
+    public void Update_WhenHomeExists_ShouldUpdateInDatabase()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User Role"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var owner = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(owner);
+        _context.SaveChanges();
+
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home",
+            MainStreet = "Test Street",
+            DoorNumber = "123",
+            Latitude = "0.0000",
+            Longitude = "0.0000",
+            MaxMembers = 4,
+            Owner = owner
+        };
+        _context.Homes.Add(home);
+        _context.SaveChanges();
+
+        var updatedHome = new Home
+        {
+            Id = home.Id,
+            Name = "Updated Home",
+            MainStreet = "Updated Street",
+            DoorNumber = "321",
+            Latitude = "1.0000",
+            Longitude = "1.0000",
+            MaxMembers = 2,
+            Owner = owner
+        };
+
+        var result = _homeRepository.Update(updatedHome);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(home.Id);
+        result.Name.Should().Be("Updated Home");
+
+        var updatedEntityInDb = _context.Homes.FirstOrDefault(h => h.Id == home.Id);
+        updatedEntityInDb.Should().NotBeNull();
+        updatedEntityInDb.Name.Should().Be("Updated Home");
+    }
     #endregion
 
     #region Find
