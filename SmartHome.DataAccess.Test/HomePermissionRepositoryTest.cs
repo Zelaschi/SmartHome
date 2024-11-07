@@ -114,7 +114,7 @@ public class HomePermissionRepositoryTest
 
     #region Update
     [TestMethod]
-    public void Update_WhenHomeDeviceExists_ShouldUpdateInDatabase()
+    public void Update_WhenHomePermissionExists_ShouldUpdateInDatabase()
     {
         _context.HomePermissions.RemoveRange(_context.HomePermissions);
         var homePermission = new HomePermission
@@ -142,6 +142,9 @@ public class HomePermissionRepositoryTest
         updatedEntityInDb.Should().NotBeNull();
         updatedEntityInDb.Name.Should().Be("Updated Home Permission");
     }
+
+    [TestMethod]
+    public void 
     #endregion
 
     #region FindAll
