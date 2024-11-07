@@ -116,5 +116,24 @@ public class HomePermissionRepositoryTest
     #endregion
 
     #region FindAll
+    [TestMethod]
+    public void GetAll_WhenExistOnlyOne_ShouldReturnOne()
+    {
+        _context.HomePermissions.RemoveRange(_context.HomePermissions);
+        var homePermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home Permission"
+        };
+
+        _homePermissionRepository.Add(homePermission);
+        _context.SaveChanges();
+
+        var homePermissions = _homePermissionRepository.FindAll();
+
+        homePermissions.Count.Should().Be(1);
+        homePermissions[0].Id.Should().Be(homePermission.Id);
+        homePermissions[0].Name.Should().Be(homePermission.Name);
+    }
     #endregion
 }
