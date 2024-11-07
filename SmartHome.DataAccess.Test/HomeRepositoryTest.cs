@@ -119,6 +119,46 @@ public class HomeRepositoryTest
 
         _context.Homes.FirstOrDefault(h => h.Id == home.Id).Should().BeNull();
     }
+
+    [TestMethod]
+    public void Delete_WhenHomeDoesNotExists_ShouldRemoveFromDatabase()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User Role"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var owner = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(owner);
+        _context.SaveChanges();
+
+        var nonExistingHome = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home",
+            MainStreet = "Test Street",
+            DoorNumber = "123",
+            Latitude = "0.0000",
+            Longitude = "0.0000",
+            MaxMembers = 4,
+            Owner = owner
+        };
+
+        Action action = () => _homeRepository.Delete(nonExistingHome.Id);
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Home does not exist in the Data Base.");
+    }
     #endregion
 
     #region Update
