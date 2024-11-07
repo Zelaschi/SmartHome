@@ -57,7 +57,7 @@ public class BusinessRepositoryTest
     #endregion
     #endregion
 
-    #region GetAll
+    #region FindAll
     [TestMethod]
     public void GetAll_WhenExistOnlyOne_ShouldReturnOne()
     {
