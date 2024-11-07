@@ -451,22 +451,66 @@ public class HomeDeviceRepositoryTest
         updatedEntityInDb.Name.Should().Be("Updated HomeDevice");
     }
 
-    ////[TestMethod]
-    ////public void Update_WhenBusinessDoesNotExist_ShouldThrowDatabaseException()
-    ////{
-    ////    var nonExistingBusiness = new Business
-    ////    {
-    ////        Id = Guid.NewGuid(),
-    ////        Name = "Non-existing Business",
-    ////        Logo = "Non-existing Logo",
-    ////        RUT = "Non-existing RUT"
-    ////    };
+    [TestMethod]
+    public void Update_WhenHomeDeviceDoesNotExist_ShouldThrowDatabaseException()
+    {
+        var device = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Device",
+            ModelNumber = "Model123",
+            Description = "Test Description",
+            Photos = new List<Photo>()
+        };
+        _context.Devices.Add(device);
+        _context.SaveChanges();
 
-    ////    Action action = () => _businessRepository.Update(nonExistingBusiness);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User Role"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
 
-    ////    action.Should().Throw<DatabaseException>()
-    ////        .WithMessage("The Business does not exist in the Data Base.");
-    ////}
+        var owner = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(owner);
+        _context.SaveChanges();
 
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home",
+            MainStreet = "Test Street",
+            DoorNumber = "123",
+            Latitude = "0.0000",
+            Longitude = "0.0000",
+            MaxMembers = 4,
+            Owner = owner
+        };
+        _context.Homes.Add(home);
+        _context.SaveChanges();
+
+        var nonExistingHomeDevice = new HomeDevice
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test HomeDevice",
+            Device = device,
+            HomeId = home.Id,
+            Online = true
+        };
+
+        Action action = () => _homeDeviceRepository.Update(nonExistingHomeDevice);
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Home Device does not exist in the Data Base.");
+    }
     #endregion
 }
