@@ -55,6 +55,39 @@ public class HomePermissionRepositoryTest
     #endregion
 
     #region Delete
+    [TestMethod]
+    public void Delete_WhenHomePermissionExists_ShouldRemoveFromDatabase()
+    {
+        _context.HomePermissions.RemoveRange(_context.HomePermissions);
+        var homePermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home Permission"
+        };
+
+        _homePermissionRepository.Add(homePermission);
+        _context.SaveChanges();
+
+        _homePermissionRepository.Delete(homePermission.Id);
+
+        _context.HomePermissions.FirstOrDefault(hp => hp.Id == homePermission.Id).Should().BeNull();
+    }
+
+    [TestMethod]
+    public void Delete_WhenHomePermissionDoesNotExists_ShouldThrowException()
+    {
+        _context.HomePermissions.RemoveRange(_context.HomePermissions);
+        var homePermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home Permission"
+        };
+
+        Action action = () => _homePermissionRepository.Delete(homePermission.Id);
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The HomePermission does not exist in the Data Base.");
+    }
     #endregion
 
     #region Find
