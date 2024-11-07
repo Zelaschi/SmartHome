@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Device } from '../services/models/Device';
-import { SecurityCamera } from '../services/models/SecurityCamera';
+import { Device } from '../services/Device/Device';
+import { SecurityCamera } from '../services/Device/SecurityCamera';
 import { Observable } from 'rxjs';
 
 @Injectable({

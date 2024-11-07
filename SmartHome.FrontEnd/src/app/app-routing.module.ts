@@ -3,17 +3,24 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'businesses',
     loadChildren: () =>
-      import('./authentication/authentication.module').then(
-        (m) => m.AuthenticationModule
+      import('./layouts/business/business.module').then(
+        (m) => m.BusinessModule
       ),
   },
   {
-    path: 'device',
+    path: 'devices',
     loadChildren: () =>
       import('./layouts/device/device.module').then(
         (m) => m.DeviceModule
+      ),
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./layouts/authentication/authentication.module').then(
+        (m) => m.AuthenticationModule
       ),
   },
 ];
