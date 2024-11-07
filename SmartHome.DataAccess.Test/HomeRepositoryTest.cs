@@ -198,7 +198,6 @@ public class HomeRepositoryTest
         _context.Homes.Add(home);
         _context.SaveChanges();
 
-        // Usar la entidad ya rastreada en lugar de crear una nueva instancia
         home.Name = "Updated Home";
         home.MainStreet = "Updated Street";
         home.DoorNumber = "321";
@@ -215,6 +214,63 @@ public class HomeRepositoryTest
         var updatedEntityInDb = _context.Homes.FirstOrDefault(h => h.Id == home.Id);
         updatedEntityInDb.Should().NotBeNull();
         updatedEntityInDb.Name.Should().Be("Updated Home");
+    }
+
+    [TestMethod]
+    public void Update_WhenHomeDoesNotExist_ShouldThrowDatabaseException()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User Role"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var owner = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(owner);
+        _context.SaveChanges();
+
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home",
+            MainStreet = "Test Street",
+            DoorNumber = "123",
+            Latitude = "0.0000",
+            Longitude = "0.0000",
+            MaxMembers = 4,
+            Owner = owner
+        };
+
+        home.Name = "Updated Home";
+        home.MainStreet = "Updated Street";
+        home.DoorNumber = "321";
+        home.Latitude = "1.0000";
+        home.Longitude = "1.0000";
+        home.MaxMembers = 2;
+
+        Action action = () =>
+        {
+            try
+            {
+                _homeRepository.Update(home);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DatabaseException("The Home does not exist in the Data Base.");
+            }
+        };
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Home does not exist in the Data Base.");
     }
 
     #endregion
