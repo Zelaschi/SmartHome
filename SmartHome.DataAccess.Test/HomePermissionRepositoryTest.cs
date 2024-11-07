@@ -113,6 +113,35 @@ public class HomePermissionRepositoryTest
     #endregion
 
     #region Update
+    [TestMethod]
+    public void Update_WhenHomeDeviceExists_ShouldUpdateInDatabase()
+    {
+        _context.HomePermissions.RemoveRange(_context.HomePermissions);
+        var homePermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home Permission"
+        };
+
+        _homePermissionRepository.Add(homePermission);
+        _context.SaveChanges();
+
+        var updatedHomePermission = new HomePermission
+        {
+            Id = homePermission.Id,
+            Name = "Updated Home Permission"
+        };
+
+        var result = _homePermissionRepository.Update(updatedHomePermission);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(homePermission.Id);
+        result.Name.Should().Be("Updated Home Permission");
+
+        var updatedEntityInDb = _context.HomePermissions.FirstOrDefault(hp => hp.Id == homePermission.Id);
+        updatedEntityInDb.Should().NotBeNull();
+        updatedEntityInDb.Name.Should().Be("Updated Home Permission");
+    }
     #endregion
 
     #region FindAll
