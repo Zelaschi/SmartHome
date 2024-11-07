@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.DTOs;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 
@@ -21,13 +22,19 @@ public class SessionService : ILoginLogic, ISessionLogic
         _sessionRepository = sessionRepository;
     }
 
-    public Guid LogIn(string email, string password)
+    public DTOSessionAndSystemPermissions LogIn(string email, string password)
     {
         User? existingUser = _userRepository.FindAll().FirstOrDefault(u => u.Email == email && u.Password == password);
 
         if (existingUser == null)
         {
             throw new UserException("User with that email and password does not exist");
+        }
+
+        var systemPermissions = existingUser.Role.SystemPermissions;
+        if (systemPermissions == null || systemPermissions.Count == 0)
+        {
+            throw new UserException("User does not have any permissions");
         }
 
         var session = new Session()
@@ -38,7 +45,13 @@ public class SessionService : ILoginLogic, ISessionLogic
 
         _sessionRepository.Add(session);
 
-        return session.SessionId;
+        var returnObject = new DTOSessionAndSystemPermissions()
+        {
+            SessionId = session.SessionId,
+            SystemPermissions = systemPermissions
+        };
+
+        return returnObject;
     }
 
     public bool IsSessionValid(Guid token)
