@@ -144,7 +144,20 @@ public class HomePermissionRepositoryTest
     }
 
     [TestMethod]
-    public void 
+    public void Update_WhenHomePermissionDoesNotExist_ShouldThrowDatabaseException()
+    {
+        _context.HomePermissions.RemoveRange(_context.HomePermissions);
+        var nonExistingHomePermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home Permission"
+        };
+
+        Action action = () => _homePermissionRepository.Update(nonExistingHomePermission);
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The HomePermission does not exist in the Data Base.");
+    }
     #endregion
 
     #region FindAll
