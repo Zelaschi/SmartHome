@@ -91,6 +91,25 @@ public class HomePermissionRepositoryTest
     #endregion
 
     #region Find
+    [TestMethod]
+    public void Find_WhenHomePermissionExists_ShouldReturnBusiness()
+    {
+        _context.HomePermissions.RemoveRange(_context.HomePermissions);
+        var homePermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home Permission"
+        };
+
+        _homePermissionRepository.Add(homePermission);
+        _context.SaveChanges();
+
+        var result = _homePermissionRepository.Find(hp => hp.Id == homePermission.Id);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(homePermission.Id);
+        result.Name.Should().Be(homePermission.Name);
+    }
     #endregion
 
     #region Update
