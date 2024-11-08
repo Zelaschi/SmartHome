@@ -72,6 +72,40 @@ public class SessionRepositoryTest
     #endregion
 
     #region Delete
+    [TestMethod]
+    public void Delete_SessionEntity_ShouldDeleteCorrectly()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var session = new Session
+        {
+            SessionId = Guid.NewGuid(),
+            UserId = (Guid)user.Id
+        };
+        _sessionRepository.Add(session);
+        _context.SaveChanges();
+
+        _sessionRepository.Delete(session.SessionId);
+
+        _context.Sessions.FirstOrDefault(s => s.SessionId == session.SessionId).Should().BeNull();
+    }
     #endregion
 
     #region Update
