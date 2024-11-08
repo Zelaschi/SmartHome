@@ -140,6 +140,29 @@ public class RoleRepositoryTest
         updatedEntityInDb.Should().NotBeNull();
         updatedEntityInDb.Name.Should().Be("User");
     }
+
+    [TestMethod]
+    public void Update_WhenRoleDoesNotExist_ShouldThrowDatabaseException()
+    {
+        _context.Roles.RemoveRange(_context.Roles);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var roleToUpdate = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User"
+        };
+
+        Action action = () => _roleRepository.Update(roleToUpdate);
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Role does not exist in the Data Base.");
+    }
     #endregion
 
     #region GetAll
