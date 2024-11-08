@@ -70,6 +70,33 @@ public class UserRepositoryTest
     #endregion
 
     #region Delete
+    [TestMethod]
+    public void Delete_WhenUserIsProvided_ShouldDeleteFromDataBase()
+    {
+        _context.Users.RemoveRange(_context.Users);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        _userRepository.Delete((Guid)user.Id);
+
+        _context.Users.FirstOrDefault(u => u.Id == user.Id).Should().BeNull();
+    }
     #endregion
 
     #region Update
@@ -80,4 +107,4 @@ public class UserRepositoryTest
 
     #region GetAll
     #endregion
-    }
+}
