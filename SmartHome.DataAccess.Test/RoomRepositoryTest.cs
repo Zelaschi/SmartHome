@@ -138,6 +138,14 @@ public class RoomRepositoryTest
 
         _context.Rooms.FirstOrDefault(r => r.Id == room.Id).Should().BeNull();
     }
+
+    [TestMethod]
+    public void Delete_WhenRoomDoesNotExist_ShouldThrowDatabaseException()
+    {
+        Action action = () => _roomRepository.Delete(Guid.NewGuid());
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Room does not exist in the Data Base.");
+    }
     #endregion
 
     #region GetAll
