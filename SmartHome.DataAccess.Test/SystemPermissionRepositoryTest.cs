@@ -130,6 +130,33 @@ public class SystemPermissionRepositoryTest
         sysPermissionSaved.Name.Should().Be(systemPermissionUpdated.Name);
         sysPermissionSaved.Description.Should().Be(systemPermissionUpdated.Description);
     }
+
+    [TestMethod]
+    public void Update_SystemPermissionEntityNotFound_ShouldThrowException()
+    {
+        _context.SystemPermissions.RemoveRange(_context.SystemPermissions);
+        var systemPermission = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Permission",
+            Description = "Test Description"
+        };
+
+        _systemPermissionRepository.Add(systemPermission);
+        _context.SaveChanges();
+
+        var systemPermissionUpdated = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Permission Updated",
+            Description = "Test Description Updated"
+        };
+
+        Action act = () => _systemPermissionRepository.Update(systemPermissionUpdated);
+
+        act.Should().Throw<DatabaseException>()
+            .WithMessage("The SystemPermission does not exist in the Data Base.");
+    }
     #endregion
 
     #region Find
