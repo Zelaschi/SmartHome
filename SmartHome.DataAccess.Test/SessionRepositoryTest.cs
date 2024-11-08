@@ -118,6 +118,62 @@ public class SessionRepositoryTest
     #endregion
 
     #region Update
+    [TestMethod]
+    public void Update_SessionEntity_ShouldUpdateCorrectly()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var user2 = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user2);
+        _context.SaveChanges();
+
+        var session = new Session
+        {
+            SessionId = Guid.NewGuid(),
+            UserId = (Guid)user.Id
+        };
+        _sessionRepository.Add(session);
+        _context.SaveChanges();
+
+        var sessionToUpdate = _context.Sessions.FirstOrDefault(s => s.SessionId == session.SessionId);
+        sessionToUpdate.UserId = (Guid)user2.Id;
+
+        var result = _sessionRepository.Update(sessionToUpdate);
+
+        result.Should().NotBeNull();
+        result.UserId.Should().Be(session.UserId);
+        result.SessionId.Should().Be(sessionToUpdate.SessionId);
+
+        var updatedEntityInDb = _context.Sessions.FirstOrDefault(s => s.SessionId == session.SessionId);
+        updatedEntityInDb.Should().NotBeNull();
+        updatedEntityInDb.UserId.Should().Be(session.UserId);
+        updatedEntityInDb.SessionId.Should().Be(sessionToUpdate.SessionId);
+    }
+
     #endregion
 
     #region Find
