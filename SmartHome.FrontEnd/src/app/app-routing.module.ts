@@ -17,6 +17,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'admins',
+    loadChildren: () =>
+      import('./layouts/admin/admin.module').then(
+        (m) => m.AdminModule
+      ),
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./layouts/authentication/authentication.module').then(
