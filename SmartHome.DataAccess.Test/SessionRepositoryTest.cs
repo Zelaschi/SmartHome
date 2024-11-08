@@ -32,6 +32,43 @@ public class SessionRepositoryTest
     }
 
     #region Add
+    [TestMethod]
+    public void Add_SessionEntity_ShouldReturnSessionEntity()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var session = new Session
+        {
+            SessionId = Guid.NewGuid(),
+            UserId = (Guid)user.Id
+        };
+        _sessionRepository.Add(session);
+        _context.SaveChanges();
+
+        var sessionsSaved = _context.Sessions.ToList();
+        sessionsSaved.Count.Should().Be(1);
+
+        var sessionSaved = sessionsSaved[0];
+        sessionSaved.SessionId.Should().Be(session.SessionId);
+        sessionSaved.UserId.Should().Be(session.UserId);
+    }
     #endregion
 
     #region Delete
