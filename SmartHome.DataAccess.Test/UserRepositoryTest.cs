@@ -4,6 +4,7 @@ using SmartHome.BusinessLogic.Services;
 using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.DataAccess.Repositories;
+using ZstdSharp.Unsafe;
 
 namespace SmartHome.DataAccess.Test;
 
@@ -129,6 +130,50 @@ public class UserRepositoryTest
     #endregion
 
     #region Update
+    [TestMethod]
+    public void Update_WhenUserIsFound_ShouldUpdateDataBase()
+    {
+        _context.Users.RemoveRange(_context.Users);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var userUpdated = new User
+        {
+            Id = user.Id,
+            Name = "Updated Name",
+            Surname = "Updated Surname",
+            Password = "UpdatedPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _userRepository.Update(userUpdated);
+        _context.SaveChanges();
+
+        using var otherContext = DbContextBuilder.BuildTestDbContext();
+        var usersSaved = otherContext.Users.ToList();
+
+        usersSaved.Count.Should().Be(1);
+        var userSaved = usersSaved[0];
+        userSaved.Id.Should().Be(user.Id);
+        userSaved.Name.Should().Be(userUpdated.Name);
+        userSaved.Password.Should().Be(user.Password);
+    }
     #endregion
 
     #region Find
