@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.Services;
 using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.DataAccess.Repositories;
@@ -31,6 +32,26 @@ public class RoleRepositoryTest
     }
 
     #region Add
+    [TestMethod]
+    public void AddRole_WhenRoleIsAdded_ShouldReturnRole()
+    {
+        _context.Roles.RemoveRange(_context.Roles);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        using var otherContext = DbContextBuilder.BuildTestDbContext();
+        var rolesSaved = otherContext.Roles.ToList();
+
+        rolesSaved.Count.Should().Be(1);
+        var roleSaved = rolesSaved[0];
+        roleSaved.Id.Should().Be(role.Id);
+        roleSaved.Name.Should().Be(role.Name);
+    }
     #endregion
 
     #region Delete
