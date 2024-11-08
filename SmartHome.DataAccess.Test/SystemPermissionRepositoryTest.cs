@@ -74,6 +74,26 @@ public class SystemPermissionRepositoryTest
 
         _context.SystemPermissions.FirstOrDefault(sp => sp.Id == systemPermission.Id).Should().BeNull();
     }
+
+    [TestMethod]
+    public void Delete_SystemPermissionEntity_ShouldThrowException()
+    {
+        _context.SystemPermissions.RemoveRange(_context.SystemPermissions);
+        var systemPermission = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Permission",
+            Description = "Test Description"
+        };
+
+        _systemPermissionRepository.Add(systemPermission);
+        _context.SaveChanges();
+
+        Action act = () => _systemPermissionRepository.Delete(Guid.NewGuid());
+
+        act.Should().Throw<DatabaseException>()
+            .WithMessage("The SystemPermission does not exist in the Data Base.");
+    }
     #endregion
 
     #region Update
