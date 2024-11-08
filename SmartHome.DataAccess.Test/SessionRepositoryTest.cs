@@ -185,6 +185,42 @@ public class SessionRepositoryTest
     #endregion
 
     #region Find
+    [TestMethod]
+    public void Find_SessionEntity_ShouldReturnSessionEntity()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var session = new Session
+        {
+            SessionId = Guid.NewGuid(),
+            UserId = (Guid)user.Id
+        };
+        _sessionRepository.Add(session);
+        _context.SaveChanges();
+
+        var result = _sessionRepository.Find(s => s.SessionId == session.SessionId);
+
+        result.Should().NotBeNull();
+        result!.SessionId.Should().Be(session.SessionId);
+        result.UserId.Should().Be(session.UserId);
+    }
     #endregion
 
     #region GetAll
