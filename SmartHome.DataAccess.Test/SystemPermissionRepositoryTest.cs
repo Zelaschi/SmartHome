@@ -35,6 +35,31 @@ public class SystemPermissionRepositoryTest
     [TestMethod]
     public void Add_SystemPermissionEntity_ShouldReturnSystemPermissionEntity()
     {
+        _context.SystemPermissions.RemoveRange(_context.SystemPermissions);
+        var systemPermission = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Permission",
+            Description = "Test Description"
+        };
+        _systemPermissionRepository.Add(systemPermission);
+        _context.SaveChanges();
+
+        using var otherContext = DbContextBuilder.BuildTestDbContext();
+        var sysPermissionsSaved = otherContext.SystemPermissions.ToList();
+
+        sysPermissionsSaved.Count.Should().Be(1);
+        var sysPermissionSaved = sysPermissionsSaved[0];
+        sysPermissionSaved.Id.Should().Be(systemPermission.Id);
+        sysPermissionSaved.Name.Should().Be(systemPermission.Name);
+    }
+    #endregion
+
+    #region Delete
+    [TestMethod]
+    public void Delete_SystemPermissionEntity_ShouldNotThrowException()
+    {
+        _context.SystemPermissions.RemoveRange(_context.SystemPermissions);
         var systemPermission = new SystemPermission
         {
             Id = Guid.NewGuid(),
@@ -42,16 +67,13 @@ public class SystemPermissionRepositoryTest
             Description = "Test Description"
         };
 
-        var result = _systemPermissionRepository.Add(systemPermission);
+        _systemPermissionRepository.Add(systemPermission);
+        _context.SaveChanges();
 
-        result.Should().NotBeNull();
-        result.Id.Should().Be(systemPermission.Id);
-        result.Name.Should().Be(systemPermission.Name);
-        result.Description.Should().Be(systemPermission.Description);
+        _systemPermissionRepository.Delete(systemPermission.Id);
+
+        _context.SystemPermissions.FirstOrDefault(sp => sp.Id == systemPermission.Id).Should().BeNull();
     }
-    #endregion
-
-    #region Delete
     #endregion
 
     #region Update
