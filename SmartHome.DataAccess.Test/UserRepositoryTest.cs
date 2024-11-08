@@ -217,6 +217,39 @@ public class UserRepositoryTest
     #endregion
 
     #region Find
+    [TestMethod]
+    public void Find_WhenUserIsFound_ShouldReturnUser()
+    {
+        _context.Users.RemoveRange(_context.Users);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var userFound = _userRepository.Find(u => u.Id == user.Id);
+
+        userFound.Should().NotBeNull();
+        userFound!.Id.Should().Be(user.Id);
+        userFound.Name.Should().Be(user.Name);
+        userFound.Surname.Should().Be(user.Surname);
+        userFound.Password.Should().Be(user.Password);
+        userFound.Email.Should().Be(user.Email);
+        userFound.RoleId.Should().Be(user.RoleId);
+    }
     #endregion
 
     #region GetAll
