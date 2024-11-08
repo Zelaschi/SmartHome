@@ -112,6 +112,34 @@ public class RoleRepositoryTest
     #endregion
 
     #region Update
+    [TestMethod]
+    public void Update_WhenRoleExists_ShouldUpdateRole()
+    {
+        _context.Roles.RemoveRange(_context.Roles);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var roleToUpdate = new Role
+        {
+            Id = role.Id,
+            Name = "User"
+        };
+
+        var result = _roleRepository.Update(roleToUpdate);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(role.Id);
+        result.Name.Should().Be("User");
+
+        var updatedEntityInDb = _context.Roles.FirstOrDefault(r => r.Id == role.Id);
+        updatedEntityInDb.Should().NotBeNull();
+        updatedEntityInDb.Name.Should().Be("User");
+    }
     #endregion
 
     #region GetAll
