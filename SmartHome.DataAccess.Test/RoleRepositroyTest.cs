@@ -166,5 +166,24 @@ public class RoleRepositoryTest
     #endregion
 
     #region GetAll
+    [TestMethod]
+    public void FindAll_WhenExistOnlyOne_ShouldReturnOne()
+    {
+        _context.Roles.RemoveRange(_context.Roles);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _roleRepository.Add(role);
+        _context.SaveChanges();
+
+        var roles = _roleRepository.FindAll();
+
+        roles.Count.Should().Be(1);
+        var roleFound = roles[0];
+        roleFound.Id.Should().Be(role.Id);
+        roleFound.Name.Should().Be(role.Name);
+    }
     #endregion
 }
