@@ -91,6 +91,24 @@ public class RoleRepositoryTest
     #endregion
 
     #region Find
+    [TestMethod]
+    public void Find_WhenRoleExists_ShouldReturnRole()
+    {
+        _context.Roles.RemoveRange(_context.Roles);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var roleFound = _roleRepository.Find(r => r.Id == role.Id);
+
+        roleFound.Should().NotBeNull();
+        roleFound!.Id.Should().Be(role.Id);
+        roleFound.Name.Should().Be(role.Name);
+    }
     #endregion
 
     #region Update
