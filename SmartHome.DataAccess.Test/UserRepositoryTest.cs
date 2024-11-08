@@ -97,6 +97,35 @@ public class UserRepositoryTest
 
         _context.Users.FirstOrDefault(u => u.Id == user.Id).Should().BeNull();
     }
+
+    [TestMethod]
+    public void Delete_WhenUserIsNotProvided_ShouldThrowDatabaseException()
+    {
+        _context.Users.RemoveRange(_context.Users);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        Action act = () => _userRepository.Delete(Guid.NewGuid());
+
+        act.Should().Throw<DatabaseException>()
+            .WithMessage("The User does not exist in the Data Base.");
+    }
     #endregion
 
     #region Update
