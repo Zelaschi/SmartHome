@@ -213,5 +213,55 @@ public class RoomRepositoryTest
     #endregion
 
     #region Find
+    [TestMethod]
+    public void Find_WhenRoomExists_ShouldReturnRoom()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User Role"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var owner = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(owner);
+        _context.SaveChanges();
+
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home",
+            MainStreet = "Test Street",
+            DoorNumber = "123",
+            Latitude = "0.0000",
+            Longitude = "0.0000",
+            MaxMembers = 4,
+            Owner = owner
+        };
+        _context.Homes.Add(home);
+        _context.SaveChanges();
+
+        var room = new Room
+        {
+            Home = home,
+            Name = "Living Room",
+        };
+        _roomRepository.Add(room);
+        _context.SaveChanges();
+
+        var roomFound = _roomRepository.Find(r => r.Id == room.Id);
+
+        roomFound.Should().NotBeNull();
+        roomFound!.Id.Should().Be(room.Id);
+        roomFound.Name.Should().Be(room.Name);
+    }
     #endregion
 }
