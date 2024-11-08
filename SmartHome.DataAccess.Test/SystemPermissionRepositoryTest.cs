@@ -97,6 +97,39 @@ public class SystemPermissionRepositoryTest
     #endregion
 
     #region Update
+    [TestMethod]
+    public void Update_SystemPermissionEntity_ShouldReturnSystemPermissionEntity()
+    {
+        _context.SystemPermissions.RemoveRange(_context.SystemPermissions);
+        var systemPermission = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Permission",
+            Description = "Test Description"
+        };
+
+        _systemPermissionRepository.Add(systemPermission);
+        _context.SaveChanges();
+
+        var systemPermissionUpdated = new SystemPermission
+        {
+            Id = systemPermission.Id,
+            Name = "Test Permission Updated",
+            Description = "Test Description Updated"
+        };
+
+        _systemPermissionRepository.Update(systemPermissionUpdated);
+        _context.SaveChanges();
+
+        using var otherContext = DbContextBuilder.BuildTestDbContext();
+        var sysPermissionsSaved = otherContext.SystemPermissions.ToList();
+
+        sysPermissionsSaved.Count.Should().Be(1);
+        var sysPermissionSaved = sysPermissionsSaved[0];
+        sysPermissionSaved.Id.Should().Be(systemPermission.Id);
+        sysPermissionSaved.Name.Should().Be(systemPermissionUpdated.Name);
+        sysPermissionSaved.Description.Should().Be(systemPermissionUpdated.Description);
+    }
     #endregion
 
     #region Find
