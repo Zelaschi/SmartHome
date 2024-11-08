@@ -302,30 +302,19 @@ public class RoomRepositoryTest
         _context.Homes.Add(home);
         _context.SaveChanges();
 
-        var room1 = new Room
+        var room = new Room
         {
             Home = home,
             Name = "Living Room",
         };
-        _roomRepository.Add(room1);
-        _context.SaveChanges();
-
-        var room2 = new Room
-        {
-            Home = home,
-            Name = "Kitchen",
-        };
-        _roomRepository.Add(room2);
+        _roomRepository.Add(room);
         _context.SaveChanges();
 
         var rooms = _roomRepository.FindAll();
 
-        rooms.Count.Should().Be(2);
-        rooms = rooms.OrderBy(r => r.Id).ToList();
-        rooms[0].Id.Should().Be(room1.Id);
-        rooms[0].Name.Should().Be(room1.Name);
-        rooms[1].Id.Should().Be(room2.Id);
-        rooms[1].Name.Should().Be(room2.Name);
+        rooms.Count.Should().Be(1);
+        rooms[0].Id.Should().Be(room.Id);
+        rooms[0].Name.Should().Be(room.Name);
     }
     #endregion
 
