@@ -106,6 +106,15 @@ public class SessionRepositoryTest
 
         _context.Sessions.FirstOrDefault(s => s.SessionId == session.SessionId).Should().BeNull();
     }
+
+    [TestMethod]
+    public void Delete_SessionEntityNotFound_ShouldThrowException()
+    {
+        Action action = () => _sessionRepository.Delete(Guid.NewGuid());
+
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Session does not exist in the Data Base.");
+    }
     #endregion
 
     #region Update
