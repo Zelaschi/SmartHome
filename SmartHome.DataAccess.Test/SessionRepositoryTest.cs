@@ -224,5 +224,60 @@ public class SessionRepositoryTest
     #endregion
 
     #region GetAll
+    [TestMethod]
+    public void GetAll_ShouldReturnAllSessionEntities()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var session = new Session
+        {
+            SessionId = Guid.NewGuid(),
+            UserId = (Guid)user.Id
+        };
+        _sessionRepository.Add(session);
+        _context.SaveChanges();
+
+        var user2 = new User
+        {
+            Name = "Test Name2",
+            Surname = "Test Surname2",
+            Password = "TestPassword123",
+            Email = "test2@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user2);
+        _context.SaveChanges();
+
+        var session2 = new Session
+        {
+            SessionId = Guid.NewGuid(),
+            UserId = (Guid)user2.Id
+        };
+        _sessionRepository.Add(session2);
+        _context.SaveChanges();
+
+        var sessions = _sessionRepository.FindAll().ToList();
+
+        sessions.Count.Should().Be(2);
+        sessions.Should().Contain(session);
+        sessions.Should().Contain(session2);
+    }
     #endregion
 }
