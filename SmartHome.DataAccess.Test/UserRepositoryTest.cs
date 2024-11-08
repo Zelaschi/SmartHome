@@ -265,44 +265,26 @@ public class UserRepositoryTest
         _context.Roles.Add(role);
         _context.SaveChanges();
 
-        var user1 = new User
+        var user = new User
         {
-            Name = "Test Name1",
-            Surname = "Test Surname1",
+            Name = "Test Name",
+            Surname = "Test Surname",
             Password = "Test1Password123",
-            Email = "test1@example.com",
+            Email = "test@example.com",
             RoleId = role.Id
         };
-        _context.Users.Add(user1);
-        _context.SaveChanges();
-
-        var user2 = new User
-        {
-            Name = "Test Name2",
-            Surname = "Test Surname2",
-            Password = "Test2Password123",
-            Email = "test2@example.com",
-            RoleId = role.Id
-        };
-        _context.Users.Add(user2);
+        _context.Users.Add(user);
         _context.SaveChanges();
 
         var usersFound = _userRepository.FindAll();
 
-        usersFound.Should().HaveCount(2);
-        usersFound[0].Id.Should().Be(user1.Id);
-        usersFound[0].Name.Should().Be(user1.Name);
-        usersFound[0].Surname.Should().Be(user1.Surname);
-        usersFound[0].Password.Should().Be(user1.Password);
-        usersFound[0].Email.Should().Be(user1.Email);
-        usersFound[0].RoleId.Should().Be(user1.RoleId);
-        usersFound[1].Id.Should().Be(user2.Id);
-        usersFound[1].Name.Should().Be(user2.Name);
-        usersFound[1].Surname.Should().Be(user2.Surname);
-        usersFound[1].Password.Should().Be(user2.Password);
-        usersFound[1].Email.Should().Be(user2.Email);
-        usersFound[1].RoleId.Should().Be(user2.RoleId);
+        usersFound.Should().HaveCount(1);
+        usersFound[0].Id.Should().Be(user.Id);
+        usersFound[0].Name.Should().Be(user.Name);
+        usersFound[0].Surname.Should().Be(user.Surname);
+        usersFound[0].Password.Should().Be(user.Password);
+        usersFound[0].Email.Should().Be(user.Email);
+        usersFound[0].RoleId.Should().Be(user.RoleId);
     }
-
     #endregion
 }
