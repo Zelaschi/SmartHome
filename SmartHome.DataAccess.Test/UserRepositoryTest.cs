@@ -174,6 +174,46 @@ public class UserRepositoryTest
         userSaved.Name.Should().Be(userUpdated.Name);
         userSaved.Password.Should().Be(user.Password);
     }
+
+    [TestMethod]
+    public void Update_WhenUserIsNotFound_ShouldThrowDatabaseException()
+    {
+        _context.Users.RemoveRange(_context.Users);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var userUpdated = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Updated Name",
+            Surname = "Updated Surname",
+            Password = "UpdatedPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+
+        Action act = () => _userRepository.Update(userUpdated);
+
+        act.Should().Throw<DatabaseException>()
+            .WithMessage("The User does not exist in the Data Base.");
+    }
+
     #endregion
 
     #region Find
