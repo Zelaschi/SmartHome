@@ -174,6 +174,14 @@ public class SessionRepositoryTest
         updatedEntityInDb.SessionId.Should().Be(sessionToUpdate.SessionId);
     }
 
+    [TestMethod]
+    public void Update_SessionDoesNotExist_ShouldThrowDatabaseException()
+    {
+        Action act = () => _sessionRepository.Update(new Session { SessionId = Guid.NewGuid(), UserId = Guid.NewGuid() });
+
+        act.Should().Throw<DatabaseException>()
+            .WithMessage("The Session does not exist in the Data Base.");
+    }
     #endregion
 
     #region Find
