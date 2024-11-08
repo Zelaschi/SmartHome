@@ -55,6 +55,22 @@ public class RoleRepositoryTest
     #endregion
 
     #region Delete
+    [TestMethod]
+    public void Delete_WhenRoleExists_ShouldRemoveFromDatabase()
+    {
+        _context.Roles.RemoveRange(_context.Roles);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        _roleRepository.Delete(role.Id);
+
+        _context.Roles.FirstOrDefault(r => r.Id == role.Id).Should().BeNull();
+    }
     #endregion
 
     #region Find
