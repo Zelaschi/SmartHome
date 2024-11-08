@@ -421,6 +421,95 @@ public class HomeRepositoryTest
         homes[0].Id.Should().Be(home.Id);
         homes[0].Name.Should().Be(home.Name);
     }
+
+    [TestMethod]
+    public void GetAll_HomesByUserId_WhenUserIsMember_ShouldReturnAllHomes()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User Role"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var owner = new User
+        {
+            Name = "Test Owner",
+            Surname = "Owner Surname",
+            Password = "TestPassword123",
+            Email = "owner@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(owner);
+        _context.SaveChanges();
+
+        var memberUser = new User
+        {
+            Name = "Test Member",
+            Surname = "Member Surname",
+            Password = "MemberPassword123",
+            Email = "member@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(memberUser);
+        _context.SaveChanges();
+
+        var home1 = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Home 1",
+            MainStreet = "Street 1",
+            DoorNumber = "123",
+            Latitude = "0.0000",
+            Longitude = "0.0000",
+            MaxMembers = 4,
+            Owner = owner
+        };
+        _context.Homes.Add(home1);
+        _context.SaveChanges();
+
+        var home2 = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Home 2",
+            MainStreet = "Street 2",
+            DoorNumber = "456",
+            Latitude = "1.0000",
+            Longitude = "1.0000",
+            MaxMembers = 3,
+            Owner = owner
+        };
+        _context.Homes.Add(home2);
+        _context.SaveChanges();
+
+        var homeMember1 = new HomeMember
+        {
+            HomeMemberId = Guid.NewGuid(),
+            HomeId = home1.Id,
+            User = memberUser
+        };
+        _context.HomeMembers.Add(homeMember1);
+        _context.SaveChanges();
+
+        var homeMember2 = new HomeMember
+        {
+            HomeMemberId = Guid.NewGuid(),
+            HomeId = home2.Id,
+            User = memberUser
+        };
+        _context.HomeMembers.Add(homeMember2);
+        _context.SaveChanges();
+
+        var result = _homeRepository.GetAllHomesByUserId((Guid)memberUser.Id).ToList();
+
+        result.Should().NotBeNull();
+        result.Count.Should().Be(2);
+
+        result[0].Id.Should().Be(home1.Id);
+        result[0].Name.Should().Be("Home 1");
+        result[1].Id.Should().Be(home2.Id);
+        result[1].Name.Should().Be("Home 2");
+    }
     #endregion
 }
-
