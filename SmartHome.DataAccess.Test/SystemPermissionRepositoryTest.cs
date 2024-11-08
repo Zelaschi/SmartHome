@@ -184,5 +184,34 @@ public class SystemPermissionRepositoryTest
     #endregion
 
     #region GetAll
+    [TestMethod]
+    public void GetAll_SystemPermissionEntities_ShouldReturnSystemPermissionEntities()
+    {
+        _context.SystemPermissions.RemoveRange(_context.SystemPermissions);
+        var systemPermission1 = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Permission 1",
+            Description = "Test Description 1"
+        };
+        var systemPermission2 = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Permission 2",
+            Description = "Test Description 2"
+        };
+
+        _systemPermissionRepository.Add(systemPermission1);
+        _systemPermissionRepository.Add(systemPermission2);
+        _context.SaveChanges();
+
+        var systemPermissionsFound = _systemPermissionRepository.FindAll();
+
+        systemPermissionsFound.Count.Should().Be(2);
+        systemPermissionsFound[0].Id.Should().Be(systemPermission1.Id);
+        systemPermissionsFound[0].Name.Should().Be(systemPermission1.Name);
+        systemPermissionsFound[1].Id.Should().Be(systemPermission2.Id);
+        systemPermissionsFound[1].Name.Should().Be(systemPermission2.Name);
+    }
     #endregion
 }
