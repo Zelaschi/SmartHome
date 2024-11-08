@@ -3,7 +3,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DevicesService } from '../../../../backend/services/Device/devices.service';
 import { Router } from '@angular/router';
-import DeviceTypesModel from '../../../../backend/services/Device/models/DeviceTypesModel';
+import { DeviceTypeDropdownComponent } from '../device-type-dropdown/device-type-dropdown.component';
+
+
 
 @Component({
   selector: 'app-device-form',
@@ -50,35 +52,16 @@ export class DeviceFormComponent {
       Validators.required
     ]) // Control para el tipo de dispositivo
   });
-  businessStatus: {
+
+  deviceStatus: {
     loading?: true;
     error?: string;
   } | null = null;
-
-  deviceTypes: string[] = [];
 
   constructor(
     private readonly _router: Router,
     private readonly _devicesService: DevicesService
   ){}
-
-  ngOnInit(){
-    this.loadDeviceTypes();
-  }
-
-  loadDeviceTypes(){
-    this.businessStatus = { loading : true};
-
-    this._devicesService.getDeviceTypes().subscribe({
-      next: (response) => {
-        this.businessStatus = null;
-        this.deviceTypes = response.types;
-      },
-      error: (error) => {
-        this.businessStatus = { error };
-      },
-    });
-  }
 
   // Método para manejar el registro del dispositivo
   onSubmit(values: any) {

@@ -8,10 +8,11 @@ import { FormButtonComponent } from './components/form/form-button/form-button.c
 import { FormInputComponent } from './components/form/form-input/form-input.component';
 import { InputComponent } from './components/input/input.component';
 import { HttpClientModule } from '@angular/common/http';
+import { DeviceListComponent } from './business-components/device-list/device-list.component';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, DeviceListComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

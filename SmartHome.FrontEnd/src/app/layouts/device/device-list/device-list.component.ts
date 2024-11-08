@@ -2,55 +2,57 @@
 import { Component, Input, OnInit } from '@angular/core';
 import DropdownOption from '../../../components/dropdown/models/DropdownOption';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Device } from '../../../../backend/services/Device/models/Device';
+import { DevicesService } from '../../../../backend/services/Device/devices.service';
+import { Subscription } from 'rxjs';
+import DeviceStatus from './models/device.status';
 
 @Component({
   selector: 'app-device-list',
   templateUrl: './device-list.component.html',
   styleUrls: ['./device-list.component.css']
 })
-export class DeviceListComponent implements OnInit {
-  @Input() homeId: number | undefined;
-  devices = []; // Array de dispositivos simulados
+export class DeviceListComponent  {
+  private _devicesSubscription: Subscription | null = null;
+  pageNumber: number = 1;
+  pageSize: number = 10;
+  loading: boolean = false;
 
-  searchForm: FormGroup;
-  formField = {
-    search: { required: 'El campo de búsqueda es obligatorio' }
-  };
+  constructor(private readonly _devicesService: DevicesService) {}
 
-  // Opciones de filtro para el DropdownComponent
-  filterOptions: DropdownOption[] = [
-    { value: 'all', label: 'Todos' },
-    { value: 'connected', label: 'Conectados' },
-    { value: 'disconnected', label: 'Desconectados' }
-  ];
-  
-  selectedFilter: string = 'all';
+  status: DeviceStatus = {
+    loading: true,
+    devices: [],
+  }
 
-  constructor(private fb: FormBuilder) {
-    this.searchForm = this.fb.group({
-      search: ['']
+  ngOnDestroy(): void {
+    this._devicesSubscription?.unsubscribe();
+  }
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
+    this.loading = true;
+    this._devicesService.getAllDevices(this.pageNumber, this.pageSize).subscribe({
+      next: (response) => {
+        this.status ={
+          devices: response.data,
+        }
+        console.log(this.status.devices);
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.loading = false;
+      }
     });
   }
 
-  ngOnInit(): void {
-    this.loadMockDevices();
+  onPageChange(page: number): void {
+    this.pageNumber = page;
+    this.loadProducts();
   }
+  
 
-  loadMockDevices(): void {
-    this.devices = [
-      // Dispositivos simulados
-    ];
-  }
-
-  onSearch() {
-    const searchValue = this.searchForm.get('search')?.value;
-    // Lógica para filtrar dispositivos usando searchValue
-    console.log("Buscando dispositivos con:", searchValue);
-  }
-
-  onFilterChange(selectedFilter: string): void {
-    this.selectedFilter = selectedFilter;
-    // Lógica de filtrado basada en `selectedFilter`
-    console.log("Filtrando dispositivos por:", selectedFilter);
-  }
 }

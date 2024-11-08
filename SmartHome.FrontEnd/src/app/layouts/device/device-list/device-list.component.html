@@ -1,46 +1,14 @@
-<!--
-<app-dropdown 
-  [options]="filterOptions" 
-  placeholder="Filtrar por estado"
-  [emptyMessage]="'No hay opciones disponibles'"
-  (valueChange)="onFilterChange($event)">
-</app-dropdown>
-
-<app-form-input
-  [type]="'text'"
-  [label]="'Buscar dispositivo'"
-  [placeholder]="'Escribe el nombre o modelo del dispositivo'"
-  [name]="'search'"
-  [form]="searchForm"
-  [formField]="formField"
-  (input)="onSearch()">
-</app-form-input>
-
-<div *ngIf="devices.length > 0; else noDevices">
-  <table class="table table-dark table-striped">
-    <thead>
-      <tr>
-        <th>Foto</th>
-        <th>Nombre</th>
-        <th>Modelo</th>
-        <th>Estado de Conexión</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let device of devices">
-        <td><img [src]="device.photoUrl" alt="Foto del dispositivo" width="50" height="50"></td>
-        <td>{{ device.name }}</td>
-        <td>{{ device.model }}</td>
-        <td>
-          <span [ngClass]="{'text-success': device.connectionStatus === 'connected', 'text-danger': device.connectionStatus === 'disconnected'}">
-            {{ device.connectionStatus === 'connected' ? 'Conectado' : 'Desconectado' }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="device-list">
+  <h2>Devices</h2>
+  <div *ngIf="loading" class="loader">
+    Loading devices...
+  </div>
+  <div *ngFor="let device of status.devices" class="device-item">
+    <app-device-item [device]="device"></app-device-item>
+  </div>
+  <app-pagination
+    [pageNumber]="pageNumber"
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
 </div>
-
-<ng-template #noDevices>
-  <p>No hay dispositivos instalados en este hogar.</p>
-</ng-template> -->

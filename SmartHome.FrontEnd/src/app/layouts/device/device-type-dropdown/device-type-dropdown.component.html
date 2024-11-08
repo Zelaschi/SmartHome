@@ -1,0 +1,16 @@
+<div *ngIf="status.loading; else finishLoading">
+    Loading device types...
+  </div>
+  <ng-template #finishLoading>
+    <div *ngIf="status.error; else showDropdown">
+      <p>{{ status.error }}</p>
+    </div>
+    <ng-template #showDropdown>
+      <app-dropdown
+        [options]="status.deviceTypes"
+        [value]="value"
+        placeholder="Select device type"
+        emptyMessage="No device types loaded" />
+    </ng-template>
+  </ng-template>
+  

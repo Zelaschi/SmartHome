@@ -43,19 +43,10 @@
       </div>
 
       <!-- Device type -->
-      <div class="form-group mb-3">
-        <label for="type" class="form-label text-white">Type of device</label>
-        <select
-          id="type"
-          [formControl]="deviceForm.controls[formField.type.name]"
-          class="form-select bg-dark text-white border-secondary">
-          <option value="">Select a type</option>
-          <option *ngFor="let type of deviceTypes" [value]="type">{{ type }}</option>
-        </select>
-      </div>
+      <app-device-type-dropdown />
+
 
       <!-- Campo de Fotografías -->
-
 
       <!-- Registerbutton -->
       <div class="d-grid gap-2">

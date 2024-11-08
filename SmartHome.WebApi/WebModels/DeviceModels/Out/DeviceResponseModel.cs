@@ -12,7 +12,7 @@ public sealed class DeviceResponseModel
     public string Name { get; set; }
     public string ModelNumber { get; set; }
     public string Description { get; set; }
-    public List<Photo> Photos { get; set; }
+    public List<string> Photos { get; set; }
     public string CompanyName { get; set; }
 
     public DeviceResponseModel(Device device)
@@ -21,7 +21,7 @@ public sealed class DeviceResponseModel
         Name = device.Name;
         ModelNumber = device.ModelNumber;
         Description = device.Description;
-        Photos = device.Photos;
+        Photos = device.Photos.Select(photo => photo.Path).ToList();
         CompanyName = device.Business.Name;
     }
 

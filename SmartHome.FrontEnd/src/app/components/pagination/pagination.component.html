@@ -1,0 +1,5 @@
+<div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="pageNumber === 1">Previous</button>
+    <span>Page {{ pageNumber }}</span>
+    <button (click)="nextPage()">Next</button>
+</div>

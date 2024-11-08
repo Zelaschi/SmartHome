@@ -89,12 +89,29 @@ public class DeviceRepository : IGenericRepository<Device>
 
     public IList<Device> FindAllFiltered(Expression<Func<Device, bool>> filter, int pageNumber, int pageSize)
     {
-        throw new NotImplementedException();
+        var query = _context.Devices.Include(x => x.Business).Include(x => x.Photos).AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
     }
 
     public IList<Device> FindAllFiltered(Expression<Func<Device, bool>> filter)
     {
-        throw new NotImplementedException();
+        var query = _context.Devices.Include(x => x.Business).Include(x => x.Photos).AsQueryable();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        return query.ToList();
     }
 
     public Device? Update(Device updatedEntity)

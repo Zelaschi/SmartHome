@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { DeviceApiRepositoryService } from '../../repositories/device-api-repository.service';
 import { DeviceTypeApiRepositoryService } from '../../repositories/device-type-api-repository.service';
 import DeviceCreationModel from './models/DeviceCreationModel';
-import DeviceTypesModel from './models/DeviceTypesModel';
+import DeviceTypeModel from './models/DeviceTypeModel';
 import { Observable } from 'rxjs';
 import DeviceCreatedModel from './models/DeviceCreatedModel';
+import { Device } from './models/Device';
+import DevicePaginatedResponse from './models/DevicePaginatedResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,15 @@ export class DevicesService {
     return this._devicerepository.registerDevice(credentials);
   }
 
-  public getDeviceTypes(): Observable<DeviceTypesModel> {
+  public getDeviceTypes(): Observable<Array<DeviceTypeModel>> {
     return this._devicetypesrepository.getDeviceTypes();
+  }
+  
+  public getAllDevices(
+    pageNumber: number,
+    pageSize: number
+  ): Observable<DevicePaginatedResponse>
+  {
+    return this._devicerepository.getAllDevices(pageNumber, pageSize);
   }
 }

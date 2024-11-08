@@ -2,6 +2,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DeviceFormComponent } from './device-form/device-form.component';
+import { DeviceListComponent } from './device-list/device-list.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'register', // Ruta adicional, si deseas "/device/register" también disponible
     component: DeviceFormComponent
+  },
+  {
+    path: 'list',
+    component: DeviceListComponent
   }
 ];
 
