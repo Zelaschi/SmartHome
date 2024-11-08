@@ -71,6 +71,23 @@ public class RoleRepositoryTest
 
         _context.Roles.FirstOrDefault(r => r.Id == role.Id).Should().BeNull();
     }
+
+    [TestMethod]
+    public void Delete_WhenRoleDoesNotExist_ShouldThrowDatabaseException()
+    {
+        _context.Roles.RemoveRange(_context.Roles);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        Action action = () => _roleRepository.Delete(Guid.NewGuid());
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Role does not exist in the Data Base.");
+    }
     #endregion
 
     #region Find
