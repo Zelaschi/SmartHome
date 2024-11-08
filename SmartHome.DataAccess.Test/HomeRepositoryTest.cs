@@ -378,6 +378,49 @@ public class HomeRepositoryTest
     }
     #endregion
 
-    #region GetAll
+    #region FindAll
+    [TestMethod]
+    public void FindAll_WhenHomesExist_ShouldReturnAllHomesWithRelatedEntities()
+    {
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "User Role"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var owner = new User
+        {
+            Name = "Test Owner",
+            Surname = "Owner Surname",
+            Password = "TestPassword123",
+            Email = "owner@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(owner);
+        _context.SaveChanges();
+
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Home 1",
+            MainStreet = "Street 1",
+            DoorNumber = "111",
+            Latitude = "0.0000",
+            Longitude = "0.0000",
+            MaxMembers = 4,
+            Owner = owner
+        };
+        _context.Homes.Add(home);
+        _context.SaveChanges();
+
+        var homes = _homeRepository.FindAll();
+
+        homes.Count.Should().Be(1);
+        homes[0].Id.Should().Be(home.Id);
+        homes[0].Name.Should().Be(home.Name);
+    }
     #endregion
 }
+
