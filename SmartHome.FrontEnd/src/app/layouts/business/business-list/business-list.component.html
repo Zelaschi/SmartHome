@@ -1,0 +1,14 @@
+<div class="business-list">
+    <h2>Businesses</h2>
+    <div *ngIf="loading" class="loader">
+      Loading businesses...
+    </div>
+    <div *ngFor="let business of status.businesses" class="business-item">
+      <app-business-item [business]="business"></app-business-item>
+    </div>
+    <app-pagination
+      [pageNumber]="pageNumber"
+      [pageSize]="pageSize"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </div>
