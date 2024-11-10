@@ -5,6 +5,7 @@ import BusinessCreationModel from '../services/Business/models/BusinessCreationM
 import BusinessCreatedModel from '../services/Business/models/BusinessCreatedModel';
 import { Observable } from 'rxjs';
 import ApiRepository from './api-repository';
+import BusinessPaginatedResponse from '../services/Business/models/BusinessPaginatedResponse';
 
 
 @Injectable({
@@ -19,5 +20,12 @@ export class BusinessApiRepositoryService extends ApiRepository{
     credentials: BusinessCreationModel
   ): Observable<BusinessCreatedModel> {
     return this.post(credentials);
+  }
+
+  public getBusinesses(
+    pageNumber: number,
+    pageSize: number
+  ): Observable<BusinessPaginatedResponse> {
+    return this.get<BusinessPaginatedResponse>(`?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 }

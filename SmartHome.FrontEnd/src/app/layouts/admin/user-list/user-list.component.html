@@ -1,0 +1,14 @@
+<div class="user-list">
+    <h2>Users</h2>
+    <div *ngIf="loading" class="loader">
+      Loading users...
+    </div>
+    <div *ngFor="let user of status.users" class="user-item">
+      <app-user-item [user]="user"></app-user-item>
+    </div>
+    <app-pagination
+      [pageNumber]="pageNumber"
+      [pageSize]="pageSize"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </div>
