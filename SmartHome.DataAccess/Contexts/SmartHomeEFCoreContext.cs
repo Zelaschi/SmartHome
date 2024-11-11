@@ -216,6 +216,11 @@ public sealed class SmartHomeEFCoreContext : DbContext
             },
             new RoleSystemPermission
             {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
                 RoleId = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID),
                 SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_HOME_PERMISSION_ID)
             },
