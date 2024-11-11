@@ -16,6 +16,7 @@ public sealed class UserResponseModel
     public string Surname { get; set; }
     public string Email { get; set; }
     public DateTime CreationDate { get; set; }
+    public string Role { get; set; }
 
     public UserResponseModel(User user)
     {
@@ -24,6 +25,7 @@ public sealed class UserResponseModel
         Surname = user.Surname;
         Email = user.Email;
         CreationDate = (DateTime)user.CreationDate;
+        Role = user.Role.Name;
     }
 
     public override bool Equals(object? obj)
