@@ -1,7 +1,11 @@
-<div *ngIf="device" class="device-item">
-    <app-photos-carousel [photos]="device.photos"></app-photos-carousel>
-    <h3>{{ device.name }}</h3>
-    <p>Model Number: {{ device.modelNumber }}</p>
-    <p>Description: {{ device.description }}</p>
-    <p>Company Name: {{ device.companyName }}</p>
+<div *ngIf="device" class="card device-item">
+    <div class="card-img-top image-container">
+      <app-photos-carousel [photos]="device.photos"></app-photos-carousel>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">{{ device.name }}</h3>
+      <p class="card-text">Model Number: {{ device.modelNumber }}</p>
+      <p class="card-text">Description: {{ device.description }}</p>
+      <p class="card-text">Company Name: {{ device.companyName }}</p>
+    </div>
   </div>

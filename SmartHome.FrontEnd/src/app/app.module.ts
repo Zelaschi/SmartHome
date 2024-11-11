@@ -9,11 +9,13 @@ import { FormInputComponent } from './components/form/form-input/form-input.comp
 import { InputComponent } from './components/input/input.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DeviceListComponent } from './business-components/device-list/device-list.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
   declarations: [AppComponent, DeviceListComponent],
   imports: [
+    NgbModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule

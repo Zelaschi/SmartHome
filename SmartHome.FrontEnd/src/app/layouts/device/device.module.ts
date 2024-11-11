@@ -22,10 +22,10 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
     DeviceFormComponent,
     DeviceListComponent,
     DeviceItemComponent,
-    PhotosCarouselComponent,
 
   ],
   imports: [
+    PhotosCarouselComponent,
     PaginationComponent,
     DeviceTypeDropdownComponent,
     CommonModule,

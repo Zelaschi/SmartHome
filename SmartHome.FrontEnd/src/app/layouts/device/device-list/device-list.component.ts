@@ -15,7 +15,7 @@ import DeviceStatus from './models/device.status';
 export class DeviceListComponent  {
   private _devicesSubscription: Subscription | null = null;
   pageNumber: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 9;
   loading: boolean = false;
 
   constructor(private readonly _devicesService: DevicesService) {}
