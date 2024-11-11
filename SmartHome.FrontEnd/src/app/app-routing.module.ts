@@ -31,6 +31,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'businessOwners',
+    loadChildren: () =>
+      import('./layouts/business-owner/business-owner.module').then(
+        (m) => m.BusinessOwnerModule
+      ),
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./layouts/authentication/authentication.module').then(
