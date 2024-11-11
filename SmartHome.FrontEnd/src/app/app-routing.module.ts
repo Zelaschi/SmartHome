@@ -24,6 +24,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'homeOwners',
+    loadChildren: () =>
+      import('./layouts/home-owner/home-owner.module').then(
+        (m) => m.HomeOwnerModule
+      ),
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./layouts/authentication/authentication.module').then(
