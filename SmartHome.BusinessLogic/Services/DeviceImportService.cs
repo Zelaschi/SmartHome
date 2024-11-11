@@ -109,7 +109,14 @@ public sealed class DeviceImportService : IDeviceImportLogic
                     PersonDetection = dtodevice.PersonDetection ?? false,
                     MovementDetection = dtodevice.MovementDetection ?? false
                 };
-                addedDevices.Add(_createDeviceLogic.CreateDevice(camera, user, dtodevice.Type));
+                try
+                {
+                    addedDevices.Add(_createDeviceLogic.CreateDevice(camera, user, dtodevice.Type));
+                }
+                catch (DeviceException e)
+                {
+                    Console.WriteLine("Coudnt register device " + camera.ModelNumber+ " Error: " + e.Message);
+                }
             }
             else
             {
@@ -121,7 +128,14 @@ public sealed class DeviceImportService : IDeviceImportLogic
                     Description = string.Empty,
                     Photos = photos
                 };
-                addedDevices.Add(_createDeviceLogic.CreateDevice(device, user, dtodevice.Type));
+                try
+                {
+                    addedDevices.Add(_createDeviceLogic.CreateDevice(device, user, dtodevice.Type));
+                }
+                catch (DeviceException e)
+                {
+                    Console.WriteLine("Coudnt register device " + device.ModelNumber + " Error: " + e.Message);
+                }
             }
         }
 
