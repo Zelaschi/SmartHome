@@ -16,11 +16,12 @@ public sealed class User
     public required string Email { get; set; }
     public bool? Complete { get; set; }
     public string? ProfilePhoto { get; set; }
+    public DateTime CreationDate { get; set; }
+
     [JsonIgnore]
     public List<Home>? Houses { get; set; }
     public Role? Role { get; set; }
     public Guid RoleId { get; set; }
-    public DateTime CreationDate = DateTime.Today;
 
     public User()
     {

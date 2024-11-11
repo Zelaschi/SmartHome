@@ -16,7 +16,8 @@ public sealed class BusinessOwnerRequestModel
             Name = Name,
             Surname = Surname,
             Password = Password,
-            Email = Email
+            Email = Email,
+            CreationDate = DateTime.Today
         };
     }
 }

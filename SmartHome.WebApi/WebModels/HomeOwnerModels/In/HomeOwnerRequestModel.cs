@@ -18,7 +18,8 @@ public sealed class HomeOwnerRequestModel
             Surname = Surname,
             Password = Password,
             Email = Email,
-            ProfilePhoto = ProfilePhoto
+            ProfilePhoto = ProfilePhoto,
+            CreationDate = DateTime.Today
         };
     }
 }

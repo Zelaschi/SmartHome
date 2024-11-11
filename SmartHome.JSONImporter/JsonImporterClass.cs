@@ -27,8 +27,8 @@ public class JsonImporterClass : IDeviceImporter
                 Name = dispositivo.Nombre,
                 Model = dispositivo.Modelo,
                 Photos = new List<DTOPhoto>(),
-                PersonDetection = dispositivo.PersonDetection,
-                MovementDetection = dispositivo.MovementDetection
+                PersonDetection = dispositivo.Person_Detection,
+                MovementDetection = dispositivo.Movement_Detection
             };
             ConvertFotosToDTOPhotos(dispositivo, device);
 

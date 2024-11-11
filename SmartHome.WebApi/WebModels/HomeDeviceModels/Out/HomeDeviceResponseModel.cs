@@ -14,7 +14,7 @@ public sealed class HomeDeviceResponseModel
     public Guid? HardwardId { get; set; }
     public bool Online { get; set; }
     public string Device { get; set; }
-    public string Type { get; set; }
+    public string? Type { get; set; }
     public bool? IsOn { get; set; }
     public bool? Open { get; set; }
 

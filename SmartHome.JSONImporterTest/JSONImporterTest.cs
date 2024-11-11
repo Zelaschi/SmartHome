@@ -27,8 +27,8 @@ public class JSONImporterTest
                 Tipo = "camera",
                 Nombre = "Business G235",
                 Modelo = "G235",
-                PersonDetection = false,
-                MovementDetection = true,
+                Person_Detection = false,
+                Movement_Detection = true,
                 Fotos = new List<Foto>()
                 {
                     new Foto()
