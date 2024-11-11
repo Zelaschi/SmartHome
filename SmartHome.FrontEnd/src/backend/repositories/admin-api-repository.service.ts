@@ -19,4 +19,9 @@ export class AdminApiRepositoryService extends ApiRepository{
   ): Observable<AdminCreatedModel> {
     return this.post(credentials);
   }
+  public deleteAdmin(
+    id: string
+  ): Observable<void> {
+    return this.delete(id);
+  }
 }

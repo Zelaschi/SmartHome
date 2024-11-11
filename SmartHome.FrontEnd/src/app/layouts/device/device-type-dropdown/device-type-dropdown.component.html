@@ -10,7 +10,8 @@
         [options]="status.deviceTypes"
         [value]="value"
         placeholder="Select device type"
-        emptyMessage="No device types loaded" />
+        emptyMessage="No device types loaded" 
+        (valueChange)="onChange($event)"/>
     </ng-template>
   </ng-template>
   

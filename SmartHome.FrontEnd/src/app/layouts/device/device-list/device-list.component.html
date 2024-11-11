@@ -4,6 +4,39 @@
     Loading devices...
   </div>
   <div class="row devices">
+    <app-filter [form]="deviceFilterForm" (onSubmit)="onSubmit($event)">
+      <app-form-input
+          type="text"
+          placeholder="Filter by device name"
+          [name]="formField.deviceName.name"
+          [form]="deviceFilterForm"
+          [formField]="formField"
+          class="form-control bg-dark text-white border-secondary">
+      </app-form-input>
+      <app-form-input
+          type="text"
+          placeholder="Filter by device model number"
+          [name]="formField.modelNumber.name"
+          [form]="deviceFilterForm"
+          [formField]="formField"
+          class="form-control bg-dark text-white border-secondary">
+      </app-form-input>
+      <app-form-input
+          type="text"
+          placeholder="Filter by device business name"
+          [name]="formField.businessName.name"
+          [form]="deviceFilterForm"
+          [formField]="formField"
+          class="form-control bg-dark text-white border-secondary">
+      </app-form-input>
+      <label for="formField.type.name" class="form-label text-white">Device Type</label>
+      <app-device-type-dropdown 
+      (valueChange)="onDeviceTypeChange($event)"/>
+      <div class="d-grid gap-2">
+        <app-form-button title="Apply Filters" submit class="btn btn-primary btn-block text-white" style="background-color: #2980b9; border: none;"></app-form-button>
+      </div>
+    </app-filter>
+    
     <div *ngFor="let device of status.devices" class="device-item col-md-4 mb-4">
       <app-device-item [device]="device"></app-device-item>
     </div>
@@ -13,5 +46,4 @@
       (pageChange)="onPageChange($event)"
     ></app-pagination>
   </div>
-  
 </div>

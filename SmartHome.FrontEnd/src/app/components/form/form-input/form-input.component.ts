@@ -14,9 +14,9 @@ export class FormInputComponent {
   @Input() type: "text" | "number" | "password" = "text";
   @Input() label: string | null = null;
   @Input() placeholder: string | null = null;
-  @Input({ required: true }) name!: string;
-  @Input({ required: true }) form!: FormGroup;
-  @Input({ required: true }) formField!: any;
+  @Input() name!: string;
+  @Input() form!: FormGroup;
+  @Input() formField!: any;
 
   get error() {
     const control = this.form.get(this.name)!;

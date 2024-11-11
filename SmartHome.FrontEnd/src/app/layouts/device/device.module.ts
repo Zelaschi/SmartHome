@@ -15,6 +15,7 @@ import { DeviceTypeDropdownComponent } from './device-type-dropdown/device-type-
 import { DeviceItemComponent } from './device-item/device-item.component';
 import { PhotosCarouselComponent } from '../../components/photos-carousel/photos-carousel.component';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { FilterComponent } from '../../components/filter/filter/filter.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
     FormButtonComponent,
     FormInputComponent,
     DropdownComponent,
+    FilterComponent,
   ]
 })
 export class DeviceModule { }

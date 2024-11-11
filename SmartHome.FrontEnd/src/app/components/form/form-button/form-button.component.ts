@@ -1,4 +1,6 @@
 import { Component, Input } from "@angular/core";
+import { InputComponent } from "../../input/input.component";
+
 
 @Component({
   selector: "app-form-button",

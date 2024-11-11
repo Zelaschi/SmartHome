@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import DeviceTypeStatus from './models/device-type.status';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,12 @@ import { DropdownComponent } from '../../../components/dropdown/dropdown.compone
 })
 export class DeviceTypeDropdownComponent implements OnInit, OnDestroy{
   @Input() value : string | null = null;
+  @Output() valueChange = new EventEmitter<string>();
+  
+  onChange(selectedValue: string): void {
+    this.valueChange.emit(selectedValue);
+  }
+
 
   status: DeviceTypeStatus = {
     loading: true,

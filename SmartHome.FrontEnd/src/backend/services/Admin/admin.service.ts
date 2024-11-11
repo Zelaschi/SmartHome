@@ -16,4 +16,9 @@ export class AdminService {
   ): Observable<AdminCreatedModel> {
     return this._repository.registerAdmin(credentials);
   }
+  public deleteAdmin(
+    id: string
+  ): Observable<void> {
+    return this._repository.deleteAdmin(id);
+  }
 }

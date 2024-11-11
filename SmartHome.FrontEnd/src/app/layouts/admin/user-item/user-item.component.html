@@ -3,4 +3,5 @@
     <p>Surname: {{ user.surname }}</p>
     <p>Email {{ user.email }}</p>
     <p>Creation date: {{ user.creationDate }}</p>
+    <button *ngIf="user.role == 'Admin'" (click)="deleteAdmin(user.id)">Delete</button>
   </div>

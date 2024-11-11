@@ -30,9 +30,13 @@ export class DevicesService {
   
   public getAllDevices(
     pageNumber: number,
-    pageSize: number
+    pageSize: number,
+    deviceName: string | null,
+    modelNumber: string | null,
+    businessName: string | null,
+    type: string | null,
   ): Observable<DevicePaginatedResponse>
   {
-    return this._devicerepository.getAllDevices(pageNumber, pageSize);
+    return this._devicerepository.getAllDevices(pageNumber, pageSize,deviceName, modelNumber, businessName, type);
   }
 }
