@@ -217,5 +217,36 @@ public class DeviceRepositoryTest
 
         result.Should().HaveCount(1);
     }
+
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnFilteredDevices_WhenFilterIsProvided()
+    {
+        var device = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Device",
+            ModelNumber = "Test Model Number",
+            Description = "Test Description",
+            Photos = new List<Photo>()
+        };
+
+        var device2 = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Device 2",
+            ModelNumber = "Test Model Number 2",
+            Description = "Test Description 2",
+            Photos = new List<Photo>()
+        };
+        _deviceRepository.Add(device2);
+        _deviceRepository.Add(device);
+        _context.SaveChanges();
+
+        var result = _deviceRepository.FindAllFiltered(d => d.Name == "Test Device", 1, 10);
+
+        result.Should().HaveCount(1);
+        result[0].Name.Should().Be("Test Device");
+        _deviceRepository.FindAll().Should().HaveCount(2);
+    }
     #endregion
 }
