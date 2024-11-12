@@ -53,6 +53,37 @@ public class ValidatorRepositoryTest
     #endregion
 
     #region Delete
+    [TestMethod]
+    public void Delete_WhenValidatorExists_ShouldRemoveFromDatabase()
+    {
+        _context.Validators.RemoveRange(_context.Validators);
+        var validator = new Validator
+        {
+            Name = "Admin"
+        };
+        _validatorRepository.Add(validator);
+        _context.SaveChanges();
+
+        _validatorRepository.Delete(validator.Id);
+
+        _context.Validators.FirstOrDefault(v => v.Id == validator.Id).Should().BeNull();
+    }
+
+    [TestMethod]
+    public void Delete_WhenValidatorDoesNotExist_ShouldThrowDatabaseException()
+    {
+        _context.Validators.RemoveRange(_context.Validators);
+        var validator = new Validator
+        {
+            Name = "Test"
+        };
+        _context.Validators.Add(validator);
+        _context.SaveChanges();
+
+        Action action = () => _validatorRepository.Delete(Guid.NewGuid());
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Validator does not exist in the Data Base.");
+    }
     #endregion
 
     #region Update
