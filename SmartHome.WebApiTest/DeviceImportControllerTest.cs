@@ -31,7 +31,6 @@ public class DeviceImportControllerTest
     [TestMethod]
     public void ImportDevicesTest_OK()
     {
-        // Arrange
         var user1 = new User()
         {
             Id = Guid.NewGuid(),
@@ -42,6 +41,7 @@ public class DeviceImportControllerTest
             Role = businessOwner,
             CreationDate = DateTime.Today
         };
+
         var company1 = new Business()
         {
             Id = Guid.NewGuid(),
@@ -91,28 +91,17 @@ public class DeviceImportControllerTest
             Type = DeviceTypesStatic.WindowSensor,
         };
 
-        var devices = new List<Device>
-        {
-            device1,
-            device2
-        };
+        var devices = new List<Device> { device1, device2 };
 
-        var devicesDTO = devices.Select(device => new DeviceWithoutPhotosResponseModel(device)).ToList();
-
-        _deviceImportService.Setup(d => d.ImportDevices(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<User>())).Returns(devices);
-
-        var expectedResult = new CreatedAtActionResult("ImportDevice", "DeviceImport", new { Id = string.Empty }, devicesDTO);
-
-        // Act
+        _deviceImportService
+            .Setup(d => d.ImportDevices(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<User>()))
+            .Returns(devices.Count);
 
         var result = _deviceImportController.ImportDevice(deviceImportRequestModel) as CreatedAtActionResult;
-        var objectResult = result.Value as List<DeviceWithoutPhotosResponseModel>;
 
-        // Assert
         _deviceImportService.VerifyAll();
-
         Assert.IsNotNull(result);
         Assert.IsInstanceOfType(result, typeof(CreatedAtActionResult));
-        CollectionAssert.AreEqual(objectResult, devicesDTO);
+        Assert.AreEqual(devices.Count, result.Value);
     }
 }
