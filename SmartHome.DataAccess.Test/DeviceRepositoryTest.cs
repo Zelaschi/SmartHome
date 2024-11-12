@@ -196,4 +196,26 @@ public class DeviceRepositoryTest
             .WithMessage("The Device does not exist in the Data Base.");
     }
     #endregion
+
+    #region Filtered
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnAllDevices_WhenNoFilterIsProvided()
+    {
+        var device = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Device",
+            ModelNumber = "Test Model Number",
+            Description = "Test Description",
+            Photos = new List<Photo>()
+        };
+
+        _deviceRepository.Add(device);
+        _context.SaveChanges();
+
+        var result = _deviceRepository.FindAllFiltered(null, 1, 10);
+
+        result.Should().HaveCount(1);
+    }
+    #endregion
 }
