@@ -278,5 +278,13 @@ public class DeviceRepositoryTest
         result.Should().HaveCount(1);
         result[0].Name.Should().Be("Test Device");
     }
+
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnEmptyList_WhenNoDevicesAreFound()
+    {
+        var result = _deviceRepository.FindAllFiltered(null, 1, 10);
+
+        result.Should().BeEmpty();
+    }
     #endregion
 }
