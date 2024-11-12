@@ -34,26 +34,32 @@ public class AuthenticationControllerTest
     [TestMethod]
     public void LoginTest_Ok()
     {
-        // ARRANGE
-        var loginRequest = new LoginRequestModel() { Email = "aemail@domain.com", Password = "aPassword" };
+        var loginRequest = new LoginRequestModel()
+        {
+            Email = "aemail@domain.com",
+            Password = "aPassword"
+        };
+
         var token = Guid.NewGuid();
         var sessionAndSP = new DTOSessionAndSystemPermissions
         {
-            SessionId = Guid.NewGuid(),
-            SystemPermissions = new List<SystemPermission>()
+            SessionId = token,
+            SystemPermissions = new List<SystemPermission> { new SystemPermission { Name = "READ", Description = "read" } }
         };
-        var expectedLoginResponse = new LoginResponseModel(sessionAndSP) { Token = token };
 
-        loginLogicMock.Setup(l => l.LogIn(It.IsAny<string>(), It.IsAny<string>())).Returns(sessionAndSP);
+        var expectedLoginResponse = new LoginResponseModel(sessionAndSP);
 
-        var expected = new OkObjectResult(expectedLoginResponse);
+        loginLogicMock.Setup(l => l.LogIn(It.IsAny<string>(), It.IsAny<string>()))
+                      .Returns(sessionAndSP);
 
-        // ACT
         var result = authController.LogIn(loginRequest) as OkObjectResult;
-        var objectResult = (result.Value as LoginResponseModel)!;
+        Assert.IsNotNull(result, "Expected OkObjectResult, but got null");
 
-        // ASSERT
-        loginLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedLoginResponse.Equals(objectResult));
+        var objectResult = result.Value as LoginResponseModel;
+        Assert.IsNotNull(objectResult, "Expected LoginResponseModel, but got null");
+        Assert.AreEqual(200, result.StatusCode, "Expected status code 200");
+        Assert.AreEqual(token, objectResult.Token, "Tokens do not match");
+        CollectionAssert.AreEqual(expectedLoginResponse.SystemPermissions, objectResult.SystemPermissions);
     }
+
 }
