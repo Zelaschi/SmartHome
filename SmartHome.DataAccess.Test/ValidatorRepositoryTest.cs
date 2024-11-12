@@ -159,6 +159,23 @@ public class ValidatorRepositoryTest
     #endregion
 
     #region GetAl
-    #endregion
+    [TestMethod]
+    public void FindAll_WhenExistOnlyOne_ShouldReturnOne()
+    {
+        _context.Validators.RemoveRange(_context.Validators);
+        var validator = new Validator
+        {
+            Name = "Test"
+        };
+        _validatorRepository.Add(validator);
+        _context.SaveChanges();
 
+        var validators = _validatorRepository.FindAll();
+
+        validators.Count.Should().Be(1);
+        var validatorFound = validators[0];
+        validatorFound.Id.Should().Be(validator.Id);
+        validatorFound.Name.Should().Be(validator.Name);
+    }
+    #endregion
 }
