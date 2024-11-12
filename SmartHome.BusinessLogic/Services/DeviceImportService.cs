@@ -78,9 +78,9 @@ public sealed class DeviceImportService : IDeviceImportLogic
         return returnedType;
     }
 
-    private List<Device> RegisterDevicesInDatabaseFromDTODevies(List<DTODevice> dtodevices, string dllName, User user)
+    private int RegisterDevicesInDatabaseFromDTODevies(List<DTODevice> dtodevices, string dllName, User user)
     {
-        var addedDevices = new List<Device>();
+        var addedDevices = dtodevices.Count;
         for (var i = 0; i < dtodevices.Count; i++)
         {
             var dtodevice = dtodevices[i];
@@ -111,10 +111,11 @@ public sealed class DeviceImportService : IDeviceImportLogic
                 };
                 try
                 {
-                    addedDevices.Add(_createDeviceLogic.CreateDevice(camera, user, dtodevice.Type));
+                    _createDeviceLogic.CreateDevice(camera, user, dtodevice.Type);
                 }
                 catch (DeviceException e)
                 {
+                    addedDevices--;
                     Console.WriteLine("Coudnt register device " + camera.ModelNumber+ " Error: " + e.Message);
                 }
             }
@@ -130,7 +131,8 @@ public sealed class DeviceImportService : IDeviceImportLogic
                 };
                 try
                 {
-                    addedDevices.Add(_createDeviceLogic.CreateDevice(device, user, dtodevice.Type));
+                    addedDevices--;
+                    _createDeviceLogic.CreateDevice(device, user, dtodevice.Type);
                 }
                 catch (DeviceException e)
                 {
@@ -142,7 +144,7 @@ public sealed class DeviceImportService : IDeviceImportLogic
         return addedDevices;
     }
 
-    public List<Device> ImportDevices(string dllName, string fileName, User user)
+    public int ImportDevices(string dllName, string fileName, User user)
     {
         Type importerType = GetImporterType(dllName);
 
