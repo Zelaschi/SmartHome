@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Linq.Expressions;
+using FluentAssertions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
@@ -285,6 +286,36 @@ public class DeviceRepositoryTest
         var result = _deviceRepository.FindAllFiltered(null, 1, 10);
 
         result.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void FindAllFiltered_OneParam_ShouldReturnAllDevices_WhenNoFilterIsProvided()
+    {
+        var device = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Device",
+            ModelNumber = "Test Model Number",
+            Description = "Test Description",
+            Photos = new List<Photo>()
+        };
+
+        var device2 = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Device 2",
+            ModelNumber = "Test Model Number 2",
+            Description = "Test Description 2",
+            Photos = new List<Photo>()
+        };
+        _deviceRepository.Add(device);
+        _deviceRepository.Add(device2);
+        _context.SaveChanges();
+
+        var result = _deviceRepository.FindAllFiltered(null);
+
+        // Assert
+        result.Should().HaveCount(2);
     }
     #endregion
 }
