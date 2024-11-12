@@ -326,7 +326,6 @@ public class UserServiceTest
     }
 
     [TestMethod]
-
     public void Delete_Admin_Test()
     {
         var adminRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
@@ -343,29 +342,35 @@ public class UserServiceTest
         };
         var admin2 = new User
         {
+            Id = Guid.NewGuid(),
             Name = "Toto",
             Surname = "Zelaschi",
             Password = "Password@1234",
             CreationDate = DateTime.Today,
-            Email = "pedroRodriguez@gmail.com",
+            Email = "toto@example.com",
             Role = adminRole
         };
         var adminList = new List<User> { admin, admin2 };
 
-        userRepositoryMock.Setup(x=> x.FindAll()).Returns(adminList);
-        userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()));
+        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>()))
+                          .Returns((Expression<Func<User, bool>> filter) => adminList.Where(filter.Compile()).ToList());
+
+        userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()))
+                          .Callback<Guid>(id => adminList.RemoveAll(u => u.Id == id));
+
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(admin);
         roleLogicMock.Setup(x => x.GetAdminRole()).Returns(adminRole);
 
         userService.DeleteAdmin(adminId);
 
-        var expectedAdminList = new List<User> { admin2 };
-
-        userRepositoryMock.Setup(x => x.FindAll()).Returns(expectedAdminList);
         var adminListResult = userService.GetUsers(null, null, null, null);
 
         userRepositoryMock.VerifyAll();
-        Assert.AreEqual(expectedAdminList, adminListResult);
+        Assert.IsNotNull(adminListResult);
+        Assert.AreEqual(1, adminListResult.Count());
+        Assert.AreEqual("Toto", adminListResult.ElementAt(0).Name);
+        Assert.AreEqual("Zelaschi", adminListResult.ElementAt(0).Surname);
     }
 
     [TestMethod]
