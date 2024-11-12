@@ -17,6 +17,8 @@ public class BusinessServiceTest
 {
     private Mock<IGenericRepository<Business>>? businessRepositoryMock;
     private Mock<IGenericRepository<User>>? userRepositoryMock;
+    private Mock<IGenericRepository<ModelNumberValidator>>? validatorRepositoryMock;
+    private ValidatorService? validatorService;
     private BusinessService? businessService;
 
     [TestInitialize]
@@ -25,7 +27,9 @@ public class BusinessServiceTest
     {
         businessRepositoryMock = new Mock<IGenericRepository<Business>>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
-        businessService = new BusinessService(businessRepositoryMock.Object, userRepositoryMock.Object);
+        validatorRepositoryMock = new Mock<IGenericRepository<ModelNumberValidator>>();
+        validatorService = new ValidatorService(validatorRepositoryMock.Object);
+        businessService = new BusinessService(businessRepositoryMock.Object, userRepositoryMock.Object, validatorRepositoryMock.Object, validatorService);
     }
 
     [TestMethod]
