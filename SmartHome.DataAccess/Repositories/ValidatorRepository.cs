@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Linq.Expressions;
+using Microsoft.Data.SqlClient;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Contexts;
@@ -78,6 +79,16 @@ public sealed class ValidatorRepository : IGenericRepository<Validator>
         {
             throw new DatabaseException("Error related to the Data Base, please validate the connection.");
         }
+    }
+
+    public IList<Validator> FindAllFiltered(Expression<Func<Validator, bool>> filter, int pageNumber, int pageSize)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IList<Validator> FindAllFiltered(Expression<Func<Validator, bool>> filter)
+    {
+        throw new NotImplementedException();
     }
 
     public Validator? Update(Validator updatedEntity)

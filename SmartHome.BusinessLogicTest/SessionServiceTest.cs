@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
@@ -30,6 +31,17 @@ public class SessionServiceTest
     public void GetLogIn_WithValidCredentials_Test()
     {
         var userId = Guid.NewGuid();
+        var sp = new SystemPermission
+        {
+            Name = "READ",
+            Description = "WRITE"
+        };
+        var role = new Role
+        {
+            Name = "Admin"
+        };
+        role.SystemPermissions.Add(sp);
+
         var existingUser = new User
         {
             Name = "Juan",
@@ -37,7 +49,8 @@ public class SessionServiceTest
             Password = "Password@1234",
             CreationDate = DateTime.Today,
             Email = "juanperez@gmail.com",
-            Id = userId
+            Id = userId,
+            Role = role
         };
 
         userRepositoryMock.Setup(repo => repo.FindAll())
@@ -48,12 +61,14 @@ public class SessionServiceTest
             .Callback<Session>(s => sessionAdded = s)
             .Returns((Session s) => s);
 
+        // Act
         var result = sessionService.LogIn("juanperez@gmail.com", "Password@1234");
 
+        // Assert
         Assert.IsNotNull(result);
         Assert.IsNotNull(sessionAdded);
         Assert.AreEqual(userId, sessionAdded.UserId);
-        Assert.AreEqual(result, sessionAdded.SessionId);
+        Assert.AreEqual(result.SessionId, sessionAdded.SessionId);
         sessionRepositoryMock.Verify(repo => repo.Add(It.IsAny<Session>()), Times.Once);
     }
 

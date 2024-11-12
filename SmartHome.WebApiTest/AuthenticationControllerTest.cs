@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.DTOs;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.LoginModels.In;
@@ -36,9 +37,14 @@ public class AuthenticationControllerTest
         // ARRANGE
         var loginRequest = new LoginRequestModel() { Email = "aemail@domain.com", Password = "aPassword" };
         var token = Guid.NewGuid();
-        var expectedLoginResponse = new LoginResponseModel() { Token = token };
+        var sessionAndSP = new DTOSessionAndSystemPermissions
+        {
+            SessionId = Guid.NewGuid(),
+            SystemPermissions = new List<SystemPermission>()
+        };
+        var expectedLoginResponse = new LoginResponseModel(sessionAndSP) { Token = token };
 
-        loginLogicMock.Setup(l => l.LogIn(It.IsAny<string>(), It.IsAny<string>())).Returns(expectedLoginResponse.ToEntity());
+        loginLogicMock.Setup(l => l.LogIn(It.IsAny<string>(), It.IsAny<string>())).Returns(sessionAndSP);
 
         var expected = new OkObjectResult(expectedLoginResponse);
 

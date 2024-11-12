@@ -374,7 +374,7 @@ public class HomeRepositoryTest
         result.Members.First().User.Name.Should().Be("Test Member");
         result.Members.First().HomePermissions.Should().NotBeNullOrEmpty();
         result.Devices.Should().NotBeNullOrEmpty();
-        result.Devices.First().Device.Name.Should().Be("Test Device");
+        result.Devices!.First().Device.Name.Should().Be("Test Device");
     }
     #endregion
 

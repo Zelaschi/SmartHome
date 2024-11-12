@@ -10,6 +10,7 @@ using SmartHome.WebApi.WebModels.UserModels.Out;
 using System.Linq;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 using Microsoft.Identity.Client;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Controllers;
 

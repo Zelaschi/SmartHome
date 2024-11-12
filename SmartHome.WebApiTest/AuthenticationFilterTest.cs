@@ -177,13 +177,24 @@ public class AuthenticationFilterTests
     public void OnAuthorization_WhenSessionIsValid_ShouldAddUserToContext()
     {
         var authToken = Guid.NewGuid();
+        var sp = new SystemPermission
+        {
+            Name = "Test Permission",
+            Description = "Test Description"
+        };
+        var role = new Role
+        {
+            Name = "Test Role",
+        };
+        role.SystemPermissions.Add(sp);
         var user = new User
         {
             Id = Guid.NewGuid(),
             Name = "Test User",
             Surname = "Test Surname",
             Password = "TestPassword123",
-            Email = "testuser@example.com"
+            Email = "testuser@example.com",
+            Role = role
         };
 
         _httpContextMock.Setup(h => h.Request.Headers).Returns(new HeaderDictionary(new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
