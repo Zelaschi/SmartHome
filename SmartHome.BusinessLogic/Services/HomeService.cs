@@ -24,11 +24,19 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     private readonly IGenericRepository<Device> _deviceRepository;
     private readonly IGenericRepository<Room> _roomRepository;
     private readonly IHomesFromUserRepository _homesFromUserRepository;
+    private readonly IUpdateMultipleElementsRepository<HomeMember> _updateMultipleElementsRepository;
 
-    public HomeService(IGenericRepository<HomeMember> homeMemberRepository, IGenericRepository<HomeDevice> homeDeviceRepository,
-        IGenericRepository<Home> homeRepository, IGenericRepository<User> userRepository,
-        IGenericRepository<HomePermission> homePermissionRepository, IGenericRepository<Device> deviceRepository, IGenericRepository<Room> roomRepository,
-        IHomesFromUserRepository homesFromUserRepository)
+    public HomeService(
+        IGenericRepository<HomeMember> homeMemberRepository,
+        IGenericRepository<HomeDevice> homeDeviceRepository,
+        IGenericRepository<Home> homeRepository,
+        IGenericRepository<User> userRepository,
+        IGenericRepository<HomePermission> homePermissionRepository,
+        IGenericRepository<Device> deviceRepository,
+        IGenericRepository<Room> roomRepository,
+        IHomesFromUserRepository homesFromUserRepository,
+        IUpdateMultipleElementsRepository<HomeMember> updateMultipleElementsRepository
+    )
     {
         _homeMemberRepository = homeMemberRepository;
         _homeRepository = homeRepository;
@@ -38,6 +46,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _deviceRepository = deviceRepository;
         _homesFromUserRepository = homesFromUserRepository;
         _roomRepository = roomRepository;
+        _updateMultipleElementsRepository = updateMultipleElementsRepository;
     }
 
     private User FindUserById(Guid? userId)
@@ -230,23 +239,29 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             .ToList();
 
         var notifications = new List<Notification>();
+        var updatedHomeOwners = new List<HomeMember>();
 
-        foreach (var homeMember in userHomeMembers)
+        userHomeMembers.ForEach(homeMember =>
         {
+            var homeOwnersNotifications = homeMember.HomeMemberNotifications
+                .Where(hmn => hmn.Read)
+                .Select(hmn => hmn.Notification)
+                .ToList();
+            notifications.AddRange(homeOwnersNotifications);
+
             var unReadNotifications = homeMember.HomeMemberNotifications
                 .Where(hmn => !hmn.Read)
                 .Select(hmn => hmn.Notification)
                 .ToList();
-
             if (unReadNotifications.Any())
             {
-               MarkNotificationsAsRead(homeMember.HomeMemberNotifications, unReadNotifications);
-
                 notifications.AddRange(unReadNotifications);
+                MarkNotificationsAsRead(homeMember.HomeMemberNotifications, unReadNotifications);
+                updatedHomeOwners.Add(homeMember);
             }
+        });
 
-            _homeMemberRepository.Update(homeMember);
-        }
+        _updateMultipleElementsRepository.UpdateMultiplElements(updatedHomeOwners);
 
         return notifications;
     }

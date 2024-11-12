@@ -58,6 +58,7 @@ services.AddScoped<IGenericRepository<Device>, DeviceRepository>();
 services.AddScoped<IGenericRepository<Business>, BusinessRepository>();
 services.AddScoped<IGenericRepository<HomeDevice>, HomeDeviceRepository>();
 services.AddScoped<IGenericRepository<HomeMember>, HomeMemberRepository>();
+services.AddScoped<IUpdateMultipleElementsRepository<HomeMember>, HomeMemberRepository>();
 services.AddScoped<IGenericRepository<SystemPermission>, SystemPermissionRepository>();
 services.AddScoped<IGenericRepository<Room>, RoomRepository>();
 
