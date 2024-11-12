@@ -50,6 +50,13 @@ const routes: Routes = [
       import('./layouts/home/home.module').then(
         (m) => m.HomeModule
       ),
+  },
+  {
+    path: 'rooms',
+    loadChildren: () =>
+      import('./layouts/room/room.module').then(
+        (m) => m.RoomModule
+      ),
   }
 ];
 
