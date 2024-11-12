@@ -6,7 +6,7 @@ using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
 
 namespace SmartHome.DataAccess.Repositories;
-public sealed class ValidatorRepository : IGenericRepository<Validator>
+public sealed class ValidatorRepository : IGenericRepository<ModelNumberValidator>
 {
     private readonly SmartHomeEFCoreContext _context;
 
@@ -22,7 +22,7 @@ public sealed class ValidatorRepository : IGenericRepository<Validator>
         }
     }
 
-    public Validator Add(Validator entity)
+    public ModelNumberValidator Add(ModelNumberValidator entity)
     {
         try
         {
@@ -40,7 +40,7 @@ public sealed class ValidatorRepository : IGenericRepository<Validator>
     {
         try
         {
-            Validator validatorToDelete = _context.Validators.FirstOrDefault(v => v.Id == id);
+            ModelNumberValidator validatorToDelete = _context.Validators.FirstOrDefault(v => v.Id == id);
             if (validatorToDelete != null)
             {
                 _context.Validators.Remove(validatorToDelete);
@@ -57,7 +57,7 @@ public sealed class ValidatorRepository : IGenericRepository<Validator>
         }
     }
 
-    public Validator? Find(Func<Validator, bool> filter)
+    public ModelNumberValidator? Find(Func<ModelNumberValidator, bool> filter)
     {
         try
         {
@@ -69,7 +69,7 @@ public sealed class ValidatorRepository : IGenericRepository<Validator>
         }
     }
 
-    public IList<Validator> FindAll()
+    public IList<ModelNumberValidator> FindAll()
     {
         try
         {
@@ -81,21 +81,21 @@ public sealed class ValidatorRepository : IGenericRepository<Validator>
         }
     }
 
-    public IList<Validator> FindAllFiltered(Expression<Func<Validator, bool>> filter, int pageNumber, int pageSize)
+    public IList<ModelNumberValidator> FindAllFiltered(Expression<Func<ModelNumberValidator, bool>> filter, int pageNumber, int pageSize)
     {
         throw new NotImplementedException();
     }
 
-    public IList<Validator> FindAllFiltered(Expression<Func<Validator, bool>> filter)
+    public IList<ModelNumberValidator> FindAllFiltered(Expression<Func<ModelNumberValidator, bool>> filter)
     {
         throw new NotImplementedException();
     }
 
-    public Validator? Update(Validator updatedEntity)
+    public ModelNumberValidator? Update(ModelNumberValidator updatedEntity)
     {
         try
         {
-            Validator validatorToUpdate = _context.Validators.FirstOrDefault(v => v.Id == updatedEntity.Id);
+            ModelNumberValidator validatorToUpdate = _context.Validators.FirstOrDefault(v => v.Id == updatedEntity.Id);
             if (validatorToUpdate != null)
             {
                 validatorToUpdate.Name = updatedEntity.Name;

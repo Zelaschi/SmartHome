@@ -25,7 +25,7 @@ public sealed class SmartHomeEFCoreContext : DbContext
     public DbSet<Device> Devices { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<SecurityCamera> SecurityCameras { get; set; }
-    public DbSet<Validator> Validators { get; set; }
+    public DbSet<ModelNumberValidator> Validators { get; set; }
 
     public SmartHomeEFCoreContext(DbContextOptions<SmartHomeEFCoreContext> options)
     : base(options)

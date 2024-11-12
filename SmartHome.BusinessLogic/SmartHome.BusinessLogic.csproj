@@ -14,4 +14,10 @@
     <ProjectReference Include="..\SmartHome.ImporterCommon\SmartHome.ImporterCommon.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Reference Include="ModeloValidador.Abstracciones">
+			<HintPath>..\SmartHome.ModelValidator\ModeloValidador.Abstracciones.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
 </Project>

@@ -48,6 +48,9 @@ services.AddScoped<IHomePermissionLogic, HomeService>();
 services.AddScoped<IHomeMemberLogic, HomeService>();
 services.AddScoped<INotificationLogic, HomeService>();
 
+services.AddScoped<IValidatorLogic, ValidatorService>();
+services.AddScoped<ValidatorService>();
+
 services.AddScoped<IGenericRepository<User>, UserRepository>();
 services.AddScoped<IGenericRepository<Session>, SessionRepository>();
 services.AddScoped<IGenericRepository<Home>, HomeRepository>();
@@ -61,6 +64,7 @@ services.AddScoped<IGenericRepository<HomeMember>, HomeMemberRepository>();
 services.AddScoped<IUpdateMultipleElementsRepository<HomeMember>, HomeMemberRepository>();
 services.AddScoped<IGenericRepository<SystemPermission>, SystemPermissionRepository>();
 services.AddScoped<IGenericRepository<Room>, RoomRepository>();
+services.AddScoped<IGenericRepository<ModelNumberValidator>, ValidatorRepository>();
 
 var app = builder.Build();
 
