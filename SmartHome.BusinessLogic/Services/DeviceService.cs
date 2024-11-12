@@ -34,7 +34,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
             throw new DeviceException("Business was not found for the user");
         }
 
-        if (!_validatorService.IsValidModelNumber(securityCamera.ModelNumber, business.ValidatorId))
+        if ((business.ValidatorId != null) && (!_validatorService.IsValidModelNumber(securityCamera.ModelNumber, business.ValidatorId)))
         {
             throw new DeviceException("Model number is not valid");
         }
@@ -62,7 +62,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
             throw new DeviceException("Business was not found for the user");
         }
 
-        if (!_validatorService.IsValidModelNumber(device.ModelNumber, business.ValidatorId))
+        if ((business.ValidatorId != null) && (!_validatorService.IsValidModelNumber(device.ModelNumber, business.ValidatorId)))
         {
             throw new DeviceException("Model number is not valid");
         }

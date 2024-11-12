@@ -9,12 +9,12 @@ namespace SmartHome.BusinessLogic.Services;
 
 public sealed class ValidatorService : IValidatorLogic
 {
-    private readonly IGenericRepository<Validator> _validatorRepository;
+    private readonly IGenericRepository<ModelNumberValidator> _validatorRepository;
     private readonly string _validatorsFilesPath = @"..\SmartHome.BusinessLogic\ModelValidators";
     private readonly LoadAssemblyClass<IModeloValidador> _assemblyLoader;
     private List<Type> _implementations;
 
-    public ValidatorService(IGenericRepository<Validator> validatorRepository)
+    public ValidatorService(IGenericRepository<ModelNumberValidator> validatorRepository)
     {
         _validatorRepository = validatorRepository;
         _assemblyLoader = new LoadAssemblyClass<IModeloValidador>(_validatorsFilesPath);
@@ -29,7 +29,7 @@ public sealed class ValidatorService : IValidatorLogic
         {
             if (_validatorRepository.Find(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) == null)
             {
-                var validator = new Validator
+                var validator = new ModelNumberValidator
                 {
                     Id = Guid.NewGuid(),
                     Name = name

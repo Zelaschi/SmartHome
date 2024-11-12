@@ -63,7 +63,7 @@ services.AddScoped<IGenericRepository<HomeDevice>, HomeDeviceRepository>();
 services.AddScoped<IGenericRepository<HomeMember>, HomeMemberRepository>();
 services.AddScoped<IGenericRepository<SystemPermission>, SystemPermissionRepository>();
 services.AddScoped<IGenericRepository<Room>, RoomRepository>();
-services.AddScoped<IGenericRepository<Validator>, ValidatorRepository>();
+services.AddScoped<IGenericRepository<ModelNumberValidator>, ValidatorRepository>();
 
 var app = builder.Build();
 
