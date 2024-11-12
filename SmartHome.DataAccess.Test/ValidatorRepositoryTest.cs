@@ -35,7 +35,7 @@ public class ValidatorRepositoryTest
     [TestMethod]
     public void AddValidator_WhenValidatorIsCorrect_ShouldAdd()
     {
-        var validator = new Validator
+        var validator = new ModelNumberValidator
         {
             Name = "test"
         };
@@ -57,7 +57,7 @@ public class ValidatorRepositoryTest
     public void Delete_WhenValidatorExists_ShouldRemoveFromDatabase()
     {
         _context.Validators.RemoveRange(_context.Validators);
-        var validator = new Validator
+        var validator = new ModelNumberValidator
         {
             Name = "Admin"
         };
@@ -73,7 +73,7 @@ public class ValidatorRepositoryTest
     public void Delete_WhenValidatorDoesNotExist_ShouldThrowDatabaseException()
     {
         _context.Validators.RemoveRange(_context.Validators);
-        var validator = new Validator
+        var validator = new ModelNumberValidator
         {
             Name = "Test"
         };
@@ -91,14 +91,14 @@ public class ValidatorRepositoryTest
     public void Update_WhenValidatorExists_ShouldUpdateRole()
     {
         _context.Validators.RemoveRange(_context.Validators);
-        var validator = new Validator
+        var validator = new ModelNumberValidator
         {
             Name = "Test"
         };
         _context.Validators.Add(validator);
         _context.SaveChanges();
 
-        var updatedValidator = new Validator
+        var updatedValidator = new ModelNumberValidator
         {
             Id = validator.Id,
             Name = "Updated validator"
@@ -119,14 +119,14 @@ public class ValidatorRepositoryTest
     public void Update_WhenValidatorDoesNotExist_ShouldThrowDatabaseException()
     {
         _context.Validators.RemoveRange(_context.Validators);
-        var validator = new Validator
+        var validator = new ModelNumberValidator
         {
             Name = "Test"
         };
         _context.Validators.Add(validator);
         _context.SaveChanges();
 
-        var updatedValidator = new Validator
+        var updatedValidator = new ModelNumberValidator
         {
             Id = Guid.NewGuid(),
             Name = "Updated Validator"
@@ -143,7 +143,7 @@ public class ValidatorRepositoryTest
     public void Find_WhenValidatorExists_ShouldReturnValidator()
     {
         _context.Validators.RemoveRange(_context.Validators);
-        var validator = new Validator
+        var validator = new ModelNumberValidator
         {
             Name = "Test"
         };
@@ -163,7 +163,7 @@ public class ValidatorRepositoryTest
     public void FindAll_WhenExistOnlyOne_ShouldReturnOne()
     {
         _context.Validators.RemoveRange(_context.Validators);
-        var validator = new Validator
+        var validator = new ModelNumberValidator
         {
             Name = "Test"
         };
