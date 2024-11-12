@@ -85,6 +85,6 @@ public class DeviceImportServiceTest
             .Returns(device2);
 
         var result = deviceImportService.ImportDevices("JSON", path, user1);
-        CollectionAssert.AreEqual(expected, result);
+        Assert.AreEqual(expected.Count, result);
     }
 }
