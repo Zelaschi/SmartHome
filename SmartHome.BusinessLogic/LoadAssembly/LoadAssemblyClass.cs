@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.BusinessLogic.LoadAssembly;
-public sealed class LoadAssembly<IInterface>
+public sealed class LoadAssemblyClass<IInterface>
         where IInterface : class
 {
     private readonly DirectoryInfo _directory;
     private readonly List<Type> _implementations;
 
-    public LoadAssembly(string path)
+    public LoadAssemblyClass(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
         {
