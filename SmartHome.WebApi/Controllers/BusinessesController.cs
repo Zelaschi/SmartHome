@@ -68,7 +68,7 @@ public sealed class BusinessesController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
-    [HttpPatch("Validators/{businessId}")]
+    [HttpPatch("validators/{businessId}")]
     public IActionResult AddValidatorToBusiness([FromRoute] Guid businessId, [FromBody] Guid validatorId)
     {
         var updatedBusiness = _businessesLogic.AddValidatorToBusiness(businessId, validatorId);
