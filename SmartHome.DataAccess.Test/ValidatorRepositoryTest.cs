@@ -87,6 +87,55 @@ public class ValidatorRepositoryTest
     #endregion
 
     #region Update
+    [TestMethod]
+    public void Update_WhenValidatorExists_ShouldUpdateRole()
+    {
+        _context.Validators.RemoveRange(_context.Validators);
+        var validator = new Validator
+        {
+            Name = "Test"
+        };
+        _context.Validators.Add(validator);
+        _context.SaveChanges();
+
+        var updatedValidator = new Validator
+        {
+            Id = validator.Id,
+            Name = "Updated validator"
+        };
+
+        var result = _validatorRepository.Update(updatedValidator);
+
+        result.Should().NotBeNull();
+        result.Id.Should().Be(validator.Id);
+        result.Name.Should().Be("Updated validator");
+
+        var updatedEntityInDb = _context.Validators.FirstOrDefault(v => v.Id == validator.Id);
+        updatedEntityInDb.Should().NotBeNull();
+        updatedEntityInDb.Name.Should().Be("Updated validator");
+    }
+
+    [TestMethod]
+    public void Update_WhenValidatorDoesNotExist_ShouldThrowDatabaseException()
+    {
+        _context.Validators.RemoveRange(_context.Validators);
+        var validator = new Validator
+        {
+            Name = "Test"
+        };
+        _context.Validators.Add(validator);
+        _context.SaveChanges();
+
+        var updatedValidator = new Validator
+        {
+            Id = Guid.NewGuid(),
+            Name = "Updated Validator"
+        };
+
+        Action action = () => _validatorRepository.Update(updatedValidator);
+        action.Should().Throw<DatabaseException>()
+            .WithMessage("The Validator does not exist in the Data Base.");
+    }
     #endregion
 
     #region Find
