@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHome.BusinessLogic.Domain;
-public sealed class Validator
+public sealed class ModelNumberValidator
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
