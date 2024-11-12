@@ -16,10 +16,14 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
 {
     private readonly IGenericRepository<Device> _deviceRepository;
     private readonly IGenericRepository<Business> _businessRepository;
-    public DeviceService(IGenericRepository<Business> businessRepository, IGenericRepository<Device> deviceRepository)
+    private readonly ValidatorService _validatorService;
+    public DeviceService(IGenericRepository<Business> businessRepository,
+                        IGenericRepository<Device> deviceRepository,
+                        ValidatorService validatorService)
     {
         _businessRepository = businessRepository;
         _deviceRepository = deviceRepository;
+        _validatorService = validatorService;
     }
 
     public SecurityCamera CreateSecurityCamera(SecurityCamera securityCamera, User bOwner)
@@ -28,6 +32,11 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
         if (business == null)
         {
             throw new DeviceException("Business was not found for the user");
+        }
+
+        if (!_validatorService.IsValidModelNumber(securityCamera.ModelNumber, business.ValidatorId))
+        {
+            throw new DeviceException("Model number is not valid");
         }
 
         securityCamera.Business = business;
@@ -51,6 +60,11 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
         if (business == null)
         {
             throw new DeviceException("Business was not found for the user");
+        }
+
+        if (!_validatorService.IsValidModelNumber(device.ModelNumber, business.ValidatorId))
+        {
+            throw new DeviceException("Model number is not valid");
         }
 
         device.Business = business;

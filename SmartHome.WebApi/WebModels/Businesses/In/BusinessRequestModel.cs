@@ -7,14 +7,30 @@ public sealed class BusinessRequestModel
     public required string Name { get; set; }
     public required string Logo { get; set; }
     public required string RUT { get; set; }
+    public string? ValidatorId { get; set; }
     public Business ToEntity()
     {
-        return new Business()
+        if (ValidatorId != null)
         {
-            Id = new Guid(),
-            Name = Name,
-            Logo = Logo,
-            RUT = RUT
-        };
+            var validatorId = new Guid(ValidatorId);
+            return new Business()
+            {
+                Id = new Guid(),
+                Name = Name,
+                Logo = Logo,
+                RUT = RUT,
+                ValidatorId = validatorId,
+            };
+        }
+        else
+        {
+            return new Business()
+            {
+                Id = new Guid(),
+                Name = Name,
+                Logo = Logo,
+                RUT = RUT,
+            };
+        }
     }
 }

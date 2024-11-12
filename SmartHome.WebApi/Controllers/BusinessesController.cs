@@ -10,6 +10,7 @@ using SmartHome.WebApi.WebModels.UserModels.Out;
 using System.Linq;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 using Microsoft.Identity.Client;
+using SmartHome.BusinessLogic.Constants;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -59,16 +60,18 @@ public sealed class BusinessesController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
-    [HttpGet("Validators")]
+    [HttpGet("validators")]
     public IActionResult GetAllValidators()
     {
-        throw new NotImplementedException();
+        var response = _businessesLogic.GetAllValidators();
+        return Ok(response);
     }
 
     [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
-    [HttpPatch("Validators")]
-    public IActionResult AddValidatorToBusiness()
+    [HttpPatch("Validators/{businessId}")]
+    public IActionResult AddValidatorToBusiness([FromRoute] Guid businessId, [FromBody] Guid validatorId)
     {
-        throw new NotImplementedException();
+        var updatedBusiness = _businessesLogic.AddValidatorToBusiness(businessId, validatorId);
+        return Ok(updatedBusiness);
     }
 }

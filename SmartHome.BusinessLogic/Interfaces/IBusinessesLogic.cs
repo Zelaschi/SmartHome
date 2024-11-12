@@ -10,4 +10,6 @@ public interface IBusinessesLogic
 {
     Business CreateBusiness(Business business, User user);
     IEnumerable<Business> GetBusinesses(int? pageNumber, int? pageSize, string? businessName, string? fullName);
+    List<string> GetAllValidators();
+    Business AddValidatorToBusiness(Guid businessId, Guid validatorId);
 }
