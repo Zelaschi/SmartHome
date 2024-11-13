@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import environmentLocal from '../../app/environments/environment.local';
+import environmentLocal from '../../environments/environment.local';
 import BusinessCreationModel from '../services/Business/models/BusinessCreationModel';
 import BusinessCreatedModel from '../services/Business/models/BusinessCreatedModel';
 import { Observable } from 'rxjs';

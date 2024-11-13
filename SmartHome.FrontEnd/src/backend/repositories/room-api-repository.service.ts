@@ -3,7 +3,7 @@ import ApiRepository from './api-repository';
 import { HttpClient } from '@angular/common/http';
 import RoomCreationModel from '../services/Room/models/RoomCreationModel';
 import RoomCreatedModel from '../services/Room/models/RoomCreatedModel';
-import environmentLocal from '../../app/environments/environment.local';
+import environmentLocal from '../../environments/environment.local';
 import { Observable } from 'rxjs';
 
 @Injectable({

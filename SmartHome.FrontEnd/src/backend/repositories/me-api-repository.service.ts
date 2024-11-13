@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import ApiRepository from './api-repository';
-import environmentLocal from '../../app/environments/environment.local';
+import environmentLocal from '../../environments/environment.local';
 import { HttpClient } from '@angular/common/http';
 import NotificationResponse from '../services/Me/models/NotificationResponse';
 import { Observable } from 'rxjs';

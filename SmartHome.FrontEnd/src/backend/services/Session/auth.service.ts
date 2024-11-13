@@ -30,7 +30,7 @@ export class AuthService {
       return this._userLogged$.asObservable();
     }
   
-    constructor(private readonly _repository: SessionApiRepositoryService) {}
+    constructor(private readonly _repository: SessionApiRepositoryService,  private readonly router : Router) {}
   
     public login(
       credentials: UserCredentialsModel
@@ -45,6 +45,13 @@ export class AuthService {
           this._userLogged$.next(response);
         })
       );
+    }
+
+    public logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("systemPermissions");
+      this._userLogged$.next(null);
+      this.router.navigate(["/login"]);
     }
  
 }

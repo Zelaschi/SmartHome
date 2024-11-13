@@ -3,7 +3,7 @@ import ApiRepository from './api-repository';
 import { HttpClient } from '@angular/common/http';
 import HomeCreationModel from '../services/Home/models/HomeCreationModel';
 import HomeCreatedModel from '../services/Home/models/HomeCreatedModel';
-import environmentLocal from '../../app/environments/environment.local';
+import environmentLocal from '../../environments/environment.local';
 import { Observable } from 'rxjs';
 import HomeMemberResponseModel from '../services/Home/models/HomeMemberResponseModel';
 

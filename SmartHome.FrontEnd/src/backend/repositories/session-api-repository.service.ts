@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import ApiRepository from './api-repository';
 import { HttpClient } from '@angular/common/http';
-import environmentLocal from '../../app/environments/environment.local';
+import environmentLocal from '../../environments/environment.local';
 import SessionCreatedModel from '../services/Session/models/SessionCreatedModel';
 import UserCredentialsModel from '../services/Session/models/UserCredentialsModel';
 import { Observable } from 'rxjs';
