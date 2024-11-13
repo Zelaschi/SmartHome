@@ -51,7 +51,7 @@ export class LoginFormComponent {
       next: (response) => {
         this.loginStatus = null;
 
-        this._router.navigate(["/devices"]);
+        this._router.navigate(["/landing"]);
       },
       error: (error) => {
         this.loginStatus = { error };

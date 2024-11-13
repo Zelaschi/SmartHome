@@ -19,7 +19,7 @@ const routes: Routes = [
     component: BusinessListComponent
   },
   {
-    path: 'businesses/newBusinessOwner',
+    path: 'registerBusinessOwner',
     component: BusinessOwnerFormComponent
   }
 ];
