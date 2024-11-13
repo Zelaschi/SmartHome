@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ModeloValidador.Abstracciones;
 using Moq;
+using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.LoadAssembly;
@@ -90,6 +91,42 @@ public class ValidatorServiceTest
 
         // Assert
         Assert.IsTrue(result);  // Verifica que el modelo es válido
+    }
+
+    [TestMethod]
+    public void IsValidModelNumber_ShouldThrowValidatorException_WhenValidatorNameNotFound()
+    {
+        // Arrange
+        var mockValidatorRepository = new Mock<IGenericRepository<ModelNumberValidator>>();
+
+        // Usar el wrapper MockAssemblyLoader
+        var mockAssemblyLoader = new MockAssemblyLoader(@"..\SmartHome.BusinessLogic\ModelValidators");
+
+        // Simular que el validador no existe
+        var mockValidator = new Mock<IModeloValidador>();
+        mockValidator.Setup(v => v.EsValido(It.IsAny<Modelo>())).Returns(true);  // Aunque el validador siempre valida, no debe llegar a esta parte
+
+        var validatorService = new ValidatorService(mockValidatorRepository.Object);
+
+        // Configurar el repositorio para no encontrar el validador cuando se busque por Id
+        var validatorId = Guid.NewGuid();  // Un Id que no se encuentra en el repositorio
+        mockValidatorRepository.Setup(x => x.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+                               .Returns<ModelNumberValidator>(null);  // No encuentra el validador
+
+        // Act & Assert
+        try
+        {
+            // Intentar validar un número de modelo con un validador inexistente
+            validatorService.IsValidModelNumber("ABCDEF", validatorId);
+
+            // Si no se lanza una excepción, fallamos el test
+            Assert.Fail("Expected ValidatorException was not thrown.");
+        }
+        catch (ValidatorException ex)
+        {
+            // Verificar que se lanzó la excepción y que el mensaje sea el esperado
+            Assert.AreEqual("Validator name not found", ex.Message);
+        }
     }
 }
 

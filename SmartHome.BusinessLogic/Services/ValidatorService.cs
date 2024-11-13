@@ -66,7 +66,13 @@ public sealed class ValidatorService : IValidatorLogic
 
     public bool IsValidModelNumber(string modelNumber, Guid? validatorId)
     {
-        var validatorName = _validatorRepository.Find(x => x.Id == validatorId).Name;
+        var findValidator = _validatorRepository.Find(x => x.Id == validatorId);
+        if (findValidator == null)
+        {
+            throw new ValidatorException("Validator name not found");
+        }
+
+        var validatorName = findValidator.Name;
         var validator = GetImplementation(validatorName);
 
         if (validator == null)
