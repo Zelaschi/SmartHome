@@ -2,15 +2,20 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotificationListComponent } from './notification-list/notification-list.component';
 import { HomesListComponent } from './homes-list/homes-list.component';
+import { RoomFormComponent } from './room-form/room-form.component';
 
 const routes: Routes = [
   {
-    path: "homes",
+    path: "",
     component: HomesListComponent
   },
   {
-    path: '',
+    path: "/notifications",
     component: NotificationListComponent
+  },
+  {
+    path: '/addRoom',
+    component: RoomFormComponent
   },
 ];
 

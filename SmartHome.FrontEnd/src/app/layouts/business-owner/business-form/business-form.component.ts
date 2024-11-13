@@ -55,7 +55,7 @@ export class BusinessFormComponent {
       next: (response) => {
         this.businessStatus = null;
 
-        this._router.navigate(["/devices"]);
+        this._router.navigate(["/landing"]);
       },
       error: (error) => {
         this.businessStatus = { error };

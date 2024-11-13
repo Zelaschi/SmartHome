@@ -60,7 +60,7 @@ export class AdminFormComponent {
       next: (response) => {
         this.adminStatus = null;
 
-        this._router.navigate(["/devices"]);
+        this._router.navigate(["/landing"]);
       },
       error: (error) => {
         this.adminStatus = { error: error.message };

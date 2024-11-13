@@ -1,4 +1,4 @@
-import DropdownOption from "../../../../components/dropdown/models/DropdownOption";
+import DropdownOption from "../../../components/dropdown/models/DropdownOption";
 
 export default interface DeviceTypeStatus {
     loading?: true;

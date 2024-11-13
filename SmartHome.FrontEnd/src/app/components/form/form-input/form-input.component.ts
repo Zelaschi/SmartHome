@@ -1,12 +1,12 @@
 import { Component, DoCheck, Input, OnInit } from "@angular/core";
 import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { InputComponent } from "../../input/input.component";
-import { NgIf } from "@angular/common";
+import { CommonModule, NgIf } from "@angular/common";
 
 @Component({
   selector: "app-form-input",
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, InputComponent],
+  imports: [ReactiveFormsModule, NgIf, InputComponent, CommonModule],
   templateUrl: "./form-input.component.html",
   styles: ``,
 })

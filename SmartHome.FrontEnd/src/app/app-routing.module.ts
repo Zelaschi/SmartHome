@@ -1,23 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { noAuthGuard } from '../backend/guards/no-auth.guard';
+import { authGuard } from '../backend/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'businesses',
+    path: 'landing',
+    canActivate: [authGuard],
     loadChildren: () =>
-      import('./layouts/business/business.module').then(
-        (m) => m.BusinessModule
-      ),
-  },
-  {
-    path: 'devices',
-    loadChildren: () =>
-      import('./layouts/device/device.module').then(
-        (m) => m.DeviceModule
+      import('./layouts/landing/landing.module').then(
+        (m) => m.LandingModule
       ),
   },
   {
     path: 'admins',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./layouts/admin/admin.module').then(
         (m) => m.AdminModule
@@ -25,6 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'homeOwners',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./layouts/home-owner/home-owner.module').then(
         (m) => m.HomeOwnerModule
@@ -32,6 +30,7 @@ const routes: Routes = [
   },
   {
     path: 'businessOwners',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./layouts/business-owner/business-owner.module').then(
         (m) => m.BusinessOwnerModule
@@ -39,25 +38,12 @@ const routes: Routes = [
   },
   {
     path: '',
+    canActivate: [noAuthGuard],
     loadChildren: () =>
       import('./layouts/authentication/authentication.module').then(
         (m) => m.AuthenticationModule
       ),
   },
-  {
-    path: 'homes',
-    loadChildren: () =>
-      import('./layouts/home/home.module').then(
-        (m) => m.HomeModule
-      ),
-  },
-  {
-    path: 'rooms',
-    loadChildren: () =>
-      import('./layouts/room/room.module').then(
-        (m) => m.RoomModule
-      ),
-  }
 ];
 
 @NgModule({

@@ -39,7 +39,7 @@ export class RoomFormComponent {
       next: (response) => {
         this.roomStatus = null;
 
-        this._router.navigate(["/devices"]);
+        this._router.navigate(["/landing"]);
       },
       error: (error) => {
         this.roomStatus = { error };

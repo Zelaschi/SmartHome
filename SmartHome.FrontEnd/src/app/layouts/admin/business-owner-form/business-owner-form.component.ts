@@ -60,7 +60,7 @@ export class BusinessOwnerFormComponent {
       next: (response) => {
         this.businessOwnerStatus = null;
 
-        this._router.navigate(["/devices"]);
+        this._router.navigate(["/landing"]);
       },
       error: (error) => {
         this.businessOwnerStatus = { error: error.message };

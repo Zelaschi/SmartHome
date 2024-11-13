@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DevicesService } from '../../../../backend/services/Device/devices.service';
 import { Router } from '@angular/router';
-import { DeviceTypeDropdownComponent } from '../device-type-dropdown/device-type-dropdown.component';
+import { DeviceTypeDropdownComponent } from '../../../business-components/device-type-dropdown/device-type-dropdown.component';
 
 
 

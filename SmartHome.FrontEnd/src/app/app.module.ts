@@ -5,16 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import { DeviceListComponent } from './business-components/device-list/device-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormButtonComponent } from './components/form/form-button/form-button.component';
+import { FormInputComponent } from './components/form/form-input/form-input.component';
+import { FormComponent } from './components/form/form/form.component';
 
 @NgModule({
-  declarations: [AppComponent, DeviceListComponent],
+  declarations: [
+    AppComponent,
+  ],
   imports: [
     NgbModule,
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

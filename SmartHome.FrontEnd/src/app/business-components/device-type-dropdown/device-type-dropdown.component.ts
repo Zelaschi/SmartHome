@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import DeviceTypeStatus from './models/device-type.status';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { DevicesService } from '../../../../backend/services/Device/devices.service';
-import { DropdownComponent } from '../../../components/dropdown/dropdown.component';
+import { DevicesService } from '../../../backend/services/Device/devices.service';
+import { DropdownComponent } from '../../components/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-device-type-dropdown',

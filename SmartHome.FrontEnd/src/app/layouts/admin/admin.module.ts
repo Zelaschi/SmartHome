@@ -8,6 +8,9 @@ import { FormInputComponent } from '../../components/form/form-input/form-input.
 import { UserListComponent } from './user-list/user-list.component';
 import { UserItemComponent } from './user-item/user-item.component';
 import { PaginationComponent } from "../../components/pagination/pagination.component";
+import { BusinessOwnerFormComponent } from './business-owner-form/business-owner-form.component';
+import { BusinessListComponent } from './business-list/business-list.component';
+import { BusinessItemComponent } from './business-item/business-item.component';
 
 
 
@@ -15,7 +18,10 @@ import { PaginationComponent } from "../../components/pagination/pagination.comp
   declarations: [
     AdminFormComponent,
     UserListComponent,
-    UserItemComponent
+    UserItemComponent,
+    BusinessOwnerFormComponent,
+    BusinessListComponent,
+    BusinessItemComponent,
   ],
   imports: [
     CommonModule,
