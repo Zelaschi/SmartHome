@@ -34,7 +34,7 @@ public class BusinessesControllerTest
     {
         var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwner };
         var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
-        var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = businessOwner};
+        var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = businessOwner };
         var company2 = new Business() { Id = Guid.NewGuid(), Name = "kolke", Logo = "logo2", RUT = "rut2", BusinessOwner = user2 };
 
         IEnumerable<Business> companies = new List<Business>()
@@ -52,7 +52,7 @@ public class BusinessesControllerTest
         });
         List<BusinessesResponseModel> expectedObject = (expected.Value as List<BusinessesResponseModel>)!;
 
-        var result = businessesController.GetBusinesses(null, null,null,null) as OkObjectResult;
+        var result = businessesController.GetBusinesses(null, null, null, null) as OkObjectResult;
         var objectResult = (result.Value as List<BusinessesResponseModel>)!;
 
         businessesLogicMock.VerifyAll();
@@ -360,6 +360,79 @@ public class BusinessesControllerTest
         };
 
         var result = businessController.CreateBusiness(businessRequestModel) as UnauthorizedObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(401, result.StatusCode);
+        Assert.AreEqual("UserId is missing", result.Value);
+    }
+
+    [TestMethod]
+    public void AddValidatorToBusiness_UserAuthenticated_ShouldAddValidator()
+    {
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Business Owner",
+            Surname = "Owner",
+            Password = "password",
+            Email = "owner@example.com",
+            Role = businessOwner
+        };
+
+        var validatorId = Guid.NewGuid();
+        var updatedBusiness = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Updated Business",
+            Logo = "logo.jpg",
+            RUT = "123456789",
+            BusinessOwner = user
+        };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items.Add(UserStatic.User, user);
+
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        businessesController = new BusinessesController(businessesLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
+
+        businessesLogicMock.Setup(b => b.AddValidatorToBusiness(user, validatorId))
+            .Returns(updatedBusiness);
+
+        var result = businessesController.AddValidatorToBusiness(validatorId) as OkObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(200, result.StatusCode);
+        var businessResult = result.Value as Business;
+        Assert.IsNotNull(businessResult);
+        Assert.AreEqual(updatedBusiness.Id, businessResult.Id);
+        Assert.AreEqual(updatedBusiness.Name, businessResult.Name);
+        businessesLogicMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void AddValidatorToBusiness_UserNotAuthenticated_ShouldReturnUnauthorized()
+    {
+        var validatorId = Guid.NewGuid();
+
+        var httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+
+        businessesController = new BusinessesController(businessesLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
+
+        var result = businessesController.AddValidatorToBusiness(validatorId) as UnauthorizedObjectResult;
 
         Assert.IsNotNull(result);
         Assert.AreEqual(401, result.StatusCode);
