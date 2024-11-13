@@ -189,4 +189,153 @@ public class BusinessRepositoryTest
     }
 
     #endregion
+
+    #region Filtered
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnAllBusinesses_WhenNoFilterIsProvided()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name",
+            Logo = "Original Logo",
+            RUT = "Original RUT"
+        };
+
+        var business2 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name 2",
+            Logo = "Original Logo 2",
+            RUT = "Original RUT 2"
+        };
+        _context.Businesses.Add(business2);
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
+
+        var result = _businessRepository.FindAllFiltered(null, 1, 10);
+
+        result.Should().HaveCount(2);
+    }
+
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnFilteredBusinesses_WhenFilterIsProvided()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name",
+            Logo = "Original Logo",
+            RUT = "Original RUT"
+        };
+
+        var business2 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name 2",
+            Logo = "Original Logo 2",
+            RUT = "Original RUT 2"
+        };
+        _context.Businesses.Add(business2);
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
+
+        var result = _businessRepository.FindAllFiltered(b => b.Name == "Original Name", 1, 10);
+
+        result.Should().HaveCount(1);
+        result[0].Name.Should().Be("Original Name");
+        _businessRepository.FindAll().Should().HaveCount(2);
+    }
+
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnPagedBusinesses_WhenPageNumberAndPageSizeAreProvided()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name",
+            Logo = "Original Logo",
+            RUT = "Original RUT"
+        };
+
+        var business2 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name 2",
+            Logo = "Original Logo 2",
+            RUT = "Original RUT 2"
+        };
+        _context.Businesses.Add(business2);
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
+
+        var result = _businessRepository.FindAllFiltered(null, 1, 1);
+
+        result.Should().HaveCount(1);
+        result[0].Name.Should().Be("Original Name");
+    }
+
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnEmptyList_WhenNoBusinessesAreFound()
+    {
+        var result = _businessRepository.FindAllFiltered(null, 1, 10);
+
+        result.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void FindAllFiltered_OneParam_ShouldReturnAllDevices_WhenNoFilterIsProvided()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name",
+            Logo = "Original Logo",
+            RUT = "Original RUT"
+        };
+
+        var business2 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name 2",
+            Logo = "Original Logo 2",
+            RUT = "Original RUT 2"
+        };
+        _context.Businesses.Add(business2);
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
+
+        var result = _businessRepository.FindAllFiltered(null);
+
+        result.Should().HaveCount(2);
+    }
+
+    [TestMethod]
+    public void FindAllFiltered_OneParam_ShouldReturnBusinessesFiltered_WhenFilterIsProvided()
+    {
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name",
+            Logo = "Original Logo",
+            RUT = "Original RUT"
+        };
+
+        var business2 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Original Name 2",
+            Logo = "Original Logo 2",
+            RUT = "Original RUT 2"
+        };
+        _context.Businesses.Add(business2);
+        _context.Businesses.Add(business);
+        _context.SaveChanges();
+
+        var result = _businessRepository.FindAllFiltered(b => b.Name == "Original Name");
+
+        result.Should().HaveCount(1);
+        result[0].Name.Should().Be("Original Name");
+    }
+    #endregion
 }
