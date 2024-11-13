@@ -100,7 +100,6 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-
     public void Create_WindowSensor_Test()
     {
         var bowner = new User
@@ -164,9 +163,15 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-
     public void Create_WindowSensor_ModelNumeber_Repeated_Throws_Exception_Test()
     {
+        // Arrange: Configurar los datos de prueba
+        var validator = new ModelNumberValidator
+        {
+            Id = Guid.NewGuid(),
+            Name = "ModelNumberValidator"
+        };
+
         var businessOwner = new User
         {
             Name = "Juan",
@@ -175,6 +180,7 @@ public class DeviceServiceTest
             CreationDate = DateTime.Today,
             Email = "juanperez@gmail.com"
         };
+
         var id = Guid.NewGuid();
         var business = new Business
         {
@@ -182,22 +188,31 @@ public class DeviceServiceTest
             Name = "HikVision",
             Logo = "Logo1",
             RUT = "1234",
-            BusinessOwner = businessOwner
+            BusinessOwner = businessOwner,
+            ValidatorId = validator.Id
         };
+
         var windowSensor = new Device
         {
             Id = Guid.NewGuid(),
             Name = "Window Sensor",
             Description = "Window Sensor",
             ModelNumber = "1234",
-            Photos = [],
+            Photos = new List<Photo>(),
             Business = business
         };
 
-        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
-        deviceRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Device, bool>>())).Returns(windowSensor);
+        // Configurar el mock para businessRepository
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+            .Returns(business);
+
+        // Configurar el mock para validatorRepository
+        validatorRepositoryMock.Setup(u => u.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+            .Returns(validator); // Devuelve el validador cuando se busca por cualquier condición
+
         Exception exception = null;
 
+        // Act: Intentar crear un dispositivo con un número de modelo inválido
         try
         {
             deviceService.CreateDevice(windowSensor, businessOwner, "Window Sensor");
@@ -207,13 +222,83 @@ public class DeviceServiceTest
             exception = e;
         }
 
-        deviceRepositoryMock.VerifyAll();
+        // Assert: Verificar que se lanzó la excepción esperada
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
         Assert.IsInstanceOfType(exception, typeof(DeviceException));
-        Assert.AreEqual("Device model already exists", exception.Message);
+        Assert.AreEqual("Model number is not valid", exception.Message);
     }
 
     [TestMethod]
+    public void Create_WindowSensor_Business_NotFound_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
 
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner,
+            ValidatorId = id
+        };
+
+        Business businessNotFound = null;
+
+        var windowSensor = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Window Sensor",
+            Description = "Window Sensor",
+            ModelNumber = "1234",
+            Photos = new List<Photo>(),
+            Business = business
+        };
+
+        var user = new User
+        {
+            Name = "X",
+            Surname = "Y",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "x@y.com",
+        };
+
+        // Configurar el mock para businessRepository
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+            .Returns(businessNotFound);
+
+        Exception exception = null;
+
+        // Act: Intentar crear un dispositivo con un número de modelo inválido
+        try
+        {
+            deviceService.CreateDevice(windowSensor, user, "Window Sensor");
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        // Assert: Verificar que se lanzó la excepción esperada
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Business was not found for the user", exception.Message);
+    }
+
+    [TestMethod]
     public void Create_SecurityCamera_ModelNumeber_Repeated_Throws_Exception_Test()
     {
         var businessOwner = new User
@@ -265,7 +350,6 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-
     public void ListAll_DeviceTypes_Test()
     {
         var deviceTypes = new List<string> {"Security Camera", "Inteligent Lamp",  "Window Sensor", "Movement Sensor" };
