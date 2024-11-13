@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using ModeloValidador.Abstracciones;
@@ -119,8 +120,6 @@ public class ValidatorServiceTest
             // Intentar validar un número de modelo con un validador inexistente
             validatorService.IsValidModelNumber("ABCDEF", validatorId);
 
-            // Si no se lanza una excepción, fallamos el test
-            Assert.Fail("Expected ValidatorException was not thrown.");
         }
         catch (ValidatorException ex)
         {
@@ -128,9 +127,66 @@ public class ValidatorServiceTest
             Assert.AreEqual("Validator name not found", ex.Message);
         }
     }
+
+    [TestMethod]
+    public void IsValidModelNumber_ShouldThrowValidatorException_WhenValidatorDoesNotExist()
+    {
+        // Arrange
+        var mockValidatorRepository = new Mock<IGenericRepository<ModelNumberValidator>>();
+
+        // Usar el wrapper MockAssemblyLoader
+        var mockAssemblyLoader = new MockAssemblyLoader(@"..\SmartHome.BusinessLogic\ModelValidators");
+
+        // Simular que el validador existe en el repositorio
+        var validator = new ModelNumberValidator { Id = Guid.NewGuid(), Name = "SixLettersModelValidator" };
+        mockValidatorRepository.Setup(x => x.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+                               .Returns(validator);
+
+        // Crear el servicio ValidatorService
+        var validatorService = new ValidatorService(mockValidatorRepository.Object);
+
+        mockAssemblyLoader.GetImplementation(It.IsAny<string>(), It.IsAny<object[]>());
+
+        // Act & Assert
+        try
+        {
+            // Intentar validar el número de modelo con un validador que no tiene implementación
+            validatorService.IsValidModelNumber("ABCDEF", validator.Id);
+        }
+        catch (ValidatorException ex)
+        {
+            // Verificar que se lanzó la excepción y que el mensaje sea el esperado
+            Assert.AreEqual("Validator does not exists", ex.Message);
+        }
+    }
+
+    [TestMethod]
+    public void GetImplementation_ShouldThrowValidatorException_NoImplementationWithThisName()
+    {
+        var mockValidatorRepository = new Mock<IGenericRepository<ModelNumberValidator>>();
+
+        var mockAssemblyLoader = new MockAssemblyLoader(@"..\SmartHome.BusinessLogic\ModelValidators");
+
+        var validator = new ModelNumberValidator { Id = Guid.NewGuid(), Name = "Test" };
+        mockValidatorRepository.Setup(x => x.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+                               .Returns(validator);
+
+        var validatorService = new ValidatorService(mockValidatorRepository.Object);
+
+        mockAssemblyLoader.GetImplementation(It.IsAny<string>(), It.IsAny<object[]>());
+
+        try
+        {
+            validatorService.GetImplementation("Test", validator.Id);
+        }
+        catch (ValidatorException ex)
+        {
+            Assert.AreEqual($"There is no implementation with this name: {validator.Name}", ex.Message);
+        }
+    }
 }
 
-public class MockAssemblyLoader : LoadAssemblyClass<IModeloValidador>
+internal class MockAssemblyLoader : LoadAssemblyClass<IModeloValidador>
 {
     public MockAssemblyLoader(string path)
         : base(path) { }
