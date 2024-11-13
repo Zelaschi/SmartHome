@@ -48,6 +48,49 @@ public class ValidatorServiceTest
         mockValidatorRepository.Verify(x => x.Add(It.Is<ModelNumberValidator>(v => v.Name == "LetterNumberModelValidator")), Times.Once);
     }
 
+    [TestMethod]
+    public void GetAllValidators_ShouldReturnListOfValidatorNames()
+    {
+        // Arrange
+        var mockValidatorRepository = new Mock<IGenericRepository<ModelNumberValidator>>();
+
+        var validatorService = new ValidatorService(mockValidatorRepository.Object);
+
+        // Act
+        var result = validatorService.GetAllValidators();
+
+        // Assert
+        Assert.AreEqual(2, result.Count);  // Verifica que se devuelven dos validadores
+        Assert.AreEqual("SixLettersModelValidator", result[0]);
+        Assert.AreEqual("LetterNumberModelValidator", result[1]);
+    }
+
+    [TestMethod]
+    public void IsValidModelNumber_ShouldReturnTrue_WhenModelIsValid()
+    {
+        // Arrange
+        var mockValidatorRepository = new Mock<IGenericRepository<ModelNumberValidator>>();
+
+        // Usar el wrapper MockAssemblyLoader
+        var mockAssemblyLoader = new MockAssemblyLoader(@"..\SmartHome.BusinessLogic\ModelValidators");
+
+        // Simular un validador que siempre valida el modelo
+        var mockValidator = new Mock<IModeloValidador>();
+        mockValidator.Setup(v => v.EsValido(It.IsAny<Modelo>())).Returns(true);  // El validador siempre retorna true
+
+        var validatorService = new ValidatorService(mockValidatorRepository.Object);
+
+        // Configurar el repositorio para devolver un validador cuando se busque por Id
+        var validator = new ModelNumberValidator { Id = Guid.NewGuid(), Name = "SixLettersModelValidator" };
+        mockValidatorRepository.Setup(x => x.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+                               .Returns(validator);
+
+        // Act
+        var result = validatorService.IsValidModelNumber("ABCDEF", validator.Id);
+
+        // Assert
+        Assert.IsTrue(result);  // Verifica que el modelo es válido
+    }
 }
 
 public class MockAssemblyLoader : LoadAssemblyClass<IModeloValidador>
