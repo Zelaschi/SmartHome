@@ -65,7 +65,7 @@ public class HomeRepositoryTest
             MaxMembers = 4,
             Owner = owner
         };
-        _context.Homes.Add(home);
+        _homeRepository.Add(home);
         _context.SaveChanges();
 
         using var otherContext = DbContextBuilder.BuildTestDbContext();
