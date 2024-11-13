@@ -1,0 +1,10 @@
+<div class="homes-list">
+    <h2>My Homes</h2>
+    <div *ngIf="loading" class="loader">
+      Loading homes...
+    </div>
+    <div *ngFor="let home of status.homes" class="home-item">
+      <app-home-item [home]="home"></app-home-item>
+    </div>
+  </div>
+
