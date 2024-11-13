@@ -38,7 +38,11 @@
     </app-filter>
     
     <div *ngFor="let device of status.devices" class="device-item col-md-4 mb-4">
-      <app-device-item [device]="device"></app-device-item>
+      <app-device-item 
+      [device]="device" 
+      [isAddingToHome]="isAddingDevice"
+      (deviceAdded)="onDeviceAdded($event)"
+      ></app-device-item>
     </div>
     <app-pagination
       [pageNumber]="pageNumber"

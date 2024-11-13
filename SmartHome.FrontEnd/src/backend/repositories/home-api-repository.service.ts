@@ -27,4 +27,12 @@ export class HomeApiRepositoryService extends ApiRepository{
   ): Observable<Array<HomeMemberResponseModel>> {
     return this.get<Array<HomeMemberResponseModel>>(`${homeId}/members`);
   }
+
+  public addDeviceToHome(
+    homeId : string,
+    deviceId : string
+  ): Observable<void> {
+    console.log('deviceId', deviceId);
+    return this.post<void>({ deviceId }, `${homeId}/homeDevices`,);
+  }
 }

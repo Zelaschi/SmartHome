@@ -7,6 +7,7 @@ import { HomesListComponent } from './homes-list/homes-list.component';
 import { HomeItemComponent } from './home-item/home-item.component';
 import { HomeMemberItemComponent } from './home-member-item/home-member-item.component';
 import { HomeMembersListComponent } from './home-members-list/home-members-list.component';
+import { DeviceModule } from '../device/device.module';
 
 
 
@@ -21,7 +22,8 @@ import { HomeMembersListComponent } from './home-members-list/home-members-list.
   ],
   imports: [
     CommonModule,
-    HomeOwnerRoutingModule
+    HomeOwnerRoutingModule,
+    DeviceModule
   ]
 })
 export class HomeOwnerModule { }

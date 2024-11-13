@@ -37,6 +37,11 @@ import { FilterComponent } from '../../components/filter/filter/filter.component
     FormInputComponent,
     DropdownComponent,
     FilterComponent,
+  ],
+  exports: [
+    DeviceFormComponent,
+    DeviceListComponent,
+    DeviceItemComponent,
   ]
 })
 export class DeviceModule { }

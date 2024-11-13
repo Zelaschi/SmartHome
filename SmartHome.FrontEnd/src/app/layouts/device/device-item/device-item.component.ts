@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Device } from '../../../../backend/services/Device/models/Device';
 
 @Component({
@@ -8,8 +8,17 @@ import { Device } from '../../../../backend/services/Device/models/Device';
 })
 export class DeviceItemComponent {
   @Input() device: Device | null = null;
+  @Input() isAddingToHome: boolean = false;
+  @Output() deviceAdded = new EventEmitter<Device>();
 
   ngOnInit(): void {
     console.log(this.device);
+  }
+
+  addToHome(): void {
+    if (this.device) {
+      console.log(`Adding device ${this.device.name} to home.`);
+      this.deviceAdded.emit(this.device);
+    }
   }
 }

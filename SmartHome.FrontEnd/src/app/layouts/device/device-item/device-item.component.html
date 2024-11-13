@@ -7,5 +7,6 @@
       <p class="card-text">Model Number: {{ device.modelNumber }}</p>
       <p class="card-text">Description: {{ device.description }}</p>
       <p class="card-text">Company Name: {{ device.companyName }}</p>
+      <button *ngIf="isAddingToHome" (click)="addToHome()" class="btn btn-primary">Add to Home</button>
     </div>
   </div>

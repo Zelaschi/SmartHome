@@ -9,6 +9,8 @@ import HomeCreatedModel from '../../../../backend/services/Home/models/HomeCreat
 export class HomeItemComponent {
   @Input() home: HomeCreatedModel | null = null;
   showMembers: boolean = false;
+  showDeviceList: boolean = false;
+  isAddingDevice: boolean = false;
 
   ngOnInit(): void {
     console.log(this.home);
@@ -16,5 +18,16 @@ export class HomeItemComponent {
 
   GetHomeMembers(homeId: string): void {
     this.showMembers = !this.showMembers;
+  }
+
+  AddDeviceToHome(homeId: string): void {
+    this.showDeviceList = !this.showDeviceList;
+    this.isAddingDevice = !this.isAddingDevice;
+  }
+
+  onDeviceAdded(): void {
+    this.showDeviceList = false;
+    this.isAddingDevice = false;
+    console.log('Device added succesfully');
   }
 }

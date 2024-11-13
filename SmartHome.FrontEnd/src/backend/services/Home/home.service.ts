@@ -24,4 +24,10 @@ export class HomeService {
     return this._repository.getHomeMembers(homeId);
   }
   
+  public addDeviceToHome(
+    homeId : string,
+    deviceId : string
+  ): Observable<void> {
+    return this._repository.addDeviceToHome(homeId, deviceId);
+  }
 }

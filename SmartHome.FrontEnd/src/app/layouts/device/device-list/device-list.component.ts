@@ -7,6 +7,7 @@ import { DevicesService } from '../../../../backend/services/Device/devices.serv
 import { Subscription } from 'rxjs';
 import DeviceStatus from './models/device.status';
 import deviceFilters from './models/deviceFilters';
+import { HomeService } from '../../../../backend/services/Home/home.service';
 
 @Component({
   selector: 'app-device-list',
@@ -14,6 +15,8 @@ import deviceFilters from './models/deviceFilters';
   styleUrls: ['./device-list.component.css']
 })
 export class DeviceListComponent  {
+  @Input() homeId: string | null = null;
+  @Input() isAddingDevice: boolean = false;
   private _devicesSubscription: Subscription | null = null;
   pageNumber: number = 1;
   pageSize: number = 9;
@@ -26,7 +29,9 @@ export class DeviceListComponent  {
     type: null,
   }
   typeAux: string | null = null;
-  constructor(private readonly _devicesService: DevicesService) {}
+  constructor(private readonly _devicesService: DevicesService
+    ,private readonly _homeService: HomeService
+  ) {}
 
   status: DeviceStatus = {
     loading: true,
@@ -98,5 +103,20 @@ export class DeviceListComponent  {
       type: this.typeAux
     }
     this.loadProducts();
+  }
+
+  onDeviceAdded(device: Device): void {
+    if (this.homeId && device.id) {
+      this._homeService.addDeviceToHome(this.homeId, device.id).subscribe({
+        next: () => {
+          console.log(`Device ${device.name} added to home ${this.homeId} successfully.`);
+        },
+        error: (error: any) => {
+          console.error(`Failed to add device ${device.name} to home:`, error);
+        }
+      });
+    } else {
+      console.warn('Home ID or Device ID is missing');
+    }
   }
 }

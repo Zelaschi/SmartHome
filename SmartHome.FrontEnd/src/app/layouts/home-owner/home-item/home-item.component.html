@@ -2,7 +2,11 @@
     <p>MainStreet: {{ home.mainStreet }}</p>
     <p>DoorNumber: {{ home.doorNumber }}</p>
     <button (click) = "GetHomeMembers(home.id)">Members</button>
+    <button (click) = "AddDeviceToHome(home.id)">Add device</button>
   </div>
   <div *ngIf="showMembers">
     <app-home-members-list [homeId]="home?.id ?? null"></app-home-members-list>
+</div>
+<div *ngIf="showDeviceList">
+  <app-device-list [homeId]="home?.id ?? null" [isAddingDevice] = "isAddingDevice" (deviceAdded)="onDeviceAdded()"></app-device-list>
 </div>
