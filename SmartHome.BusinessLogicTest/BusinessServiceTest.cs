@@ -265,4 +265,88 @@ public class BusinessServiceTest
         businessRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1), Times.Once);
         Assert.AreEqual(1, result.Count());
     }
+
+    [TestMethod]
+    public void AddValidatorToBusiness_BusinessNotFound_ThrowsException()
+    {
+        var businessOwner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pr@mail.com"
+        };
+
+        Business business = null;
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        Exception exception = null;
+
+        // Act: Intentar crear un dispositivo con un número de modelo inválido
+        try
+        {
+            businessService.AddValidatorToBusiness(businessOwner, Guid.NewGuid());
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        // Assert: Verificar que se lanzó la excepción esperada
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(BusinessException));
+        Assert.AreEqual("Business does not exist", exception.Message);
+    }
+
+    [TestMethod]
+    public void AddValidatorToBusiness_BusinessWithValidator_ThrowsException()
+    {
+        var businessOwner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pr@mail.com"
+        };
+
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner,
+            ValidatorId = Guid.NewGuid()
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        Exception exception = null;
+
+        // Act: Intentar crear un dispositivo con un número de modelo inválido
+        try
+        {
+            businessService.AddValidatorToBusiness(businessOwner, Guid.NewGuid());
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        // Assert: Verificar que se lanzó la excepción esperada
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(BusinessException));
+        Assert.AreEqual("Business already has a validator", exception.Message);
+    }
 }

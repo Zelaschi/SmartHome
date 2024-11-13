@@ -99,6 +99,11 @@ public sealed class BusinessService : IBusinessesLogic
     {
         var business = _businessRepository.Find(b => b.BusinessOwner == user);
 
+        if (business == null)
+        {
+            throw new BusinessException("Business does not exist");
+        }
+
         if (business.ValidatorId != null)
         {
             throw new BusinessException("Business already has a validator");
@@ -106,11 +111,6 @@ public sealed class BusinessService : IBusinessesLogic
 
         var validatorName = _validatorRespository.Find(v => v.Id == validatorId).Name;
         var validator = _validatorService.GetImplementation(validatorName);
-
-        if (business == null)
-        {
-            throw new BusinessException("Business does not exist");
-        }
 
         if (validator == null)
         {
