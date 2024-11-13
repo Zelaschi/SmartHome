@@ -1,4 +1,8 @@
 <div *ngIf="home" class="home-item">
     <p>MainStreet: {{ home.mainStreet }}</p>
     <p>DoorNumber: {{ home.doorNumber }}</p>
+    <button (click) = "GetHomeMembers(home.id)">Members</button>
   </div>
+  <div *ngIf="showMembers">
+    <app-home-members-list [homeId]="home?.id ?? null"></app-home-members-list>
+</div>

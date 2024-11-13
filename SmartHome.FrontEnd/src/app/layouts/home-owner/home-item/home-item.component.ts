@@ -8,8 +8,13 @@ import HomeCreatedModel from '../../../../backend/services/Home/models/HomeCreat
 })
 export class HomeItemComponent {
   @Input() home: HomeCreatedModel | null = null;
+  showMembers: boolean = false;
 
   ngOnInit(): void {
     console.log(this.home);
+  }
+
+  GetHomeMembers(homeId: string): void {
+    this.showMembers = !this.showMembers;
   }
 }

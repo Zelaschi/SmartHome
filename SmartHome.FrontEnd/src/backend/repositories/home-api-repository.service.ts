@@ -5,6 +5,7 @@ import HomeCreationModel from '../services/Home/models/HomeCreationModel';
 import HomeCreatedModel from '../services/Home/models/HomeCreatedModel';
 import environmentLocal from '../../app/environments/environment.local';
 import { Observable } from 'rxjs';
+import HomeMemberResponseModel from '../services/Home/models/HomeMemberResponseModel';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,11 @@ export class HomeApiRepositoryService extends ApiRepository{
     credentials: HomeCreationModel
   ): Observable<HomeCreatedModel> {
     return this.post(credentials);
+  }
+
+  public getHomeMembers(
+    homeId : string
+  ): Observable<Array<HomeMemberResponseModel>> {
+    return this.get<Array<HomeMemberResponseModel>>(`${homeId}/members`);
   }
 }

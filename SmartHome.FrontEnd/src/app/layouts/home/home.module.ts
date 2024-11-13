@@ -10,7 +10,7 @@ import { HomeRoutingModule } from './home-routing.module';
 
 @NgModule({
   declarations: [
-    HomeFormComponent
+    HomeFormComponent,
   ],
   imports: [
     HomeRoutingModule,
