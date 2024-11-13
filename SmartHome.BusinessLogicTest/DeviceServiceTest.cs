@@ -349,7 +349,6 @@ public class DeviceServiceTest
         Assert.AreEqual("Security Camera model already exists", exception.Message);
     }
 
-
     [TestMethod]
     public void Create_SecurityCamera_Business_NotFound_Throws_Exception_Test()
     {
