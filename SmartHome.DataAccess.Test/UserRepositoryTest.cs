@@ -1,10 +1,12 @@
 ﻿using FluentAssertions;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Services;
 using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.DataAccess.Repositories;
-using ZstdSharp.Unsafe;
 
 namespace SmartHome.DataAccess.Test;
 
@@ -53,7 +55,7 @@ public class UserRepositoryTest
             Email = "test@example.com",
             RoleId = role.Id
         };
-        _context.Users.Add(user);
+        _userRepository.Add(user);
         _context.SaveChanges();
 
         using var otherContext = DbContextBuilder.BuildTestDbContext();
@@ -285,6 +287,47 @@ public class UserRepositoryTest
         usersFound[0].Password.Should().Be(user.Password);
         usersFound[0].Email.Should().Be(user.Email);
         usersFound[0].RoleId.Should().Be(user.RoleId);
+    }
+    #endregion
+
+    #region Filtered
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnAllUsers_WhenNoFilterIsProvided()
+    {
+        _context.Users.RemoveRange(_context.Users);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+
+        var user2 = new User
+        {
+            Name = "Test Name 2",
+            Surname = "Test Surname 2",
+            Password = "TestPassword123",
+            Email = "test2@example.com",
+            RoleId = role.Id
+        };
+        _context.Users.Add(user2);
+        _context.Users.Add(user);
+        _context.SaveChanges();
+
+        var result = _userRepository.FindAllFiltered(u => u.Name == "Test Name");
+
+        result.Should().HaveCount(1);
+        result[0].Name.Should().Be("Test Name");
     }
     #endregion
 }
