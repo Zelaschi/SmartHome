@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.DTOs;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.Businesses.In;
@@ -437,5 +438,30 @@ public class BusinessesControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(401, result.StatusCode);
         Assert.AreEqual("UserId is missing", result.Value);
+    }
+
+    [TestMethod]
+    public void GetAllValidators_ShouldReturnAllValidators()
+    {
+        var validators = new List<DTOValidator>
+        {
+            new DTOValidator { ValidatorId = Guid.NewGuid(), Name = "Validator 1" },
+            new DTOValidator { ValidatorId = Guid.NewGuid(), Name = "Validator 2" }
+        };
+
+        businessesLogicMock.Setup(b => b.GetAllValidators()).Returns(validators);
+
+        var result = businessesController.GetAllValidators() as OkObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(200, result.StatusCode);
+
+        var resultValue = result.Value as List<DTOValidator>;
+        Assert.IsNotNull(resultValue);
+        Assert.AreEqual(2, resultValue.Count);
+        Assert.AreEqual(validators[0].Name, resultValue[0].Name);
+        Assert.AreEqual(validators[1].Name, resultValue[1].Name);
+
+        businessesLogicMock.VerifyAll();
     }
 }
