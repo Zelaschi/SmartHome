@@ -349,6 +349,77 @@ public class DeviceServiceTest
         Assert.AreEqual("Security Camera model already exists", exception.Message);
     }
 
+
+    [TestMethod]
+    public void Create_SecurityCamera_Business_NotFound_Throws_Exception_Test()
+    {
+        var businessOwner = new User
+        {
+            Name = "Juan",
+            Surname = "Perez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "juanperez@gmail.com"
+        };
+
+        var id = Guid.NewGuid();
+        var business = new Business
+        {
+            Id = id,
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner,
+            ValidatorId = id
+        };
+
+        Business businessNotFound = null;
+
+        var securityCamera = new SecurityCamera
+        {
+            Id = Guid.NewGuid(),
+            Name = "Security Camera",
+            Description = "Security Camera outdoor",
+            ModelNumber = "1234",
+            Photos = [],
+            Type = "SecurityCamera",
+            Outdoor = true,
+            Business = business
+        };
+
+        var user = new User
+        {
+            Name = "X",
+            Surname = "Y",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "x@y.com",
+        };
+
+        // Configurar el mock para businessRepository
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+            .Returns(businessNotFound);
+
+        Exception exception = null;
+
+        // Act: Intentar crear un dispositivo con un número de modelo inválido
+        try
+        {
+            deviceService.CreateSecurityCamera(securityCamera, user);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        // Assert: Verificar que se lanzó la excepción esperada
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(DeviceException));
+        Assert.AreEqual("Business was not found for the user", exception.Message);
+    }
+
     [TestMethod]
     public void ListAll_DeviceTypes_Test()
     {
