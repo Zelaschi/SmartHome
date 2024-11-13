@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.BusinessLogic.LoadAssembly;
-public sealed class LoadAssemblyClass<IInterface>
+public class LoadAssemblyClass<IInterface>
         where IInterface : class
 {
     private readonly DirectoryInfo _directory;
