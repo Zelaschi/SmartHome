@@ -17,6 +17,8 @@ public class DeviceImportServiceTest
 {
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
     private Mock<IGenericRepository<Business>>? businessRepositoryMock;
+    private Mock<IGenericRepository<ModelNumberValidator>>? validatorRepositoryMock;
+    private ValidatorService? validatorService;
     private DeviceService? deviceService;
     private DeviceImportService? deviceImportService;
     private readonly Role businessOwner = new Role() { Name = "businessOwner" };
@@ -27,7 +29,9 @@ public class DeviceImportServiceTest
     {
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
         businessRepositoryMock = new Mock<IGenericRepository<Business>>();
-        deviceService = new DeviceService(businessRepositoryMock.Object, deviceRepositoryMock.Object);
+        validatorRepositoryMock = new Mock<IGenericRepository<ModelNumberValidator>>();
+        validatorService = new ValidatorService(validatorRepositoryMock.Object);
+        deviceService = new DeviceService(businessRepositoryMock.Object, deviceRepositoryMock.Object, validatorService);
         deviceImportService = new DeviceImportService(deviceService);
     }
 
@@ -85,6 +89,6 @@ public class DeviceImportServiceTest
             .Returns(device2);
 
         var result = deviceImportService.ImportDevices("JSON", path, user1);
-        CollectionAssert.AreEqual(expected, result);
+        Assert.AreEqual(expected.Count, result);
     }
 }

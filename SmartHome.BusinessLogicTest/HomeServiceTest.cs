@@ -26,6 +26,7 @@ public class HomeServiceTest
     private Mock<IGenericRepository<Device>>? deviceRepositoryMock;
     private Mock<IGenericRepository<Room>>? roomRepositoryMock;
     private Mock<IHomesFromUserRepository>? homesFromUserRepositoryMock;
+    private Mock<IUpdateMultipleElementsRepository<HomeMember>>? updateMultipleElementsRepositoryMock;
     private HomeService? homeService;
     private Role? homeOwnerRole;
     private Guid ownerId;
@@ -42,9 +43,10 @@ public class HomeServiceTest
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>(MockBehavior.Strict);
         roomRepositoryMock = new Mock<IGenericRepository<Room>>(MockBehavior.Strict);
         homesFromUserRepositoryMock = new Mock<IHomesFromUserRepository>(MockBehavior.Strict);
+        updateMultipleElementsRepositoryMock = new Mock<IUpdateMultipleElementsRepository<HomeMember>>(MockBehavior.Strict);
         homeService = new HomeService(homeMemberRepositoryMock.Object, homeDeviceRepositoryMock.Object, homeRepositoryMock.Object,
                                       userRepositoryMock.Object, homePermissionRepositoryMock.Object, deviceRepositoryMock.Object,
-                                      roomRepositoryMock.Object, homesFromUserRepositoryMock.Object);
+                                      roomRepositoryMock.Object, homesFromUserRepositoryMock.Object, updateMultipleElementsRepositoryMock.Object);
         homeOwnerRole = new Role { Name = "HomeOwner" };
         ownerId = Guid.NewGuid();
         owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
@@ -511,7 +513,10 @@ public class HomeServiceTest
         home2.Members.Add(homeMember2);
 
         homeRepositoryMock.Setup(x => x.FindAll()).Returns(new List<Home> { home1, home2 });
-        homeMemberRepositoryMock.Setup(x => x.Update(It.IsAny<HomeMember>())).Returns(homeMember1);
+        var expectedReturnedList = new List<HomeMember>();
+        expectedReturnedList.Add(homeMember1);
+        expectedReturnedList.Add(homeMember2);
+        updateMultipleElementsRepositoryMock.Setup(x => x.UpdateMultiplElements(It.IsAny<List<HomeMember>>())).Returns(expectedReturnedList);
 
         var notifications = homeService.GetUsersNotifications(owner);
         Assert.IsTrue(notifications.Count == 2);

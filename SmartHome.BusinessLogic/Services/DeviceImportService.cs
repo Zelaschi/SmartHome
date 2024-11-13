@@ -131,11 +131,11 @@ public sealed class DeviceImportService : IDeviceImportLogic
                 };
                 try
                 {
-                    addedDevices--;
                     _createDeviceLogic.CreateDevice(device, user, dtodevice.Type);
                 }
                 catch (DeviceException e)
                 {
+                    addedDevices--;
                     Console.WriteLine("Coudnt register device " + device.ModelNumber + " Error: " + e.Message);
                 }
             }

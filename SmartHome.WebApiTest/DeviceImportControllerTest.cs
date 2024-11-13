@@ -10,7 +10,6 @@ using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.WebModels.DeviceImportModels.In;
-using SmartHome.WebApi.WebModels.DeviceImportModels.Out;
 
 namespace SmartHome.WebApi.Test;
 
@@ -97,22 +96,20 @@ public class DeviceImportControllerTest
             device2
         };
 
-        var devicesDTO = devices.Select(device => new DeviceWithoutPhotosResponseModel(device)).ToList();
+        _deviceImportService.Setup(d => d.ImportDevices(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<User>())).Returns(devices.Count);
 
-        _deviceImportService.Setup(d => d.ImportDevices(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<User>())).Returns(devices);
-
-        var expectedResult = new CreatedAtActionResult("ImportDevice", "DeviceImport", new { Id = string.Empty }, devicesDTO);
+        var expectedResult = new CreatedAtActionResult("ImportDevice", "DeviceImport", new { Id = string.Empty }, devices.Count);
 
         // Act
 
         var result = _deviceImportController.ImportDevice(deviceImportRequestModel) as CreatedAtActionResult;
-        var objectResult = result.Value as List<DeviceWithoutPhotosResponseModel>;
+        var objectResult = result.Value;
 
         // Assert
         _deviceImportService.VerifyAll();
 
         Assert.IsNotNull(result);
         Assert.IsInstanceOfType(result, typeof(CreatedAtActionResult));
-        CollectionAssert.AreEqual(objectResult, devicesDTO);
+        Assert.AreEqual(objectResult, devices.Count);
     }
 }
