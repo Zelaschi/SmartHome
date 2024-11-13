@@ -292,7 +292,7 @@ public class UserRepositoryTest
 
     #region Filtered
     [TestMethod]
-    public void FindAllFiltered_ShouldReturnAllUsers_WhenFilterIsProvided()
+    public void FindAllFiltered_ShouldReturnAllUsers_WhenNoFilterIsProvided()
     {
         _context.Users.RemoveRange(_context.Users);
         var role = new Role
@@ -326,6 +326,43 @@ public class UserRepositoryTest
         var result = _userRepository.FindAllFiltered(null, 1, 10);
         result.Should().HaveCount(2);
         result[0].Name.Should().Be("Test2 Name");
+    }
+
+    [TestMethod]
+    public void FindAllFiltered_ShouldReturnFilteredUsers_WhenFilterIsProvided()
+    {
+        _context.Users.RemoveRange(_context.Users);
+        var role = new Role
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin"
+        };
+        _context.Roles.Add(role);
+        _context.SaveChanges();
+
+        var user = new User
+        {
+            Name = "Test Name",
+            Surname = "Test Surname",
+            Password = "TestPassword123",
+            Email = "test@example.com",
+            RoleId = role.Id
+        };
+        var user2 = new User
+        {
+            Name = "Test2 Name",
+            Surname = "Test2 Surname",
+            Password = "Test2Password123",
+            Email = "test2@example.com",
+            RoleId = role.Id
+        };
+        _userRepository.Add(user2);
+        _userRepository.Add(user);
+        _context.SaveChanges();
+
+        var result = _userRepository.FindAllFiltered(u => u.Name == "Test Name", 1, 10);
+        result.Should().HaveCount(1);
+        result[0].Name.Should().Be("Test Name");
     }
 
     [TestMethod]
