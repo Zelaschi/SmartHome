@@ -12,6 +12,5 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   const systemPermissions = localStorage.getItem('systemPermissions');
 
-
   return true;
 };

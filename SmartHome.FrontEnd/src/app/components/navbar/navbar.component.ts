@@ -26,7 +26,6 @@ export class NavbarComponent  {
     });
   }
   logOut(){
-    console.log("Logging out");
     this.authService.logout();
   }
 }
