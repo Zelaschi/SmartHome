@@ -6,6 +6,7 @@ import BusinessCreatedModel from '../services/Business/models/BusinessCreatedMod
 import { Observable } from 'rxjs';
 import ApiRepository from './api-repository';
 import BusinessPaginatedResponse from '../services/Business/models/BusinessPaginatedResponse';
+import { ValidatorResponseModel } from '../services/Business/models/ValidatorResponseModel';
 
 
 @Injectable({
@@ -40,5 +41,9 @@ export class BusinessApiRepositoryService extends ApiRepository{
     const url = queryString ? `?${queryString}` : '';
 
     return this.get<BusinessPaginatedResponse>(url);
+  }
+
+  public getValidators(): Observable<Array<ValidatorResponseModel>> {
+    return this.get<Array<ValidatorResponseModel>>('validators');
   }
 }

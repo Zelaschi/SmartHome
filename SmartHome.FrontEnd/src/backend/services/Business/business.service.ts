@@ -4,6 +4,7 @@ import BusinessCreationModel from './models/BusinessCreationModel';
 import BusinessCreatedModel from './models/BusinessCreatedModel';
 import { Observable } from 'rxjs';
 import BusinessPaginatedResponse from './models/BusinessPaginatedResponse';
+import { ValidatorResponseModel } from './models/ValidatorResponseModel';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,10 @@ export class BusinessService {
     fullName: string | null
   ): Observable<BusinessPaginatedResponse> {
     return this._repository.getBusinesses(pageNumber, pageSize, businessName, fullName);
+  }
+
+  public getValidators(
+  ): Observable<Array<ValidatorResponseModel>> {
+    return this._repository.getValidators();
   }
 }

@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { BusinessOwnerFormComponent } from '../admin/business-owner-form/business-owner-form.component';
 import { DeviceFormComponent } from './device-form/device-form.component';
 import { authorizationGuard } from '../../../backend/guards/authorization.guard';
+import { BusinessFormComponent } from './business-form/business-form.component';
+import { ValidatorsDropDownComponent } from './validators-drop-down/validators-drop-down.component';
 
 const routes: Routes = [
   {
@@ -15,7 +17,11 @@ const routes: Routes = [
     path: 'registerBusiness',
     canActivate: [authorizationGuard],
     data: { requiredSystemPermission: 'Create business' },
-    component: BusinessOwnerFormComponent
+    component: BusinessFormComponent
+  },
+  {
+    path: 'validators',
+    component: ValidatorsDropDownComponent
   }
 ];
 

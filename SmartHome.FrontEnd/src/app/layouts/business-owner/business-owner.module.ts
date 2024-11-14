@@ -12,6 +12,8 @@ import { DeviceTypeDropdownComponent } from '../../business-components/device-ty
 import { BusinessItemComponent } from '../admin/business-item/business-item.component';
 import { DeviceFormComponent } from './device-form/device-form.component';
 import { BusinessFormComponent } from './business-form/business-form.component';
+import { ValidatorsDropDownComponent } from './validators-drop-down/validators-drop-down.component';
+import { DropdownComponent } from '../../components/dropdown/dropdown.component';
 
 
 
@@ -19,17 +21,17 @@ import { BusinessFormComponent } from './business-form/business-form.component';
   declarations: [
     DeviceFormComponent,
     BusinessFormComponent,
+    ValidatorsDropDownComponent,
   ],
   imports: [
-    DeviceItemComponent,
-    DeviceListComponent,
-    DeviceTypeDropdownComponent,
     CommonModule,
     BusinessOwnerRoutingModule,
     FormComponent,
     FormButtonComponent,
     FormInputComponent,
-    PaginationComponent  
+    DeviceItemComponent,
+    DeviceTypeDropdownComponent,
+    DropdownComponent
   ]
 })
 export class BusinessOwnerModule { }
