@@ -39,7 +39,7 @@ export class HomeApiRepositoryService extends ApiRepository{
 
   public getHomeDevices(
     homeId : string,
-    room? : string
+    room : string | null
   ): Observable<Array<HomeDeviceResponseModel>> {
     const query = room ? `room=${room}` : '';
     return this.get<Array<HomeDeviceResponseModel>>(`${homeId}/homeDevices`, query);

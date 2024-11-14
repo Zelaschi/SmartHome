@@ -18,6 +18,7 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { PhotosCarouselComponent } from '../../components/photos-carousel/photos-carousel.component';
 import { HomeDeviceListComponent } from './home-device-list/home-device-list.component';
 import { HomeDeviceItemComponent } from './home-device-item/home-device-item.component';
+import { FilterComponent } from '../../components/filter/filter/filter.component';
 
 
 
@@ -43,6 +44,7 @@ import { HomeDeviceItemComponent } from './home-device-item/home-device-item.com
     FormButtonComponent,
     HomeOwnerRoutingModule,
     DeviceListComponent,
+    FilterComponent,
     ]
 })
 export class HomeOwnerModule { }

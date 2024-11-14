@@ -34,7 +34,7 @@ export class HomeService {
 
   public getHomeDevices(
     homeId : string,
-    room? : string
+    room : string | null
   ): Observable<Array<HomeDeviceResponseModel>> {
     return this._repository.getHomeDevices(homeId, room);
   }
