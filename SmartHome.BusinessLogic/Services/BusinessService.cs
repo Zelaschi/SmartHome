@@ -90,6 +90,15 @@ public sealed class BusinessService : IBusinessesLogic
                     Name = validator
                 });
             }
+            else
+            {
+                var validatorId = _validatorRespository.Find(v => v.Name == validator).Id;
+                validators.Add(new DTOValidator
+                {
+                    ValidatorId = validatorId,
+                    Name = validator
+                });
+            }
         }
 
         return validators;
