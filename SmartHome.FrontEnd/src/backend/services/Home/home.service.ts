@@ -4,6 +4,7 @@ import HomeCreatedModel from './models/HomeCreatedModel';
 import { HomeApiRepositoryService } from '../../repositories/home-api-repository.service';
 import { Observable } from 'rxjs';
 import HomeMemberResponseModel from './models/HomeMemberResponseModel';
+import HomeDeviceResponseModel from './models/HomeDeviceResponseModel';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,12 @@ export class HomeService {
     deviceId : string
   ): Observable<void> {
     return this._repository.addDeviceToHome(homeId, deviceId);
+  }
+
+  public getHomeDevices(
+    homeId : string,
+    room? : string
+  ): Observable<Array<HomeDeviceResponseModel>> {
+    return this._repository.getHomeDevices(homeId, room);
   }
 }
