@@ -16,6 +16,8 @@ import { RoomFormComponent } from './room-form/room-form.component';
 import { DeviceListComponent } from '../../business-components/device-list/device-list.component';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { PhotosCarouselComponent } from '../../components/photos-carousel/photos-carousel.component';
+import { HomeDeviceListComponent } from './home-device-list/home-device-list.component';
+import { HomeDeviceItemComponent } from './home-device-item/home-device-item.component';
 
 
 
@@ -29,6 +31,8 @@ import { PhotosCarouselComponent } from '../../components/photos-carousel/photos
     HomeMembersListComponent,
     RoomFormComponent,
     HomeItemComponent,
+    HomeDeviceListComponent,
+    HomeDeviceItemComponent,
   ],
   imports: [
     PaginationComponent,

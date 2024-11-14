@@ -1,0 +1,7 @@
+<div *ngIf="homeDevice" class="home-device-item">
+    <p>Name: {{ homeDevice.name }}</p>
+    <p>Device Type: {{ homeDevice.type }}</p>
+    <p>Online: {{ homeDevice.online }}</p>
+    <p *ngIf="homeDevice.isOn !== null">Is on?: {{ homeDevice.isOn }}</p>
+    <p *ngIf="homeDevice.open !== null">Is open?: {{ homeDevice.open }}</p>
+  </div>

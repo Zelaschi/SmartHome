@@ -1,0 +1,9 @@
+<div class="home-devices-list">
+    <h5>Home Devices</h5>
+    <div *ngIf="loading" class="loader">
+      Loading home devices...
+    </div>
+    <div *ngFor="let homeDevice of status.homeDevices" class="home-device-item">
+      <app-home-device-item [homeDevice]="homeDevice"></app-home-device-item>
+    </div>
+  </div>

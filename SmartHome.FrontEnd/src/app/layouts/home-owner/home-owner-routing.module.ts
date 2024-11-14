@@ -17,6 +17,9 @@ const routes: Routes = [
     path: '/addRoom',
     component: RoomFormComponent
   },
+  {
+    path: '/homeDevices',
+  }
 ];
 
 @NgModule({
