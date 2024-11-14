@@ -13,6 +13,7 @@ public sealed class HomeMemberResponseModel
     public Guid? HomeMemberId { get; set; }
     public List<string>? HomePermissions { get; set; } = new List<string>();
     public List<string>? Notifications { get; set; } = new List<string>();
+    public string Name { get; set; }
     public HomeMemberResponseModel(HomeMember homeMember)
     {
         HomeMemberId = homeMember.HomeMemberId;
@@ -25,6 +26,8 @@ public sealed class HomeMemberResponseModel
         {
             Notifications.Add(notification.ToString());
         }
+
+        Name = homeMember.User.Name;
     }
 
     public override bool Equals(object? obj)

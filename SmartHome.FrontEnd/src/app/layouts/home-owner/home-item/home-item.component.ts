@@ -11,6 +11,7 @@ export class HomeItemComponent {
   showMembers: boolean = false;
   showDeviceList: boolean = false;
   isAddingDevice: boolean = false;
+  showHomeDevicesList: boolean = false
 
   ngOnInit(): void {
     console.log(this.home);
@@ -23,6 +24,10 @@ export class HomeItemComponent {
   AddDeviceToHome(homeId: string): void {
     this.showDeviceList = !this.showDeviceList;
     this.isAddingDevice = !this.isAddingDevice;
+  }
+
+  GetHomeDevices(homeId: string): void {
+    this.showHomeDevicesList = !this.showHomeDevicesList;
   }
 
   onDeviceAdded(): void {

@@ -4,6 +4,7 @@ import { NotificationListComponent } from './notification-list/notification-list
 import { HomesListComponent } from './homes-list/homes-list.component';
 import { RoomFormComponent } from './room-form/room-form.component';
 import { authorizationGuard } from '../../../backend/guards/authorization.guard';
+import { HomeDeviceListComponent } from './home-device-list/home-device-list.component';
 
 const routes: Routes = [
   {
@@ -13,20 +14,17 @@ const routes: Routes = [
     component: HomesListComponent
   },
   {
-    path: "/notifications",
+    path: "notifications",
     canActivate: [authorizationGuard],
     data: { requiredSystemPermission: 'List all users notifications' },
     component: NotificationListComponent
   },
   {
-    path: '/addRoom',
+    path: 'addRoom',
     canActivate: [authorizationGuard],
     data: { requiredSystemPermission: 'Home related permission' },
     component: RoomFormComponent
   },
-  {
-    path: '/homeDevices',
-  }
 ];
 
 @NgModule({
