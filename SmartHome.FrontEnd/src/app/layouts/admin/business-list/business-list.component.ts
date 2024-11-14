@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BusinessService } from '../../../../backend/services/Business/business.service';
 import BusinessStatus from './models/business.status';
+import businessFilters from './models/businessFilters';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-business-list',
@@ -13,6 +15,11 @@ export class BusinessListComponent {
   pageNumber: number = 1;
   pageSize: number = 10;
   loading: boolean = false;
+
+  filters: businessFilters = {
+    businessName: null,
+    fullName: null,
+  }
 
   constructor(private readonly _businessService: BusinessService) {}
 
@@ -31,7 +38,7 @@ export class BusinessListComponent {
 
   loadProducts(): void {
     this.loading = true;
-    this._businessService.getBusinesses(this.pageNumber, this.pageSize).subscribe({
+    this._businessService.getBusinesses(this.pageNumber, this.pageSize, this.filters.businessName, this.filters.fullName).subscribe({
       next: (response) => {
         this.status ={
           businesses: response.data,
@@ -48,6 +55,30 @@ export class BusinessListComponent {
 
   onPageChange(page: number): void {
     this.pageNumber = page;
+    this.loadProducts();
+  }
+
+  readonly formField: any = {
+    businessName: {
+      name: 'businessName',
+    },
+    fullName: {
+      name: 'fullName',
+    },
+  }
+
+  readonly businessFilterForm = new FormGroup({
+    [this.formField.businessName.name]: new FormControl('', []),
+    [this.formField.fullName.name]: new FormControl('', []),
+  });
+
+  onSubmit(values : any){
+    console.log('Datos del business:', values);
+    this.status.loading =  true;
+    this.filters = {
+      businessName: values.businessName,
+      fullName: values.fullName,
+    }
     this.loadProducts();
   }
 }

@@ -24,8 +24,21 @@ export class BusinessApiRepositoryService extends ApiRepository{
 
   public getBusinesses(
     pageNumber: number,
-    pageSize: number
+    pageSize: number,
+    businessName: string | null,
+    fullName: string | null,
   ): Observable<BusinessPaginatedResponse> {
-    return this.get<BusinessPaginatedResponse>(`?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    const params = new URLSearchParams();
+
+    params.append('pageNumber', pageNumber.toString());
+    params.append('pageSize', pageSize.toString());
+
+    if (businessName) params.append('businessName', businessName);
+    if (fullName) params.append('fullName', fullName);
+
+    const queryString = params.toString();
+    const url = queryString ? `?${queryString}` : '';
+
+    return this.get<BusinessPaginatedResponse>(url);
   }
 }

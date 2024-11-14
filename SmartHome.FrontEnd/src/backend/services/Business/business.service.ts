@@ -20,8 +20,10 @@ export class BusinessService {
 
   public getBusinesses(
     pageNumber: number,
-    pageSize: number
+    pageSize: number,
+    businessName: string | null,
+    fullName: string | null
   ): Observable<BusinessPaginatedResponse> {
-    return this._repository.getBusinesses(pageNumber, pageSize);
+    return this._repository.getBusinesses(pageNumber, pageSize, businessName, fullName);
   }
 }
