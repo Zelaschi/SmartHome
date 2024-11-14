@@ -14,9 +14,11 @@ export class UsersService {
 
   public getAllUsers(
     pageNumber: number,
-    pageSize: number
+    pageSize: number,
+    role : string | null,
+    fullname : string | null,
   ): Observable<UserPaginatedResponse>
   {
-    return this._userRepository.getUsers(pageNumber, pageSize);
+    return this._userRepository.getUsers(pageNumber, pageSize, role, fullname);
   }
 }

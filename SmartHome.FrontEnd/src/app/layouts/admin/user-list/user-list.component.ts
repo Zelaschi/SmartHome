@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UsersService } from '../../../../backend/services/User/users.service';
 import UserStatus from './models/user.status';
+import userFilters from './models/userFilters';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-list',
@@ -14,6 +16,10 @@ export class UserListComponent {
   pageSize: number = 10;
   loading: boolean = false;
 
+  filters : userFilters = {
+    fullName: null,
+    role : null,
+  }
   constructor(private readonly _usersService: UsersService) {}
 
   status: UserStatus = {
@@ -31,7 +37,7 @@ export class UserListComponent {
 
   loadUsers(): void {
     this.loading = true;
-    this._usersService.getAllUsers(this.pageNumber, this.pageSize).subscribe({
+    this._usersService.getAllUsers(this.pageNumber, this.pageSize, this.filters.role, this.filters.fullName).subscribe({
       next: (response) => {
         this.status ={
           users: response.data,
@@ -48,6 +54,30 @@ export class UserListComponent {
 
   onPageChange(page: number): void {
     this.pageNumber = page;
+    this.loadUsers();
+  }
+
+  readonly formField: any = {
+    role: {
+      name: 'role',
+    },
+    fullName: {
+      name: 'fullName',
+    },
+  }
+
+  readonly userFilterForm = new FormGroup({
+    [this.formField.role.name]: new FormControl('', []),
+    [this.formField.fullName.name]: new FormControl('', []),
+  })
+
+  onSubmit(values: any){
+    console.log('Datos del user:', values);
+    this.status.loading =  true;
+    this.filters = {
+      role: values.role,
+      fullName: values.fullName,
+    }
     this.loadUsers();
   }
 }

@@ -11,6 +11,7 @@ import { PaginationComponent } from "../../components/pagination/pagination.comp
 import { BusinessOwnerFormComponent } from './business-owner-form/business-owner-form.component';
 import { BusinessListComponent } from './business-list/business-list.component';
 import { BusinessItemComponent } from './business-item/business-item.component';
+import { FilterComponent } from '../../components/filter/filter/filter.component';
 
 
 
@@ -29,7 +30,8 @@ import { BusinessItemComponent } from './business-item/business-item.component';
     FormComponent,
     FormButtonComponent,
     FormInputComponent,
-    PaginationComponent
+    PaginationComponent,
+    FilterComponent
 ]
 })
 export class AdminModule { }

@@ -30,6 +30,10 @@ export class HomeItemComponent {
     this.showHomeDevicesList = !this.showHomeDevicesList;
   }
 
+  CreateRoom(homeId: string): void {
+    console.log('CreateRoom');
+  }
+
   onDeviceAdded(): void {
     this.showDeviceList = false;
     this.isAddingDevice = false;

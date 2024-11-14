@@ -16,8 +16,21 @@ export class UsersApiRepositoryService extends ApiRepository {
 
   public getUsers(
     pageNumber: number,
-    pageSize: number
+    pageSize: number,
+    role: string | null,
+    fullName: string | null
   ): Observable<UserPaginatedResponse> {
-    return this.get<UserPaginatedResponse>(`?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    const params = new URLSearchParams();
+
+    params.append('pageNumber', pageNumber.toString());
+    params.append('pageSize', pageSize.toString());
+
+    if (role) params.append('role', role);
+    if (fullName) params.append('fullName', fullName);
+
+    const queryString = params.toString();
+    const url = queryString ? `?${queryString}` : '';
+
+    return this.get<UserPaginatedResponse>(url);
   }
 }

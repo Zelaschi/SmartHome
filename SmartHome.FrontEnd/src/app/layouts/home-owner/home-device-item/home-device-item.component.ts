@@ -11,4 +11,12 @@ export class HomeDeviceItemComponent {
   ngOnInit(): void {
     console.log(this.homeDevice);
   }
+
+  ChangeHomeDeviceName(harwardId : string): void {
+    console.log('ChangeHomeDeviceName');
+  }
+
+  CreateNotification(harwardId : string): void {
+    console.log('CreateNotification');
+  }
 }

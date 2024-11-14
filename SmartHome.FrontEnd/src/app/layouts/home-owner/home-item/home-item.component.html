@@ -4,6 +4,7 @@
     <button (click) = "GetHomeMembers(home.id)">Members</button>
     <button (click) = "AddDeviceToHome(home.id)">Add device</button>
     <button (click) = "GetHomeDevices(home.id)">Home devices</button>
+    <button (click) = "CreateRoom(home.id)">Create room</button>
   </div>
   <div *ngIf="showMembers">
     <app-home-members-list [homeId]="home?.id ?? null"></app-home-members-list>

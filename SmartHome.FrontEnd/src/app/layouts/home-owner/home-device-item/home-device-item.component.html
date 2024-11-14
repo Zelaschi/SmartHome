@@ -4,4 +4,6 @@
     <p>Online: {{ homeDevice.online }}</p>
     <p *ngIf="homeDevice.isOn !== null">Is on?: {{ homeDevice.isOn }}</p>
     <p *ngIf="homeDevice.open !== null">Is open?: {{ homeDevice.open }}</p>
+    <button (click) = "ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
+    <button (click) = "CreateNotification(homeDevice.hardwardId)">Create notification</button>
   </div>
