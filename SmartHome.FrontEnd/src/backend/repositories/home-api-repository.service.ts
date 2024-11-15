@@ -44,4 +44,11 @@ export class HomeApiRepositoryService extends ApiRepository{
     const query = room ? `room=${room}` : '';
     return this.get<Array<HomeDeviceResponseModel>>(`${homeId}/homeDevices`, query);
   }
+
+  public UpdateHomeName(
+    homeId: string,
+    newName: string
+  ): Observable<string> {
+    return this.patchById<string>(homeId, newName);
+  }
 }

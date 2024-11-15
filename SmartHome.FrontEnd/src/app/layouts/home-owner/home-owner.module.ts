@@ -20,6 +20,7 @@ import { HomeDeviceListComponent } from './home-device-list/home-device-list.com
 import { HomeDeviceItemComponent } from './home-device-item/home-device-item.component';
 import { FilterComponent } from '../../components/filter/filter/filter.component';
 import { HomeFormComponent } from './home-form/home-form.component';
+import { HomeNameFormComponent } from './home-name-form/home-name-form.component';
 
 
 
@@ -35,7 +36,8 @@ import { HomeFormComponent } from './home-form/home-form.component';
     HomeItemComponent,
     HomeDeviceListComponent,
     HomeDeviceItemComponent,
-    HomeFormComponent
+    HomeFormComponent,
+    HomeNameFormComponent
   ],
   imports: [
     PaginationComponent,
