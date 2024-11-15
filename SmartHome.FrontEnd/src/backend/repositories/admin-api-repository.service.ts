@@ -27,7 +27,6 @@ export class AdminApiRepositoryService extends ApiRepository{
   public addHomeOwnerPermissionsToAdmin()
   : Observable<string> {
     console.log('role');
-    this.patchById("", { /* request body */ }, "homeOwnerPermissions");
     return this.patch("homeOwnerPermissions");
   }
 }

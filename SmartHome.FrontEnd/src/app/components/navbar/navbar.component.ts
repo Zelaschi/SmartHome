@@ -30,9 +30,23 @@ export class NavbarComponent  {
     this.authService.logout();
   }
   addHomeOwnerPermissionsToBusinessOwner(){
-    this.roleService.addHomeOwnerPermissionsToBusinessOwner();
+    this.roleService.addHomeOwnerPermissionsToBusinessOwner().subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
   addHomeOwnerPermissionsToAdmin(){
-    this.roleService.addHomeOwnerPermissionsToAdmin();
+    this.roleService.addHomeOwnerPermissionsToAdmin().subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 }
