@@ -4,6 +4,7 @@ import UserLoggedModel from '../../../backend/services/Session/models/UserLogged
 import { CommonModule, NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
+import { RoleUpdateService } from '../../../backend/services/RoleUpdate/role-update.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,7 @@ import { ButtonComponent } from '../button/button.component';
 export class NavbarComponent  {
   userLogged : UserLoggedModel | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private roleService: RoleUpdateService) {}
 
 
   ngOnInit(){
@@ -27,5 +28,11 @@ export class NavbarComponent  {
   }
   logOut(){
     this.authService.logout();
+  }
+  addHomeOwnerPermissionsToBusinessOwner(){
+    this.roleService.addHomeOwnerPermissionsToBusinessOwner();
+  }
+  addHomeOwnerPermissionsToAdmin(){
+    this.roleService.addHomeOwnerPermissionsToAdmin();
   }
 }

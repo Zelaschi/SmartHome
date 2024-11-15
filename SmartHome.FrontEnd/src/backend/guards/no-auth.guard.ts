@@ -7,7 +7,7 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
   if (isLoggedIn) {
     const router = inject(Router);
 
-    return router.parseUrl('/devices');
+    return router.parseUrl('/landing');
   }
 
   return true;

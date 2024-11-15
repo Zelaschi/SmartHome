@@ -19,4 +19,10 @@ export class BusinessOwnerApiRepositoryService extends ApiRepository{
   ): Observable<BusinessOwnerCreatedModel> {
     return this.post(credentials);
   }
+  
+  public addHomeOwnerPermissionsToBusinessOwner()
+  : Observable<string> {
+    console.log('role');
+    return this.patch("homeOwnerPermissions");
+  }
 }

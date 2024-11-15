@@ -28,7 +28,6 @@ import {
     protected get<T>(extraResource = '', query = ''): Observable<T> {
       query = query ? `?${query}` : '';
       extraResource = extraResource ? `/${extraResource}` : '';
-  
       return this._http
         .get<T>(`${this.fullEndpoint}${extraResource}${query}`, this.headers)
         .pipe(retry(3), catchError(this.handleError));
@@ -54,13 +53,23 @@ import {
         .pipe(retry(3), catchError(this.handleError));
     }
 
+    protected patch<T>(
+      extraResource = '',
+      body: any = null
+    ): Observable<T> {
+      const url = `${this.fullEndpoint}${extraResource ? `/${extraResource}` : ''}`;
+      console.log('Sending PATCH request:', url, body, this.headers);
+      return this._http
+        .patch<T>(url, body, this.headers)
+        .pipe(retry(3), catchError(this.handleError));
+    }
+
     protected patchById<T>(
         id: string,
         body: any = null,
         extraResource = ''
       ): Observable<T> {
         extraResource = extraResource ? `/${extraResource}` : '';
-    
         return this._http
           .patch<T>(`${this.fullEndpoint}/${id}${extraResource}`, body, this.headers)
           .pipe(retry(3), catchError(this.handleError));
