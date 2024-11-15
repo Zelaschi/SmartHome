@@ -5,6 +5,7 @@ import { HomesListComponent } from './homes-list/homes-list.component';
 import { RoomFormComponent } from './room-form/room-form.component';
 import { authorizationGuard } from '../../../backend/guards/authorization.guard';
 import { HomeDeviceListComponent } from './home-device-list/home-device-list.component';
+import { HomeFormComponent } from './home-form/home-form.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
     data: { requiredSystemPermission: 'Home related permission' },
     component: RoomFormComponent
   },
+  {
+    path: 'createHome',
+    component: HomeFormComponent
+  }
 ];
 
 @NgModule({

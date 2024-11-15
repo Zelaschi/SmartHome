@@ -19,6 +19,7 @@ import { PhotosCarouselComponent } from '../../components/photos-carousel/photos
 import { HomeDeviceListComponent } from './home-device-list/home-device-list.component';
 import { HomeDeviceItemComponent } from './home-device-item/home-device-item.component';
 import { FilterComponent } from '../../components/filter/filter/filter.component';
+import { HomeFormComponent } from './home-form/home-form.component';
 
 
 
@@ -34,6 +35,7 @@ import { FilterComponent } from '../../components/filter/filter/filter.component
     HomeItemComponent,
     HomeDeviceListComponent,
     HomeDeviceItemComponent,
+    HomeFormComponent
   ],
   imports: [
     PaginationComponent,
