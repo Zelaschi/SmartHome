@@ -12,6 +12,7 @@ export class HomeItemComponent {
   showDeviceList: boolean = false;
   isAddingDevice: boolean = false;
   showHomeDevicesList: boolean = false
+  showHomeNameForm: boolean = false;
 
   ngOnInit(): void {
     console.log(this.home);
@@ -34,9 +35,21 @@ export class HomeItemComponent {
     console.log('CreateRoom');
   }
 
+  UpdateHomeName(homeId: string): void {
+    this.showHomeNameForm = !this.showHomeNameForm;
+  }
+
   onDeviceAdded(): void {
     this.showDeviceList = false;
     this.isAddingDevice = false;
     console.log('Device added succesfully');
+  }
+
+  onNameUpdated(newName: string): void {
+    this.showHomeNameForm = false;
+    if (this.home) {
+      this.home.name = newName;
+    }
+    console.log('Home name updated successfully:', newName);
   }
 }

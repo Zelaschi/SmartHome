@@ -38,4 +38,11 @@ export class HomeService {
   ): Observable<Array<HomeDeviceResponseModel>> {
     return this._repository.getHomeDevices(homeId, room);
   }
+
+  public UpdateHomeName(
+    homeId: string,
+    newName: string
+  ): Observable<string> {
+    return this._repository.UpdateHomeName(homeId, newName);
+  }
 }

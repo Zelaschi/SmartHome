@@ -1,10 +1,12 @@
 <div *ngIf="home" class="home-item">
     <p>MainStreet: {{ home.mainStreet }}</p>
     <p>DoorNumber: {{ home.doorNumber }}</p>
+    <p>Name: {{ home.name }}</p>
     <button (click) = "GetHomeMembers(home.id)">Members</button>
     <button (click) = "AddDeviceToHome(home.id)">Add device</button>
     <button (click) = "GetHomeDevices(home.id)">Home devices</button>
     <button (click) = "CreateRoom(home.id)">Create room</button>
+    <button (click) = "UpdateHomeName(home.id)">Update home name</button>
   </div>
   <div *ngIf="showMembers">
     <app-home-members-list [homeId]="home?.id ?? null"></app-home-members-list>
@@ -15,4 +17,11 @@
 <div *ngIf="showHomeDevicesList">
   <app-home-device-list [homeId]="home?.id ?? null"></app-home-device-list>
 </div>
+<div *ngIf="showHomeNameForm">
+  <app-home-name-form 
+    [homeId]="home?.id ?? null"
+    (nameUpdated)="onNameUpdated($event)">
+  </app-home-name-form>
+</div>
+
 

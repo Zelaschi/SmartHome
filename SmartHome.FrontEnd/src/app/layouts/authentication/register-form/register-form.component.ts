@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HomeOwnerService } from '../../../../backend/services/HomeOwner/home-owner.service';
+import HomeOwnerCreationModel from '../../../../backend/services/HomeOwner/models/HomeOwnerCreationModel';
 
 @Component({
   selector: 'app-register-form',
@@ -7,37 +10,35 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./register-form.component.css'],
 })
 export class RegisterFormComponent {
-  // Definición de campos con mensajes de validación
   readonly formField: any = {
-    firstName: {
-      name: 'firstName',
-      required: 'El nombre es requerido',
+    name: {
+      name: 'name',
+      required: 'Name is required',
     },
-    lastName: {
-      name: 'lastName',
-      required: 'El apellido es requerido',
+    surname: {
+      name: 'surname',
+      required: 'Surname is required',
     },
     email: {
       name: 'email',
-      required: 'El email es requerido',
-      email: 'El email no es válido',
+      required: 'email is required',
+      email: 'email is not valid',
     },
     password: {
       name: 'password',
-      required: 'La contraseña es requerida',
-      minlength: 'La contraseña debe tener al menos 6 caracteres',
+      required: 'password is required',
+      minlength: 'password must be at least 6 characters long',
     },
-    imageUrl: {
-      name: 'imageUrl',
+    profilePhoto: {
+      name: 'profilePhoto',
     },
   };
 
-  // Inicializa el formulario con validaciones para cada campo
   readonly registerForm = new FormGroup({
-    [this.formField.firstName.name]: new FormControl('', [
+    [this.formField.name.name]: new FormControl('', [
       Validators.required,
     ]),
-    [this.formField.lastName.name]: new FormControl('', [
+    [this.formField.surname.name]: new FormControl('', [
       Validators.required,
     ]),
     [this.formField.email.name]: new FormControl('', [
@@ -48,12 +49,31 @@ export class RegisterFormComponent {
       Validators.required,
       Validators.minLength(6),
     ]),
-    [this.formField.imageUrl.name]: new FormControl(''), // Campo opcional sin validación
+    [this.formField.profilePhoto.name]: new FormControl('', []),
   });
 
-  // Método que maneja el envío del formulario
-  public onRegister(values: any) {
-    console.log(values);
-    // Lógica adicional para manejar el registro
+  registerStatus: {
+    loading?: true;
+    error?: string;
+  } | null = null;
+
+  constructor(
+    private readonly _router: Router,
+    private readonly _homeOwnerService: HomeOwnerService
+  ) {}
+
+  public onSubmit(values: HomeOwnerCreationModel) {
+    this.registerStatus = { loading: true };
+    this._homeOwnerService.registerHomeOwner(values).subscribe({
+      next: (response) => {
+        this.registerStatus = null;
+
+        this._router.navigate(['/login']);
+      },
+      error: (error) => {
+        this.registerStatus = { error };
+      },
+    });
   }
+
 }
