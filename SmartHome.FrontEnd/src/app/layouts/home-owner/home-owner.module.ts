@@ -24,6 +24,7 @@ import { HomeNameFormComponent } from './home-name-form/home-name-form.component
 import { HomeDeviceNameComponent } from './home-device-name/home-device-name.component';
 import { RoomListComponent } from './room-list/room-list.component';
 import { RoomItemComponent } from './room-item/room-item.component';
+import { IndividualHomeComponent } from './individual-home/individual-home.component';
 
 
 
@@ -43,7 +44,8 @@ import { RoomItemComponent } from './room-item/room-item.component';
     HomeNameFormComponent,
     HomeDeviceNameComponent,
     RoomListComponent,
-    RoomItemComponent
+    RoomItemComponent,
+    IndividualHomeComponent
   ],
   imports: [
     PaginationComponent,

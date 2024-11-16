@@ -6,6 +6,7 @@ import { RoomFormComponent } from './room-form/room-form.component';
 import { authorizationGuard } from '../../../backend/guards/authorization.guard';
 import { HomeDeviceListComponent } from './home-device-list/home-device-list.component';
 import { HomeFormComponent } from './home-form/home-form.component';
+import { IndividualHomeComponent } from './individual-home/individual-home.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: 'createHome',
     component: HomeFormComponent
+  },
+  {
+    path: 'individualHome/:id',
+    component: IndividualHomeComponent
   }
 ];
 

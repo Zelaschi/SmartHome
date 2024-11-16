@@ -1,0 +1,48 @@
+<h1>Home Details:</h1>
+
+<div class="info-section">
+    <div class="info-row">
+        <label>Name:</label>
+        <span>{{ home?.name }}</span>
+      </div>
+    <div class="info-row">
+      <label>MainStreet:</label>
+      <span>{{ home?.mainStreet }}</span>
+    </div>
+    
+    <div class="info-row">
+      <label>DoorNumber:</label>
+      <span>{{ home?.doorNumber }}</span>
+    </div>
+  </div>
+
+<button (click)="GetHomeMembers()">Members</button>
+<button (click) = "AddDeviceToHome()">Add device</button>
+<button (click) = "GetHomeDevices()">Home devices</button>
+<button (click) = "CreateRoom()">Create room</button>
+<button (click) = "GetRooms()">Show Rooms</button>
+<button (click) = "UpdateHomeName()">Update home name</button>
+
+<div *ngIf="showMembers && homeId">
+    <app-home-members-list [homeId]="homeId"></app-home-members-list>
+</div>
+<div *ngIf="showDeviceList">
+    <app-device-list [homeId]="homeId ?? null" [isAddingDevice] = "isAddingDevice" (deviceAdded)="onDeviceAdded()"></app-device-list>
+  </div>
+  <div *ngIf="showHomeDevicesList">
+    <app-home-device-list [homeId]="homeId ?? null"></app-home-device-list>
+  </div>
+  <div *ngIf="showRoomForm">
+    <app-room-form 
+      [homeId]="homeId ?? null"
+    ></app-room-form>
+  </div>
+  <div *ngIf="showRooms">
+    <app-room-list [homeId]="homeId ?? null"></app-room-list>
+  </div>
+  <div *ngIf="showHomeNameForm">
+    <app-home-name-form 
+      [homeId]="homeId ?? null"
+      (nameUpdated)="onNameUpdated($event)">
+    </app-home-name-form>
+  </div>

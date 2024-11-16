@@ -1,5 +1,6 @@
 import { Component, Input, input } from '@angular/core';
 import HomeCreatedModel from '../../../../backend/services/Home/models/HomeCreatedModel';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-item',
@@ -7,55 +8,31 @@ import HomeCreatedModel from '../../../../backend/services/Home/models/HomeCreat
   styleUrl: './home-item.component.css'
 })
 export class HomeItemComponent {
+  constructor(
+    private readonly _router: Router,
+  ) { }
   @Input() home: HomeCreatedModel | null = null;
-  showMembers: boolean = false;
-  showDeviceList: boolean = false;
-  isAddingDevice: boolean = false;
-  showHomeDevicesList: boolean = false
-  showHomeNameForm: boolean = false;
-  showRoomForm: boolean = false;
-  showRooms: boolean = false;
 
   ngOnInit(): void {
     console.log(this.home);
   }
 
-  GetHomeMembers(homeId: string): void {
-    this.showMembers = !this.showMembers;
-  }
-
-  AddDeviceToHome(homeId: string): void {
-    this.showDeviceList = !this.showDeviceList;
-    this.isAddingDevice = !this.isAddingDevice;
-  }
-
-  GetHomeDevices(homeId: string): void {
-    this.showHomeDevicesList = !this.showHomeDevicesList;
-  }
-
-  CreateRoom(homeId: string): void {
-    this.showRoomForm = !this.showRoomForm;
-  }
-
-  UpdateHomeName(homeId: string): void {
-    this.showHomeNameForm = !this.showHomeNameForm;
-  }
-
-  onDeviceAdded(): void {
-    this.showDeviceList = false;
-    this.isAddingDevice = false;
-    console.log('Device added succesfully');
-  }
-
-  onNameUpdated(newName: string): void {
-    this.showRoomForm = false;
-    if (this.home) {
-      this.home.name = newName;
+  HomeInfo(homeId: string): void {
+    if (homeId && this.home) {
+      const navigationExtras: NavigationExtras = {
+        state: {
+          homeData: this.home
+        }
+      };
+      this._router.navigate(['/homOwners/individualHome', homeId])
+        .catch(error => {
+          console.error('Error de navegación:', error);
+          // Intenta un método alternativo si el primero falla
+          this._router.navigateByUrl(`/homeOwners/individualHome/${homeId}`)
+            .catch(err => console.error('Error en navegación alternativa:', err));
+        });
+    } else {
+      console.error('homeId inválido:', homeId);
     }
-    console.log('Home name updated successfully:', newName);
-  }
-
-  GetRooms(homeId: string): void {
-    this.showRooms = !this.showRooms;
   }
 }
