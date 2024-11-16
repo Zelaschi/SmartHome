@@ -272,6 +272,26 @@ public sealed class SmartHomeEFCoreContext : DbContext
             },
             new RoleSystemPermission
             {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_USERS_NOTIFICATIONS_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_USERS_HOMES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.HOME_RELATED_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
                 RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
                 SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_NOTIFICATION_PERMISSION_ID)
             },
@@ -299,6 +319,26 @@ public sealed class SmartHomeEFCoreContext : DbContext
             {
                 RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
                 SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_DEVICES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_DEVICES_TYPES_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.CREATE_HOME_PERMISSION_ID)
+            },
+            new RoleSystemPermission
+            {
+                RoleId = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID)
             }
         );
 
@@ -322,6 +362,16 @@ public sealed class SmartHomeEFCoreContext : DbContext
             {
                 Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
                 Name = "Recieve device's notifications"
+            },
+            new HomePermission
+            {
+                Id = Guid.Parse(SeedDataConstants.CREATE_ROOM_PERMISSION_ID),
+                Name = "Create room permission"
+            },
+            new HomePermission
+            {
+                Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_ROOM_PERMISSION_ID),
+                Name = "Add device to room permission"
             }
         );
 
