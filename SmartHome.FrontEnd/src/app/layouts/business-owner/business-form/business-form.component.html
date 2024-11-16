@@ -41,6 +41,11 @@
         </app-form-input>
       </div>
 
+      <app-validators-drop-down 
+        [value]="selectedValidator"
+        (valueChange)="onValidatorChange($event)"
+      />
+
       <div class="d-grid gap-2">
         <app-form-button submit title="Register business" class="btn btn-primary btn-block text-white" style="background-color: #2980b9; border: none;"></app-form-button>
       </div>

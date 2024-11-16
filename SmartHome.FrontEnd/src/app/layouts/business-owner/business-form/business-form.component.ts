@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 })
 
 export class BusinessFormComponent {
+  selectedValidator: string | null = null;
+
   readonly formField: any = {
     name: {
       name: "name",
@@ -24,6 +26,9 @@ export class BusinessFormComponent {
     logo: {
       name: "logo",
       required: "Logo is required"
+    },
+    validatorId: {
+      name: "validatorId",
     }
   };
   readonly businessForm = new FormGroup({
@@ -35,7 +40,8 @@ export class BusinessFormComponent {
     ]),
     [this.formField.logo.name]: new FormControl("", [
       Validators.required
-    ])
+    ]),
+    [this.formField.validatorId.name]: new FormControl("", [])
   });
 
   businessStatus: {
@@ -48,10 +54,26 @@ export class BusinessFormComponent {
     private readonly _businessService: BusinessService
   ){}
 
+  onValidatorChange(value: string) {
+    this.selectedValidator = value;
+    this.businessForm.patchValue({
+      [this.formField.validatorId.name]: value
+    });
+  }
+
   public onSubmit(values : BusinessCreationModel) {
+    console.log('Form values:', values);
+    console.log('Validator ID:', this.businessForm.get(this.formField.validatorId.name)?.value);
     this.businessStatus = { loading: true };
 
-    this._businessService.registerBusiness(values).subscribe({
+    const businessData: BusinessCreationModel = {
+      name: values.name,
+      rut: values.rut,
+      logo: values.logo,
+      validatorId: this.businessForm.get(this.formField.validatorId.name)?.value
+    };
+
+    this._businessService.registerBusiness(businessData).subscribe({
       next: (response) => {
         this.businessStatus = null;
 
