@@ -48,7 +48,18 @@ export class HomeApiRepositoryService extends ApiRepository{
   public UpdateHomeName(
     homeId: string,
     newName: string
-  ): Observable<string> {
-    return this.patchById<string>(homeId, newName);
+  ) {
+    const body = { newName }
+    console.log('newName', newName);
+    console.log('homeId', homeId);
+    return this.patchById(`${homeId}/homeName`, body);
+  }
+
+  public UpdateHomeDeviceName(
+    homeDeviceId: string,
+    newName: string
+  ) {
+    const body = { newName }
+    return this.patchById(`${homeDeviceId}/homeDeviceName`, body);
   }
 }

@@ -10,6 +10,7 @@ using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.BusinessLogic.InitialSeedData;
 using Microsoft.Identity.Client;
 using SmartHome.BusinessLogic.Constants;
+using SmartHome.WebApi.WebModels.UpdateNameModels.In;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -79,19 +80,19 @@ public sealed class HomesController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
-    [HttpPatch("{homeDeviceId}")]
+    [HttpPatch("{homeDeviceId}/homeDeviceName")]
 
-    public IActionResult UpdateHomeDeviceName([FromRoute] Guid homeDeviceId, [FromBody] string newName)
+    public IActionResult UpdateHomeDeviceName([FromRoute] Guid homeDeviceId, [FromBody] UpdateNameRequestModel request)
     {
-        _homeLogic.UpdateHomeDeviceName(homeDeviceId, newName);
+        _homeLogic.UpdateHomeDeviceName(homeDeviceId, request.NewName);
         return Ok();
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
-    [HttpPatch("{homeId}")]
-    public IActionResult UpdateHomeName([FromRoute] Guid homeId, [FromBody] string newName)
+    [HttpPatch("{homeId}/homeName")]
+    public IActionResult UpdateHomeName([FromRoute] Guid homeId, [FromBody] UpdateNameRequestModel request)
     {
-        _homeLogic.UpdateHomeName(homeId, newName);
+        _homeLogic.UpdateHomeName(homeId, request.NewName);
         return Ok();
     }
 }

@@ -42,7 +42,14 @@ export class HomeService {
   public UpdateHomeName(
     homeId: string,
     newName: string
-  ): Observable<string> {
+  ){
     return this._repository.UpdateHomeName(homeId, newName);
+  }
+
+  public UpdateHomeDeviceName(
+    homeDeviceId: string,
+    newName: string
+  ){
+    return this._repository.UpdateHomeDeviceName(homeDeviceId, newName);
   }
 }

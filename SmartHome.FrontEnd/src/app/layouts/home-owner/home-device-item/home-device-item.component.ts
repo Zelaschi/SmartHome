@@ -8,15 +8,25 @@ import HomeDeviceResponseModel from '../../../../backend/services/Home/models/Ho
 })
 export class HomeDeviceItemComponent {
   @Input() homeDevice: HomeDeviceResponseModel | null = null;
+  showHomeDeviceNameForm: boolean = false;
+  
   ngOnInit(): void {
     console.log(this.homeDevice);
   }
 
   ChangeHomeDeviceName(harwardId : string): void {
-    console.log('ChangeHomeDeviceName');
+    this.showHomeDeviceNameForm = !this.showHomeDeviceNameForm;
   }
 
   CreateNotification(harwardId : string): void {
     console.log('CreateNotification');
+  }
+
+  onHomeDeviceNameUpdated(newName: string): void {
+    this.showHomeDeviceNameForm = false;
+    if (this.homeDevice) {
+      this.homeDevice.name = newName;
+    }
+    console.log('Home name updated successfully:', newName);
   }
 }

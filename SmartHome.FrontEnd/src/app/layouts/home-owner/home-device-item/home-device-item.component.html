@@ -7,3 +7,9 @@
     <button (click) = "ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
     <button (click) = "CreateNotification(homeDevice.hardwardId)">Create notification</button>
   </div>
+  <div *ngIf="showHomeDeviceNameForm">
+    <app-home-device-name
+      [homeDeviceId]="homeDevice?.hardwardId ?? null"
+      (homeDeviceNameUpdated)="onHomeDeviceNameUpdated($event)">
+    </app-home-device-name>
+  </div>
