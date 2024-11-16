@@ -22,6 +22,8 @@ import { FilterComponent } from '../../components/filter/filter/filter.component
 import { HomeFormComponent } from './home-form/home-form.component';
 import { HomeNameFormComponent } from './home-name-form/home-name-form.component';
 import { HomeDeviceNameComponent } from './home-device-name/home-device-name.component';
+import { RoomListComponent } from './room-list/room-list.component';
+import { RoomItemComponent } from './room-item/room-item.component';
 
 
 
@@ -39,7 +41,9 @@ import { HomeDeviceNameComponent } from './home-device-name/home-device-name.com
     HomeDeviceItemComponent,
     HomeFormComponent,
     HomeNameFormComponent,
-    HomeDeviceNameComponent
+    HomeDeviceNameComponent,
+    RoomListComponent,
+    RoomItemComponent
   ],
   imports: [
     PaginationComponent,

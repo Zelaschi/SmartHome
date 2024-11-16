@@ -4,6 +4,7 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
+using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.WebApi.WebModels.RoomModels.In;
 using SmartHome.WebApi.WebModels.RoomModels.Out;
 
@@ -37,5 +38,12 @@ public sealed class RoomsController : ControllerBase
     {
         var createResponse = new HomeDeviceResponseModel(_roomLogic.AddDevicesToRoom(homeDeviceId, roomId));
         return CreatedAtAction("RoomAddedToHome", new { createResponse.HardwardId }, createResponse);
+    }
+
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HttpGet("{homeId}")]
+    public IActionResult GetAllRoomsFromHome([FromRoute] Guid homeId)
+    {
+        return Ok(_roomLogic.GetAllRoomsFromHome(homeId).Select(room => new RoomResponseModel(room)).ToList());
     }
 }

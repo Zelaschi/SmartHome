@@ -661,4 +661,10 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _roomRepository.Update(room);
         return homeDevice;
     }
+
+    public List<Room> GetAllRoomsFromHome(Guid homeId)
+    {
+        var home = FindHomeById(homeId);
+        return home.Rooms;
+    }
 }

@@ -1,0 +1,9 @@
+<div class="home-members-list">
+    <h5>Home Rooms</h5>
+    <div *ngIf="loading" class="loader">
+      Loading home rooms...
+    </div>
+    <div *ngFor="let room of status.rooms" class="home-room-item">
+      <app-room-item [room]="room"></app-room-item>
+    </div>
+  </div>

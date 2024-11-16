@@ -14,6 +14,7 @@ export class HomeItemComponent {
   showHomeDevicesList: boolean = false
   showHomeNameForm: boolean = false;
   showRoomForm: boolean = false;
+  showRooms: boolean = false;
 
   ngOnInit(): void {
     console.log(this.home);
@@ -52,5 +53,9 @@ export class HomeItemComponent {
       this.home.name = newName;
     }
     console.log('Home name updated successfully:', newName);
+  }
+
+  GetRooms(homeId: string): void {
+    this.showRooms = !this.showRooms;
   }
 }

@@ -17,4 +17,8 @@ export class RoomService {
   ): Observable<RoomCreatedModel> {
     return this._repository.registerRoom(homeId, credentials);
   }
+
+  public getRooms(homeId: string): Observable<RoomCreatedModel[]> {
+    return this._repository.getRooms(homeId);
+  }
 }
