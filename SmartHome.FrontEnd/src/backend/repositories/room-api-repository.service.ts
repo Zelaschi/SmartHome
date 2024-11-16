@@ -16,8 +16,8 @@ export class RoomApiRepositoryService extends ApiRepository{
   }
 
   public registerRoom(
-    credentials: RoomCreationModel,
-    homeId : string
+    homeId : string,
+    credentials: RoomCreationModel
   ): Observable<RoomCreatedModel> {
     return this.post<RoomCreatedModel>(credentials, `${homeId}`);
   }

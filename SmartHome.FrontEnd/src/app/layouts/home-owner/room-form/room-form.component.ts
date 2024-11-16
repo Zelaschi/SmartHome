@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RoomService } from '../../../../backend/services/Room/room.service';
@@ -10,6 +10,7 @@ import RoomCreationModel from '../../../../backend/services/Room/models/RoomCrea
   styleUrl: './room-form.component.css'
 })
 export class RoomFormComponent {
+  @Input() homeId: string | null = null;
   readonly formField: any = {
     name: {
       name: "name",
@@ -33,13 +34,13 @@ export class RoomFormComponent {
   ){}
 
   public onSubmit(values : RoomCreationModel) {
-    this.roomStatus = { loading: true };
+    if (this.roomForm.invalid || !this.homeId) {
+      return;
+    }
 
-    this._roomService.registerRoom(values).subscribe({
+    this._roomService.registerRoom(this.homeId, values).subscribe({
       next: (response) => {
         this.roomStatus = null;
-
-        this._router.navigate(["/landing"]);
       },
       error: (error) => {
         this.roomStatus = { error };

@@ -12,8 +12,9 @@ export class RoomService {
   constructor(private readonly _repository: RoomApiRepositoryService) { }
 
   public registerRoom(
+    homeId : string,
     credentials: RoomCreationModel
   ): Observable<RoomCreatedModel> {
-    return this._repository.registerRoom(credentials);
+    return this._repository.registerRoom(homeId, credentials);
   }
 }

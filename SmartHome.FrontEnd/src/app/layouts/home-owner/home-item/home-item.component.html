@@ -23,5 +23,9 @@
     (nameUpdated)="onNameUpdated($event)">
   </app-home-name-form>
 </div>
-
+<div *ngIf="showRoomForm">
+  <app-room-form 
+    [homeId]="home?.id ?? null"
+  ></app-room-form>
+</div>
 

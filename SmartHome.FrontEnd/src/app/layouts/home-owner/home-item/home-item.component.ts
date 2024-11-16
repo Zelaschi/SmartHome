@@ -13,6 +13,7 @@ export class HomeItemComponent {
   isAddingDevice: boolean = false;
   showHomeDevicesList: boolean = false
   showHomeNameForm: boolean = false;
+  showRoomForm: boolean = false;
 
   ngOnInit(): void {
     console.log(this.home);
@@ -32,7 +33,7 @@ export class HomeItemComponent {
   }
 
   CreateRoom(homeId: string): void {
-    console.log('CreateRoom');
+    this.showRoomForm = !this.showRoomForm;
   }
 
   UpdateHomeName(homeId: string): void {
@@ -46,7 +47,7 @@ export class HomeItemComponent {
   }
 
   onNameUpdated(newName: string): void {
-    this.showHomeNameForm = false;
+    this.showRoomForm = false;
     if (this.home) {
       this.home.name = newName;
     }
