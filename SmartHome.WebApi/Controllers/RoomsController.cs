@@ -24,7 +24,7 @@ public sealed class RoomsController : ControllerBase
         _roomLogic = roomLogic;
     }
 
-    [AuthorizationFilter(SeedDataConstants.CREATE_ROOM_PERMISSION_ID)]
+    [HomeAuthorizationFilter(SeedDataConstants.CREATE_ROOM_PERMISSION_ID)]
     [HttpPost("{homeId}")]
     public IActionResult CreateRoom([FromBody] RoomRequestModel roomRequestModel, [FromRoute] Guid homeId)
     {
@@ -40,7 +40,7 @@ public sealed class RoomsController : ControllerBase
         return CreatedAtAction("RoomAddedToHome", new { createResponse.HardwardId }, createResponse);
     }
 
-    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HomeAuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HttpGet("{homeId}")]
     public IActionResult GetAllRoomsFromHome([FromRoute] Guid homeId)
     {

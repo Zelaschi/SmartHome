@@ -27,15 +27,10 @@ public sealed class HomesController : ControllerBase
         _homeLogic = homeLogic;
     }
 
-    public class AddDeviceToHomeRequest
-    {
-        public Guid DeviceId { get; set; }
-    }
-
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HomeAuthorizationFilter(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID)]
     [HttpPost("{homeId}/homeDevices")]
-    public IActionResult AddDeviceToHome([FromRoute] Guid homeId, [FromBody] AddDeviceToHomeRequest request)
+    public IActionResult AddDeviceToHome([FromRoute] Guid homeId, [FromBody] AddDeviceToHomeRequestModel request)
     {
         _homeLogic.AddDeviceToHome(homeId, request.DeviceId);
         return NoContent();

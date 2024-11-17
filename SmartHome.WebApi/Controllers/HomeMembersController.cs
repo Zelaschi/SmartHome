@@ -6,6 +6,7 @@ using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.In;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
+using SmartHome.WebApi.WebModels.HomePermissionModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -36,5 +37,11 @@ public sealed class HomeMembersController : ControllerBase
     {
         _homeMemberLogic.UpdateHomePermissionsOfHomeMember(homeMemberId, permissions.ToHomePermissionList());
         return NoContent();
+    }
+
+    [HttpGet("homePermissions")]
+    public IActionResult GetAllHomePermissions()
+    {
+        return Ok(_homeMemberLogic.GetAllHomePermissions().Select(homePermission => new HomePermissionResponseModel(homePermission)).ToList());
     }
 }

@@ -18,6 +18,8 @@ using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
+using SmartHome.WebApi.WebModels.RoomModels.Out;
+using SmartHome.WebApi.WebModels.UpdateNameModels.In;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using Device = SmartHome.BusinessLogic.Domain.Device;
 using User = SmartHome.BusinessLogic.Domain.User;
@@ -99,8 +101,13 @@ public class HomeControllerTest
 
         homeLogicMock.Setup(h => h.AddDeviceToHome(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(homeDevice);
 
+        var deviceId = new AddDeviceToHomeRequestModel
+        {
+            DeviceId = device.Id
+        };
+
         var expected = new NoContentResult();
-        var result = homeController.AddDeviceToHome(home.Id, device.Id) as NoContentResult;
+        var result = homeController.AddDeviceToHome(home.Id, deviceId) as NoContentResult;
 
         homeLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
@@ -232,7 +239,12 @@ public class HomeControllerTest
 
         var expected = new OkResult();
 
-        var result = homeController.UpdateHomeDeviceName(device.Id, "newName") as OkResult;
+        var newName = new UpdateNameRequestModel
+        {
+            NewName = "New Home Name"
+        };
+
+        var result = homeController.UpdateHomeDeviceName(device.Id, newName) as OkResult;
 
         homeLogicMock.VerifyAll();
 
@@ -256,11 +268,14 @@ public class HomeControllerTest
         Home home = homeRequestModel.ToEntity();
         home.Id = Guid.NewGuid();
 
-        var newName = "New home name";
-
         homeLogicMock.Setup(h => h.UpdateHomeName(It.IsAny<Guid>(), It.IsAny<string>()));
 
         var expected = new OkResult();
+
+        var newName = new UpdateNameRequestModel
+        {
+            NewName = "New Home Name"
+        };
 
         var result = homeController.UpdateHomeName(home.Id, newName) as OkResult;
 
