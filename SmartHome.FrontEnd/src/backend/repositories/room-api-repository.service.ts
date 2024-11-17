@@ -19,10 +19,12 @@ export class RoomApiRepositoryService extends ApiRepository{
     homeId : string,
     credentials: RoomCreationModel
   ): Observable<RoomCreatedModel> {
+    console.log(credentials);
+    console.log(`${homeId}`);
     return this.post<RoomCreatedModel>(credentials, `${homeId}`);
   }
 
-  public getRooms(homeId: string): Observable<RoomCreatedModel[]> {
+  public getRooms(homeId: string): Observable<Array<RoomCreatedModel>> {
     return this.get<Array<RoomCreatedModel>>(`${homeId}`);
   }
 }

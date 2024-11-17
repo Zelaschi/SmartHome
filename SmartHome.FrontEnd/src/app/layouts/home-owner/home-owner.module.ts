@@ -25,6 +25,8 @@ import { HomeDeviceNameComponent } from './home-device-name/home-device-name.com
 import { RoomListComponent } from './room-list/room-list.component';
 import { RoomItemComponent } from './room-item/room-item.component';
 import { IndividualHomeComponent } from './individual-home/individual-home.component';
+import { HomePermissionsDropdownComponent } from './home-permissions-dropdown/home-permissions-dropdown.component';
+import { DropdownComponent } from "../../components/dropdown/dropdown.component";
 
 
 
@@ -45,7 +47,8 @@ import { IndividualHomeComponent } from './individual-home/individual-home.compo
     HomeDeviceNameComponent,
     RoomListComponent,
     RoomItemComponent,
-    IndividualHomeComponent
+    IndividualHomeComponent,
+    HomePermissionsDropdownComponent
   ],
   imports: [
     PaginationComponent,
@@ -57,6 +60,7 @@ import { IndividualHomeComponent } from './individual-home/individual-home.compo
     HomeOwnerRoutingModule,
     DeviceListComponent,
     FilterComponent,
-    ]
+    DropdownComponent
+]
 })
 export class HomeOwnerModule { }

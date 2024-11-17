@@ -14,6 +14,7 @@ import { DeviceFormComponent } from './device-form/device-form.component';
 import { BusinessFormComponent } from './business-form/business-form.component';
 import { ValidatorsDropDownComponent } from './validators-drop-down/validators-drop-down.component';
 import { DropdownComponent } from '../../components/dropdown/dropdown.component';
+import { ValidatorFormComponent } from './validator-form/validator-form.component';
 
 
 
@@ -22,6 +23,7 @@ import { DropdownComponent } from '../../components/dropdown/dropdown.component'
     DeviceFormComponent,
     BusinessFormComponent,
     ValidatorsDropDownComponent,
+    ValidatorFormComponent,
   ],
   imports: [
     CommonModule,

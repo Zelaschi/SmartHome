@@ -667,4 +667,9 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var home = FindHomeById(homeId);
         return home.Rooms;
     }
+
+    public List<HomePermission> GetAllHomePermissions()
+    {
+        return _homePermissionRepository.FindAll().ToList();
+    }
 }

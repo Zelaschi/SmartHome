@@ -5,6 +5,7 @@ import { HomeApiRepositoryService } from '../../repositories/home-api-repository
 import { Observable } from 'rxjs';
 import HomeMemberResponseModel from './models/HomeMemberResponseModel';
 import HomeDeviceResponseModel from './models/HomeDeviceResponseModel';
+import HomePermissionResponseModel from '../HomeMember/models/HomePermissionResponseModel';
 
 @Injectable({
   providedIn: 'root'

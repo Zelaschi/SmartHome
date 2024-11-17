@@ -46,4 +46,11 @@ export class BusinessApiRepositoryService extends ApiRepository{
   public getValidators(): Observable<Array<ValidatorResponseModel>> {
     return this.get<Array<ValidatorResponseModel>>('validators');
   }
+
+  public addValidatorToBusiness(
+    validatorId: string
+  ): Observable<void> {
+    console.log(validatorId);
+    return this.patchById('validators', validatorId);
+  }
 }

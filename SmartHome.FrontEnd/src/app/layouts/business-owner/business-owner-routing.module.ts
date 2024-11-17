@@ -5,6 +5,7 @@ import { DeviceFormComponent } from './device-form/device-form.component';
 import { authorizationGuard } from '../../../backend/guards/authorization.guard';
 import { BusinessFormComponent } from './business-form/business-form.component';
 import { ValidatorsDropDownComponent } from './validators-drop-down/validators-drop-down.component';
+import { ValidatorFormComponent } from './validator-form/validator-form.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'validators',
     component: ValidatorsDropDownComponent
+  },
+  {
+    path: 'updateValidator',
+    component: ValidatorFormComponent
   }
 ];
 

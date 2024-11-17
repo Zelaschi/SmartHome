@@ -38,8 +38,10 @@ export class RoomFormComponent {
       return;
     }
 
+    this.roomStatus = { loading: true };
+
     this._roomService.registerRoom(this.homeId, values).subscribe({
-      next: (response) => {
+      next: () => {
         this.roomStatus = null;
       },
       error: (error) => {

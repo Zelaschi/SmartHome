@@ -32,4 +32,10 @@ export class BusinessService {
   ): Observable<Array<ValidatorResponseModel>> {
     return this._repository.getValidators();
   }
+
+  public addValidatorToBusiness(
+    validatorId: string
+  ): Observable<void> {
+    return this._repository.addValidatorToBusiness(validatorId);
+  }
 }

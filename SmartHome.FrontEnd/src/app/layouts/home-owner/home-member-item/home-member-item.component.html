@@ -1,4 +1,7 @@
 <div *ngIf="homeMember" class="home-member-item">
     <p>Name: {{ homeMember.name }}</p>
+    <p>Permissions: {{ homeMember.homePermissions }}</p>
   </div>
+
+  <app-home-permissions-dropdown />
 

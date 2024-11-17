@@ -10,4 +10,5 @@ public interface IHomeMemberLogic
 {
     void AddHomePermissionsToHomeMember(Guid guid, List<HomePermission> homePermissions);
     void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions);
+    List<HomePermission> GetAllHomePermissions();
 }
