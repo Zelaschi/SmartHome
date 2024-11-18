@@ -67,14 +67,9 @@ public sealed class BusinessesController : ControllerBase
         return Ok(response);
     }
 
-    public class ValidatorId
-    {
-        public Guid Id { get; set; }
-    }
-
     [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
     [HttpPatch("validators")]
-    public IActionResult AddValidatorToBusiness([FromBody] ValidatorId validatorId)
+    public IActionResult AddValidatorToBusiness([FromBody] ValidatorIdRequestModel validatorId)
     {
         var user = HttpContext.Items[UserStatic.User] as User;
 

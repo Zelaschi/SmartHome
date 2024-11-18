@@ -406,7 +406,9 @@ public class BusinessesControllerTest
         businessesLogicMock.Setup(b => b.AddValidatorToBusiness(user, validatorId))
             .Returns(updatedBusiness);
 
-        var result = businessesController.AddValidatorToBusiness(validatorId) as OkObjectResult;
+        var validator = new ValidatorIdRequestModel { Id = validatorId };
+
+        var result = businessesController.AddValidatorToBusiness(validator) as OkObjectResult;
 
         Assert.IsNotNull(result);
         Assert.AreEqual(200, result.StatusCode);
@@ -433,7 +435,9 @@ public class BusinessesControllerTest
             ControllerContext = controllerContext
         };
 
-        var result = businessesController.AddValidatorToBusiness(validatorId) as UnauthorizedObjectResult;
+        var validator = new ValidatorIdRequestModel { Id = validatorId };
+
+        var result = businessesController.AddValidatorToBusiness(validator) as UnauthorizedObjectResult;
 
         Assert.IsNotNull(result);
         Assert.AreEqual(401, result.StatusCode);

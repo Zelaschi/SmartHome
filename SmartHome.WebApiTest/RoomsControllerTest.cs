@@ -31,7 +31,6 @@ public class RoomsControllerTest
     }
 
     [TestMethod]
-
     public void CreateRoomTest_OK()
     {
         var roomRequestModel = new RoomRequestModel()
@@ -115,7 +114,9 @@ public class RoomsControllerTest
 
         var expectedResult = new HomeDeviceResponseModel(homeDevice);
 
-        var result = roomController.AddDevicesToRoom(homeDeviceId, roomId);
+        var hdIdReq = new HomeDeviceIdRequestModel { Id = homeDeviceId };
+
+        var result = roomController.AddDevicesToRoom(hdIdReq, roomId);
 
         result.Should().BeOfType<CreatedAtActionResult>();
 
@@ -129,5 +130,53 @@ public class RoomsControllerTest
         returnedModel.HardwardId.Should().Be(expectedResult.HardwardId);
 
         roomLogicMock.Verify(r => r.AddDevicesToRoom(homeDeviceId, roomId), Times.Once());
+    }
+
+    [TestMethod]
+    public void GetAllRoomsFromHomeTest_Ok()
+    {
+        var owner = new User()
+        {
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "test@gmail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+
+        var homeId = Guid.NewGuid();
+
+        var home = new Home()
+        {
+            Id = homeId,
+            MainStreet = "Elm Street",
+            DoorNumber = "4567",
+            Latitude = "10",
+            Longitude = "20",
+            Owner = owner,
+            MaxMembers = 4,
+            Name = "Home Name"
+        };
+
+        var room1 = new Room() { Id = Guid.NewGuid(), Name = "Living Room", Home = home };
+        var room2 = new Room() { Id = Guid.NewGuid(), Name = "Kitchen", Home = home};
+        var roomsList = new List<Room> { room1, room2 };
+
+        roomLogicMock.Setup(r => r.GetAllRoomsFromHome(homeId)).Returns(roomsList);
+
+        var result = roomController.GetAllRoomsFromHome(homeId) as OkObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(200, result.StatusCode);
+
+        var response = result.Value as List<RoomResponseModel>;
+        Assert.IsNotNull(response);
+        Assert.AreEqual(2, response.Count);
+        Assert.AreEqual(room1.Name, response[0].Name);
+        Assert.AreEqual(room2.Name, response[1].Name);
+
+        roomLogicMock.Verify(r => r.GetAllRoomsFromHome(homeId), Times.Once);
     }
 }
