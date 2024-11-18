@@ -33,7 +33,6 @@ public sealed class RoomsController : ControllerBase
     }
 
     [HomeAuthorizationFilter(SeedDataConstants.ADD_DEVICES_TO_ROOM_PERMISSION_ID)]
-    [HomeAuthorizationFilter(SeedDataConstants.ADD_DEVICES_TO_ROOM_PERMISSION_ID)]
     [HttpPost("{roomId}/homeDevices")]
     public IActionResult AddDevicesToRoom([FromBody] HomeDeviceIdRequestModel homeDeviceId, [FromRoute] Guid roomId)
     {

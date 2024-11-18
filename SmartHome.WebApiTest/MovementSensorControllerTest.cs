@@ -42,7 +42,8 @@ public class MovementSensorControllerTest
             Name = "Sensor de movimiento",
             Description = "Sensor de movimiento",
             ModelNumber = "1234",
-            Photos = []
+            Photos = new List<string>(),
+            Type = "MovementSensor"
         };
 
         Device device = deviceRequestModel.ToEntity();
@@ -95,7 +96,8 @@ public class MovementSensorControllerTest
             Name = "Movement Sensor Test",
             Description = "A test movement sensor",
             ModelNumber = "MS-1234",
-            Photos = new List<Photo>()
+            Photos = new List<String>(),
+            Type = "MovementSensor"
         };
 
         var httpContext = new DefaultHttpContext(); // No user added to context

@@ -13,6 +13,7 @@ using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.BusinessLogic.Services;
 using SmartHome.WebApi.Controllers;
+using SmartHome.WebApi.WebModels.AddUserToHome.In;
 using SmartHome.WebApi.WebModels.DeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
@@ -151,6 +152,7 @@ public class HomeControllerTest
     {
         // ARRANGE
         var userId = Guid.NewGuid();
+        var addUserToHomeRequestModel = new AddUserToHomeRequestModel() { UserId = userId };
         var user = new User() { Id = userId, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
         var homeMember = new HomeMember(user) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
         var homeRequestModel = new CreateHomeRequestModel()
@@ -179,7 +181,7 @@ public class HomeControllerTest
 
         // ACT
         var expected = new NoContentResult();
-        var result = homeController.AddHomeMemberToHome(home.Id, userId) as NoContentResult;
+        var result = homeController.AddHomeMemberToHome(home.Id, addUserToHomeRequestModel) as NoContentResult;
 
         // ASSERT
         homeLogicMock.VerifyAll();
