@@ -17,6 +17,9 @@
   </div>
   <div class="button-section d-flex gap-1 mt-3">
     <div>
+      <button class="btn btn-outline-dark" (click)="AddHomeMembers()">Add Members</button>
+    </div>
+    <div>
       <button class="btn btn-outline-dark" (click)="GetHomeMembers()">Members</button>
     </div>
     <div>
@@ -53,6 +56,11 @@
   </div>
   <div *ngIf="showRooms">
     <app-room-list [homeId]="homeId ?? null"></app-room-list>
+  </div>
+  <div *ngIf="showAddMembers">
+    <app-home-add-member
+    [homeId]="homeId ?? null"
+    />
   </div>
   <div *ngIf="showHomeNameForm">
     <app-home-name-form 

@@ -11,6 +11,9 @@ using SmartHome.BusinessLogic.InitialSeedData;
 using Microsoft.Identity.Client;
 using SmartHome.BusinessLogic.Constants;
 using SmartHome.WebApi.WebModels.UpdateNameModels.In;
+using SmartHome.WebApi.WebModels.UserModels.Out;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using SmartHome.WebApi.WebModels.AddUserToHome.In;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -38,10 +41,18 @@ public sealed class HomesController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HomeAuthorizationFilter(SeedDataConstants.ADD_MEMBER_TO_HOME_HOMEPERMISSION_ID)]
-    [HttpPost("{homeId}/members")]
-    public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, [FromBody] Guid userId)
+    [HttpGet("{homeId}/unRelatedHomeOwners")]
+    public IActionResult UnRelatedHomeOwners([FromRoute] Guid homeId)
     {
-        _homeLogic.AddHomeMemberToHome(homeId, userId);
+        return Ok(_homeLogic.UnRelatedHomeOwners(homeId).Select(user => new UserResponseModel(user)).ToList());
+    }
+
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HomeAuthorizationFilter(SeedDataConstants.ADD_MEMBER_TO_HOME_HOMEPERMISSION_ID)]
+    [HttpPost("{homeId}/members")]
+    public IActionResult AddHomeMemberToHome([FromRoute] Guid homeId, [FromBody] AddUserToHomeRequestModel userId)
+    {
+        _homeLogic.AddHomeMemberToHome(homeId, userId.UserId);
         return NoContent();
     }
 

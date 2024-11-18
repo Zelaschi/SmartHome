@@ -1,0 +1,15 @@
+<div class="mt-4 users-list d-flex flex-column container justify-content-center align-items-center">
+    <h3>Users</h3>
+    <div *ngIf="loading" class="loader">
+      Loading home devices...
+    </div>
+  </div>
+  <div class="row">
+    <div *ngFor="let user of status.users" class="device-item col-md-4 mb-4">
+        <app-home-add-member-item
+        [user]="user"
+        (userAdded) = "onUserAdded($event)"
+        ></app-home-add-member-item>
+      </div>
+  </div>
+  

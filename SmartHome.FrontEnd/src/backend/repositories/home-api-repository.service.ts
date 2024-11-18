@@ -7,6 +7,7 @@ import environmentLocal from '../../environments/environment.local';
 import { Observable } from 'rxjs';
 import HomeMemberResponseModel from '../services/Home/models/HomeMemberResponseModel';
 import HomeDeviceResponseModel from '../services/Home/models/HomeDeviceResponseModel';
+import { User } from '../services/User/models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +62,20 @@ export class HomeApiRepositoryService extends ApiRepository{
   ) {
     const body = { newName }
     return this.patchById(`${homeDeviceId}/homeDeviceName`, body);
+  }
+
+  public UnRelatedHomeOwners(
+    homeId: string,
+  ): Observable<Array<User>>
+  {
+    return this.get<Array<User>>(`${homeId}/unRelatedHomeOwners`);
+  }
+
+  public AddHomeMemberToHome(
+    homeId: string,
+    userId: string,
+  ): Observable<void>
+  {
+    return this.post<void>({ userId }, `${homeId}/members`);
   }
 }

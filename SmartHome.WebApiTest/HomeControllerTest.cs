@@ -20,6 +20,7 @@ using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
 using SmartHome.WebApi.WebModels.RoomModels.Out;
 using SmartHome.WebApi.WebModels.UpdateNameModels.In;
+using SmartHome.WebApi.WebModels.UserModels.Out;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using Device = SmartHome.BusinessLogic.Domain.Device;
 using User = SmartHome.BusinessLogic.Domain.User;
@@ -401,5 +402,36 @@ public class HomeControllerTest
         var resultValue = result.Value as List<HomeDeviceResponseModel>;
         Assert.IsNotNull(resultValue);
         Assert.AreEqual(1, resultValue.Count);
+    }
+
+    [TestMethod]
+    public void UnRelatedHomeOwnersTest_Ok()
+    {
+        // ARRANGE
+        var user1Id = Guid.NewGuid();
+        var user2Id = Guid.NewGuid();
+        var user1 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var user2 = new User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
+        var homeMember1 = new HomeMember(user1) { HomeMemberId = Guid.NewGuid(), HomePermissions = new List<HomePermission>(), Notifications = new List<Notification>() };
+        var homeMembers = new List<HomeMember>() { homeMember1 };
+        var expectedReturnedUsers = new List<User>() { user2 };
+        var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1, Name = "Home Name" };
+
+        homeLogicMock.Setup(h => h.UnRelatedHomeOwners(home.Id)).Returns(expectedReturnedUsers);
+
+        var expected = new OkObjectResult(new List<UserResponseModel>
+        {
+            new UserResponseModel(expectedReturnedUsers.First()),
+        });
+
+        List<UserResponseModel> expectedObject = (expected.Value as List<UserResponseModel>)!;
+
+        // ACT
+        var result = homeController.UnRelatedHomeOwners(home.Id) as OkObjectResult;
+        var objectResult = (result.Value as List<UserResponseModel>)!;
+
+        // ASSERT
+        homeLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Id.Equals(objectResult.First().Id));
     }
 }

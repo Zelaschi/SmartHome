@@ -672,4 +672,32 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     {
         return _homePermissionRepository.FindAll().ToList();
     }
+
+    public IEnumerable<User> UnRelatedHomeOwners(Guid homeId)
+    {
+        var home = FindHomeById(homeId);
+        if (home == null)
+        {
+            throw new HomeException("Home was not found");
+        }
+
+        var homeOwners = _userRepository.FindAll()
+            .Where(user => user.Role != null &&
+                           (user.Role.Name == "BusinessOwnerHomeOwner" ||
+                            user.Role.Name == "AdminHomeOwner" ||
+                            user.Role.Name == "HomeOwner"))
+            .ToList();
+        if (home.Members == null)
+        {
+            throw new HomeException("Home members is null");
+        }
+
+        var homeUsers = home.Members
+            .Select(member => member.User);
+        var usersNotInHome = homeOwners
+            .Where(owner => !homeUsers.Any(user => user.Id == owner.Id))
+            .ToList();
+
+        return usersNotInHome;
+    }
 }

@@ -17,6 +17,7 @@ export class IndividualHomeComponent implements OnInit {
   showRoomForm: boolean = false;
   showRooms: boolean = false;
   showHomeNameForm: boolean = false;
+  showAddMembers: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -108,6 +109,15 @@ export class IndividualHomeComponent implements OnInit {
     }
   }
   
+  AddHomeMembers(): void {
+    if (this.showAddMembers) {
+      this.showAddMembers = false;
+    } else {
+      this.hideAllSections();
+      this.showAddMembers = true;
+    }
+  }
+
   onNameUpdated(newName: string): void {
     this.showHomeNameForm = false;
     if (this.home) {

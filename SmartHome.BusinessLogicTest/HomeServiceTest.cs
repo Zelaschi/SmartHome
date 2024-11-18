@@ -2217,4 +2217,32 @@ public class HomeServiceTest
 
         Assert.AreEqual(0, result.Count());
     }
+
+    [TestMethod]
+    public void UnRelatedHomeOwnersTest_Ok()
+    {
+        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
+        var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
+        var homeOwner = new HomeMember(owner);
+        var homeMember1 = new HomeMember(member1);
+
+        var users = new List<User> {  member2 , member1};
+        if (owner != null)
+        {
+            users.Add(owner);
+        }
+
+        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        home.Members.Add(homeOwner);
+        home.Members.Add(homeMember1);
+
+        homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
+        userRepositoryMock.Setup(x => x.FindAll()).Returns(users);
+
+        IEnumerable<User> returnedUsers = homeService.UnRelatedHomeOwners(home.Id);
+        homeRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(returnedUsers.First(), users.First());
+        Assert.IsTrue(returnedUsers.Count() == 1 );
+    }
 }
