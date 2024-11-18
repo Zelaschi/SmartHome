@@ -6,4 +6,5 @@ export default interface HomeMemberResponseModel {
     name: string;
     isOn?: boolean;
     open?: boolean;
+    photos: string[];
   }

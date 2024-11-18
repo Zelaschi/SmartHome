@@ -48,8 +48,4 @@ export class HomesListComponent {
       }
     });
   }
-
-  navigateToCreateHome(): void {
-    this._router.navigate(['/homeOwners/createHome']); 
-  }
 }

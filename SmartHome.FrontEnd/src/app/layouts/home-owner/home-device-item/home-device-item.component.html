@@ -4,6 +4,23 @@
     <p>Online: {{ homeDevice.online }}</p>
     <p *ngIf="homeDevice.isOn !== null">Is on?: {{ homeDevice.isOn }}</p>
     <p *ngIf="homeDevice.open !== null">Is open?: {{ homeDevice.open }}</p>
+    
+    <div id="devicePhotosCarousel" class="carousel slide" *ngIf="homeDevice?.photos && homeDevice.photos.length > 0">
+      <div class="carousel-inner">
+        <div class="carousel-item" *ngFor="let photo of homeDevice.photos; let i = index" [class.active]="i === 0">
+          <img [src]="photo" class="d-block w-100" [alt]="'Device photo ' + (i+1)">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#devicePhotosCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#devicePhotosCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
     <button (click) = "ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
     <button (click) = "CreateNotification(homeDevice.hardwardId)">Create notification</button>
     <ng-content></ng-content>

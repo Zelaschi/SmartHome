@@ -67,7 +67,7 @@ public sealed class HomeDeviceRepository : IGenericRepository<HomeDevice>
     {
         try
         {
-            return _context.HomeDevices.Include(homeDevice => homeDevice.Device).FirstOrDefault(filter);
+            return _context.HomeDevices.Include(homeDevice => homeDevice.Device).ThenInclude(x => x.Photos).FirstOrDefault(filter);
         }
         catch (SqlException)
         {
