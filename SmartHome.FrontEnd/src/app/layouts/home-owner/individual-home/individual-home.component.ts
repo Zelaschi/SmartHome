@@ -32,17 +32,38 @@ export class IndividualHomeComponent implements OnInit {
     this.homeId = this.route.snapshot.paramMap.get('id');
   }
 
+  hideAllSections(): void {
+    this.showMembers = false;
+    this.showDeviceList = false;
+    this.isAddingDevice = false;
+    this.showHomeDevicesList = false;
+    this.showRoomForm = false;
+    this.showRooms = false;
+    this.showHomeNameForm = false;
+  }
+
   GetHomeMembers(): void {
     if (this.homeId) {
-      this.showMembers = !this.showMembers;
+      if (this.showMembers) {
+        this.showMembers = false;
+      } else {
+        this.hideAllSections();
+        this.showMembers = true;
+      }
     } else {
       console.error('ID del hogar no disponible');
     }
   }
 
   AddDeviceToHome(): void {
-    this.showDeviceList = !this.showDeviceList;
-    this.isAddingDevice = !this.isAddingDevice;
+    if (this.showDeviceList) {
+      this.showDeviceList = false;
+      this.isAddingDevice = false;
+    } else {
+      this.hideAllSections();
+      this.showDeviceList = true;
+      this.isAddingDevice = true;
+    }
   }
 
   onDeviceAdded(): void {
@@ -52,19 +73,39 @@ export class IndividualHomeComponent implements OnInit {
   }
 
   GetHomeDevices(): void {
-    this.showHomeDevicesList = !this.showHomeDevicesList;
+    if (this.showHomeDevicesList) {
+      this.showHomeDevicesList = false;
+    } else {
+      this.hideAllSections();
+      this.showHomeDevicesList = true;
+    }
   }
 
   CreateRoom(): void {
-    this.showRoomForm = !this.showRoomForm;
+    if (this.showRoomForm) {
+      this.showRoomForm = false;
+    } else {
+      this.hideAllSections();
+      this.showRoomForm = true;
+    }
   }
 
   GetRooms(): void {
-    this.showRooms = !this.showRooms;
+    if (this.showRooms) {
+      this.showRooms = false;
+    } else {
+      this.hideAllSections();
+      this.showRooms = true;
+    }
   }
 
   UpdateHomeName(): void {
-    this.showHomeNameForm = !this.showHomeNameForm;
+    if (this.showHomeNameForm) {
+      this.showHomeNameForm = false;
+    } else {
+      this.hideAllSections();
+      this.showHomeNameForm = true;
+    }
   }
   
   onNameUpdated(newName: string): void {

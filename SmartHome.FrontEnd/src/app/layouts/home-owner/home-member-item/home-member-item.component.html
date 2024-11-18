@@ -1,6 +1,13 @@
 <div *ngIf="homeMember" class="home-member-item">
     <p>Name: {{ homeMember.name }}</p>
-    <p>Permissions: {{ homeMember.homePermissions }}</p>
+    <div class="permissions-list">
+      <p>Permissions:</p>
+      <ul>
+        <li *ngFor="let permission of homeMember.homePermissions">
+          {{ permission }}
+        </li>
+      </ul>
+    </div>
   </div>
   <div>
     <button class="btn btn-outline-dark" (click) = "UpdateHomePermissions()">Update permissions</button>
@@ -12,5 +19,4 @@
       (valueChange)="onPermissionsChange($event)">
     </app-home-permissions-checkbox>
   </div>
-  
 

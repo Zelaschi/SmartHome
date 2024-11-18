@@ -3,7 +3,8 @@
     <h3 class="card-title">{{ user.name }}</h3>
     <p class="card-text">Surname: {{ user.surname }}</p>
     <p class="card-text">Email {{ user.email }}</p>
-    <p class="card-text">Creation date: {{ user.creationDate }}</p>
+    <p class="card-text">Role: {{ user.role }}</p>
+    <p class="card-text">Creation date: {{ user.creationDate | date:'dd/MM/yyyy' }}</p>
     <button *ngIf="user.role == 'Admin'" (click)="deleteAdmin(user.id)">Delete</button>
   </div>
 
