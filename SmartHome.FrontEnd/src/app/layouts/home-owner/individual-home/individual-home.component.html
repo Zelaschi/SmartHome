@@ -1,6 +1,6 @@
-<h1>Home Details:</h1>
-
-<div class="info-section">
+<h1 class="text-center my-4 text-black">Home Details:</h1>
+<div class="d-flex flex-column justify-content-center align-items-center ">
+  <div class="info-section d-flex flex-row gap-4">
     <div class="info-row">
         <label>Name:</label>
         <span>{{ home?.name }}</span>
@@ -15,13 +15,27 @@
       <span>{{ home?.doorNumber }}</span>
     </div>
   </div>
+  <div class="button-section d-flex gap-1 mt-3">
+    <div>
+      <button class="btn btn-outline-dark" (click)="GetHomeMembers()">Members</button>
+    </div>
+    <div>
+      <button class="btn btn-outline-dark" (click) = "AddDeviceToHome()">Add device</button>
+    </div>
+    <div>
+      <button class="btn btn-outline-dark" (click) = "GetHomeDevices()">Home devices</button>
+    </div>
+    <div>
+      <button class="btn btn-outline-dark" (click) = "CreateRoom()">Create room</button>
+    </div>
+    <div>
+      <button class="btn btn-outline-dark" (click) = "GetRooms()">Show Rooms</button>
+    </div>
+    <div>
+      <button class="btn btn-outline-dark" (click) = "UpdateHomeName()">Update home name</button>
+    </div>
+  </div>
 
-<button (click)="GetHomeMembers()">Members</button>
-<button (click) = "AddDeviceToHome()">Add device</button>
-<button (click) = "GetHomeDevices()">Home devices</button>
-<button (click) = "CreateRoom()">Create room</button>
-<button (click) = "GetRooms()">Show Rooms</button>
-<button (click) = "UpdateHomeName()">Update home name</button>
 
 <div *ngIf="showMembers && homeId">
     <app-home-members-list [homeId]="homeId"></app-home-members-list>
@@ -46,3 +60,6 @@
       (nameUpdated)="onNameUpdated($event)">
     </app-home-name-form>
   </div>
+
+
+</div>

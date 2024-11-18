@@ -26,7 +26,7 @@ const routes: Routes = [
     component: BusinessListComponent
   },
   {
-    path: 'registerBusinessOwner',
+    path: 'registerBusinessOwners',
     canActivate: [authorizationGuard],
     data: { requiredSystemPermission: 'Create business owner account' },
     component: BusinessOwnerFormComponent

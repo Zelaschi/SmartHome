@@ -15,6 +15,7 @@ import { BusinessFormComponent } from './business-form/business-form.component';
 import { ValidatorsDropDownComponent } from './validators-drop-down/validators-drop-down.component';
 import { DropdownComponent } from '../../components/dropdown/dropdown.component';
 import { ValidatorFormComponent } from './validator-form/validator-form.component';
+import { ButtonComponent } from '../../components/button/button.component';
 
 
 
@@ -26,6 +27,7 @@ import { ValidatorFormComponent } from './validator-form/validator-form.componen
     ValidatorFormComponent,
   ],
   imports: [
+    ButtonComponent,
     CommonModule,
     BusinessOwnerRoutingModule,
     FormComponent,

@@ -1,12 +1,25 @@
-<p>Select new validator</p>
+<div>
+  <a
+  class="btn btn-outline-dark m-1 mt-3 ms-3" 
+  routerLink="/businessOwners/registerBusiness"
+  routerLinkActive="active"
+  >Back to register business</a>
+</div> 
 
-<app-form [form]="validatorForm" (onSubmit)="onSubmit()">
-<app-validators-drop-down
-    [value]="selectedValidator"
-    (valueChange)="onValidatorChange($event)"
-/>
 
-<div class="d-grid gap-2">
-    <app-form-button submit title="Confirm validator" class="btn btn-primary btn-block text-white" style="background-color: #2980b9; border: none;"></app-form-button>
-  </div>
-</app-form>
+<div class="container d-flex justify-content-center">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
+    <h5>Select new validator</h5>
+
+    <app-form [form]="validatorForm" (onSubmit)="onSubmit()">
+    <app-validators-drop-down
+        [value]="selectedValidator"
+        (valueChange)="onValidatorChange($event)"
+    />
+
+    <div class="d-grid gap-2">
+        <app-form-button submit title="Confirm validator" ></app-form-button>
+      </div>
+    </app-form>
+</div>  
+</div>

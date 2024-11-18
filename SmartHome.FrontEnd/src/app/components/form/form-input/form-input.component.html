@@ -2,5 +2,6 @@
   [type]="type"
   [label]="label"
   [placeholder]="placeholder"
-  [(value)]="value" />
-<small *ngIf="error">{{ error }}</small>
+  [(value)]="value"
+  class="mw-100 bg-white" />
+<small *ngIf="error" class="text-danger">{{ error }}</small>

@@ -22,19 +22,18 @@ const routes: Routes = [
     component: NotificationListComponent
   },
   {
-    path: 'addRoom',
+    path: 'createHome',
     canActivate: [authorizationGuard],
     data: { requiredSystemPermission: 'Home related permission' },
-    component: RoomFormComponent
-  },
-  {
-    path: 'createHome',
     component: HomeFormComponent
   },
   {
     path: 'individualHome/:id',
+    canActivate: [authorizationGuard],
+    data: { requiredSystemPermission: 'Home related permission' },
     component: IndividualHomeComponent
-  }
+  },
+
 ];
 
 @NgModule({

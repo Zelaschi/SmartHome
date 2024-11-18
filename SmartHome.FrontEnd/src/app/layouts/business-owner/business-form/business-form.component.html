@@ -1,53 +1,71 @@
+<div>
+  <a
+  class="btn btn-outline-dark m-1 mt-3 ms-3" 
+  routerLink="/businessOwners/updateValidator"
+  routerLinkActive="active"
+  >Select Validator</a>
+</div> 
+
 <h1 class="text-center my-4 text-black">Register Business</h1>
 
 <div class="container d-flex justify-content-center">
-  <div class="card p-4 shadow" style="width: 100%; max-width: 400px; background-color: #2c3e50; border: none;">
+  <div class="card p-4 shadow rounded" style="width: 100%; max-width: 400px; background-color: #ffffffe3; border: none;">
     <app-form [form]="businessForm" (onSubmit)="onSubmit($event)">
       <!-- Business Name input -->
-      <div class="form-group mb-3">
-        <label for="name" class="form-label text-white">Name</label>
+      <div class="form-group mb-3 d-flex flex-column">
+        <label for="name" class="form-label ">Name</label>
         <app-form-input
-            type="text"
-            placeholder="Business Name"
-            [name]="formField.name.name"
-            [form]="businessForm"
-            [formField]="formField"
-            class="form-control mb-3" />
-      </div>
-
-      <!-- Rut input -->
-      <div class="form-group mb-3">
-        <label for="rut" class="form-label text-white">RUT</label>
-        <app-form-input
-            type="text"
-            placeholder="Business's RUT"
-            [name]="formField.rut.name"
-            [form]="businessForm"
-            [formField]="formField"
-            class="form-control border-secondary">
+          type="text"
+          placeholder="Business Name"
+          [name]="formField.name.name"
+          [form]="businessForm"
+          [formField]="formField"
+          >
         </app-form-input>
       </div>
 
-      <!-- Img input -->
-      <div class="form-group mb-3">
-        <label for="logo" class="form-label text-white">LOGO</label>
+      <!-- RUT input -->
+      <div class="form-group mb-3 d-flex flex-column">
+        <label for="rut" class="form-label ">RUT</label>
+        <app-form-input
+          type="text"
+          placeholder="Business's RUT"
+          [name]="formField.rut.name"
+          [form]="businessForm"
+          [formField]="formField"
+          >
+        </app-form-input>
+      </div>
+
+      <!-- LOGO input -->
+      <div class="form-group mb-3 d-flex flex-column">
+        <label for="logo" class="form-label">LOGO</label>
         <app-form-input
           type="text"
           placeholder="Business's LOGO url"
           [name]="formField.logo.name"
           [form]="businessForm"
           [formField]="formField"
-          class="form-control bg-dark text-white border-secondary">
+          >
         </app-form-input>
       </div>
 
-      <app-validators-drop-down 
-        [value]="selectedValidator"
-        (valueChange)="onValidatorChange($event)"
-      />
+      <!-- Dropdown for validator -->
+      <div class="form-group mb-3 d-flex flex-column">
+        <label for="validator" class="form-label">Select Validator</label>
+        <app-validators-drop-down
+          [value]="selectedValidator"
+          (valueChange)="onValidatorChange($event)"
+          >
+        </app-validators-drop-down>
+      </div>
 
-      <div class="d-grid gap-2">
-        <app-form-button submit title="Register business" class="btn btn-primary btn-block text-white" style="background-color: #2980b9; border: none;"></app-form-button>
+      <!-- Submit Button -->
+      <div class="d-grid">
+        <app-form-button 
+          submit 
+          title="Register business">
+        </app-form-button>
       </div>
     </app-form>
   </div>

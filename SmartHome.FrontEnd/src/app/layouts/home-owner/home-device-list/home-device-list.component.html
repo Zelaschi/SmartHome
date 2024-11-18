@@ -1,5 +1,5 @@
-<div class="home-devices-list">
-    <h5>Home Devices</h5>
+<div class="mt-4 home-devices-list d-flex flex-column container justify-content-center align-items-center">
+    <h3>Home Devices</h3>
     <div *ngIf="loading" class="loader">
       Loading home devices...
     </div>
@@ -9,11 +9,10 @@
           placeholder="Filter by room"
           [name]="formField.room.name"
           [form]="roomFilterForm"
-          [formField]="formField"
-          class="form-control bg-dark text-white border-secondary">
+          [formField]="formField">
       </app-form-input>
       <div class="d-grid gap-2">
-        <app-form-button title="Apply Filters" submit class="btn btn-primary btn-block text-white" style="background-color: #2980b9; border: none;"></app-form-button>
+        <app-form-button title="Apply Filters" submit ></app-form-button>
       </div>  
     </app-filter>
   </div>

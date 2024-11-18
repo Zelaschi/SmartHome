@@ -33,6 +33,7 @@ export class NavbarComponent  {
     this.roleService.addHomeOwnerPermissionsToBusinessOwner().subscribe({
       next: (response) => {
         console.log(response);
+        this.authService.logout();
       },
       error: (error) => {
         console.log(error);
@@ -43,6 +44,7 @@ export class NavbarComponent  {
     this.roleService.addHomeOwnerPermissionsToAdmin().subscribe({
       next: (response) => {
         console.log(response);
+        this.authService.logout();
       },
       error: (error) => {
         console.log(error);

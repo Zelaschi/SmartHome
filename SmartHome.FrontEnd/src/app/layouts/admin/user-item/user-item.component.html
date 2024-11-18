@@ -1,7 +1,10 @@
-<div *ngIf="user" class="user-item">
-    <h3>{{ user.name }}</h3>
-    <p>Surname: {{ user.surname }}</p>
-    <p>Email {{ user.email }}</p>
-    <p>Creation date: {{ user.creationDate }}</p>
+<div *ngIf="user" class="card device-item">
+  <div class="card-body">
+    <h3 class="card-title">{{ user.name }}</h3>
+    <p class="card-text">Surname: {{ user.surname }}</p>
+    <p class="card-text">Email {{ user.email }}</p>
+    <p class="card-text">Creation date: {{ user.creationDate }}</p>
     <button *ngIf="user.role == 'Admin'" (click)="deleteAdmin(user.id)">Delete</button>
   </div>
+
+</div>

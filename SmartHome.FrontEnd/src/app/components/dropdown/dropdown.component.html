@@ -1,5 +1,5 @@
 <div *ngIf="options && options.length > 0; else noOptions">
-    <select [value]="value" (change)="onChange($event)">
+    <select [value]="value" (change)="onChange($event)" class="form-select">
       <option *ngIf="placeholder" value="null" [selected]="value === null">
         {{ placeholder }}
       </option>

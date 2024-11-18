@@ -21,11 +21,9 @@ const routes: Routes = [
     component: BusinessFormComponent
   },
   {
-    path: 'validators',
-    component: ValidatorsDropDownComponent
-  },
-  {
     path: 'updateValidator',
+    canActivate: [authorizationGuard],
+    data: { requiredSystemPermission: 'Create business' },
     component: ValidatorFormComponent
   }
 ];

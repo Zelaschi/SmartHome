@@ -1,6 +1,8 @@
-<div *ngIf="business" class="business-item">
-    <h3>{{ business.name }}</h3>
-    <p>Owner: {{ business.ownerName }}</p>
-    <p>Owner email: {{ business.email }}</p>
-    <p>RUT: {{ business.rut }}</p>
+<div *ngIf="business" class="card business-item">
+    <div class="card-body">
+      <h3 class="card-title" >{{ business.name }}</h3>
+      <p  class="card-text">Owner: {{ business.ownerName }}</p>
+      <p  class="card-text">Owner email: {{ business.email }}</p>
+      <p  class="card-text">RUT: {{ business.rut }}</p>
+    </div>
   </div>

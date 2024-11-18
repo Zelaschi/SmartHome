@@ -1,7 +1,9 @@
-<div *ngIf="home" class="home-item">
-    <p>MainStreet: {{ home.mainStreet }}</p>
-    <p>DoorNumber: {{ home.doorNumber }}</p>
-    <p>Name: {{ home.name }}</p>
-    <button (click) = "HomeInfo(home.id)">Home details</button>
+<div *ngIf="home" class="home-item card">
+    <div class="card-body">
+      <p class="card-title">Name: {{ home.name }}</p>
+      <p class="card-text">MainStreet: {{ home.mainStreet }}</p>
+      <p class="card-text">DoorNumber: {{ home.doorNumber }}</p>
+      <button class="btn btn-dark"(click) = "HomeInfo(home.id)">Home details</button>
+    </div>
   </div>
 
