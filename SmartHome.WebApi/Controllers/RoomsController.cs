@@ -32,16 +32,11 @@ public sealed class RoomsController : ControllerBase
         return CreatedAtAction("CreateRoom", new { createResponse.Id }, createResponse);
     }
 
-    public class HomeDeviceIdRequest
-    {
-        public Guid HomeDeviceId { get; set; }
-    }
-
     [HomeAuthorizationFilter(SeedDataConstants.ADD_DEVICES_TO_ROOM_PERMISSION_ID)]
     [HttpPost("{roomId}/homeDevices")]
-    public IActionResult AddDevicesToRoom([FromBody] HomeDeviceIdRequest homeDeviceId, [FromRoute] Guid roomId)
+    public IActionResult AddDevicesToRoom([FromBody] HomeDeviceIdRequestModel homeDeviceId, [FromRoute] Guid roomId)
     {
-        var createResponse = new HomeDeviceResponseModel(_roomLogic.AddDevicesToRoom(homeDeviceId.HomeDeviceId, roomId));
+        var createResponse = new HomeDeviceResponseModel(_roomLogic.AddDevicesToRoom(homeDeviceId.Id, roomId));
         return CreatedAtAction("RoomAddedToHome", new { createResponse.HardwardId }, createResponse);
     }
 
