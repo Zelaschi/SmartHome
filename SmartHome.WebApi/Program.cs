@@ -47,6 +47,7 @@ services.AddScoped<IHomeLogic, HomeService>();
 services.AddScoped<IHomePermissionLogic, HomeService>();
 services.AddScoped<IHomeMemberLogic, HomeService>();
 services.AddScoped<INotificationLogic, HomeService>();
+services.AddScoped<IRoomLogic, HomeService>();
 
 services.AddScoped<IValidatorLogic, ValidatorService>();
 services.AddScoped<ValidatorService>();

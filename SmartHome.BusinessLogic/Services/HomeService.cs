@@ -625,7 +625,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new RoomException("Room already exists");
         }
 
-        room.Home.Id = homeId;
+        room.Home = home;
         home.Rooms.Add(room);
         _homeRepository.Update(home);
         return room;

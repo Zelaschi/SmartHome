@@ -118,8 +118,14 @@ public sealed class BusinessService : IBusinessesLogic
             throw new BusinessException("Business already has a validator");
         }
 
-        var validatorName = _validatorRespository.Find(v => v.Id == validatorId).Name;
-        var validator = _validatorService.GetImplementation(validatorName);
+        var repositoryValidator = _validatorRespository.Find(v => v.Id == validatorId);
+
+        if (repositoryValidator == null)
+        {
+            throw new ValidatorException("Validator was not found in database");
+        }
+
+        var validator = _validatorService.GetImplementation(repositoryValidator.Name);
 
         if (validator == null)
         {
