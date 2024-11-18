@@ -36,11 +36,11 @@
 
         <!-- Elemento alineado a la derecha -->
         <div class="d-flex">
-            <div *ngIf="userLogged.systemPermissions.includes('List all accounts') && !userLogged.systemPermissions.includes('List all users homes')">
-                <button (click)="addHomeOwnerPermissionsToAdmin()" >Add home owner permissions</button>
+            <div class= "me-3" *ngIf="userLogged.systemPermissions.includes('List all accounts') && !userLogged.systemPermissions.includes('List all users homes')">
+                <button class ="btn btn-outline-secondary w-100 mr-3" (click)="addHomeOwnerPermissionsToAdmin()" >Add home owner permissions</button>
             </div>
-            <div *ngIf="userLogged.systemPermissions.includes('Create device') && !userLogged.systemPermissions.includes('List all users homes')">
-                <button (click)="addHomeOwnerPermissionsToBusinessOwner()" >Add home owner permissions</button>
+            <div class= "me-3" *ngIf="userLogged.systemPermissions.includes('Create device') && !userLogged.systemPermissions.includes('List all users homes')">
+                <button class ="btn btn-outline-secondary w-100 " (click)="addHomeOwnerPermissionsToBusinessOwner()" >Add home owner permissions</button>
             </div>
             <button (click)="logOut()"  class="nav-link text-danger" >LogOut</button>
         </div>

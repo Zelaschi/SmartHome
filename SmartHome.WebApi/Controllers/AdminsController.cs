@@ -37,8 +37,8 @@ public sealed class AdminsController : ControllerBase
         return Ok("The admin was deleted successfully");
     }
 
-    [HttpPatch("/homeOwnerPermissions")]
-
+    [AuthorizationFilter(SeedDataConstants.CREATE_OR_DELETE_ADMIN_ACCOUNT_PERMISSION_ID)]
+    [HttpPatch("homeOwnerPermissions")]
     public IActionResult UpdateAdminRole()
     {
         var user = HttpContext.Items[UserStatic.User] as User;
