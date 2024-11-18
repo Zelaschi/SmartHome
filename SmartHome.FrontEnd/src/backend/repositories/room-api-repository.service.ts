@@ -27,4 +27,13 @@ export class RoomApiRepositoryService extends ApiRepository{
   public getRooms(homeId: string): Observable<Array<RoomCreatedModel>> {
     return this.get<Array<RoomCreatedModel>>(`${homeId}`);
   }
+
+  public addDeviceToRoom(
+    roomId: string, 
+    HomeDeviceId: string
+  ): Observable<void> {
+    console.log("homeDeviceId", HomeDeviceId);
+    console.log("roomId", roomId);
+    return this.post<void>({ HomeDeviceId }, `${roomId}/homeDevices`);
+  }
 }

@@ -27,7 +27,6 @@ export class HomeItemComponent {
       this._router.navigate(['/homOwners/individualHome', homeId])
         .catch(error => {
           console.error('Error de navegación:', error);
-          // Intenta un método alternativo si el primero falla
           this._router.navigateByUrl(`/homeOwners/individualHome/${homeId}`)
             .catch(err => console.error('Error en navegación alternativa:', err));
         });

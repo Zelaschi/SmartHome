@@ -4,6 +4,6 @@
       Loading home rooms...
     </div>
     <div *ngFor="let room of status.rooms" class="home-room-item">
-      <app-room-item [room]="room"></app-room-item>
+      <app-room-item [room]="room" [homeId]="homeId"></app-room-item>
     </div>
   </div>

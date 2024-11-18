@@ -6,6 +6,7 @@
     <p *ngIf="homeDevice.open !== null">Is open?: {{ homeDevice.open }}</p>
     <button (click) = "ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
     <button (click) = "CreateNotification(homeDevice.hardwardId)">Create notification</button>
+    <ng-content></ng-content>
   </div>
   <div *ngIf="showHomeDeviceNameForm">
     <app-home-device-name
@@ -13,3 +14,5 @@
       (homeDeviceNameUpdated)="onHomeDeviceNameUpdated($event)">
     </app-home-device-name>
   </div>
+  <button *ngIf="isAddingToRoom" (click)="addDeviceToRoom()" class="btn btn-primary">Add to Room</button>
+

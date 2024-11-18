@@ -21,4 +21,11 @@ export class RoomService {
   public getRooms(homeId: string): Observable<Array<RoomCreatedModel>> {
     return this._repository.getRooms(homeId);
   }
+
+  public addDeviceToRoom(
+    roomId: string, 
+    homeDeviceId: string
+  ): Observable<void> {
+    return this._repository.addDeviceToRoom(roomId, homeDeviceId);
+  }
 }

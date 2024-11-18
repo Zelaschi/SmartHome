@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HomeService } from '../../../../backend/services/Home/home.service';
 import HomeDeviceStatus from '../home-members-list/models/HomeDeviceStatus';
 import HomeDeviceFilters from './models/homeDeviceFilters';
 import { FormControl, FormGroup } from '@angular/forms';
+import { RoomService } from '../../../../backend/services/Room/room.service';
 
 @Component({
   selector: 'app-home-device-list',
@@ -12,6 +13,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class HomeDeviceListComponent {
   @Input() homeId: string | null = null;
+  @Input() roomId: string | null = null;
+  @Input() isAddingDeviceToRoom: boolean = false;
   private _homeDevicesSubscription: Subscription | null = null;
   loading: boolean = false;
 
@@ -19,7 +22,10 @@ export class HomeDeviceListComponent {
     room: null,
   }
 
-  constructor(private readonly _homeService: HomeService) {}
+  constructor(
+    private readonly _homeService: HomeService,
+    private readonly _roomService: RoomService
+  ) {}
 
   status : HomeDeviceStatus = {
     loading: true,
@@ -70,6 +76,16 @@ export class HomeDeviceListComponent {
     this.filters.room = values.room;
     if (this.homeId) {
       this.loadHomeDevices(this.homeId);
+    }
+  }
+
+  onHomeDeviceAdded(homeDeviceId: string): void {
+    if (this.roomId) {
+      this._roomService.addDeviceToRoom(this.roomId, homeDeviceId).subscribe({
+        next: () => {
+          console.log('Device added to room successfully');
+        }
+      });
     }
   }
 }

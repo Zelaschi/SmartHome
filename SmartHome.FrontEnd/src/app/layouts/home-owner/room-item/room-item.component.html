@@ -1,4 +1,14 @@
 <div *ngIf="room" class="home-room-item">
     <p>Name: {{ room.name }}</p>
   </div>
-
+  <button class="btn btn-primary" (click)="toggleDevices()">
+    {{ showDevices ? 'Hide Devices' : 'Add device to room' }}
+</button>
+<div *ngIf="showDevices">
+  <app-home-device-list 
+    [homeId]="homeId" 
+    [roomId]="room?.id ?? null" 
+    [isAddingDeviceToRoom]="isAddingDeviceToRoom" 
+    (homeDeviceAdded)="onHomeDeviceAdded()">
+  </app-home-device-list>
+</div>

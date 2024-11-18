@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import HomeDeviceResponseModel from '../../../../backend/services/Home/models/HomeDeviceResponseModel';
+import { RoomService } from '../../../../backend/services/Room/room.service';
 
 @Component({
   selector: 'app-home-device-item',
@@ -7,8 +8,13 @@ import HomeDeviceResponseModel from '../../../../backend/services/Home/models/Ho
   styleUrl: './home-device-item.component.css'
 })
 export class HomeDeviceItemComponent {
+  @Input() roomId: string | null = null;
+  @Input() isAddingToRoom: boolean = false;
   @Input() homeDevice: HomeDeviceResponseModel | null = null;
+  @Output() homeDeviceAdded = new EventEmitter<string>();
   showHomeDeviceNameForm: boolean = false;
+
+  constructor(private readonly _roomService: RoomService) {}
   
   ngOnInit(): void {
     console.log(this.homeDevice);
@@ -28,5 +34,11 @@ export class HomeDeviceItemComponent {
       this.homeDevice.name = newName;
     }
     console.log('Home name updated successfully:', newName);
+  }
+
+  addDeviceToRoom(): void {
+    if (this.homeDevice?.hardwardId) {
+      this.homeDeviceAdded.emit(this.homeDevice?.hardwardId ?? '');
+    }
   }
 }

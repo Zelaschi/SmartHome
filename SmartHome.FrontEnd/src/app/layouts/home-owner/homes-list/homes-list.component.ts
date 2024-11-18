@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MeService } from '../../../../backend/services/Me/me.service';
 import HomeStatus from './models/HomeStatus';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homes-list',
@@ -12,7 +13,10 @@ export class HomesListComponent {
   private _homeSubscription: Subscription | null = null;
   loading: boolean = false;
 
-  constructor(private readonly _meService: MeService) {}
+  constructor(
+    private readonly _meService: MeService,
+    private readonly _router: Router
+  ) {}
 
   status : HomeStatus = {
     loading: true,
@@ -43,5 +47,9 @@ export class HomesListComponent {
         this.loading = false;
       }
     });
+  }
+
+  navigateToCreateHome(): void {
+    this._router.navigate(['/homeOwners/createHome']); 
   }
 }
