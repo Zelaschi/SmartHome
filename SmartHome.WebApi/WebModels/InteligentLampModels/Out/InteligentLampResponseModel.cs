@@ -8,7 +8,7 @@ public class InteligentLampResponseModel
     public string? Type { get; set; }
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
-    public List<Photo> Photos { get; set; }
+    public List<string> Photos { get; set; }
     public string? Company { get; set; }
     public InteligentLampResponseModel(Device lamp)
     {
@@ -16,7 +16,7 @@ public class InteligentLampResponseModel
         Type = lamp.Type;
         ModelNumber = lamp.ModelNumber;
         Description = lamp.Description;
-        Photos = lamp.Photos;
+        Photos = lamp.Photos.Select(photo => photo.Path).ToList();
         Company = lamp.Business.Name;
     }
 

@@ -10,7 +10,7 @@ public class WindowSensorResponseModel
     public string Name { get; set; }
     public string ModelNumber { get; set; }
     public string Description { get; set; }
-    public List<Photo> Photos { get; set; }
+    public List<string> Photos { get; set; }
     public string? Company { get; set; }
 
     public WindowSensorResponseModel(Device sensor)
@@ -20,7 +20,7 @@ public class WindowSensorResponseModel
         Name = sensor.Name;
         ModelNumber = sensor.ModelNumber;
         Description = sensor.Description;
-        Photos = sensor.Photos;
+        Photos = sensor.Photos.Select(photo => photo.Path).ToList();
         Company = sensor.Business.Name;
     }
 

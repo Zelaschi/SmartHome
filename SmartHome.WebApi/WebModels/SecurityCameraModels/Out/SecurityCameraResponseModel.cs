@@ -9,7 +9,7 @@ public sealed class SecurityCameraResponseModel
     public string? Type { get; set; }
     public string? ModelNumber { get; set; }
     public string? Description { get; set; }
-    public List<Photo> Photos { get; set; }
+    public List<string> Photos { get; set; }
     public bool? InDoor { get; set; }
     public bool? OutDoor { get; set; }
     public bool? MovementDetection { get; set; }
@@ -21,7 +21,7 @@ public sealed class SecurityCameraResponseModel
         Type = securityCamera.Type;
         ModelNumber = securityCamera.ModelNumber;
         Description = securityCamera.Description;
-        Photos = securityCamera.Photos;
+        Photos = securityCamera.Photos.Select(photo => photo.Path).ToList();
         InDoor = securityCamera.Indoor;
         OutDoor = securityCamera.Outdoor;
         MovementDetection = securityCamera.MovementDetection;

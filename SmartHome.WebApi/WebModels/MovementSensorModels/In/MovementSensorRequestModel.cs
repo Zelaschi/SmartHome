@@ -4,11 +4,11 @@ namespace SmartHome.WebApi.WebModels.MovementSensorModels.In;
 
 public sealed class MovementSensorRequestModel
 {
-    public string? Type { get; set; }
-    public string? ModelNumber { get; set; }
-    public string? Description { get; set; }
-    public string? Name { get; set; }
-    public List<Photo>? Photos { get; set; }
+    public required string Type { get; set; }
+    public required string ModelNumber { get; set; }
+    public required string Description { get; set; }
+    public required string Name { get; set; }
+    public required List<string> Photos { get; set; }
 
     public Device ToEntity()
     {
@@ -19,7 +19,7 @@ public sealed class MovementSensorRequestModel
             Type = Type,
             ModelNumber = ModelNumber,
             Description = Description,
-            Photos = Photos
+            Photos = Photos.Select(path => new Photo { Id = Guid.NewGuid(), Path = path }).ToList()
         };
     }
 }

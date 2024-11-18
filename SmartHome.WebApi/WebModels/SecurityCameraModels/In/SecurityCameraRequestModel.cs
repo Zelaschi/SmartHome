@@ -5,15 +5,15 @@ namespace SmartHome.WebApi.WebModels.SecurityCameraModels.In;
 
 public sealed class SecurityCameraRequestModel
 {
-    public string? Type { get; set; } = DeviceTypesStatic.SecurityCamera;
-    public string? ModelNumber { get; set; }
-    public string? Description { get; set; }
-    public string? Name { get; set; }
-    public List<Photo>? Photos { get; set; }
-    public bool? InDoor { get; set; }
-    public bool? OutDoor { get; set; }
-    public bool? MovementDetection { get; set; }
-    public bool? PersonDetection { get; set; }
+    public required string Type { get; set; } = DeviceTypesStatic.SecurityCamera;
+    public required string ModelNumber { get; set; }
+    public required string Description { get; set; }
+    public required string Name { get; set; }
+    public required List<string> Photos { get; set; }
+    public required bool InDoor { get; set; }
+    public required bool OutDoor { get; set; }
+    public required bool MovementDetection { get; set; }
+    public required bool PersonDetection { get; set; }
 
     public SecurityCamera ToEntity()
     {
@@ -24,11 +24,11 @@ public sealed class SecurityCameraRequestModel
             Type = Type,
             ModelNumber = ModelNumber,
             Description = Description,
-            Photos = Photos,
-            Outdoor = (bool)OutDoor,
-            Indoor = (bool)InDoor,
-            MovementDetection = (bool)MovementDetection,
-            PersonDetection = (bool)PersonDetection
+            Photos = Photos.Select(path => new Photo { Id = Guid.NewGuid(), Path = path }).ToList(),
+            Outdoor = OutDoor,
+            Indoor = InDoor,
+            MovementDetection = MovementDetection,
+            PersonDetection = PersonDetection
         };
     }
 }
