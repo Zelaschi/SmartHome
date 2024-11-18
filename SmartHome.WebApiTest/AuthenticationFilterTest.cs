@@ -12,6 +12,7 @@ using System.Net;
 using SmartHome.BusinessLogic.Domain;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using SmartHome.BusinessLogic.Constants;
+using SmartHome.BusinessLogic.Services;
 
 namespace SmartHome.WebApi.Test;
 
@@ -177,16 +178,19 @@ public class AuthenticationFilterTests
     public void OnAuthorization_WhenSessionIsValid_ShouldAddUserToContext()
     {
         var authToken = Guid.NewGuid();
+
         var sp = new SystemPermission
         {
             Name = "Test Permission",
             Description = "Test Description"
         };
+
         var role = new Role
         {
             Name = "Test Role",
+            SystemPermissions = new List<SystemPermission> { sp }
         };
-        role.SystemPermissions.Add(sp);
+
         var user = new User
         {
             Id = Guid.NewGuid(),
@@ -197,19 +201,28 @@ public class AuthenticationFilterTests
             Role = role
         };
 
-        _httpContextMock.Setup(h => h.Request.Headers).Returns(new HeaderDictionary(new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
-    {
-        { HeaderNames.Authorization, authToken.ToString() }
-    }));
+        var services = new ServiceCollection();
+        services.AddSingleton<ISessionLogic>(_sessionServiceMock.Object);
+        var serviceProvider = services.BuildServiceProvider();
+
+        var httpContext = new DefaultHttpContext
+        {
+            RequestServices = serviceProvider
+        };
+        httpContext.Request.Headers[HeaderNames.Authorization] = authToken.ToString();
 
         _sessionServiceMock.Setup(s => s.IsSessionValid(authToken)).Returns(true);
         _sessionServiceMock.Setup(s => s.GetUserOfSession(authToken)).Returns(user);
 
-        Assert.IsNotNull(_context);
+        var routeData = new RouteData();
+        var actionDescriptor = new ActionDescriptor();
+
+        var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
+        _context = new AuthorizationFilterContext(actionContext, new List<IFilterMetadata>());
 
         _attribute.OnAuthorization(_context);
 
-        Assert.IsTrue(_httpContextMock.Object.Items.ContainsKey(UserStatic.User), "User should be added to the context.");
-        Assert.AreEqual(user, _httpContextMock.Object.Items[UserStatic.User], "The user in the context should be the same as returned by GetUserOfSession.");
+        Assert.IsTrue(httpContext.Items.ContainsKey(UserStatic.User), "User should be added to the context.");
+        Assert.AreEqual(user, httpContext.Items[UserStatic.User], "The user in the context should be the same as returned by GetUserOfSession.");
     }
 }
