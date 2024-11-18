@@ -6,6 +6,7 @@ import { authorizationGuard } from '../../../backend/guards/authorization.guard'
 import { BusinessFormComponent } from './business-form/business-form.component';
 import { ValidatorsDropDownComponent } from './validators-drop-down/validators-drop-down.component';
 import { ValidatorFormComponent } from './validator-form/validator-form.component';
+import { DeviceImporterFormComponent } from './device-importer-form/device-importer-form.component';
 
 const routes: Routes = [
   {
@@ -25,7 +26,14 @@ const routes: Routes = [
     canActivate: [authorizationGuard],
     data: { requiredSystemPermission: 'Create business' },
     component: ValidatorFormComponent
-  }
+  },
+  {
+    path: 'importDevices',
+    canActivate: [authorizationGuard],
+    data: { requiredSystemPermission: 'Create device' },
+    component: DeviceImporterFormComponent
+  },
+
 ];
 
 @NgModule({

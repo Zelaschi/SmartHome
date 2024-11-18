@@ -16,6 +16,7 @@ import { ValidatorsDropDownComponent } from './validators-drop-down/validators-d
 import { DropdownComponent } from '../../components/dropdown/dropdown.component';
 import { ValidatorFormComponent } from './validator-form/validator-form.component';
 import { ButtonComponent } from '../../components/button/button.component';
+import { DeviceImporterFormComponent } from './device-importer-form/device-importer-form.component';
 
 
 
@@ -25,6 +26,7 @@ import { ButtonComponent } from '../../components/button/button.component';
     BusinessFormComponent,
     ValidatorsDropDownComponent,
     ValidatorFormComponent,
+    DeviceImporterFormComponent,
   ],
   imports: [
     ButtonComponent,
