@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DevicesService } from '../../../../backend/services/Device/devices.service';
 import { Router } from '@angular/router';
 import { DeviceTypeDropdownComponent } from '../../../business-components/device-type-dropdown/device-type-dropdown.component';
+import DeviceCreationModel from '../../../../backend/services/Device/models/DeviceCreationModel';
 
 
 
@@ -13,7 +14,8 @@ import { DeviceTypeDropdownComponent } from '../../../business-components/device
   styleUrls: ['./device-form.component.css'],
 })
 export class DeviceFormComponent {
-  // Definición de campos para el formulario reactivo
+  typeAux: string | null = null;
+
   readonly formField: any = {
     name: { 
       name: 'name',
@@ -34,7 +36,19 @@ export class DeviceFormComponent {
     photos: { 
       name: 'photos',
       required: 'At least one photo is required'
-    }
+    },
+    personDetection: {
+      name: 'personDetection'
+    },
+    movementDetection: {
+      name: 'movementDetection'
+    },
+    indoor: {
+      name: 'indoor'
+    },
+    outdoor: {
+      name: 'outdoor'
+    },
   };
 
   // Creación del formulario reactivo y sus controles
@@ -50,7 +64,11 @@ export class DeviceFormComponent {
     ]),
     [this.formField.type.name]: new FormControl('', [
       Validators.required
-    ]) // Control para el tipo de dispositivo
+    ]),
+    [this.formField.personDetection.name]: new FormControl(false),
+    [this.formField.movementDetection.name]: new FormControl(false),
+    [this.formField.indoor.name]: new FormControl(false),
+    [this.formField.outdoor.name]: new FormControl(false)
   });
 
   deviceStatus: {
@@ -63,9 +81,17 @@ export class DeviceFormComponent {
     private readonly _devicesService: DevicesService
   ){}
 
+  onDeviceTypeChange(values: any){
+    this.typeAux = values;
+    this.deviceForm.patchValue({
+      [this.formField.type.name]: values
+    });
+    console.log(this.typeAux);
+  }
+
   // Método para manejar el registro del dispositivo
-  onSubmit(values: any) {
-    console.log('Datos del dispositivo:', values);
+  public onSubmit(values: DeviceCreationModel) {
+    console.log('Datos del dispositivo:',values);
     // Aquí puedes agregar la lógica de registro del dispositivo
   }
 }

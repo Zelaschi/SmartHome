@@ -17,6 +17,7 @@ import { DropdownComponent } from '../../components/dropdown/dropdown.component'
 import { ValidatorFormComponent } from './validator-form/validator-form.component';
 import { ButtonComponent } from '../../components/button/button.component';
 import { DeviceImporterFormComponent } from './device-importer-form/device-importer-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -29,6 +30,7 @@ import { DeviceImporterFormComponent } from './device-importer-form/device-impor
     DeviceImporterFormComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     ButtonComponent,
     CommonModule,
     BusinessOwnerRoutingModule,

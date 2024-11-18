@@ -4,4 +4,8 @@ export default interface DeviceCreationModel {
     description: string,
     photos: Array<string>,
     type: string,
+    personDetection: boolean | null,
+    movementDetection: boolean | null,
+    indoor: boolean | null,
+    outdoor: boolean | null
 }
