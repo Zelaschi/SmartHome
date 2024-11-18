@@ -17,7 +17,7 @@ export class HomeDeviceItemComponent {
   constructor(private readonly _roomService: RoomService) {}
   
   ngOnInit(): void {
-    console.log(this.homeDevice);
+    console.log(this.homeDevice?.photos);
   }
 
   ChangeHomeDeviceName(harwardId : string): void {

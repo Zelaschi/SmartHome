@@ -18,7 +18,7 @@ public sealed class HomeDeviceResponseModel
     public string? Type { get; set; }
     public bool? IsOn { get; set; }
     public bool? Open { get; set; }
-    public List<Photo>? Photos { get; set; }
+    public List<string>? Photos { get; set; }
 
     public HomeDeviceResponseModel(HomeDevice homeDevice)
     {
@@ -27,7 +27,7 @@ public sealed class HomeDeviceResponseModel
         Online = homeDevice.Online;
         Device = homeDevice.Device.Name;
         Name = homeDevice.Name;
-        Photos = homeDevice.Device.Photos;
+        Photos = homeDevice.Device.Photos.Select(photo => photo.Path).ToList();
 
         if (homeDevice.Device.Type is DeviceTypesStatic.InteligentLamp)
         {
