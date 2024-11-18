@@ -45,8 +45,8 @@ export class ValidatorFormComponent {
         this.validatorForm.reset();
         this.selectedValidator = null;
       },
-      error: () => {
-        console.error("Error setting validator");
+      error: (error) => {
+        console.error(error);
       }
     });
   }

@@ -61,5 +61,4 @@ public class AuthenticationControllerTest
         Assert.AreEqual(token, objectResult.Token, "Tokens do not match");
         CollectionAssert.AreEqual(expectedLoginResponse.SystemPermissions, objectResult.SystemPermissions);
     }
-
 }

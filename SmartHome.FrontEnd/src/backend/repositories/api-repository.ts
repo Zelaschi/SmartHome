@@ -72,7 +72,7 @@ import {
         extraResource = extraResource ? `/${extraResource}` : '';
         return this._http
           .patch<T>(`${this.fullEndpoint}/${id}${extraResource}`, body, this.headers)
-          .pipe(retry(3), catchError(this.handleError));
+          .pipe(catchError(this.handleError));
     }
   
     //Volver

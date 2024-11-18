@@ -48,9 +48,10 @@ export class BusinessApiRepositoryService extends ApiRepository{
   }
 
   public addValidatorToBusiness(
-    validatorId: string
+    Id: string
   ): Observable<void> {
-    console.log(validatorId);
-    return this.patchById('validators', validatorId);
+    const body = { Id };
+    console.log(Id);
+    return this.patchById('validators', body);
   }
 }

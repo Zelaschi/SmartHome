@@ -37,7 +37,7 @@ public sealed class AdminsController : ControllerBase
         return Ok("The admin was deleted successfully");
     }
 
-    [HttpPatch("/homeOwnerPermissions")]
+    [HttpPatch("homeOwnerPermissions")]
 
     public IActionResult UpdateAdminRole()
     {

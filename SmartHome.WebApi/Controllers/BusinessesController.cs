@@ -67,9 +67,14 @@ public sealed class BusinessesController : ControllerBase
         return Ok(response);
     }
 
+    public class ValidatorId
+    {
+        public Guid Id { get; set; }
+    }
+
     [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
     [HttpPatch("validators")]
-    public IActionResult AddValidatorToBusiness([FromBody] Guid validatorId)
+    public IActionResult AddValidatorToBusiness([FromBody] ValidatorId validatorId)
     {
         var user = HttpContext.Items[UserStatic.User] as User;
 
@@ -78,7 +83,7 @@ public sealed class BusinessesController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        var updatedBusiness = _businessesLogic.AddValidatorToBusiness(user, validatorId);
+        var updatedBusiness = _businessesLogic.AddValidatorToBusiness(user, validatorId.Id);
         return Ok(updatedBusiness);
     }
 }

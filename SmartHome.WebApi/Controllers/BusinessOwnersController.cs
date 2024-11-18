@@ -29,7 +29,7 @@ public sealed class BusinessOwnersController : ControllerBase
         return CreatedAtAction("CreateBusinessOwner", new { createResponse.Id }, createResponse);
     }
 
-    [HttpPatch("/homeOwnerPermissions")]
+    [HttpPatch("homeOwnerPermissions")]
 
     public IActionResult UpdateBusinessOwnerRole()
     {

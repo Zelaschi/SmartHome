@@ -40,7 +40,7 @@ public sealed class RoomsController : ControllerBase
         return CreatedAtAction("RoomAddedToHome", new { createResponse.HardwardId }, createResponse);
     }
 
-    [HomeAuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HttpGet("{homeId}")]
     public IActionResult GetAllRoomsFromHome([FromRoute] Guid homeId)
     {
