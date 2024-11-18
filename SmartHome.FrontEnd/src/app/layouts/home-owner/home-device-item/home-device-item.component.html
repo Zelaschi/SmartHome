@@ -21,8 +21,8 @@
       </button>
     </div>
 
-    <button (click) = "ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
-    <button (click) = "CreateNotification(homeDevice.hardwardId)">Create notification</button>
+    <button class="btn btn-secondary m-2" (click) = "ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
+    <button class="btn btn-secondary m-2" (click) = "CreateNotification(homeDevice.hardwardId)">Create notification</button>
     <ng-content></ng-content>
   </div>
   <div *ngIf="showHomeDeviceNameForm">
