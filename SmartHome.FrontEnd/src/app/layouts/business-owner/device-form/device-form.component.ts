@@ -35,7 +35,6 @@ export class DeviceFormComponent {
     },
     photos: { 
       name: 'photos',
-      required: 'At least one photo is required'
     },
     personDetection: {
       name: 'personDetection'
@@ -100,9 +99,7 @@ export class DeviceFormComponent {
     return {
       name: `${this.formField.photos.name}.${index}`,
       control: control,
-      required: this.formField.photos.required,
       placeholder: 'URL de la foto',
-      validators: [Validators.required]
     };
   }
 
@@ -115,7 +112,7 @@ export class DeviceFormComponent {
   }
 
   addPhoto(): void {
-    const newPhotoControl = new FormControl('', Validators.required);
+    const newPhotoControl = new FormControl('');
     this.photos.push(newPhotoControl);
     console.log('Added photo, total:', this.photos.length);
   }
