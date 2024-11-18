@@ -118,5 +118,4 @@ public class HomeMemberControllerTest
 
         homeMemberLogicMock.Verify(h => h.GetAllHomePermissions(), Times.Once);
     }
-
 }
