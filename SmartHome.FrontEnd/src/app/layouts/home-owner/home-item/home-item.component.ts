@@ -24,7 +24,7 @@ export class HomeItemComponent {
           homeData: this.home
         }
       };
-      this._router.navigate(['/homOwners/individualHome', homeId])
+      this._router.navigate(['/homeOwners/individualHome', homeId])
         .catch(error => {
           console.error('Error de navegación:', error);
           this._router.navigateByUrl(`/homeOwners/individualHome/${homeId}`)

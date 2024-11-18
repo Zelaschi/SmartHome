@@ -20,4 +20,20 @@ export class HomeMemberApiRepositoryService extends ApiRepository {
     return this.get<Array<HomePermissionResponseModel>>('homePermissions');
   }
 
+  public addHomePermissions(
+    homePermissions: Array<string>
+  ): Observable<Array<string>> {
+    return this.post<Array<string>>('permissions', JSON.stringify(homePermissions));
+  }
+
+  public updateHomePermissions(
+    homePermissions: Array<string>,
+    homeMemberId: string
+  ): Observable<Array<string>> {
+    const homeMemberPermissions = {
+      toHomePermissionList: homePermissions
+    };
+    return this.putById<Array<string>>(`${homeMemberId}/permissions`, homeMemberPermissions);
+  }
+
 }

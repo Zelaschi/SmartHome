@@ -14,4 +14,19 @@ export class HomeMemberService {
   ): Observable<Array<HomePermissionResponseModel>> {
     return this._repository.ListAllHomePermissions();
   }
+
+  public addHomePermissions(
+    homePermissions: Array<string>
+  ): Observable<Array<string>> {
+    return this._repository.addHomePermissions(homePermissions);
+  }
+
+  public updateHomePermissions(
+    homePermissions: Array<string>,
+    homeMemberId: string
+  ): Observable<Array<string>> {
+    console.log('homePermissions', homePermissions);
+    console.log('homeMemberId', homeMemberId);
+    return this._repository.updateHomePermissions(homePermissions, homeMemberId);
+  }
 }

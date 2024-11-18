@@ -8,7 +8,18 @@ import HomeMemberResponseModel from '../../../../backend/services/Home/models/Ho
 })
 export class HomeMemberItemComponent {
   @Input() homeMember: HomeMemberResponseModel | null = null;
+  showHomePermissionsCheckbox = false;
   ngOnInit(): void {
     console.log(this.homeMember);
+  }
+
+  UpdateHomePermissions() {
+    this.showHomePermissionsCheckbox = !this.showHomePermissionsCheckbox;
+  }
+
+  onPermissionsChange(newPermissions: string[]) {
+    if (this.homeMember) {
+      this.homeMember.homePermissions = newPermissions;
+    }
   }
 }

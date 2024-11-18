@@ -25,8 +25,8 @@ import { HomeDeviceNameComponent } from './home-device-name/home-device-name.com
 import { RoomListComponent } from './room-list/room-list.component';
 import { RoomItemComponent } from './room-item/room-item.component';
 import { IndividualHomeComponent } from './individual-home/individual-home.component';
-import { HomePermissionsDropdownComponent } from './home-permissions-dropdown/home-permissions-dropdown.component';
 import { DropdownComponent } from "../../components/dropdown/dropdown.component";
+import { HomePermissionsCheckboxComponent } from './home-permissions-checkbox/home-permissions-checkbox.component';
 
 
 
@@ -48,7 +48,7 @@ import { DropdownComponent } from "../../components/dropdown/dropdown.component"
     RoomListComponent,
     RoomItemComponent,
     IndividualHomeComponent,
-    HomePermissionsDropdownComponent
+    HomePermissionsCheckboxComponent
   ],
   imports: [
     PaginationComponent,
