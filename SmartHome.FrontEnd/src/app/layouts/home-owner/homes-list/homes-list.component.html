@@ -1,5 +1,13 @@
-<div class="homes-list">
-    <h2>My Homes</h2>
+<div>
+  <a
+  class="btn btn-outline-dark m-1 mt-3 ms-3" 
+  routerLink="/homeOwners/createHome"
+  routerLinkActive="active"
+  >Create home</a>
+</div> 
+
+<div class="homes-list d-flex flex-column container justify-content-center align-items-center">
+    <h2 class="m-4">My Homes</h2>
     <div *ngIf="loading" class="loader">
       Loading homes...
     </div>

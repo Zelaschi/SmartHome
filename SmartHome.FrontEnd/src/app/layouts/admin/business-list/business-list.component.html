@@ -1,16 +1,16 @@
-<div class="business-list">
-    <h2>Businesses</h2>
+<div class="business-list d-flex flex-column container justify-content-center align-items-center">
+    <h1>Businesses</h1>
     <div *ngIf="loading" class="loader">
       Loading businesses...
     </div>
-    <app-filter [form]="businessFilterForm" (onSubmit)="onSubmit($event)">
+    <app-filter [form]="businessFilterForm" (onSubmit)="onSubmit($event)" style="width: 85%;">
       <app-form-input
           type="text"
           placeholder="Filter by business name"
           [name]="formField.businessName.name"
           [form]="businessFilterForm"
           [formField]="formField"
-          class="form-control bg-dark text-white border-secondary">
+          >
       </app-form-input>
       <app-form-input
           type="text"
@@ -18,10 +18,11 @@
           [name]="formField.fullName.name"
           [form]="businessFilterForm"
           [formField]="formField"
-          class="form-control bg-dark text-white border-secondary">
+          style="width: 25%;"
+          >
       </app-form-input>
       <div class="d-grid gap-2">
-        <app-form-button title="Apply Filters" submit class="btn btn-primary btn-block text-white" style="background-color: #2980b9; border: none;"></app-form-button>
+        <app-form-button title="Apply Filters" submit></app-form-button>
       </div>  
     </app-filter>
     <div *ngFor="let business of status.businesses" class="business-item">

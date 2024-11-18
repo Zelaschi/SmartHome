@@ -16,7 +16,7 @@
                 class="nav-link" 
                 routerLink="/businessOwners/"
                 routerLinkActive="active"
-                *ngIf="userLogged.systemPermissions.includes('Create device')">Devices</a>
+                *ngIf="userLogged.systemPermissions.includes('Create device')">Create Device</a>
             <a
                 class="nav-link" 
                 routerLink="/businessOwners/registerBusiness"
@@ -27,6 +27,7 @@
                 routerLink="/homeOwners/"
                 routerLinkActive="active"
                 *ngIf="userLogged.systemPermissions.includes('List all users homes')">My Homes</a>
+
             <a
                 class="nav-link" 
                 routerLink="/homeOwners/notifications"

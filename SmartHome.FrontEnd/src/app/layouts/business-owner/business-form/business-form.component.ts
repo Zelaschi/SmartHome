@@ -61,6 +61,10 @@ export class BusinessFormComponent {
     });
   }
 
+  public goToValidator(){
+    console.log("memuevo");
+    this._router.navigate(["/businessOwners/updateValidator"]);
+  }
   public onSubmit(values : BusinessCreationModel) {
     console.log('Form values:', values);
     console.log('Validator ID:', this.businessForm.get(this.formField.validatorId.name)?.value);

@@ -1,16 +1,30 @@
-<div class="user-list">
-    <h2>Users</h2>
+<div>
+  <a
+  class="btn btn-outline-dark m-1 mt-3 ms-3" 
+  routerLink="/admins/registerAdmins"
+  routerLinkActive="active"
+  >Register Admin</a>
+  <a
+  class="btn btn-outline-dark m-1 mt-3 ms-3" 
+  routerLink="/admins/registerBusinessOwners"
+  routerLinkActive="active"
+  >Register Business Owner</a>
+</div> 
+
+
+<div class="user-list d-flex flex-column container justify-content-center align-items-center">
+    <h1>Users</h1>
     <div *ngIf="loading" class="loader">
       Loading users...
     </div>
-    <app-filter [form]="userFilterForm" (onSubmit)="onSubmit($event)">
+    <app-filter [form]="userFilterForm" (onSubmit)="onSubmit($event)" class="">
       <app-form-input
           type="text"
           placeholder="Filter by user full name"
           [name]="formField.fullName.name"
           [form]="userFilterForm"
           [formField]="formField"
-          class="form-control bg-dark text-white border-secondary">
+          class="">
       </app-form-input>
       <app-form-input
           type="text"
@@ -18,19 +32,20 @@
           [name]="formField.role.name"
           [form]="userFilterForm"
           [formField]="formField"
-          class="form-control bg-dark text-white border-secondary">
+          class="">
       </app-form-input>
-      <div class="d-grid gap-2">
-        <app-form-button title="Apply Filters" submit class="btn btn-primary btn-block text-white" style="background-color: #2980b9; border: none;"></app-form-button>
-      </div>  
+      
+      <app-form-button title="Apply Filters" submit ></app-form-button>
+        
     </app-filter>
-
-    <div *ngFor="let user of status.users" class="user-item">
-      <app-user-item [user]="user"></app-user-item>
-    </div>
+    <div class="row devices ">
+      <div *ngFor="let user of status.users" class="device-item col-md-4 mb-4">
+        <app-user-item [user]="user"></app-user-item>
+      </div>
+    </div>  
     <app-pagination
-      [pageNumber]="pageNumber"
-      [pageSize]="pageSize"
-      (pageChange)="onPageChange($event)"
-    ></app-pagination>
+        [pageNumber]="pageNumber"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
   </div>
