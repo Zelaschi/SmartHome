@@ -1,6 +1,6 @@
 // app/layouts/device/device-form/device-form.component.ts
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DevicesService } from '../../../../backend/services/Device/devices.service';
 import { Router } from '@angular/router';
 import { DeviceTypeDropdownComponent } from '../../../business-components/device-type-dropdown/device-type-dropdown.component';
@@ -65,6 +65,7 @@ export class DeviceFormComponent {
     [this.formField.type.name]: new FormControl('', [
       Validators.required
     ]),
+    [this.formField.photos.name]: new FormArray([]),
     [this.formField.personDetection.name]: new FormControl(false),
     [this.formField.movementDetection.name]: new FormControl(false),
     [this.formField.indoor.name]: new FormControl(false),
@@ -89,10 +90,94 @@ export class DeviceFormComponent {
     console.log(this.typeAux);
   }
 
+  ngOnInit() {
+    this.addPhoto();
+  }
+
+  
+  getPhotoFormField(index: number) {
+    const control = this.photos.at(index) as FormControl;
+    return {
+      name: `${this.formField.photos.name}.${index}`,
+      control: control,
+      required: this.formField.photos.required,
+      placeholder: 'URL de la foto',
+      validators: [Validators.required]
+    };
+  }
+
+  get photoControls() {
+    return this.photos.controls;
+  }
+
+  get photos() {
+    return this.deviceForm.get(this.formField.photos.name) as FormArray;
+  }
+
+  addPhoto(): void {
+    const newPhotoControl = new FormControl('', Validators.required);
+    this.photos.push(newPhotoControl);
+    console.log('Added photo, total:', this.photos.length);
+  }
+  
+  removePhoto(index: number): void {
+    if (this.photos.length > 1) {
+      this.photos.removeAt(index);
+    }
+  }
+
   // Método para manejar el registro del dispositivo
   public onSubmit(values: DeviceCreationModel) {
     console.log('Datos del dispositivo:',values);
-    // Aquí puedes agregar la lógica de registro del dispositivo
+    this.deviceStatus = { loading: true };
+    switch (this.typeAux) {
+      case 'Security Camera':
+        this._devicesService.registerSecurityCamera(values).subscribe({
+          next: () => {
+            this.deviceStatus = null;
+            this._router.navigate(['/landing']);
+          },
+          error: (error) => {
+            this.deviceStatus = { error };
+          }
+        });
+        break;
+      case 'Inteligent Lamp':
+        this._devicesService.registerIntelligentLamp(values).subscribe({
+          next: () => {
+            this.deviceStatus = null;
+            this._router.navigate(['/landing']);
+          },
+          error: (error) => {
+            this.deviceStatus = { error };
+          }
+        });
+        break;
+      case 'Window Sensor':
+        this._devicesService.registerWindowSensor(values).subscribe({
+          next: () => {
+            this.deviceStatus = null;
+            this._router.navigate(['/landing']);
+          },
+          error: (error) => {
+            this.deviceStatus = { error };
+          }
+        });
+        break;
+      case 'Movement Sensor':
+        this._devicesService.registerMovementSensor(values).subscribe({
+          next: () => {
+            this.deviceStatus = null;
+            this._router.navigate(['/landing']);
+          },
+          error: (error) => {
+            this.deviceStatus = { error };
+          }
+        });
+        break;
+      default:
+        console.log('Tipo de dispositivo no reconocido');
+        break;
+    }
   }
 }
-

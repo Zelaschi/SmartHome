@@ -125,6 +125,38 @@
           </div>
         </div>
       </div>
+
+      <!-- Photos -->    
+        
+      <label for="photos" class="form-label">Photos</label>
+        
+      <div *ngFor="let control of photoControls; let i = index" class="mb-3">
+        <div class="input-group">
+          <app-form-input
+            type="text"
+            placeholder="URL de la foto"
+            [name]="getPhotoFormField(i).name"
+            [form]="deviceForm"
+            [formField]="getPhotoFormField(i)"
+            >
+          </app-form-input>
+          <button
+            type="button"
+            (click)="removePhoto(i)"
+            class="btn btn-danger ms-2"
+            [disabled]="photos.length === 1">
+            Quitar
+          </button>
+        </div>
+      </div>
+    
+      <button
+        type="button"
+        (click)="addPhoto()"
+        class="btn btn-primary mt-3">
+        Agregar otra foto
+      </button>      
+
       <!-- Registerbutton -->
       <div class="d-grid mt-3 gap-2">
         <app-form-button title="Register Device" submit ></app-form-button>

@@ -3,7 +3,7 @@ export default interface SecurityCameraCreationModel {
     modelNumber : string
     description : string,
     name : string,
-    photos : string[],
+    photos : Array<string>,
     inDoor : boolean,
     outDoor : boolean,
     movementDetection : boolean,

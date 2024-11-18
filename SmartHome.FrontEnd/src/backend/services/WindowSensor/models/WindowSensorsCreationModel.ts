@@ -3,5 +3,5 @@ export default interface WindowSensorsCreationModel {
     modelNumber : string
     description : string,
     name : string,
-    photos : string[],
+    photos: Array<string>,
 }

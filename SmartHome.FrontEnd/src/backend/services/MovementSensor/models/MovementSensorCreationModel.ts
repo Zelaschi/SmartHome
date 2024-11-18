@@ -3,5 +3,5 @@ export default interface MovementSensorCreationModel {
     modelNumber : string
     description : string,
     name : string,
-    photos : string[],
+    photos : Array<string>,
 }
