@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.ModelValidator", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.ThreeLetersThreeNumbersValidator", "SmartHome.ThreeLetersThreeNumbersValidator\SmartHome.ThreeLetersThreeNumbersValidator.csproj", "{173FBB89-2EA4-4EB6-8341-C82AAE027AD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.SixLettersValidator", "SmartHome.SixLettersValidator\SmartHome.SixLettersValidator.csproj", "{E9B98760-388B-4481-8133-42415B56A9DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.SixLettersValidator", "SmartHome.SixLettersValidator\SmartHome.SixLettersValidator.csproj", "{E9B98760-388B-4481-8133-42415B56A9DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
