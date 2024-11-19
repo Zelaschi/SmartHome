@@ -37,9 +37,11 @@ public class SecurityCameraControllerTest
         var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = businessOwner };
         var securityCameraRequestModel = new SecurityCameraRequestModel()
         {
+            Type = "CameraType",
             ModelNumber = "modelNumber",
             Description = "description",
-            Photos = [],
+            Name = "CameraName",
+            Photos = new List<string>(),
             InDoor = true,
             OutDoor = false,
             MovementDetection = true,
@@ -76,9 +78,11 @@ public class SecurityCameraControllerTest
     {
         var securityCameraRequestModel = new SecurityCameraRequestModel
         {
+            Type = "CameraType",
             ModelNumber = "modelNumber",
             Description = "description",
-            Photos = new List<Photo>(),
+            Name = "CameraName",
+            Photos = new List<string>(),
             InDoor = true,
             OutDoor = false,
             MovementDetection = true,

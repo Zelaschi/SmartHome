@@ -27,6 +27,8 @@ import { RoomItemComponent } from './room-item/room-item.component';
 import { IndividualHomeComponent } from './individual-home/individual-home.component';
 import { DropdownComponent } from "../../components/dropdown/dropdown.component";
 import { HomePermissionsCheckboxComponent } from './home-permissions-checkbox/home-permissions-checkbox.component';
+import { HomeAddMemberComponent } from './home-add-member/home-add-member.component';
+import { HomeAddMemberItemComponent } from './home-add-member-item/home-add-member-item.component';
 
 
 
@@ -48,7 +50,9 @@ import { HomePermissionsCheckboxComponent } from './home-permissions-checkbox/ho
     RoomListComponent,
     RoomItemComponent,
     IndividualHomeComponent,
-    HomePermissionsCheckboxComponent
+    HomePermissionsCheckboxComponent,
+    HomeAddMemberComponent,
+    HomeAddMemberItemComponent
   ],
   imports: [
     PaginationComponent,

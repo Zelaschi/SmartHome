@@ -1,35 +1,33 @@
-<div *ngIf="homeDevice" class="home-device-item">
-    <p>Name: {{ homeDevice.name }}</p>
-    <p>Device Type: {{ homeDevice.type }}</p>
-    <p>Online: {{ homeDevice.online }}</p>
-    <p *ngIf="homeDevice.isOn !== null">Is on?: {{ homeDevice.isOn }}</p>
-    <p *ngIf="homeDevice.open !== null">Is open?: {{ homeDevice.open }}</p>
-    
-    <div id="devicePhotosCarousel" class="carousel slide" *ngIf="homeDevice?.photos && homeDevice.photos.length > 0">
-      <div class="carousel-inner">
-        <div class="carousel-item" *ngFor="let photo of homeDevice.photos; let i = index" [class.active]="i === 0">
-          <img [src]="photo" class="d-block w-100" [alt]="'Device photo ' + (i+1)">
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#devicePhotosCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#devicePhotosCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+<div *ngIf="homeDevice" class="card h-100 w-100">
+    <div class="card-img-top">
+        <app-photos-carousel 
+            *ngIf="homeDevice?.photos && homeDevice.photos.length > 0"
+            [photos]="homeDevice.photos">
+        </app-photos-carousel>
     </div>
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ homeDevice.name }}</h5>
+        
+        <div class="device-info">
+            <p class="card-text mb-1">Device Type: {{ homeDevice.type }}</p>
+            <p class="card-text mb-1">Online: {{ homeDevice.online ? 'Yes' : 'No' }}</p>
+            <p class="card-text mb-1" *ngIf="homeDevice.isOn !== null">Is on?: {{ homeDevice.isOn ? 'Yes' : 'No' }}</p>
+            <p class="card-text mb-1" *ngIf="homeDevice.open !== null">Is open?: {{ homeDevice.open ? 'Yes' : 'No' }}</p>
+            <p class="card-text mb-1" *ngIf="homeDevice.room">Room: {{ homeDevice.room }}</p>
+        </div>
+        
+        <div class="mt-auto">
+            <button class="btn btn-secondary btn-sm mb-1 w-100" (click)="ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
+            <button class="btn btn-secondary btn-sm mb-1 w-100" (click)="CreateNotification(homeDevice.hardwardId)">Create notification</button>
+            <button *ngIf="isAddingToRoom" (click)="addDeviceToRoom()" class="btn btn-secondary btn-sm mb-1 w-100">Add to Room</button>
+        </div>
+        <ng-content></ng-content>
+    </div>
+</div>
 
-    <button class="btn btn-secondary m-2" (click) = "ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
-    <button class="btn btn-secondary m-2" (click) = "CreateNotification(homeDevice.hardwardId)">Create notification</button>
-    <ng-content></ng-content>
-  </div>
-  <div *ngIf="showHomeDeviceNameForm">
+<div *ngIf="showHomeDeviceNameForm">
     <app-home-device-name
-      [homeDeviceId]="homeDevice?.hardwardId ?? null"
-      (homeDeviceNameUpdated)="onHomeDeviceNameUpdated($event)">
+        [homeDeviceId]="homeDevice?.hardwardId ?? null"
+        (homeDeviceNameUpdated)="onHomeDeviceNameUpdated($event)">
     </app-home-device-name>
-  </div>
-  <button *ngIf="isAddingToRoom" (click)="addDeviceToRoom()" class="btn btn-primary">Add to Room</button>
-
+</div>

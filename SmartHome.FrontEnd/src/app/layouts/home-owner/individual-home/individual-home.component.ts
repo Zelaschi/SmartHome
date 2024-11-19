@@ -17,16 +17,11 @@ export class IndividualHomeComponent implements OnInit {
   showRoomForm: boolean = false;
   showRooms: boolean = false;
   showHomeNameForm: boolean = false;
+  showAddMembers: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-  ) {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.home = navigation?.extras.state['homeData'];
-    }
-  }
+  ) {}
 
   ngOnInit(): void {
     this.homeId = this.route.snapshot.paramMap.get('id');
@@ -40,6 +35,7 @@ export class IndividualHomeComponent implements OnInit {
     this.showRoomForm = false;
     this.showRooms = false;
     this.showHomeNameForm = false;
+    this.showAddMembers = false;
   }
 
   GetHomeMembers(): void {
@@ -108,6 +104,15 @@ export class IndividualHomeComponent implements OnInit {
     }
   }
   
+  AddHomeMembers(): void {
+    if (this.showAddMembers) {
+      this.showAddMembers = false;
+    } else {
+      this.hideAllSections();
+      this.showAddMembers = true;
+    }
+  }
+
   onNameUpdated(newName: string): void {
     this.showHomeNameForm = false;
     if (this.home) {

@@ -35,11 +35,9 @@ export class HomesListComponent {
     this.loading = true;
     this._meService.listAllHomesFromUser().subscribe({
       next: (response) => {
-        this.status ={
+        this.status = {
           homes: response,
         }
-        console.log(response);
-        console.log(this.status.homes);
         this.loading = false;
       },
       error: (error) => {
@@ -47,5 +45,9 @@ export class HomesListComponent {
         this.loading = false;
       }
     });
+  }
+
+  navigateToHome(home: any): void {
+    this._router.navigate(['/homeOwners/individualHome', home.id]);
   }
 }

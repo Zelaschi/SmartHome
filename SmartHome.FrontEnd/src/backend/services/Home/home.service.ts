@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import HomeMemberResponseModel from './models/HomeMemberResponseModel';
 import HomeDeviceResponseModel from './models/HomeDeviceResponseModel';
 import HomePermissionResponseModel from '../HomeMember/models/HomePermissionResponseModel';
+import { User } from '../User/models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +53,20 @@ export class HomeService {
     newName: string
   ){
     return this._repository.UpdateHomeDeviceName(homeDeviceId, newName);
+  }
+
+  public UnRelatedHomeOwners(
+    homeId: string,
+  ): Observable<Array<User>>
+  {
+    return this._repository.UnRelatedHomeOwners(homeId);
+  }
+
+  public AddHomeMemberToHome(
+    homeId: string,
+    userId: string,
+  ): Observable<void>
+  {
+    return this._repository.AddHomeMemberToHome(homeId, userId);
   }
 }

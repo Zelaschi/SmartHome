@@ -7,4 +7,5 @@ export default interface HomeMemberResponseModel {
     isOn?: boolean;
     open?: boolean;
     photos: Array<string>;
+    room?: string;
   }
