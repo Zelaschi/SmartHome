@@ -21,13 +21,7 @@ export class IndividualHomeComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-  ) {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.home = navigation?.extras.state['homeData'];
-    }
-  }
+  ) {}
 
   ngOnInit(): void {
     this.homeId = this.route.snapshot.paramMap.get('id');

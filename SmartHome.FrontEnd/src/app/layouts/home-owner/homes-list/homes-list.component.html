@@ -11,7 +11,7 @@
     <div *ngIf="loading" class="loader">
       Loading homes...
     </div>
-    <div *ngFor="let home of status.homes" class="home-item">
+    <div *ngFor="let home of status.homes" class="home-item" (click)="navigateToHome(home)">
       <app-home-item [home]="home"></app-home-item>
     </div>
   </div>

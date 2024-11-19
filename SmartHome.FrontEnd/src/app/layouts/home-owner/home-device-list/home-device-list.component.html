@@ -1,24 +1,25 @@
-<div class="mt-4 home-devices-list d-flex flex-column container justify-content-center align-items-center">
-    <h3>Home Devices</h3>
-    <div *ngIf="loading" class="loader">
-      Loading home devices...
+<div class="container">
+    <div class="text-center mb-4">
+        <h3>Home Devices</h3>
+        <div *ngIf="loading" class="loader">
+            Loading home devices...
+        </div>
+        <app-filter [form]="roomFilterForm" (onSubmit)="onSubmit($event)">
+            <app-form-input
+                type="text"
+                placeholder="Filter by room"
+                [name]="formField.room.name"
+                [form]="roomFilterForm"
+                [formField]="formField">
+            </app-form-input>
+            <div class="d-grid gap-2">
+                <app-form-button title="Apply Filters" submit></app-form-button>
+            </div>  
+        </app-filter>
     </div>
-    <app-filter [form]="roomFilterForm" (onSubmit)="onSubmit($event)">
-      <app-form-input
-          type="text"
-          placeholder="Filter by room"
-          [name]="formField.room.name"
-          [form]="roomFilterForm"
-          [formField]="formField">
-      </app-form-input>
-      <div class="d-grid gap-2">
-        <app-form-button title="Apply Filters" submit ></app-form-button>
-      </div>  
-    </app-filter>
-  </div>
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col" *ngFor="let homeDevice of status.homeDevices">
+
+    <div class="row justify-content-start g-4">
+        <div class="col-12 col-md-6 col-lg-4" *ngFor="let homeDevice of status.homeDevices">
             <app-home-device-item 
                 [homeDevice]="homeDevice"
                 [roomId]="roomId"
@@ -27,4 +28,4 @@
             </app-home-device-item>
         </div>
     </div>
-  </div>
+</div>
