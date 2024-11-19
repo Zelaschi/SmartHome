@@ -163,13 +163,13 @@ public class DeviceServiceTest
     }
 
     [TestMethod]
-    public void Create_WindowSensor_ModelNumeber_Repeated_Throws_Exception_Test()
+    public void Create_WindowSensor_ModelNumeber_NotValid_Throws_Exception_Test()
     {
         // Arrange: Configurar los datos de prueba
         var validator = new ModelNumberValidator
         {
             Id = Guid.NewGuid(),
-            Name = "ModelNumberValidator"
+            Name = "SixLettersModelValidator"
         };
 
         var businessOwner = new User
@@ -301,6 +301,13 @@ public class DeviceServiceTest
     [TestMethod]
     public void Create_SecurityCamera_ModelNumeber_Repeated_Throws_Exception_Test()
     {
+        // Arrange: Configurar los datos de prueba
+        var validator = new ModelNumberValidator
+        {
+            Id = Guid.NewGuid(),
+            Name = "SixLettersModelValidator"
+        };
+
         var businessOwner = new User
         {
             Name = "Juan",
@@ -316,7 +323,8 @@ public class DeviceServiceTest
             Name = "HikVision",
             Logo = "Logo1",
             RUT = "1234",
-            BusinessOwner = businessOwner
+            BusinessOwner = businessOwner,
+            ValidatorId = validator.Id
         };
         var cameraId = Guid.NewGuid();
         var securityCamera = new SecurityCamera
@@ -331,8 +339,11 @@ public class DeviceServiceTest
             Business = business
         };
 
-        deviceRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Device, bool>>())).Returns(securityCamera);
-        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+            .Returns(business);
+        validatorRepositoryMock.Setup(u => u.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+            .Returns(validator);
+
         Exception exception = null;
 
         try
@@ -346,7 +357,7 @@ public class DeviceServiceTest
 
         deviceRepositoryMock.VerifyAll();
         Assert.IsInstanceOfType(exception, typeof(DeviceException));
-        Assert.AreEqual("Security Camera model already exists", exception.Message);
+        Assert.AreEqual("Model number is not valid", exception.Message);
     }
 
     [TestMethod]
