@@ -12,7 +12,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/me")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 public class MeController : ControllerBase
 {
     private readonly INotificationLogic _notificationLogic;

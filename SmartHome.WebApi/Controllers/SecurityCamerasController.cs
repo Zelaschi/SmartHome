@@ -12,7 +12,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/securityCameras")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 public sealed class SecurityCamerasController : ControllerBase
 {
     private readonly ISecurityCameraLogic _securityCameraLogic;

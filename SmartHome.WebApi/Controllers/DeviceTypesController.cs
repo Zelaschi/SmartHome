@@ -9,7 +9,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/deviceTypes")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 public sealed class DeviceTypesController : ControllerBase
 {
     private readonly IDeviceLogic _deviceLogic;

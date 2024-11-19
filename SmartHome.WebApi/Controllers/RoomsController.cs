@@ -13,7 +13,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/rooms")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 
 public sealed class RoomsController : ControllerBase
 {

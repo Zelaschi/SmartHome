@@ -1,71 +1,124 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.DataAccess.CustomExceptions;
+using System.Net;
 
 namespace SmartHome.WebApi.Filters;
 
-public sealed class ExceptionFilter : ExceptionFilterAttribute
+public sealed class ExceptionFilter : IExceptionFilter
 {
-    public override void OnException(ExceptionContext context)
+    private readonly Dictionary<Type, Func<Exception, IActionResult>> _exceptionHandlers = new ()
     {
-        var exception = context.Exception;
-        if (exception is UnauthorizedAccessException)
         {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.Unauthorized };
+            typeof(UnauthorizedAccessException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.Unauthorized
+            }
+        },
+        {
+            typeof(DeviceImporterException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(SessionException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(DeviceException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(UserException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(HomeArgumentException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(HomeException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(RoleException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(HomeDeviceException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            }
+        },
+        {
+            typeof(DatabaseException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(ArgumentNullException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(ArgumentException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(NullReferenceException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
         }
-        else if (exception is DeviceImporterException)
+    };
+
+    public void OnException(ExceptionContext context)
+    {
+        var exceptionType = context.Exception.GetType();
+        if (_exceptionHandlers.TryGetValue(exceptionType, out var handler))
         {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
+            context.Result = handler(context.Exception);
         }
-        else if (exception is SessionException)
+        else
         {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is DeviceException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is UserException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is HomeArgumentException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is HomeException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is RoleException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is HomeDeviceException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.InternalServerError };
-        }
-        else if (exception is DatabaseException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is ArgumentNullException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is ArgumentException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is NullReferenceException)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
-        }
-        else if (exception is Exception)
-        {
-            context.Result = new ObjectResult(new { ErrorMessage = $"Something went wrong. See: {context.Exception.GetType()} {context.Exception.Message}" }) { StatusCode = (int)HttpStatusCode.InternalServerError };
+            context.Result = new ObjectResult(new
+            {
+                ErrorMessage = $"Something went wrong. See: {exceptionType} {context.Exception.Message}"
+            })
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
 }

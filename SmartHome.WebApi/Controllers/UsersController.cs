@@ -11,7 +11,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/users")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 public sealed class UsersController : ControllerBase
 {
     private readonly IUsersLogic _usersLogic;

@@ -7,7 +7,9 @@
 .env
 .env.*
 
-
+NDependOut/
+NDependOut1/
+SmartHome.ndproj
 # mstest test results
 TestResults
 

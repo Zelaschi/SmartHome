@@ -6,6 +6,7 @@ using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.DataAccess.Repositories;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
+using SmartHome.WebApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,11 @@ services.AddScoped<IUpdateMultipleElementsRepository<HomeMember>, HomeMemberRepo
 services.AddScoped<IGenericRepository<SystemPermission>, SystemPermissionRepository>();
 services.AddScoped<IGenericRepository<Room>, RoomRepository>();
 services.AddScoped<IGenericRepository<ModelNumberValidator>, ValidatorRepository>();
+
+services.AddControllers(options =>
+{
+    options.Filters.Add<ExceptionFilter>();
+});
 
 var app = builder.Build();
 

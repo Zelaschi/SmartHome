@@ -13,7 +13,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/movementSensors")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 
 public class MovementSensorsController : ControllerBase
 {
