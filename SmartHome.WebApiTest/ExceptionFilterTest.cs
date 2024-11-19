@@ -134,6 +134,26 @@ public class ExceptionFilterTests
         Assert.AreEqual("Argument cannot be null (Parameter 'Parameter name')", GetMessage(concreteResponse!.Value!));
     }
 
+    [TestMethod]
+    public void OnException_WhenArgumentException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new ArgumentException("Argument cannot be null", "Parameter name");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Argument cannot be null (Parameter 'Parameter name')", GetMessage(concreteResponse!.Value!));
+    }
+
     private string GetMessage(object value)
     {
         return value.GetType().GetProperty("ErrorMessage").GetValue(value).ToString();
