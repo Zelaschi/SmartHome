@@ -5,7 +5,7 @@ import { RoomService } from '../../../../backend/services/Room/room.service';
 @Component({
   selector: 'app-home-device-item',
   templateUrl: './home-device-item.component.html',
-  styleUrl: './home-device-item.component.css'
+  styleUrl: './home-device-item.component.css',
 })
 export class HomeDeviceItemComponent {
   @Input() roomId: string | null = null;

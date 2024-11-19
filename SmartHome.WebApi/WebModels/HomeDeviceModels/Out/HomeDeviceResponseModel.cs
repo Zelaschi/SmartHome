@@ -19,6 +19,7 @@ public sealed class HomeDeviceResponseModel
     public bool? IsOn { get; set; }
     public bool? Open { get; set; }
     public List<string>? Photos { get; set; }
+    public string? Room { get; set; }
 
     public HomeDeviceResponseModel(HomeDevice homeDevice)
     {
@@ -28,6 +29,10 @@ public sealed class HomeDeviceResponseModel
         Device = homeDevice.Device.Name;
         Name = homeDevice.Name;
         Photos = homeDevice.Device.Photos.Select(photo => photo.Path).ToList();
+        if (homeDevice.Room != null)
+        {
+            Room = homeDevice.Room.Name;
+        }
 
         if (homeDevice.Device.Type is DeviceTypesStatic.InteligentLamp)
         {

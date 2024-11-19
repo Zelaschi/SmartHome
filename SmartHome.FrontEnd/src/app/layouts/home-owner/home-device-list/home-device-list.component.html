@@ -16,11 +16,15 @@
       </div>  
     </app-filter>
   </div>
-  <div *ngFor="let homeDevice of status.homeDevices" class="device-item col-md-4 mb-4">
-    <app-home-device-item 
-    [homeDevice]="homeDevice"
-    [roomId]="roomId"
-    [isAddingToRoom]="isAddingDeviceToRoom"
-    (homeDeviceAdded)="onHomeDeviceAdded($event)"
-    ></app-home-device-item>
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let homeDevice of status.homeDevices">
+            <app-home-device-item 
+                [homeDevice]="homeDevice"
+                [roomId]="roomId"
+                [isAddingToRoom]="isAddingDeviceToRoom"
+                (homeDeviceAdded)="onHomeDeviceAdded($event)">
+            </app-home-device-item>
+        </div>
+    </div>
   </div>
