@@ -2,5 +2,5 @@
 
 public class HomeDeviceIdRequestModel
 {
-    public Guid HomeDeviceId { get; set; }
+    public Guid Id { get; set; }
 }
