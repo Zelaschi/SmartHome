@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
+using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.WebApi.Filters;
 
 namespace SmartHome.WebApi.Test;
@@ -172,6 +173,26 @@ public class ExceptionFilterTests
             "The status code should be 400 Bad Request.");
 
         Assert.AreEqual("Cannot refere to null", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenDatabaseException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new DatabaseException("Data Base Exception");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Data Base Exception", GetMessage(concreteResponse!.Value!));
     }
 
     private string GetMessage(object value)
