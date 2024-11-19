@@ -8,7 +8,7 @@ namespace SmartHome.WebApi.Filters;
 
 public sealed class ExceptionFilter : IExceptionFilter
 {
-    private readonly Dictionary<Type, Func<Exception, IActionResult>> _exceptionHandlers = new ()
+    private readonly Dictionary<Type, Func<Exception, IActionResult>> _errors = new ()
     {
         {
             typeof(UnauthorizedAccessException),
@@ -105,20 +105,16 @@ public sealed class ExceptionFilter : IExceptionFilter
 
     public void OnException(ExceptionContext context)
     {
-        var exceptionType = context.Exception.GetType();
-        if (_exceptionHandlers.TryGetValue(exceptionType, out var handler))
+        var response = _errors.GetValueOrDefault(context.Exception.GetType());
+
+        if (response == null)
         {
-            context.Result = handler(context.Exception);
-        }
-        else
-        {
-            context.Result = new ObjectResult(new
-            {
-                ErrorMessage = $"Something went wrong. See: {exceptionType} {context.Exception.Message}"
-            })
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            context.Result =
+                new ObjectResult(new
+                {
+                    ErrorMessage = "An error occurred"
+                })
+                { StatusCode = (int)HttpStatusCode.InternalServerError};
         }
     }
 }
