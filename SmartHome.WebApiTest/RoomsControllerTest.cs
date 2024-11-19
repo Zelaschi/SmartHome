@@ -114,7 +114,7 @@ public class RoomsControllerTest
 
         var expectedResult = new HomeDeviceResponseModel(homeDevice);
 
-        var hdIdReq = new HomeDeviceIdRequestModel { Id = homeDeviceId };
+        var hdIdReq = new HomeDeviceIdRequestModel { HomeDeviceId = homeDeviceId };
 
         var result = roomController.AddDevicesToRoom(hdIdReq, roomId);
 
