@@ -265,8 +265,8 @@ public class BusinessRepositoryTest
             Logo = "Original Logo 2",
             RUT = "Original RUT 2"
         };
-        _context.Businesses.Add(business2);
         _context.Businesses.Add(business);
+        _context.Businesses.Add(business2);
         _context.SaveChanges();
 
         var result = _businessRepository.FindAllFiltered(null, 1, 1);
