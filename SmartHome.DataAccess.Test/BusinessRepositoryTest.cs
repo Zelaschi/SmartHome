@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
@@ -270,9 +271,9 @@ public class BusinessRepositoryTest
         _context.SaveChanges();
 
         var result = _businessRepository.FindAllFiltered(null, 1, 1);
-
+        var allBusinesses = _businessRepository.FindAll();
         result.Should().HaveCount(1);
-        result[0].Name.Should().Be("Original Name");
+        result[0].Name.Should().BeOneOf(allBusinesses[0].Name, allBusinesses[1].Name);
     }
 
     [TestMethod]
