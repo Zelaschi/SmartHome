@@ -41,6 +41,7 @@ export class IndividualHomeComponent implements OnInit {
     this.showRoomForm = false;
     this.showRooms = false;
     this.showHomeNameForm = false;
+    this.showAddMembers = false;
   }
 
   GetHomeMembers(): void {
