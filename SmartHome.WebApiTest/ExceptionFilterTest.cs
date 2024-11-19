@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Moq;
+using SmartHome.BusinessLogic.CustomExceptions;
+using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.WebApi.Filters;
 
 namespace SmartHome.WebApi.Test;
@@ -51,6 +53,268 @@ public class ExceptionFilterTests
             "The status code should be 500 Internal Server Error.");
 
         Assert.AreEqual("Something went wrong. See: System.Exception Not registered", GetMessage(concreteResponse.Value));
+    }
+
+    [TestMethod]
+    public void OnException_WhenUnauthorizedAccessException_ShouldResponseUnauthorized()
+    {
+        _context.Exception = new UnauthorizedAccessException("Unauthorized access");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.Unauthorized, concreteResponse.StatusCode,
+            "The status code should be 401 Unauthorized.");
+
+        Assert.AreEqual("Unauthorized access", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenDeviceImporterException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new DeviceImporterException("Device importer error");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Device importer error", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenSessionException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new SessionException("Session error");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Session error", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenArgumentNullException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new ArgumentNullException("Parameter name", "Argument cannot be null");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Argument cannot be null (Parameter 'Parameter name')", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenArgumentException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new ArgumentException("Argument cannot be null", "Parameter name");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Argument cannot be null (Parameter 'Parameter name')", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenNullReferenceException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new NullReferenceException("Cannot refere to null");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Cannot refere to null", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenDatabaseException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new DatabaseException("Data Base Exception");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Data Base Exception", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenDeviceException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new DeviceException("Device Exception");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Device Exception", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenUserException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new UserException("User Exception");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("User Exception", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenHomeException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new HomeException("Home Exception");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Home Exception", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenHomeArgumentException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new HomeArgumentException("Home Argument Exception");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Home Argument Exception", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenRoleException_ShouldResponseBadRequest()
+    {
+        _context.Exception = new RoleException("Role Exception");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.AreEqual((int)HttpStatusCode.BadRequest, concreteResponse.StatusCode,
+            "The status code should be 400 Bad Request.");
+
+        Assert.AreEqual("Role Exception", GetMessage(concreteResponse!.Value!));
+    }
+
+    [TestMethod]
+    public void OnException_WhenHomeDeviceException_ShouldResponseInternalServerError()
+    {
+        _context.Exception = new HomeDeviceException("A Home Device error occurred");
+
+        _attribute.OnException(_context);
+
+        var response = _context.Result;
+
+        Assert.IsNotNull(response, "The response should not be null.");
+
+        var concreteResponse = response as ObjectResult;
+        Assert.IsNotNull(concreteResponse, "The response should be of type ObjectResult.");
+
+        Assert.IsNotNull(concreteResponse.Value, "The value should not be null.");
+
+        Assert.AreEqual((int)HttpStatusCode.InternalServerError, concreteResponse.StatusCode,
+            "The status code should be 500 Internal Server Error.");
+
+        Assert.AreEqual("A Home Device error occurred", GetMessage(concreteResponse.Value));
     }
 
     private string GetMessage(object value)
