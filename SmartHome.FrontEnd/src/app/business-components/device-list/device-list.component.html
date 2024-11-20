@@ -1,7 +1,7 @@
 <div class="device-list d-flex flex-column container justify-content-center align-items-center">
   <h2>Devices</h2>
   <div *ngIf="loading" class="loader">
-    Loading devices...
+    <app-loading></app-loading>
   </div>
   <div class="row devices">
     <app-filter [form]="deviceFilterForm" (onSubmit)="onSubmit($event)" style="width: 150%;">

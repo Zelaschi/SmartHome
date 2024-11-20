@@ -15,10 +15,11 @@ import { DeviceTypeDropdownComponent } from '../device-type-dropdown/device-type
 import { FormInputComponent } from '../../components/form/form-input/form-input.component';
 import { FilterComponent } from '../../components/filter/filter/filter.component';
 import { CommonModule } from '@angular/common';
+import { LoadingComponent } from '../../components/loading/loading.component';
 
 @Component({
   standalone: true,
-  imports: [PaginationComponent, DeviceItemComponent, FormButtonComponent, DeviceTypeDropdownComponent, FormInputComponent, FilterComponent, CommonModule],
+  imports: [LoadingComponent, PaginationComponent, DeviceItemComponent, FormButtonComponent, DeviceTypeDropdownComponent, FormInputComponent, FilterComponent, CommonModule],
   selector: 'app-device-list',
   templateUrl: './device-list.component.html',
   styleUrls: ['./device-list.component.css']
