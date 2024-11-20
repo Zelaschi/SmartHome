@@ -22,7 +22,7 @@ public sealed class HomeMembersController : ControllerBase
         _homeMemberLogic = homeMemberLogic ?? throw new ArgumentNullException(nameof(homeMemberLogic));
     }
 
-    [AuthorizationFilter(SeedDataConstants.CREATE_HOME_PERMISSION_ID)]
+    [HomeAuthorizationFilter(SeedDataConstants.ADD_PERMISSIONS_TO_HOMEMEMBER_ID)]
     [HttpPost("{homeMemberId}/permissions")]
     public IActionResult AddHomePermissionsToHomeMember([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
     {
@@ -30,7 +30,7 @@ public sealed class HomeMembersController : ControllerBase
         return NoContent();
     }
 
-    [AuthorizationFilter(SeedDataConstants.CREATE_HOME_PERMISSION_ID)]
+    [HomeAuthorizationFilter(SeedDataConstants.ADD_PERMISSIONS_TO_HOMEMEMBER_ID)]
     [HttpPut("{homeMemberId}/permissions")]
     public IActionResult UpdateHomeMemberPermissions([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
     {

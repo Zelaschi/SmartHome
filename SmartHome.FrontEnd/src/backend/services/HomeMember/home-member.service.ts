@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HomeMemberApiRepositoryService } from '../../repositories/home-member-api-repository.service';
 import HomePermissionResponseModel from './models/HomePermissionResponseModel';
 import { Observable } from 'rxjs';
+import HomePermissionsRequest from './models/HomePermissionsRequest';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class HomeMemberService {
 
   constructor(private readonly _repository: HomeMemberApiRepositoryService) { }
@@ -22,11 +24,9 @@ export class HomeMemberService {
   }
 
   public updateHomePermissions(
-    homePermissions: Array<string>,
+    homePermissions: HomePermissionsRequest,
     homeMemberId: string
-  ): Observable<Array<string>> {
-    console.log('homePermissions', homePermissions);
-    console.log('homeMemberId', homeMemberId);
+  ): Observable<void> {
     return this._repository.updateHomePermissions(homePermissions, homeMemberId);
   }
 }

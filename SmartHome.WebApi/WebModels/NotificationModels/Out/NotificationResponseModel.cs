@@ -10,6 +10,7 @@ public sealed class NotificationResponseModel
     public bool Read { get; set; } = false;
     public DateTime Date { get; set; }
     public DateTime Time { get; set; }
+    public string? DetectedPerson { get; set; }
 
     public NotificationResponseModel(Notification notification)
     {
@@ -18,6 +19,10 @@ public sealed class NotificationResponseModel
         Event = notification.Event;
         Date = notification.Date;
         Time = notification.Time;
+        if (notification.DetectedPerson != null)
+        {
+            DetectedPerson = notification.DetectedPerson.Name;
+        }
     }
 
     public override bool Equals(object? obj)

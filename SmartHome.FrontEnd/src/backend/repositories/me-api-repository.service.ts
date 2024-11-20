@@ -3,8 +3,9 @@ import ApiRepository from './api-repository';
 import environmentLocal from '../../environments/environment.local';
 import { HttpClient } from '@angular/common/http';
 import NotificationResponse from '../services/Me/models/NotificationResponse';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import HomeCreatedModel from '../services/Home/models/HomeCreatedModel';
+import { DeviceNotification } from '../services/Me/models/DeviceNotification';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,12 @@ export class MeApiRepositoryService extends ApiRepository{
 
   public getNotifications(
   ): Observable<NotificationResponse> {
-    return this.get<NotificationResponse>('notifications');
+    return this.get<DeviceNotification[]>('notifications')
+      .pipe(
+        map(notifications => ({
+          data: notifications
+        }))
+      );
   }
 
   public listAllHomesFromUser(

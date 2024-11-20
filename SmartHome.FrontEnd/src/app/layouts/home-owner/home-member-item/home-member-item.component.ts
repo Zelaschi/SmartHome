@@ -1,25 +1,32 @@
 import { Component, Input } from '@angular/core';
-import HomeMemberResponseModel from '../../../../backend/services/Home/models/HomeMemberResponseModel';
+import HomePermissionsRequest from '../../../../backend/services/HomeMember/models/HomePermissionsRequest';
 
 @Component({
   selector: 'app-home-member-item',
-  templateUrl: './home-member-item.component.html',
-  styleUrl: './home-member-item.component.css'
+  templateUrl: './home-member-item.component.html'
 })
 export class HomeMemberItemComponent {
-  @Input() homeMember: HomeMemberResponseModel | null = null;
-  showHomePermissionsCheckbox = false;
-  ngOnInit(): void {
-    console.log(this.homeMember);
-  }
+  @Input() homeMember: any;
+  showHomePermissionsCheckbox: boolean = false;
 
-  UpdateHomePermissions() {
+  currentPermissions: HomePermissionsRequest = {
+    addMemberPermission: false,
+    addDevicePermission: false,
+    listDevicesPermission: false,
+    notificationsPermission: false
+  };
+
+  UpdateHomePermissions(): void {
     this.showHomePermissionsCheckbox = !this.showHomePermissionsCheckbox;
+    this.currentPermissions = {
+      addMemberPermission: this.homeMember.homePermissions.includes('AddMemberPermission'),
+      addDevicePermission: this.homeMember.homePermissions.includes('AddDevicesPermission'),
+      listDevicesPermission: this.homeMember.homePermissions.includes('ListDevicesPermission'),
+      notificationsPermission: this.homeMember.homePermissions.includes('NotificationsPermission')
+    };
   }
 
-  onPermissionsChange(newPermissions: string[]) {
-    if (this.homeMember) {
-      this.homeMember.homePermissions = newPermissions;
-    }
+  onPermissionsChange(newPermissions: HomePermissionsRequest): void {
+    this.currentPermissions = newPermissions;
   }
 }

@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="text-center mb-4">
+    <div class="text-center mb-5">
         <h3>Home Devices</h3>
         <div *ngIf="loading" class="loader">
             <app-loading></app-loading>
@@ -18,13 +18,12 @@
         </app-filter>
     </div>
 
-    <div class="row justify-content-start g-4">
-        <div class="col-12 col-md-6 col-lg-4" *ngFor="let homeDevice of status.homeDevices">
+    <div class="row justify-content-center g-4">
+        <div class="col-auto" *ngFor="let homeDevice of status.homeDevices">
             <app-home-device-item 
                 [homeDevice]="homeDevice"
                 [roomId]="roomId"
-                [isAddingToRoom]="isAddingDeviceToRoom"
-                >
+                [isAddingToRoom]="isAddingDeviceToRoom">
             </app-home-device-item>
         </div>
     </div>

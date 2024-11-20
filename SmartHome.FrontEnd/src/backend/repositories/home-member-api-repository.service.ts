@@ -4,6 +4,7 @@ import environmentLocal from '../../environments/environment.local';
 import ApiRepository from './api-repository';
 import HomePermissionResponseModel from '../services/HomeMember/models/HomePermissionResponseModel';
 import { Observable } from 'rxjs';
+import HomePermissionsRequest from '../services/HomeMember/models/HomePermissionsRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -27,13 +28,12 @@ export class HomeMemberApiRepositoryService extends ApiRepository {
   }
 
   public updateHomePermissions(
-    homePermissions: Array<string>,
+    homePermissions: HomePermissionsRequest,
     homeMemberId: string
-  ): Observable<Array<string>> {
-    const homeMemberPermissions = {
-      toHomePermissionList: homePermissions
-    };
-    return this.putById<Array<string>>(`${homeMemberId}/permissions`, homeMemberPermissions);
+  ): Observable<void> {
+    console.log('Request body:', homePermissions);
+    
+    return this.putById<void>(`${homeMemberId}/permissions`, homePermissions);
   }
 
 }

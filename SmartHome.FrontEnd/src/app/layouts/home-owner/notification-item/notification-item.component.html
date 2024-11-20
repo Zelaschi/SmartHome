@@ -1,8 +1,21 @@
-<div *ngIf="notification" class="notification-item">
-    <p>Device: {{ notification.homeDevice }}</p>
-    <p>Event: {{ notification.event }}</p>
-    <p>Read: {{ notification.read }}</p>
-    <p>Date: {{ notification.date }}</p>
-    <p>Time: {{ notification.time }}</p>
+<div *ngIf="notification" class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start">
+      <h5 class="card-title">Device: {{ notification.homeDevice }}</h5>
+      <span class="badge" [ngClass]="notification.read ? 'bg-secondary' : 'bg-primary'">
+        {{ notification.read ? 'Read' : 'New' }}
+      </span>
+    </div>
+    
+    <p class="card-text">{{ notification.event }}</p>
+    <p class="card-text" *ngIf="notification.detectedPerson !== null">Detected Person: {{ notification.detectedPerson }}</p>
+    
+    <div class="text-muted small">
+      <div class="d-flex justify-content-between">
+        <span>Date: {{ notification.date | date:'shortDate' }}</span>
+        <span>Time: {{ notification.time | date:'shortTime' }}</span>
+      </div>
+    </div>
   </div>
+</div>
 
