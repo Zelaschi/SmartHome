@@ -150,8 +150,15 @@ public sealed class DeviceImportService : IDeviceImportLogic
 
         var importer = (IDeviceImporter)Activator.CreateInstance(importerType);
         var inputFileFullPath = _devicesFilesPath + "\\" + fileName;
-
-        List<DTODevice> dtodevices = importer.ImportDevicesFromFilePath(inputFileFullPath);
+        List<DTODevice> dtodevices;
+        try
+        {
+            dtodevices = importer.ImportDevicesFromFilePath(inputFileFullPath);
+        }
+        catch (Exception)
+        {
+            throw new DeviceImporterException("Could not load devices from file. Please check file name.");
+        }
 
         var addedDevices = RegisterDevicesInDatabaseFromDTODevies(dtodevices, dllName, user);
 
