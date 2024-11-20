@@ -81,4 +81,9 @@ public sealed class BusinessesController : ControllerBase
         var updatedBusiness = _businessesLogic.AddValidatorToBusiness(user, validatorId.Id);
         return Ok(updatedBusiness);
     }
+
+    public OkObjectResult GetBusinessById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }
