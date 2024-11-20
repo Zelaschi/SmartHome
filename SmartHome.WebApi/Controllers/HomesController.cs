@@ -100,4 +100,9 @@ public sealed class HomesController : ControllerBase
         _homeLogic.UpdateHomeName(homeId, request.NewName);
         return Ok();
     }
+
+    public OkObjectResult GetHomeById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -197,7 +197,7 @@ public class HomeControllerTest
         var device1 = new Device() { Id = Guid.NewGuid(), Name = "A", Type = "A", ModelNumber = "1", Description = "A", Photos = [], Business = business };
         var device2 = new Device() { Id = Guid.NewGuid(), Name = "device1", ModelNumber = "a", Description = "testDevice", Photos = [], Business = business };
         var homeDevice1 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device1, Name = device1.Name };
-        var homeDevice2 = new HomeDevice(){ Id = Guid.NewGuid(), Online = true, Device = device2, Name = device2.Name };
+        var homeDevice2 = new HomeDevice() { Id = Guid.NewGuid(), Online = true, Device = device2, Name = device2.Name };
         var homeDevices = new List<HomeDevice>() { homeDevice1, homeDevice2 };
         var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1, Name = "Home Name" };
         home1.Devices = homeDevices;
@@ -435,5 +435,30 @@ public class HomeControllerTest
         // ASSERT
         homeLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Id.Equals(objectResult.First().Id));
+    }
+
+    [TestMethod]
+    public void GetHomeByIdTest_Ok()
+    {
+        var homeRequestModel = new CreateHomeRequestModel()
+        {
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "12",
+            Longitude = "34",
+            MaxMembers = 5,
+            Name = "Home Name"
+        };
+        Home home = homeRequestModel.ToEntity();
+        home.Id = Guid.NewGuid();
+
+        homeLogicMock.Setup(h => h.GetHomeById(home.Id)).Returns(home);
+
+        var expected = new OkObjectResult(new HomeResponseModel(home));
+
+        var result = homeController.GetHomeById(home.Id) as OkObjectResult;
+
+        homeLogicMock.VerifyAll();
+        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
 }
