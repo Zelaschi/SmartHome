@@ -267,8 +267,8 @@ namespace SmartHome.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f3b3b3b3-3c8a-423d-bd46-edde4f85fbe4"),
-                            Name = "Add device to room permission"
+                            Id = new Guid("f3b3b3b3-3c8a-423d-bd46-edde4f85fce4"),
+                            Name = "Add permissions to home member"
                         });
                 });
 
@@ -765,7 +765,7 @@ namespace SmartHome.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("80e909fb-3c8a-423d-bd46-edde4f85fbe3"),
-                            CreationDate = new DateTime(2024, 11, 16, 1, 20, 41, 970, DateTimeKind.Local).AddTicks(9435),
+                            CreationDate = new DateTime(2024, 11, 19, 23, 8, 43, 633, DateTimeKind.Local).AddTicks(5184),
                             Email = "admin1234@gmail.com",
                             Name = "First admin",
                             Password = "Password@1234",

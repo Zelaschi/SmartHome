@@ -370,8 +370,8 @@ public sealed class SmartHomeEFCoreContext : DbContext
             },
             new HomePermission
             {
-                Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_ROOM_PERMISSION_ID),
-                Name = "Add device to room permission"
+                Id = Guid.Parse(SeedDataConstants.ADD_PERMISSIONS_TO_HOMEMEMBER_ID),
+                Name = "Add permissions to home member"
             }
         );
 
