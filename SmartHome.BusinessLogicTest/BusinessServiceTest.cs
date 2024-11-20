@@ -349,4 +349,31 @@ public class BusinessServiceTest
         Assert.IsInstanceOfType(exception, typeof(BusinessException));
         Assert.AreEqual("Business already has a validator", exception.Message);
     }
+
+    [TestMethod]
+    public void GetBusinessById_BusinessNotFound_ThrowsException()
+    {
+        var businessId = Guid.NewGuid();
+        Business business = null;
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        Exception exception = null;
+
+        try
+        {
+            businessService.GetBusinessById(businessId);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(BusinessException));
+        Assert.AreEqual("Business does not exist", exception.Message);
+    }
 }
