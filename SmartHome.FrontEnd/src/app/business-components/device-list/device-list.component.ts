@@ -44,6 +44,7 @@ export class DeviceListComponent  {
   ) {}
 
   status: DeviceStatus = {
+    moreDevices: false,
     loading: true,
     devices: [],
   }
@@ -59,8 +60,18 @@ export class DeviceListComponent  {
     this.loading = true;
     this._devicesService.getAllDevices(this.pageNumber, this.pageSize, this.filters.deviceName, this.filters.modelNumber, this.filters.businessName, this.filters.type).subscribe({
       next: (response) => {
-        this.status ={
-          devices: response.data,
+        var moreDevices = response.data.length === this.pageSize;
+        if(moreDevices){
+          this.status ={
+            devices: response.data,
+            moreDevices: true,
+          }
+        }
+        else{
+          this.status ={
+            devices: response.data,
+            moreDevices: false,
+          }
         }
         console.log(this.status.devices);
         this.loading = false;

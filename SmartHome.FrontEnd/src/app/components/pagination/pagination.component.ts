@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: true,
 })
 export class PaginationComponent {
+  @Input() areMore: boolean = false;
   @Input() pageNumber: number = 1;
   @Input() pageSize: number = 10;
   @Output() pageChange = new EventEmitter<number>();

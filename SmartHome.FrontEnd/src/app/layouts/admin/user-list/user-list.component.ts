@@ -23,6 +23,7 @@ export class UserListComponent {
   constructor(private readonly _usersService: UsersService) {}
 
   status: UserStatus = {
+    moreUsers: true,
     loading: true,
     users: [],
   }
@@ -39,9 +40,19 @@ export class UserListComponent {
     this.loading = true;
     this._usersService.getAllUsers(this.pageNumber, this.pageSize, this.filters.role, this.filters.fullName).subscribe({
       next: (response) => {
-        this.status ={
-          users: response.data,
+        var moreUsers = response.data.length === this.pageSize;
+        if (moreUsers){
+          this.status ={
+            users: response.data,
+            moreUsers: true,
+          }
+        }else{
+          this.status = {
+            users: response.data,
+            moreUsers: false,
+          }
         }
+        
         console.log(this.status.users);
         this.loading = false;
       },
