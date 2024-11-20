@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { HomeMemberService } from '../../../../backend/services/HomeMember/home-member.service';
 import HomePermissionStatus from './models/HomePermissionStatus';
 import { tap } from 'rxjs/operators';
+import HomePermissionsRequest from '../../../../backend/services/HomeMember/models/HomePermissionsRequest';
 
 @Component({
   selector: 'app-home-permissions-checkbox',
@@ -11,22 +12,25 @@ import { tap } from 'rxjs/operators';
 })
 
 export class HomePermissionsCheckboxComponent implements OnInit, OnDestroy{
-  @Input() value: string[] = [];
+  @Input() value: HomePermissionsRequest = {
+    addMemberPermission: false,
+    addDevicePermission: false,
+    listDevicesPermission: false,
+    notificationsPermission: false
+  };
   @Input() homeMemberId: string = '';
-  @Output() valueChange = new EventEmitter<string[]>();
+  @Output() valueChange = new EventEmitter<HomePermissionsRequest>();
   
-  onChange(permissionValue: string): void {
-    const index = this.value.indexOf(permissionValue);
-    if (index === -1) {
-      this.value = [...this.value, permissionValue];
-    } else {
-      this.value = this.value.filter(v => v !== permissionValue);
-    }
+  onChange(permissionKey: keyof HomePermissionsRequest): void {
+    this.value = {
+      ...this.value,
+      [permissionKey]: !this.value[permissionKey]
+    };
     this.valueChange.emit(this.value);
   }
 
-  isChecked(permissionValue: string): boolean {
-    return this.value.includes(permissionValue);
+  isChecked(permissionKey: keyof HomePermissionsRequest): boolean {
+    return this.value[permissionKey];
   }
 
   status: HomePermissionStatus = {
@@ -72,8 +76,8 @@ export class HomePermissionsCheckboxComponent implements OnInit, OnDestroy{
   saveSelectedPermissions(): void {
     this._homeMemberService.updateHomePermissions(this.value, this.homeMemberId)
       .subscribe({
-        next: (response) => {
-          console.log('Permisos seleccionados guardados:', response);
+        next: () => {
+          console.log('Permisos guardados exitosamente');
         },
         error: (error) => {
           console.error('Error al guardar permisos:', error);
