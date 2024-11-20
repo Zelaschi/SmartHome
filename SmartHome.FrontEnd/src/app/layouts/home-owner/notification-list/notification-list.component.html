@@ -1,7 +1,7 @@
 <div class="notification-list">
     <h2>Notifications</h2>
     <div *ngIf="loading" class="loader">
-      Loading notifications...
+          <app-loading></app-loading>
     </div>
     <div *ngFor="let notification of status.notifications" class="notification-item">
       <app-notification-item [notification]="notification"></app-notification-item>

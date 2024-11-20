@@ -29,6 +29,7 @@ import { DropdownComponent } from "../../components/dropdown/dropdown.component"
 import { HomePermissionsCheckboxComponent } from './home-permissions-checkbox/home-permissions-checkbox.component';
 import { HomeAddMemberComponent } from './home-add-member/home-add-member.component';
 import { HomeAddMemberItemComponent } from './home-add-member-item/home-add-member-item.component';
+import { LoadingComponent } from '../../components/loading/loading.component';
 
 
 
@@ -55,6 +56,7 @@ import { HomeAddMemberItemComponent } from './home-add-member-item/home-add-memb
     HomeAddMemberItemComponent
   ],
   imports: [
+    LoadingComponent,
     PaginationComponent,
     PhotosCarouselComponent,
     CommonModule,

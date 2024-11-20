@@ -9,10 +9,12 @@ import { FormInputComponent } from '../../components/form/form-input/form-input.
 import { FormButtonComponent } from '../../components/form/form-button/form-button.component';
 import { RouterModule } from '@angular/router';
 import { RegisterFormComponent } from './register-form/register-form.component';
+import { LoadingComponent } from '../../components/loading/loading.component';
 
 @NgModule({
   declarations: [AuthenticationPageComponent, LoginFormComponent, RegisterFormComponent],
   imports: [
+    LoadingComponent,
     CommonModule,
     AuthenticationRoutingModule,
     FormComponent,

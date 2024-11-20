@@ -2,7 +2,7 @@
     <div class="text-center mb-4">
         <h3>Home Devices</h3>
         <div *ngIf="loading" class="loader">
-            Loading home devices...
+            <app-loading></app-loading>
         </div>
         <app-filter [form]="roomFilterForm" (onSubmit)="onSubmit($event)">
             <app-form-input

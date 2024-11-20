@@ -9,7 +9,7 @@
 <div class="homes-list d-flex flex-column container justify-content-center align-items-center">
     <h2 class="m-4">My Homes</h2>
     <div *ngIf="loading" class="loader">
-      Loading homes...
+      <app-loading></app-loading>
     </div>
     <div *ngFor="let home of status.homes" class="home-item" (click)="navigateToHome(home)">
       <app-home-item [home]="home"></app-home-item>

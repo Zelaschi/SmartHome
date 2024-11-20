@@ -1,3 +1,9 @@
+<div *ngIf="homeNameStatus">
+  <div *ngIf="homeNameStatus.loading">
+    <app-loading></app-loading>
+  </div>
+</div>
+
 <h1 class="text-center my-4 text-black">New home name</h1>
 
 <div class="container d-flex justify-content-center">

@@ -71,7 +71,6 @@ export class RegisterFormComponent {
         this._router.navigate(['/login']);
       },
       error: (error) => {
-        this.registerStatus = null;
         this.registerStatus = { error };
       },
     });

@@ -1,5 +1,6 @@
 <div *ngIf="status.loading; else finishLoading">
     Loading validators...
+        <app-loading></app-loading>
   </div>
   <ng-template #finishLoading>
     <div *ngIf="status.error; else showDropdown">

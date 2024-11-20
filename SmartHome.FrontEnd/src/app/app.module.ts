@@ -6,15 +6,11 @@ import { AppComponent } from './app.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormButtonComponent } from './components/form/form-button/form-button.component';
-import { FormInputComponent } from './components/form/form-input/form-input.component';
-import { FormComponent } from './components/form/form/form.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-
   ],
   imports: [
     NgbModule,

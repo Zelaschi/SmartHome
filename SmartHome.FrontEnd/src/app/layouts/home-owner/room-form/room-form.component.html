@@ -1,3 +1,8 @@
+<div *ngIf="roomStatus">
+  <div *ngIf="roomStatus.loading">
+    <app-loading></app-loading>
+  </div>
+</div>
 <h1 class="text-center my-4 text-black">Register Room</h1>
 
 <div class="container d-flex justify-content-center">
