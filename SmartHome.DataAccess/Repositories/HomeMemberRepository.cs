@@ -66,7 +66,7 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>, IUpda
     {
         try
         {
-            return _context.HomeMembers.Include(x=>x.HomePermissions).Include(x=> x.Notifications).FirstOrDefault(filter);
+            return _context.HomeMembers.Include(x=>x.HomePermissions).Include(x=> x.Notifications).Include(x=> x.User).FirstOrDefault(filter);
         }
         catch (SqlException)
         {

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
@@ -22,19 +23,21 @@ public sealed class HomeMembersController : ControllerBase
         _homeMemberLogic = homeMemberLogic ?? throw new ArgumentNullException(nameof(homeMemberLogic));
     }
 
-    [HomeAuthorizationFilter(SeedDataConstants.ADD_PERMISSIONS_TO_HOMEMEMBER_ID)]
-    [HttpPost("{homeMemberId}/permissions")]
-    public IActionResult AddHomePermissionsToHomeMember([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
-    {
-        _homeMemberLogic.AddHomePermissionsToHomeMember(homeMemberId, permissions.ToHomePermissionList());
-        return NoContent();
-    }
-
-    [HomeAuthorizationFilter(SeedDataConstants.ADD_PERMISSIONS_TO_HOMEMEMBER_ID)]
     [HttpPut("{homeMemberId}/permissions")]
     public IActionResult UpdateHomeMemberPermissions([FromRoute] Guid homeMemberId, [FromBody] HomeMemberPermissions permissions)
     {
-        _homeMemberLogic.UpdateHomePermissionsOfHomeMember(homeMemberId, permissions.ToHomePermissionList());
+        var user = HttpContext.Items[UserStatic.User] as User;
+        if (user == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        if (user.Id == null)
+        {
+            return Unauthorized("UserId is missing");
+        }
+
+        _homeMemberLogic.UpdateHomePermissionsOfHomeMember(homeMemberId, permissions.ToHomePermissionList(), user.Id);
         return NoContent();
     }
 

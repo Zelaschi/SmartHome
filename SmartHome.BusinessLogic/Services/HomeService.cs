@@ -213,12 +213,29 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return member;
     }
 
-    public void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions)
+    public void UpdateHomePermissionsOfHomeMember(Guid homeMemberId, List<HomePermission> permissions, Guid? homeOwner)
     {
+        if (homeOwner == null)
+        {
+            throw new HomeException("Home Owner Id is null");
+        }
+
+        var owner = _homeMemberRepository.Find(x => x.User.Id == homeOwner);
+
+        if (owner == null)
+        {
+            throw new HomeException("Owner was not found");
+        }
+
+        if (owner.HomePermissions.FirstOrDefault(x => x.Id == Guid.Parse(SeedDataConstants.ADD_PERMISSIONS_TO_HOMEMEMBER_ID)) == null )
+        {
+            throw new HomeException("User does not have permission to add permissions to home member");
+        }
+
         var member = FindHomeMemberById(homeMemberId);
         var allPermissions = _homePermissionRepository.FindAll().ToList();
         var foundPermissions = allPermissions
-                .Where(permission => permissions.Any(p => p.Id == permission.Id))  // Comparación por Id o cualquier otra propiedad
+                .Where(permission => permissions.Any(p => p.Id == permission.Id))
                 .ToList();
         if (member.HomePermissions.Count > 0)
         {
@@ -592,23 +609,6 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         var home = FindHomeById(homeId);
         home.Name = newName;
         _homeRepository.Update(home);
-    }
-
-    public void AddHomePermissionsToHomeMember(Guid homeMemberId, List<HomePermission> permissions)
-    {
-        var member = FindHomeMemberById(homeMemberId);
-        var allPermissions = _homePermissionRepository.FindAll().ToList();
-        var foundPermissions = allPermissions
-                .Where(permission => permissions.Any(p => p.Id == permission.Id))  // Comparación por Id o cualquier otra propiedad
-                .ToList();
-        if (member.HomePermissions.Count > 0)
-        {
-            member.HomePermissions.Clear();
-            _homeMemberRepository.Update(member);
-        }
-
-        member.HomePermissions = foundPermissions;
-        _homeMemberRepository.Update(member);
     }
 
     public Room CreateRoom(Room room, Guid homeId)

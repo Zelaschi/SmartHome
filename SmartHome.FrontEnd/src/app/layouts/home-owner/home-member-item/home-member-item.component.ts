@@ -8,6 +8,13 @@ import HomePermissionsRequest from '../../../../backend/services/HomeMember/mode
 export class HomeMemberItemComponent {
   @Input() homeMember: any;
   showHomePermissionsCheckbox: boolean = false;
+  isOwner: boolean = false;
+
+  ngOnInit(){
+    if(this.homeMember.homePermissions.includes('Add permissions to home member')){
+      this.isOwner=true;
+    }
+  }
 
   currentPermissions: HomePermissionsRequest = {
     addMemberPermission: false,

@@ -38,17 +38,14 @@ export class HomePermissionsCheckboxComponent {
 
   saveSelectedPermissions(): void {
     this.status.loading = true;
-    console.log('lista permisos', this.value)
-    console.log('homeMemberId', this.homeMemberId)
     this._homeMemberService.updateHomePermissions(this.value, this.homeMemberId)
       .subscribe({
         next: () => {
-          console.log('Permisos guardados exitosamente');
           this.status.loading = false;
         },
         error: (error) => {
-          console.error('Error al guardar permisos:', error);
-          this.status.error = 'Error al guardar permisos';
+          console.error( error);
+          this.status.error = error;
           this.status.loading = false;
         }
       });

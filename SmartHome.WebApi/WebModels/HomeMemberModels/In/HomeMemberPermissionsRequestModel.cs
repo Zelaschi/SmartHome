@@ -14,7 +14,7 @@ public class HomeMemberPermissions
     {
         var homePermissions = new List<HomePermission>();
         if (AddMemberPermission)
-            homePermissions.Add(new HomePermission() { Name = "AddMemberPermission", Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID) });
+            homePermissions.Add(new HomePermission() { Name = "AddMemberPermission", Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_HOMEPERMISSION_ID) });
         if (AddDevicePermission)
             homePermissions.Add(new HomePermission() { Name = "AddDevicesPermission" , Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID)});
         if (ListDevicesPermission)

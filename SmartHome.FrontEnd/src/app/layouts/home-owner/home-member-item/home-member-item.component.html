@@ -17,7 +17,7 @@
             </ng-template>
         </div>
 
-        <div class="mt-auto">
+        <div class="mt-auto" *ngIf="!isOwner">
             <button class="btn btn-secondary w-100 mb-2" (click)="UpdateHomePermissions()">
                 Update permissions
             </button>
