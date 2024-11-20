@@ -1,4 +1,4 @@
-<div *ngIf="homeDevice" class="card h-100 mx-auto" style="max-width: 350px; min-width: 350px;">
+<div *ngIf="homeDevice" class="card mx-auto" style="max-width: 350px; min-width: 350px;">
     <div class="card-img-top position-relative">
         <app-photos-carousel 
             *ngIf="homeDevice?.photos && homeDevice.photos.length > 0"
@@ -11,6 +11,7 @@
         
         <div class="device-info px-2">
             <p class="card-text mb-2">Device Type: {{ homeDevice.type }}</p>
+            <p class="card-text mb-2">Model: {{ homeDevice.device }}</p>
             <p class="card-text mb-2">Online: {{ homeDevice.online ? 'Yes' : 'No' }}</p>
             <p class="card-text mb-2" *ngIf="homeDevice.isOn !== null">Is on?: {{ homeDevice.isOn ? 'Yes' : 'No' }}</p>
             <p class="card-text mb-2" *ngIf="homeDevice.open !== null">Is open?: {{ homeDevice.open ? 'Yes' : 'No' }}</p>
@@ -28,6 +29,14 @@
                 <p class="mb-0">{{ errorMessage }}</p>
             </div>
         </div>
+
+        <div *ngIf="showHomeDeviceNameForm" class="position-absolute start-0 end-0 bg-white p-3" 
+             style="z-index: 1000; top: 50%; transform: translateY(-50%); box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+            <app-home-device-name
+                [homeDeviceId]="homeDevice?.hardwardId ?? null"
+                (homeDeviceNameUpdated)="onHomeDeviceNameUpdated($event)">
+            </app-home-device-name>
+        </div>
         
         <div class="mt-auto pt-3">
             <button class="btn btn-secondary btn-sm mb-2 w-100" (click)="ChangeHomeDeviceName(homeDevice.hardwardId)">Change name</button>
@@ -36,11 +45,4 @@
         </div>
         <ng-content></ng-content>
     </div>
-</div>
-
-<div *ngIf="showHomeDeviceNameForm">
-    <app-home-device-name
-        [homeDeviceId]="homeDevice?.hardwardId ?? null"
-        (homeDeviceNameUpdated)="onHomeDeviceNameUpdated($event)">
-    </app-home-device-name>
 </div>

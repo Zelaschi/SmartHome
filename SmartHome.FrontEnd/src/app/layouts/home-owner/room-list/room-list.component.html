@@ -1,9 +1,11 @@
-<div class="home-members-list">
-    <h5>Home Rooms</h5>
+<div class="home-members-list container">
+    <h5 class="text-center mb-4">Home Rooms</h5>
     <div *ngIf="loading" class="loader">
           <app-loading></app-loading>
     </div>
-    <div *ngFor="let room of status.rooms" class="home-room-item">
-      <app-room-item [room]="room" [homeId]="homeId"></app-room-item>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" *ngFor="let room of status.rooms">
+            <app-room-item [room]="room" [homeId]="homeId"></app-room-item>
+        </div>
     </div>
-  </div>
+</div>
