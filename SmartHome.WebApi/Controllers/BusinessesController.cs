@@ -90,7 +90,7 @@ public sealed class BusinessesController : ControllerBase
 
         if (business == null)
         {
-            throw new NotImplementedException();
+            return NotFound();
         }
 
         return Ok(new BusinessesResponseModel(business));
