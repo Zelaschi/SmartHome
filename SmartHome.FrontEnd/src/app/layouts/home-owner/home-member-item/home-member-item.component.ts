@@ -6,7 +6,7 @@ import HomePermissionsRequest from '../../../../backend/services/HomeMember/mode
   templateUrl: './home-member-item.component.html'
 })
 export class HomeMemberItemComponent {
-  @Input() homeMember: any; // Tipo específico de tu modelo HomeMember
+  @Input() homeMember: any;
   showHomePermissionsCheckbox: boolean = false;
 
   currentPermissions: HomePermissionsRequest = {

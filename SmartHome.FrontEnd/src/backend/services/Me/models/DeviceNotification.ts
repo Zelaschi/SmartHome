@@ -5,4 +5,5 @@ export interface DeviceNotification {
     read: boolean;
     date: Date;
     time: Date;
+    detectedPerson: string | null;
 }
