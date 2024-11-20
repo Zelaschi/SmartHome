@@ -14,6 +14,7 @@ using SmartHome.WebApi.WebModels.UpdateNameModels.In;
 using SmartHome.WebApi.WebModels.UserModels.Out;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using SmartHome.WebApi.WebModels.AddUserToHome.In;
+using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -101,8 +102,17 @@ public sealed class HomesController : ControllerBase
         return Ok();
     }
 
-    public OkObjectResult GetHomeById(Guid id)
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HttpGet("{homeId}/home")]
+    public IActionResult GetHomeById([FromRoute] Guid homeId)
     {
-        throw new NotImplementedException();
+        var home = _homeLogic.GetHomeById(homeId);
+
+        if (home == null)
+        {
+            throw new NotImplementedException();
+        }
+
+        return Ok(new HomeResponseModel(home));
     }
 }
