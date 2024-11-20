@@ -11,6 +11,27 @@ public sealed class ExceptionFilter : IExceptionFilter
     private readonly Dictionary<Type, Func<Exception, IActionResult>> _errors = new ()
     {
         {
+            typeof(ValidatorException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(RoomException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
+            typeof(BusinessException),
+            exception => new ObjectResult(new { ErrorMessage = exception.Message })
+            {
+                StatusCode = (int)HttpStatusCode.BadRequest
+            }
+        },
+        {
             typeof(UnauthorizedAccessException),
             exception => new ObjectResult(new { ErrorMessage = exception.Message })
             {
