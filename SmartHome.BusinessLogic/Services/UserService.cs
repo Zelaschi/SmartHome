@@ -118,7 +118,7 @@ public sealed class UserService : IHomeOwnerLogic, IUsersLogic, IBusinessOwnerLo
     private void EnsureAdminCannotBeDeletedIfOnlyOneExists()
     {
         IList<User> users = _userRepository.FindAll().ToList();
-        var adminUsers = users.Where(user => user.Role == _roleService.GetAdminRole()).ToList();
+        var adminUsers = users.Where(user => user.Role == _roleService.GetAdminRole() || user.Role == _roleService.GetAdminHomeOwnerRole()).ToList();
         if (adminUsers.Count <= 1)
         {
             throw new UserException("Cannot delete the only admin user");

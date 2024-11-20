@@ -74,7 +74,7 @@ export class HomeFormComponent {
       next: (response) => {
         this.homeStatus = null;
 
-        this._router.navigate(["/landing"]);
+        this._router.navigate(["/homeOwners"]);
       },
       error: (error) => {
         this.homeStatus = { error };

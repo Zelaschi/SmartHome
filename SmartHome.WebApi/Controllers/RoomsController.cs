@@ -36,7 +36,7 @@ public sealed class RoomsController : ControllerBase
     public IActionResult AddDevicesToRoom([FromBody] HomeDeviceIdRequestModel homeDeviceId, [FromRoute] Guid roomId)
     {
         var createResponse = new HomeDeviceResponseModel(_roomLogic.AddDevicesToRoom(homeDeviceId.HomeDeviceId, roomId));
-        return CreatedAtAction("RoomAddedToHome", new { createResponse.HardwardId }, createResponse);
+        return CreatedAtAction("AddDevicesToRoom", new { createResponse.HardwardId }, createResponse);
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]

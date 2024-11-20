@@ -79,13 +79,4 @@ export class HomeDeviceListComponent {
     }
   }
 
-  onHomeDeviceAdded(homeDeviceId: string): void {
-    if (this.roomId) {
-      this._roomService.addDeviceToRoom(this.roomId, homeDeviceId).subscribe({
-        next: () => {
-          console.log('Device added to room successfully');
-        }
-      });
-    }
-  }
 }

@@ -81,7 +81,14 @@
             </app-form-input>
         </div>
 
-        
+        <div *ngIf="homeStatus">
+          <div *ngIf="homeStatus.error" >
+            <br>
+            <div class="alert alert-danger" *ngIf="homeStatus.error !== ''">
+                <p>{{ homeStatus.error }}</p>
+            </div>
+          </div>
+        </div>
 
       <div class="d-grid gap-2">
         <app-form-button submit title= "Create Home" ></app-form-button>

@@ -13,6 +13,18 @@
             [formField]="formField"
             class="" />
       </div>
+      <div *ngIf="roomStatus">
+        <div *ngIf="roomStatus.error" >
+          <br>
+          <div class="alert alert-danger" *ngIf="roomStatus.error !== ''">
+              <p>{{ roomStatus.error }}</p>
+          </div>
+        </div>
+        <div *ngIf="roomStatus.success" class="alert alert-success" >
+          <br>
+              <p>Room created successfully</p>
+        </div>
+      </div>
       <div class="d-grid gap-2">
         <app-form-button submit title= "Add Room" ></app-form-button>
       </div>

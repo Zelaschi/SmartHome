@@ -10,6 +10,7 @@ import { RoomService } from '../../../../backend/services/Room/room.service';
 export class RoomItemComponent {
   @Input() room: RoomResponseModel | null = null;
   @Input() homeId: string | null = null;
+  added: boolean = false;
   showDevices: boolean = false;
   isAddingDeviceToRoom: boolean = false;
 
@@ -34,6 +35,7 @@ export class RoomItemComponent {
   onHomeDeviceAdded(): void {
     this.showDevices = false;
     this.isAddingDeviceToRoom = false;
+    this.added = true;
     console.log('Device added to room successfully');
   }
 }

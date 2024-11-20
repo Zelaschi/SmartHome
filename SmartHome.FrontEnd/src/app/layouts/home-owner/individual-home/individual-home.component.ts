@@ -114,7 +114,6 @@ export class IndividualHomeComponent implements OnInit {
   }
 
   onNameUpdated(newName: string): void {
-    this.showHomeNameForm = false;
     if (this.home) {
       this.home.name = newName;
     }

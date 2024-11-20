@@ -27,6 +27,10 @@ public sealed class ExceptionFilter : ExceptionFilterAttribute
         {
             context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
         }
+        else if (exception is RoomException)
+        {
+            context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };
+        }
         else if (exception is UserException)
         {
             context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = (int)HttpStatusCode.BadRequest };

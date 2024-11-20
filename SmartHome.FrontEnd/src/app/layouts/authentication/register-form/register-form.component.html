@@ -58,6 +58,15 @@
           [formField]="formField" />
       </div>
 
+      <div *ngIf="registerStatus">
+        <div *ngIf="registerStatus.error" >
+          <br>
+          <div class="alert alert-danger" *ngIf="registerStatus.error !== ''">
+              <p>{{ registerStatus.error }}</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Botón de Registro -->
       <div class="d-grid gap-2 mt-4">
         <app-form-button title="Register" />

@@ -26,6 +26,15 @@
           class=" mb-3" />
       </div>
 
+      <div *ngIf="loginStatus">
+        <div *ngIf="loginStatus.error" >
+          <br>
+          <div class="alert alert-danger" *ngIf="loginStatus.error !== ''">
+              <p>{{ loginStatus.error }}</p>
+          </div>
+        </div>
+      </div>
+      
       <div class="mt-3 d-grid gap-2 form-group">
         <app-form-button title="Login" submit  />
         <app-form-button title="Register" (click)="goToRegister()" class="" />

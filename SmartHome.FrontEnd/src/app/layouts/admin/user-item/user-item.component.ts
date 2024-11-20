@@ -9,6 +9,8 @@ import { AdminService } from '../../../../backend/services/Admin/admin.service';
 })
 export class UserItemComponent {
   @Input() user: User | null = null;
+  error:string | null = null;
+  success:string | null = null; 
 
   constructor(private readonly _adminService: AdminService) {}
   ngOnInit(): void {
@@ -19,9 +21,13 @@ export class UserItemComponent {
     this._adminService.deleteAdmin(id).subscribe({
       next: (response) => {
         console.log(response);
+        this.error = null;
+        this.success = 'Admin deleted successfully';
       },
       error: (error) => {
         console.error(error);
+        this.error = 'Error deleting admin';
+        this.success = null;
       }
     });
   }

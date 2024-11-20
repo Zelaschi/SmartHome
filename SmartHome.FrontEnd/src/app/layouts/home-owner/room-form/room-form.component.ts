@@ -26,6 +26,7 @@ export class RoomFormComponent {
   roomStatus: {
     loading?: true;
     error?: string;
+    success?: boolean;
   } | null = null;
 
   constructor(
@@ -43,6 +44,7 @@ export class RoomFormComponent {
     this._roomService.registerRoom(this.homeId, values).subscribe({
       next: () => {
         this.roomStatus = null;
+        this.roomStatus = { success: true };
       },
       error: (error) => {
         this.roomStatus = { error };

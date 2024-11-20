@@ -16,6 +16,8 @@ export class DeviceItemComponent {
   @Input() isAddingToHome: boolean = false;
   @Output() deviceAdded = new EventEmitter<Device>();
 
+  added: boolean = false;
+
   ngOnInit(): void {
     console.log(this.device);
   }
@@ -23,6 +25,7 @@ export class DeviceItemComponent {
   addToHome(): void {
     if (this.device) {
       console.log(`Adding device ${this.device.name} to home.`);
+      this.added = true;
       this.deviceAdded.emit(this.device);
     }
   }

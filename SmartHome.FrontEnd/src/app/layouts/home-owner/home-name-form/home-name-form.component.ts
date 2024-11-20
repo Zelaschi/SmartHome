@@ -27,6 +27,7 @@ export class HomeNameFormComponent {
   homeNameStatus:{
     loading?: true;
     error?: string;
+    success?: string;
   } | null = null;
 
   constructor(
@@ -46,10 +47,10 @@ export class HomeNameFormComponent {
       next: () => {
         this.homeNameStatus = null;
         this.nameUpdated.emit(newName);
+        this.homeNameStatus = { success: 'Home name updated successfully' };
       },
       error: (error) => {
         this.homeNameStatus = { error: 'Failed to update home name. Please try again.' };
-        console.error(error);
       }
     });
   }

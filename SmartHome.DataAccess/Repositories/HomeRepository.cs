@@ -78,6 +78,7 @@ public class HomeRepository : IGenericRepository<Home>, IHomesFromUserRepository
                 ThenInclude(x=>x.Device).
                 ThenInclude(x=> x.Photos).
                 Include(x => x.Rooms).
+                ThenInclude(x => x.HomeDevices).
                 FirstOrDefault(filter);
         }
         catch (SqlException)

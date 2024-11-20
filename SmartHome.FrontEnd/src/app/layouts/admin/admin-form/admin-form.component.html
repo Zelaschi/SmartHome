@@ -60,6 +60,15 @@
         </app-form-input>
       </div>
 
+      <div *ngIf="adminStatus">
+        <div *ngIf="adminStatus.error" >
+          <br>
+          <div class="alert alert-danger" *ngIf="adminStatus.error !== ''">
+              <p>{{ adminStatus.error }}</p>
+          </div>
+        </div>
+      </div>
+
       <div class="d-grid gap-2">
         <app-form-button submit title="Register Admin" ></app-form-button>
       </div>

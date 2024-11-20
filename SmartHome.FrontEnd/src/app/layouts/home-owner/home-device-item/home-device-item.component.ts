@@ -13,6 +13,9 @@ export class HomeDeviceItemComponent {
   @Input() homeDevice: HomeDeviceResponseModel | null = null;
   @Output() homeDeviceAdded = new EventEmitter<string>();
   showHomeDeviceNameForm: boolean = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+
 
   constructor(private readonly _roomService: RoomService) {}
   
@@ -37,8 +40,17 @@ export class HomeDeviceItemComponent {
   }
 
   addDeviceToRoom(): void {
-    if (this.homeDevice?.hardwardId) {
-      this.homeDeviceAdded.emit(this.homeDevice?.hardwardId ?? '');
+    if (this.roomId && this.homeDevice) {
+      this._roomService.addDeviceToRoom(this.roomId, this.homeDevice.hardwardId).subscribe({
+        next: () => {
+          this.errorMessage = null;
+          this.successMessage = 'Device added to room successfully';
+          console.log("ADDED")
+        },
+        error: () => {
+          this.errorMessage = 'Failed to add device to room. Please try again.';
+        }
+      });
     }
   }
 }

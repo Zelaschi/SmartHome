@@ -13,6 +13,22 @@
               [formField]="formField"
                />
         </div>
+        <div *ngIf="homeNameStatus">
+          <div *ngIf="homeNameStatus.error" >
+            <br>
+            <div class="alert alert-danger" *ngIf="homeNameStatus.error !== ''">
+                <p>{{ homeNameStatus.error }}</p>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="homeNameStatus">
+          <div *ngIf="homeNameStatus.success" >
+            <br>
+            <div class="alert alert-success" *ngIf="homeNameStatus.success !== ''">
+                <p>{{ homeNameStatus.success }}</p>
+            </div>
+          </div>
+        </div>
 
         <div class="d-grid gap-2">
           <app-form-button submit title= "Confirm new name"></app-form-button>

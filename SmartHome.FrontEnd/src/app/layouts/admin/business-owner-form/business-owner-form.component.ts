@@ -63,7 +63,7 @@ export class BusinessOwnerFormComponent {
         this._router.navigate(["/landing"]);
       },
       error: (error) => {
-        this.businessOwnerStatus = { error: error.message };
+        this.businessOwnerStatus = { error: error };
       }
     });
   }

@@ -5,7 +5,19 @@
     <p class="card-text">Email {{ user.email }}</p>
     <p class="card-text">Role: {{ user.role }}</p>
     <p class="card-text">Creation date: {{ user.creationDate | date:'dd/MM/yyyy' }}</p>
-    <button *ngIf="user.role == 'Admin'" (click)="deleteAdmin(user.id)">Delete</button>
+    <div *ngIf="error" >
+      <br>
+      <div class="alert alert-danger" *ngIf="error !== ''">
+          <p>{{ error }}</p>
+      </div>
+    </div>
+    <div *ngIf="success" >
+      <br>
+      <div class="alert alert-success" *ngIf="success !== ''">
+          <p>{{ success }}</p>
+      </div>
+    </div>
+    <button *ngIf="user.role == 'Admin'" class="btn btn-danger" (click)="deleteAdmin(user.id)">Delete</button>
   </div>
 
 </div>
