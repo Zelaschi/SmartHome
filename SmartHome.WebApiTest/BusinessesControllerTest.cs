@@ -501,4 +501,19 @@ public class BusinessesControllerTest
         Assert.IsNotNull(result);
         Assert.AreEqual(expected.StatusCode, result.StatusCode);
     }
+
+    [TestMethod]
+    public void GetBusinessById_BusinessIdMissing_Test_ReturnsNotFound()
+    {
+        var missingBusinessId = Guid.NewGuid();
+        businessesLogicMock.Setup(b => b.GetBusinessById(missingBusinessId)).Returns((Business)null);
+
+        var expected = new NotFoundResult();
+
+        var result = businessesController.GetBusinessById(missingBusinessId) as NotFoundResult;
+
+        businessesLogicMock.VerifyAll();
+        Assert.IsNotNull(result);
+        Assert.AreEqual(result.StatusCode, expected.StatusCode);
+    }
 }
