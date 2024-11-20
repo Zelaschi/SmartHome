@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HomeService } from '../../../../backend/services/Home/home.service';
 import HomeDeviceStatus from '../home-members-list/models/HomeDeviceStatus';
@@ -49,8 +49,6 @@ export class HomeDeviceListComponent {
         this.status ={
           homeDevices: response,
         }
-        console.log(response);
-        console.log(this.status.homeDevices);
         this.loading = false;
       },
       error: (error) => {
@@ -71,7 +69,6 @@ export class HomeDeviceListComponent {
   });
 
   onSubmit(values: any){
-    console.log('Datos del user:', values);
     this.status.loading = true;
     this.filters.room = values.room;
     if (this.homeId) {

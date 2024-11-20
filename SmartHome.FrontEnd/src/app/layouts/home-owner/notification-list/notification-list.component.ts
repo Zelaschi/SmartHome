@@ -30,12 +30,10 @@ export class NotificationListComponent implements OnInit, OnDestroy {
     this.loading = true;
     this._notificationSubscription = this._meService.getNotifications().subscribe({
       next: (response) => {
-        console.log('Raw response:', response);
         this.status = {
           notifications: response.data || [],
           loading: false
         };
-        console.log('Notifications loaded:', this.status.notifications);
         this.loading = false;
       },
       error: (error) => {

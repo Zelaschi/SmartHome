@@ -9,7 +9,4 @@ import { Business } from '../../../../backend/services/Business/models/Business'
 export class BusinessItemComponent {
   @Input() business: Business | null = null;
 
-  ngOnInit(): void {
-    console.log(this.business);
-  }
 }

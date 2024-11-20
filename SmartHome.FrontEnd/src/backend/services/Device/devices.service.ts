@@ -4,8 +4,6 @@ import { DeviceTypeApiRepositoryService } from '../../repositories/device-type-a
 import DeviceCreationModel from './models/DeviceCreationModel';
 import DeviceTypeModel from './models/DeviceTypeModel';
 import { Observable } from 'rxjs';
-import DeviceCreatedModel from './models/DeviceCreatedModel';
-import { Device } from './models/Device';
 import DevicePaginatedResponse from './models/DevicePaginatedResponse';
 import WindowSensorsCreationModel from '../WindowSensor/models/WindowSensorsCreationModel';
 import WindowSensorsCreatedModel from '../WindowSensor/models/WindowSensorsCreatedModel';

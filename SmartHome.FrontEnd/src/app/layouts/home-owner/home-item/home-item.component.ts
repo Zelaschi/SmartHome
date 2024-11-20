@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import HomeCreatedModel from '../../../../backend/services/Home/models/HomeCreatedModel';
 import { NavigationExtras, Router } from '@angular/router';
 
@@ -13,9 +13,6 @@ export class HomeItemComponent {
   ) { }
   @Input() home: HomeCreatedModel | null = null;
 
-  ngOnInit(): void {
-    console.log(this.home);
-  }
 
   HomeInfo(homeId: string): void {
     if (homeId && this.home) {

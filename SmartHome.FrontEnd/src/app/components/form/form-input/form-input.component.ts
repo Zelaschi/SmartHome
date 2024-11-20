@@ -1,4 +1,4 @@
-import { Component, DoCheck, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { InputComponent } from "../../input/input.component";
 import { CommonModule, NgIf } from "@angular/common";

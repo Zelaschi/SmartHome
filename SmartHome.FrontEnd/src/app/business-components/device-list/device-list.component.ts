@@ -1,7 +1,6 @@
 // device-list.component.ts
 import { Component, Input, OnInit } from '@angular/core';
-import DropdownOption from '../../components/dropdown/models/DropdownOption';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Device } from '../../../backend/services/Device/models/Device';
 import { DevicesService } from '../../../backend/services/Device/devices.service';
 import { Subscription } from 'rxjs';
@@ -73,7 +72,6 @@ export class DeviceListComponent  {
             moreDevices: false,
           }
         }
-        console.log(this.status.devices);
         this.loading = false;
       },
       error: (error) => {
@@ -115,7 +113,6 @@ export class DeviceListComponent  {
     this.typeAux = values;
   }
   onSubmit(values: any) {
-    console.log('Datos del dispositivo:', values);
     this.status.loading =  true;
     this.filters = {
       deviceName: values.deviceName,

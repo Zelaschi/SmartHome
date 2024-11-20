@@ -19,23 +19,16 @@ export class RoomItemComponent {
   toggleDevices(): void {
     this.showDevices = !this.showDevices;
     this.isAddingDeviceToRoom = !this.isAddingDeviceToRoom;
-    console.log('Room:', this.room);
   }
 
   onDeviceAdded(): void {
     this.showDevices = false;
     this.isAddingDeviceToRoom = false;
-    console.log('Device added succesfully');
-  }
-
-  ngOnInit(): void {
-    console.log(this.room);
   }
 
   onHomeDeviceAdded(): void {
     this.showDevices = false;
     this.isAddingDeviceToRoom = false;
     this.added = true;
-    console.log('Device added to room successfully');
   }
 }

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import HomeCreatedModel from '../../../../backend/services/Home/models/HomeCreatedModel';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-individual-home',
@@ -65,7 +65,6 @@ export class IndividualHomeComponent implements OnInit {
   onDeviceAdded(): void {
     this.showDeviceList = false;
     this.isAddingDevice = false;
-    console.log('Device added succesfully');
   }
 
   GetHomeDevices(): void {
@@ -117,6 +116,5 @@ export class IndividualHomeComponent implements OnInit {
     if (this.home) {
       this.home.name = newName;
     }
-    console.log('Home name updated successfully:', newName);
   }
 }

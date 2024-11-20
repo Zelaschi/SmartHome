@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HomeService } from '../../../../backend/services/Home/home.service';
 import HomeMemberStatus from './models/HomeMemberStatus';
@@ -37,8 +37,6 @@ export class HomeMembersListComponent {
         this.status ={
           homeMembers: response,
         }
-        console.log(response);
-        console.log(this.status.homeMembers);
         this.loading = false;
       },
       error: (error) => {

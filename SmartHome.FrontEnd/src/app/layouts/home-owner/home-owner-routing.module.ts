@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotificationListComponent } from './notification-list/notification-list.component';
 import { HomesListComponent } from './homes-list/homes-list.component';
-import { RoomFormComponent } from './room-form/room-form.component';
 import { authorizationGuard } from '../../../backend/guards/authorization.guard';
-import { HomeDeviceListComponent } from './home-device-list/home-device-list.component';
 import { HomeFormComponent } from './home-form/home-form.component';
 import { IndividualHomeComponent } from './individual-home/individual-home.component';
 

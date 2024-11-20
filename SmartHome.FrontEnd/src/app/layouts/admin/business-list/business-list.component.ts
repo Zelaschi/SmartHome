@@ -54,7 +54,6 @@ export class BusinessListComponent {
             moreBusinesses: false,
           }
         }
-        console.log(this.status.businesses);
         this.loading = false;
       },
       error: (error) => {
@@ -84,7 +83,6 @@ export class BusinessListComponent {
   });
 
   onSubmit(values : any){
-    console.log('Datos del business:', values);
     this.status.loading =  true;
     this.filters = {
       businessName: values.businessName,

@@ -13,14 +13,10 @@ export class UserItemComponent {
   success:string | null = null; 
 
   constructor(private readonly _adminService: AdminService) {}
-  ngOnInit(): void {
-    console.log(this.user);
-  }
 
   deleteAdmin(id: string): void {
     this._adminService.deleteAdmin(id).subscribe({
       next: (response) => {
-        console.log(response);
         this.error = null;
         this.success = 'Admin deleted successfully';
       },

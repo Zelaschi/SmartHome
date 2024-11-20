@@ -31,7 +31,6 @@ export class HomeAddMemberComponent {
     if(this.homeId!=null){
       this._homeService.AddHomeMemberToHome(this.homeId, user.id).subscribe({
         next: () => {
-          console.log(`Device ${user.name} added to home ${this.homeId} successfully.`);
           if(this.homeId!=null){
             this.loadUsers(this.homeId);
           }
@@ -54,7 +53,6 @@ export class HomeAddMemberComponent {
         this.status ={
           users: response,
         }
-        console.log(response);
         this.loading = false;
       },
       error: (error) => {

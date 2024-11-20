@@ -10,8 +10,6 @@ import { HomeMembersListComponent } from './home-members-list/home-members-list.
 import { FormButtonComponent } from '../../components/form/form-button/form-button.component';
 import { FormInputComponent } from '../../components/form/form-input/form-input.component';
 import { FormComponent } from '../../components/form/form/form.component';
-import { AppModule } from '../../app.module';
-import { ButtonComponent } from '../../components/button/button.component';
 import { RoomFormComponent } from './room-form/room-form.component';
 import { DeviceListComponent } from '../../business-components/device-list/device-list.component';
 import { PaginationComponent } from '../../components/pagination/pagination.component';

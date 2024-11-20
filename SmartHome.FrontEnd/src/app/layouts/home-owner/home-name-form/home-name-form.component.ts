@@ -49,7 +49,7 @@ export class HomeNameFormComponent {
         this.nameUpdated.emit(newName);
         this.homeNameStatus = { success: 'Home name updated successfully' };
       },
-      error: (error) => {
+      error: () => {
         this.homeNameStatus = { error: 'Failed to update home name. Please try again.' };
       }
     });

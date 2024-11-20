@@ -67,7 +67,6 @@ export class DeviceImporterFormComponent {
       return;
     }
 
-    console.log(values);
 
     this._deviceImporterService.importDevices(values).subscribe({
       next: (result) => {

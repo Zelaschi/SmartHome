@@ -22,10 +22,6 @@ export class HomeDeviceItemComponent {
   constructor(
     private readonly _roomService: RoomService,
   ) {}
-  
-  ngOnInit(): void {
-    console.log(this.homeDevice?.photos);
-  }
 
   ChangeHomeDeviceName(harwardId : string): void {
     this.showHomeDeviceNameForm = !this.showHomeDeviceNameForm;
@@ -63,7 +59,6 @@ export class HomeDeviceItemComponent {
     if (this.homeDevice) {
       this.homeDevice.name = newName;
     }
-    console.log('Home name updated successfully:', newName);
   }
 
   addDeviceToRoom(): void {
@@ -72,7 +67,6 @@ export class HomeDeviceItemComponent {
         next: () => {
           this.errorMessage = null;
           this.successMessage = 'Device added to room successfully';
-          console.log("ADDED")
         },
         error: () => {
           this.errorMessage = 'Failed to add device to room. Please try again.';

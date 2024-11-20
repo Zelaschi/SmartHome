@@ -9,7 +9,4 @@ import { DeviceNotification } from '../../../../backend/services/Me/models/Devic
 export class NotificationItemComponent {
   @Input() notification: DeviceNotification | null = null;
 
-  ngOnInit(): void {
-    console.log(this.notification);
-  }
 }

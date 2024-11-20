@@ -53,7 +53,6 @@ export class UserListComponent {
           }
         }
         
-        console.log(this.status.users);
         this.loading = false;
       },
       error: (error) => {
@@ -83,7 +82,6 @@ export class UserListComponent {
   })
 
   onSubmit(values: any){
-    console.log('Datos del user:', values);
     this.status.loading =  true;
     this.filters = {
       role: values.role,

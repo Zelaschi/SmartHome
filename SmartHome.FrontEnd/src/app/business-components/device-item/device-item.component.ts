@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Device } from '../../../backend/services/Device/models/Device';
-import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { PhotosCarouselComponent } from '../../components/photos-carousel/photos-carousel.component';
 import { CommonModule } from '@angular/common';
 
@@ -17,10 +16,6 @@ export class DeviceItemComponent {
   @Output() deviceAdded = new EventEmitter<Device>();
 
   added: boolean = false;
-
-  ngOnInit(): void {
-    console.log(this.device);
-  }
 
   addToHome(): void {
     if (this.device) {

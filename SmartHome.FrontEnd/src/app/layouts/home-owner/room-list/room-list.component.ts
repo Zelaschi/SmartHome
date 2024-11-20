@@ -37,8 +37,6 @@ export class RoomListComponent {
         this.status ={
           rooms: response,
         }
-        console.log(response);
-        console.log(this.status.rooms);
         this.loading = false;
       },
       error: (error) => {

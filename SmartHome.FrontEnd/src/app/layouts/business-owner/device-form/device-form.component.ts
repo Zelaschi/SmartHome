@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DevicesService } from '../../../../backend/services/Device/devices.service';
 import { Router } from '@angular/router';
-import { DeviceTypeDropdownComponent } from '../../../business-components/device-type-dropdown/device-type-dropdown.component';
 import DeviceCreationModel from '../../../../backend/services/Device/models/DeviceCreationModel';
 
 
@@ -86,7 +85,6 @@ export class DeviceFormComponent {
     this.deviceForm.patchValue({
       [this.formField.type.name]: values
     });
-    console.log(this.typeAux);
   }
 
   ngOnInit() {
@@ -114,7 +112,6 @@ export class DeviceFormComponent {
   addPhoto(): void {
     const newPhotoControl = new FormControl('');
     this.photos.push(newPhotoControl);
-    console.log('Added photo, total:', this.photos.length);
   }
   
   removePhoto(index: number): void {
@@ -125,7 +122,6 @@ export class DeviceFormComponent {
 
   // Método para manejar el registro del dispositivo
   public onSubmit(values: DeviceCreationModel) {
-    console.log('Datos del dispositivo:',values);
     this.deviceStatus = { loading: true };
     switch (this.typeAux) {
       case 'Security Camera':
@@ -173,7 +169,7 @@ export class DeviceFormComponent {
         });
         break;
       default:
-        console.log('Tipo de dispositivo no reconocido');
+        console.error('Tipo de dispositivo no reconocido');
         break;
     }
   }
