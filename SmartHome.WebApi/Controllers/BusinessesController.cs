@@ -82,8 +82,17 @@ public sealed class BusinessesController : ControllerBase
         return Ok(updatedBusiness);
     }
 
-    public OkObjectResult GetBusinessById(Guid id)
+    [AuthorizationFilter(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)]
+    [HttpGet("{businessId}/business")]
+    public IActionResult GetBusinessById([FromRoute] Guid businessId)
     {
-        throw new NotImplementedException();
+        var business = _businessesLogic.GetBusinessById(businessId);
+
+        if (business == null)
+        {
+            throw new NotImplementedException();
+        }
+
+        return Ok(new BusinessesResponseModel(business));
     }
 }
