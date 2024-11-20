@@ -465,25 +465,15 @@ public class HomeControllerTest
     [TestMethod]
     public void GetHomeById_HomeIdMissing_Test_ReturnsNotFound()
     {
-        var homeRequestModel = new CreateHomeRequestModel()
-        {
-            MainStreet = "Cuareim",
-            DoorNumber = "1234",
-            Latitude = "12",
-            Longitude = "34",
-            MaxMembers = 5,
-            Name = "Home Name"
-        };
-        Home home = homeRequestModel.ToEntity();
-        home.Id = Guid.NewGuid();
-
-        homeLogicMock.Setup(h => h.GetHomeById(Guid.NewGuid())).Returns((Home)null);
+        var missingHomeId = Guid.NewGuid();
+        homeLogicMock.Setup(h => h.GetHomeById(missingHomeId)).Returns((Home)null);
 
         var expected = new NotFoundResult();
 
-        var result = homeController.GetHomeById(Guid.NewGuid()) as NotFoundResult;
+        var result = homeController.GetHomeById(missingHomeId) as NotFoundResult;
 
         homeLogicMock.VerifyAll();
+        Assert.IsNotNull(result);
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode));
     }
 }

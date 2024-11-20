@@ -110,7 +110,7 @@ public sealed class HomesController : ControllerBase
 
         if (home == null)
         {
-            throw new NotImplementedException();
+            return NotFound();
         }
 
         return Ok(new HomeResponseModel(home));
