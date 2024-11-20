@@ -81,7 +81,7 @@ export class DeviceImporterFormComponent {
         this.importerStatus.loading = false ;
         this.importerStatus.success = undefined;
         if(error == undefined){
-          this.importerStatus.error = 'Failed to import devices. Please try again.';
+          this.importerStatus.error = '';
         }
         else
         {

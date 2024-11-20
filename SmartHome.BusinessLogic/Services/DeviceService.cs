@@ -67,6 +67,11 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
             throw new DeviceException("Model number is not valid");
         }
 
+        if (_deviceRepository.Find(x => x.Id == device.Id) != null)
+        {
+            throw new DeviceException("There is already a device with the id "+ device.Id + " in the database");
+        }
+
         device.Business = business;
         device.Type = type;
         return _deviceRepository.Add(device);
