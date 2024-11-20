@@ -16,7 +16,7 @@ export class DeviceImporterApiRepositoryService extends ApiRepository {
   
   public importDevices(
     requestModel: DeviceImportRequestModel
-  ): Observable<string>{
+  ): Observable<number>{
     return this.post(requestModel);
   }
 }

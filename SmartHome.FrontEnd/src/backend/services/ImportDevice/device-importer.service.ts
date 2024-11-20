@@ -12,7 +12,7 @@ export class DeviceImporterService {
 
   public importDevices(
     requestModel: DeviceImportRequestModel
-  ): Observable<string>{
+  ): Observable<number>{
     return this._repository.importDevices(requestModel);
   }
 }
