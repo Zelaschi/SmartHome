@@ -80,7 +80,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
     {
         var user = FindUserById(userId);
         var homeMember = new HomeMember(user);
-        var home = FindHomeById(homeId);
+        var home = GetHomeById(homeId);
         CheckUserIsNotAlreadyInHome(home, user);
         CheckHomeAvailability(home);
         homeMember.HomeId = homeId;
@@ -283,6 +283,17 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         return notifications;
     }
 
+    public Home GetHomeById(Guid homeId)
+    {
+        var home = _homeRepository.Find(x => x.Id == homeId);
+        if (home == null)
+        {
+            throw new HomeException("Home Id does not match any home");
+        }
+
+        return home;
+    }
+
     private void MarkNotificationsAsRead(IEnumerable<HomeMemberNotification> homeMemberNotifications, List<Notification> notifications)
     {
         foreach (var notification in notifications)
@@ -356,17 +367,6 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         }
 
         return homeDevice;
-    }
-
-    private Home FindHomeById(Guid homeId)
-    {
-        var home = _homeRepository.Find(x => x.Id == homeId);
-        if (home == null)
-        {
-            throw new HomeException("Home Id does not match any home");
-        }
-
-        return home;
     }
 
     private Notification CreateNotification(string eventString, HomeDevice homeDevice)
@@ -455,7 +455,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         CheckDeviceOnline(homeDevice);
 
-        var home = FindHomeById(homeDevice.HomeId);
+        var home = GetHomeById(homeDevice.HomeId);
         var homeMembers = home.Members;
 
         var notification = CreateNotification("Movement Detection", homeDevice);
@@ -530,7 +530,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         CheckDeviceOnline(homeDevice);
 
-        var home = FindHomeById(homeDevice.HomeId);
+        var home = GetHomeById(homeDevice.HomeId);
         var homeMembers = home.Members;
 
         var notification = CreateDetectedPersonNotification(homeDevice, userId);
@@ -560,7 +560,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         CheckDeviceOnline(homeDevice);
 
-        var home = FindHomeById(homeDevice.HomeId);
+        var home = GetHomeById(homeDevice.HomeId);
         var homeMembers = home.Members;
 
         if (homeDevice.IsOpen == true)
@@ -606,14 +606,14 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public void UpdateHomeName(Guid homeId, string newName)
     {
-        var home = FindHomeById(homeId);
+        var home = GetHomeById(homeId);
         home.Name = newName;
         _homeRepository.Update(home);
     }
 
     public Room CreateRoom(Room room, Guid homeId)
     {
-        var home = FindHomeById(homeId);
+        var home = GetHomeById(homeId);
 
         if (home.Rooms == null)
         {
@@ -664,7 +664,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public List<Room> GetAllRoomsFromHome(Guid homeId)
     {
-        var home = FindHomeById(homeId);
+        var home = GetHomeById(homeId);
         return home.Rooms;
     }
 
@@ -675,7 +675,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public IEnumerable<User> UnRelatedHomeOwners(Guid homeId)
     {
-        var home = FindHomeById(homeId);
+        var home = GetHomeById(homeId);
         if (home == null)
         {
             throw new HomeException("Home was not found");
