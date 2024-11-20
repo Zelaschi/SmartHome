@@ -37,6 +37,7 @@ export class HomeAddMemberComponent {
           }
         },
         error: (error: any) => {
+          this.status.error = error;
           console.error(`Failed to add user ${user.name} to home:`, error);
         }
       });

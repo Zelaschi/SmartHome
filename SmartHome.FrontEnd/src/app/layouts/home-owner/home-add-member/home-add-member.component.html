@@ -1,5 +1,13 @@
 <div class="mt-4 users-list d-flex flex-column container justify-content-center align-items-center">
     <h3>Users</h3>
+    <div *ngIf="status">
+      <div *ngIf="status.error" >
+        <br>
+        <div class="alert alert-danger" *ngIf="status.error !== ''">
+            <p>{{ status.error }}</p>
+        </div>
+      </div>
+    </div>
     <div *ngIf="loading" class="loader">
       <app-loading></app-loading>
     </div>

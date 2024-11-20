@@ -38,14 +38,15 @@
       <app-form-button title="Apply Filters" submit ></app-form-button>
         
     </app-filter>
-    <div class="row devices ">
+    <div class="row users justify-content-center" style="width: 100%;">
       <div *ngFor="let user of status.users" class="device-item col-md-4 mb-4">
         <app-user-item [user]="user"></app-user-item>
       </div>
-    </div>  
+    </div>
     <app-pagination
         [pageNumber]="pageNumber"
         [pageSize]="pageSize"
         (pageChange)="onPageChange($event)"
+        [areMore]="status.moreUsers"
       ></app-pagination>
   </div>

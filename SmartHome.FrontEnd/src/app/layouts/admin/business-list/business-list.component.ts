@@ -24,6 +24,7 @@ export class BusinessListComponent {
   constructor(private readonly _businessService: BusinessService) {}
 
   status: BusinessStatus = {
+    moreBusinesses: true,
     loading: true,
     businesses: [],
   }
@@ -40,8 +41,18 @@ export class BusinessListComponent {
     this.loading = true;
     this._businessService.getBusinesses(this.pageNumber, this.pageSize, this.filters.businessName, this.filters.fullName).subscribe({
       next: (response) => {
-        this.status ={
-          businesses: response.data,
+        var moreBusinesses = response.data.length === this.pageSize;
+        if (moreBusinesses){
+          this.status ={
+            businesses: response.data,
+            moreBusinesses: true,
+          }
+        }
+        else{
+          this.status = {
+            businesses: response.data,
+            moreBusinesses: false,
+          }
         }
         console.log(this.status.businesses);
         this.loading = false;
