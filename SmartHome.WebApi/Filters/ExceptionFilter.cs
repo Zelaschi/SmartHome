@@ -135,7 +135,11 @@ public sealed class ExceptionFilter : IExceptionFilter
                 {
                     ErrorMessage = "An error occurred"
                 })
-                { StatusCode = (int)HttpStatusCode.InternalServerError};
+                { StatusCode = (int)HttpStatusCode.InternalServerError };
+        }
+        else
+        {
+            context.Result = response.Invoke(context.Exception);
         }
     }
 }
