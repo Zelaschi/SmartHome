@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartHome.DataAccess.Migrations;
 
 /// <inheritdoc />
-public partial class AddingNewPermissions : Migration
+public partial class NewHomePermissions : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ public partial class AddingNewPermissions : Migration
             values: new object[,]
             {
                 { new Guid("f3b3b3b3-3c8a-423d-bd46-edde4f85fbe3"), "Create room permission" },
-                { new Guid("f3b3b3b3-3c8a-423d-bd46-edde4f85fbe4"), "Add device to room permission" }
+                { new Guid("f3b3b3b3-3c8a-423d-bd46-edde4f85fce4"), "Add permissions to home member" }
             });
 
         migrationBuilder.InsertData(
@@ -42,7 +42,7 @@ public partial class AddingNewPermissions : Migration
             keyColumn: "Id",
             keyValue: new Guid("80e909fb-3c8a-423d-bd46-edde4f85fbe3"),
             column: "CreationDate",
-            value: new DateTime(2024, 11, 16, 1, 20, 41, 970, DateTimeKind.Local).AddTicks(9435));
+            value: new DateTime(2024, 11, 19, 23, 8, 43, 633, DateTimeKind.Local).AddTicks(5184));
     }
 
     /// <inheritdoc />
@@ -56,7 +56,7 @@ public partial class AddingNewPermissions : Migration
         migrationBuilder.DeleteData(
             table: "HomePermissions",
             keyColumn: "Id",
-            keyValue: new Guid("f3b3b3b3-3c8a-423d-bd46-edde4f85fbe4"));
+            keyValue: new Guid("f3b3b3b3-3c8a-423d-bd46-edde4f85fce4"));
 
         migrationBuilder.DeleteData(
             table: "RoleSystemPermission",
