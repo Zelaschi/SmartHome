@@ -17,7 +17,7 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/businesses")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
+
 public sealed class BusinessesController : ControllerBase
 {
     private readonly IBusinessesLogic _businessesLogic;

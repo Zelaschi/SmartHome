@@ -12,7 +12,6 @@ namespace SmartHome.WebApi.Controllers;
 
 [Route("api/v2/homeMembers")]
 [AuthenticationFilter]
-[ExceptionFilter]
 [ApiController]
 public sealed class HomeMembersController : ControllerBase
 {

@@ -11,7 +11,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/notifications")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 public sealed class NotificationsController : ControllerBase
 {
     private readonly INotificationLogic _notificationLogic;

@@ -119,7 +119,6 @@ public class ValidatorServiceTest
         {
             // Intentar validar un número de modelo con un validador inexistente
             validatorService.IsValidModelNumber("ABCDEF", validatorId);
-
         }
         catch (ValidatorException ex)
         {

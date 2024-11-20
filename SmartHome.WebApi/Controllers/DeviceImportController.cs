@@ -8,7 +8,6 @@ using SmartHome.WebApi.WebModels.DeviceImportModels.In;
 [Route("api/v2/deviceImport")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 public sealed class DeviceImportController : ControllerBase
 {
     private readonly IDeviceImportLogic deviceImportLogic;

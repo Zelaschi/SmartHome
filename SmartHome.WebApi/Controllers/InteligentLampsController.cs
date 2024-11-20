@@ -12,7 +12,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/inteligentLamps")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 public class InteligentLampsController : ControllerBase
 {
     private readonly ICreateDeviceLogic _createDeviceLogic;

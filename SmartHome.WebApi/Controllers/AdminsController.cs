@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
@@ -12,7 +13,6 @@ namespace SmartHome.WebApi.Controllers;
 [Route("api/v2/admins")]
 [ApiController]
 [AuthenticationFilter]
-[ExceptionFilter]
 public sealed class AdminsController : ControllerBase
 {
     private readonly IAdminLogic _adminLogic;
