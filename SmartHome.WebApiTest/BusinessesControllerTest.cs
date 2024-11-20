@@ -14,6 +14,7 @@ using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.WebApi.WebModels.Businesses.Out;
 using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
+using SmartHome.WebApi.WebModels.HomeModels.Out;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Test;
@@ -467,5 +468,52 @@ public class BusinessesControllerTest
         Assert.AreEqual(validators[1].Name, resultValue[1].Name);
 
         businessesLogicMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void GetBusinessById_ShouldReturnBusinessById()
+    {
+        var user1 = new User()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Alice",
+            Surname = "Smith",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = businessOwner
+        };
+
+        var company1 = new Business()
+        {
+            Id = Guid.NewGuid(),
+            Name = "hikvision",
+            Logo = "logo1",
+            RUT = "rut1",
+            BusinessOwner = user1
+        };
+
+        businessesLogicMock.Setup(b => b.GetBusinessById(company1.Id)).Returns(company1);
+
+        var expected = new OkObjectResult(new BusinessesResponseModel(company1));
+
+        var result = businessesController.GetBusinessById(company1.Id) as OkObjectResult;
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expected.StatusCode, result.StatusCode);
+    }
+
+    [TestMethod]
+    public void GetBusinessById_BusinessIdMissing_Test_ReturnsNotFound()
+    {
+        var missingBusinessId = Guid.NewGuid();
+        businessesLogicMock.Setup(b => b.GetBusinessById(missingBusinessId)).Returns((Business)null);
+
+        var expected = new NotFoundResult();
+
+        var result = businessesController.GetBusinessById(missingBusinessId) as NotFoundResult;
+
+        businessesLogicMock.VerifyAll();
+        Assert.IsNotNull(result);
+        Assert.AreEqual(result.StatusCode, expected.StatusCode);
     }
 }
