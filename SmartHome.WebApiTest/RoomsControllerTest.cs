@@ -122,7 +122,7 @@ public class RoomsControllerTest
 
         var createdResult = (CreatedAtActionResult)result;
         createdResult.Should().NotBeNull();
-        createdResult.ActionName.Should().Be("RoomAddedToHome");
+        createdResult.ActionName.Should().Be("AddDevicesToRoom");
         createdResult.StatusCode.Should().Be(201);
 
         var returnedModel = (HomeDeviceResponseModel)createdResult.Value;

@@ -52,7 +52,7 @@ public class ExceptionFilterTests
         Assert.AreEqual((int)HttpStatusCode.InternalServerError, concreteResponse.StatusCode,
             "The status code should be 500 Internal Server Error.");
 
-        Assert.AreEqual("Something went wrong. See: System.Exception Not registered", GetMessage(concreteResponse.Value));
+        Assert.AreEqual("An error occurred", GetMessage(concreteResponse.Value));
     }
 
     [TestMethod]
