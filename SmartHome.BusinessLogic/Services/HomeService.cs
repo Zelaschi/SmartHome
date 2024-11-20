@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.DTOs;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.InitialSeedData;
@@ -247,9 +248,9 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
         _homeMemberRepository.Update(member);
     }
 
-    public List<Notification> GetUsersNotifications(User user)
+    public List<DTONotification> GetUsersNotifications(User user)
     {
-        var userHomeMembers = _homeRepository
+       var userHomeMembers = _homeRepository
             .FindAll()
             .SelectMany(home => home.Members)
             .Where(member => member.User.Id == user.Id)
@@ -257,6 +258,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         var notifications = new List<Notification>();
         var updatedHomeOwners = new List<HomeMember>();
+        var DtoNotifications = new List<DTONotification>();
 
         userHomeMembers.ForEach(homeMember =>
         {
@@ -265,6 +267,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
                 .Select(hmn => hmn.Notification)
                 .ToList();
             notifications.AddRange(homeOwnersNotifications);
+            DtoNotifications.AddRange(notifications.Select(noti => new DTONotification() { Notification = noti, Read = true }));
 
             var unReadNotifications = homeMember.HomeMemberNotifications
                 .Where(hmn => !hmn.Read)
@@ -272,7 +275,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
                 .ToList();
             if (unReadNotifications.Any())
             {
-                notifications.AddRange(unReadNotifications);
+                DtoNotifications.AddRange(unReadNotifications.Select(noti => new DTONotification() { Notification = noti, Read = false }));
                 MarkNotificationsAsRead(homeMember.HomeMemberNotifications, unReadNotifications);
                 updatedHomeOwners.Add(homeMember);
             }
@@ -280,7 +283,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         _updateMultipleElementsRepository.UpdateMultiplElements(updatedHomeOwners);
 
-        return notifications;
+        return DtoNotifications;
     }
 
     private void MarkNotificationsAsRead(IEnumerable<HomeMemberNotification> homeMemberNotifications, List<Notification> notifications)

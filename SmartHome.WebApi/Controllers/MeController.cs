@@ -32,7 +32,7 @@ public class MeController : ControllerBase
             return Unauthorized("UserId is missing");
         }
 
-        return Ok(_notificationLogic.GetUsersNotifications(user).Select(notification => new NotificationResponseModel(notification)).ToList());
+        return Ok(_notificationLogic.GetUsersNotifications(user).Select(notification => new MeNotificationResponseModel(notification)).ToList());
     }
 
     [AuthorizationFilter(SeedDataConstants.LIST_ALL_USERS_HOMES_PERMISSION_ID)]
