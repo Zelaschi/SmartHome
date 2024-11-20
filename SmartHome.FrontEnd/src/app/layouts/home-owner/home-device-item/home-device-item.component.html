@@ -33,7 +33,7 @@
         <div *ngIf="showHomeDeviceNameForm" class="position-absolute start-0 end-0 bg-white p-3" 
              style="z-index: 1000; top: 50%; transform: translateY(-50%); box-shadow: 0 0 10px rgba(0,0,0,0.1);">
             <app-home-device-name
-                [homeDeviceId]="homeDevice?.hardwardId ?? null"
+                [homeDeviceId]="homeDevice.hardwardId"
                 (homeDeviceNameUpdated)="onHomeDeviceNameUpdated($event)">
             </app-home-device-name>
         </div>
