@@ -136,4 +136,16 @@ public sealed class BusinessService : IBusinessesLogic
         _businessRepository.Update(business);
         return business;
     }
+
+    public Business GetBusinessById(Guid businessId)
+    {
+        var business = _businessRepository.Find(b => b.Id == businessId);
+
+        if (business == null)
+        {
+            throw new BusinessException("Business does not exist");
+        }
+
+        return business;
+    }
 }

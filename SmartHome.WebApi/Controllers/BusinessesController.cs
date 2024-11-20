@@ -81,4 +81,18 @@ public sealed class BusinessesController : ControllerBase
         var updatedBusiness = _businessesLogic.AddValidatorToBusiness(user, validatorId.Id);
         return Ok(updatedBusiness);
     }
+
+    [AuthorizationFilter(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)]
+    [HttpGet("{businessId}/business")]
+    public IActionResult GetBusinessById([FromRoute] Guid businessId)
+    {
+        var business = _businessesLogic.GetBusinessById(businessId);
+
+        if (business == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new BusinessesResponseModel(business));
+    }
 }
