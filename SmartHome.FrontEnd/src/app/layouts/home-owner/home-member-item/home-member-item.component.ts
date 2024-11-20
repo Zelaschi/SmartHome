@@ -18,7 +18,6 @@ export class HomeMemberItemComponent {
 
   UpdateHomePermissions(): void {
     this.showHomePermissionsCheckbox = !this.showHomePermissionsCheckbox;
-    // Convertir los permisos actuales al nuevo formato
     this.currentPermissions = {
       addMemberPermission: this.homeMember.homePermissions.includes('AddMemberPermission'),
       addDevicePermission: this.homeMember.homePermissions.includes('AddDevicesPermission'),

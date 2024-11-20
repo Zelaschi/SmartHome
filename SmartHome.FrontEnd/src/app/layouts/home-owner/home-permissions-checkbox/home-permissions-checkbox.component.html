@@ -1,68 +1,69 @@
 <div *ngIf="!status.loading; else loadingTemplate">
-  <div *ngIf="status.error; else showCheckboxes">
-    <p>{{ status.error }}</p>
+  <div *ngIf="status.error">
+    <p class="text-danger">{{ status.error }}</p>
   </div>
-  <ng-template #showCheckboxes>
-    <div class="form-check">
-      <input 
-        type="checkbox"
-        class="form-check-input"
-        id="addMemberPermission"
-        [checked]="isChecked('addMemberPermission')"
-        (change)="onChange('addMemberPermission')"
-        [disabled]="status.loading"
-        name="permissionCheckbox">
-      <label class="form-check-label" for="addMemberPermission">
-        Add Members Permission
-      </label>
-    </div>
+  
+  <div class="form-check">
+    <input 
+      type="checkbox"
+      class="form-check-input"
+      id="AddMemberPermission"
+      [checked]="isChecked('addMemberPermission')"
+      (change)="onChange('addMemberPermission')"
+      [disabled]="status.loading"
+      name="permissionCheckbox">
+    <label class="form-check-label" for="AddMemberPermission">
+      Add Members
+    </label>
+  </div>
 
-    <div class="form-check">
-      <input 
-        type="checkbox"
-        class="form-check-input"
-        id="addDevicePermission"
-        [checked]="isChecked('addDevicePermission')"
-        (change)="onChange('addDevicePermission')"
-        [disabled]="status.loading"
-        name="permissionCheckbox">
-      <label class="form-check-label" for="addDevicePermission">
-        Add Devices Permissions
-      </label>
-    </div>
+  <div class="form-check">
+    <input 
+      type="checkbox"
+      class="form-check-input"
+      id="AddDevicePermission"
+      [checked]="isChecked('addDevicePermission')"
+      (change)="onChange('addDevicePermission')"
+      [disabled]="status.loading"
+      name="permissionCheckbox">
+    <label class="form-check-label" for="AddDevicePermission">
+      Add Devices
+    </label>
+  </div>
 
-    <div class="form-check">
-      <input 
-        type="checkbox"
-        class="form-check-input"
-        id="listDevicesPermission"
-        [checked]="isChecked('listDevicesPermission')"
-        (change)="onChange('listDevicesPermission')"
-        [disabled]="status.loading"
-        name="permissionCheckbox">
-      <label class="form-check-label" for="listDevicesPermission">
-        List Permissions
-      </label>
-    </div>
+  <div class="form-check">
+    <input 
+      type="checkbox"
+      class="form-check-input"
+      id="ListDevicesPermission"
+      [checked]="isChecked('listDevicesPermission')"
+      (change)="onChange('listDevicesPermission')"
+      [disabled]="status.loading"
+      name="permissionCheckbox">
+    <label class="form-check-label" for="ListDevicesPermission">
+      List Devices
+    </label>
+  </div>
 
-    <div class="form-check">
-      <input 
-        type="checkbox"
-        class="form-check-input"
-        id="notificationsPermission"
-        [checked]="isChecked('notificationsPermission')"
-        (change)="onChange('notificationsPermission')"
-        [disabled]="status.loading"
-        name="permissionCheckbox">
-      <label class="form-check-label" for="notificationsPermission">
-        Recibe Notifications
-      </label>
-    </div>
-  </ng-template>
+  <div class="form-check">
+    <input 
+      type="checkbox"
+      class="form-check-input"
+      id="NotificationsPermission"
+      [checked]="isChecked('notificationsPermission')"
+      (change)="onChange('notificationsPermission')"
+      [disabled]="status.loading"
+      name="permissionCheckbox">
+    <label class="form-check-label" for="NotificationsPermission">
+      Receive Notifications
+    </label>
+  </div>
+
+  <button class="btn btn-primary mt-3" (click)="saveSelectedPermissions()" [disabled]="status.loading">
+    {{ status.loading ? 'Saving...' : 'Save permissions' }}
+  </button>
 </div>
+
 <ng-template #loadingTemplate>
-  <div>Loading permissions...</div>
+  <div>Saving permissions...</div>
 </ng-template>
-<button (click)="saveSelectedPermissions()" [disabled]="status.loading">
-  Save selected permissions
-</button>

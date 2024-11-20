@@ -31,6 +31,8 @@ export class HomeMemberApiRepositoryService extends ApiRepository {
     homePermissions: HomePermissionsRequest,
     homeMemberId: string
   ): Observable<void> {
+    console.log('Request body:', homePermissions);
+    
     return this.putById<void>(`${homeMemberId}/permissions`, homePermissions);
   }
 

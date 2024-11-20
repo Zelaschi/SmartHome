@@ -10,11 +10,13 @@
     </div>
   </div>
   <div>
-    <button class="btn btn-outline-dark" (click) = "UpdateHomePermissions()">Update permissions</button>
+    <button class="btn btn-outline-dark" (click)="UpdateHomePermissions()">
+      Update permissions
+    </button>
   </div>
   <div *ngIf="showHomePermissionsCheckbox">
     <app-home-permissions-checkbox 
-      [value]="homeMember?.homePermissions || []"
+      [value]="currentPermissions"
       [homeMemberId]="homeMember?.homeMemberId || ''"
       (valueChange)="onPermissionsChange($event)">
     </app-home-permissions-checkbox>
