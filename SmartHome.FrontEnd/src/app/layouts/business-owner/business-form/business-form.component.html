@@ -1,3 +1,9 @@
+<div *ngIf="businessStatus">
+  <div *ngIf="businessStatus.loading">
+    <app-loading></app-loading>
+  </div>
+</div>
+
 <div>
   <a
   class="btn btn-outline-dark m-1 mt-3 ms-3" 

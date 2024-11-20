@@ -1,7 +1,7 @@
 <div class="home-members-list">
     <h5>Home Members</h5>
     <div *ngIf="loading" class="loader">
-      Loading home members...
+      <app-loading></app-loading>
     </div>
     <div *ngFor="let homeMember of status.homeMembers" class="home-member-item">
       <app-home-member-item [homeMember]="homeMember"></app-home-member-item>

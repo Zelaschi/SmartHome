@@ -1,3 +1,9 @@
+<div *ngIf="loginStatus">
+  <div *ngIf="loginStatus.loading">
+    <app-loading></app-loading>
+  </div>
+</div>
+
 <h1 class="text-center my-4">Bienvenido a SmartHomeApp</h1>
 
 <div class="container d-flex justify-content-center">

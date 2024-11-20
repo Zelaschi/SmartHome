@@ -54,6 +54,8 @@ export class LoginFormComponent {
         this._router.navigate(["/landing"]);
       },
       error: (error) => {
+        this.loginStatus = null;
+
         this.loginStatus = { error };
       },
     });
