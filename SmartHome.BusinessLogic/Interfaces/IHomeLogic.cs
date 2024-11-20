@@ -17,4 +17,5 @@ public interface IHomeLogic
     HomeMember AddHomeMemberToHome(Guid homeId, Guid userId);
     void UpdateHomeDeviceName(Guid homeDeviceId, string newName);
     void UpdateHomeName(Guid homeId, string newName);
+    bool TurnOnOffHomeDevice(Guid homeDeviceId);
 }

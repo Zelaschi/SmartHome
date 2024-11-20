@@ -94,6 +94,13 @@ public sealed class HomesController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
+    [HttpPut("{homeDeviceId}/turnOnOff")]
+    public IActionResult TurnOnOffHomeDevice([FromRoute] Guid homeDeviceId)
+    {
+        return Ok(_homeLogic.TurnOnOffHomeDevice(homeDeviceId));
+    }
+
+    [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
     [HttpPatch("{homeId}/homeName")]
     public IActionResult UpdateHomeName([FromRoute] Guid homeId, [FromBody] UpdateNameRequestModel request)
     {

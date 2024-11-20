@@ -700,4 +700,17 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
         return usersNotInHome;
     }
+
+    public bool TurnOnOffHomeDevice(Guid homeDeviceId)
+    {
+        var homeDevice = FindHomeDeviceById(homeDeviceId);
+        if (homeDevice == null)
+        {
+            throw new HomeException("Home device was not found");
+        }
+
+        homeDevice.Online = !homeDevice.Online;
+        _homeDeviceRepository.Update(homeDevice);
+        return homeDevice.Online;
+    }
 }

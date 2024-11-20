@@ -400,7 +400,7 @@ public class HomeServiceTest
             .Returns(listDevicesPermission)
             .Returns(notificationsPermission);
 
-        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, permissions);
+        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, permissions, ownerId);
 
         IEnumerable<HomeMember> members = homeService.GetAllHomeMembers(homeId);
         var foundMember = members.First(x => x.User == user);
@@ -445,11 +445,11 @@ public class HomeServiceTest
             .Returns(listDevicesPermission)
             .Returns(notificationsPermission);
 
-        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, permissions);
+        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, permissions, ownerId);
 
         var updatedPermissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission };
 
-        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, updatedPermissions);
+        homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, updatedPermissions, ownerId);
         IEnumerable<HomeMember> members = homeService.GetAllHomeMembers(homeId);
         var foundMember = members.First(x => x.User == user);
 
@@ -1368,7 +1368,7 @@ public class HomeServiceTest
         Exception exception = null;
         try
         {
-            homeService.UpdateHomePermissionsOfHomeMember(homeMemberId, permissions);
+            homeService.UpdateHomePermissionsOfHomeMember(homeMemberId, permissions, ownerId);
         }
         catch (Exception ex)
         {
@@ -2244,5 +2244,103 @@ public class HomeServiceTest
 
         Assert.AreEqual(returnedUsers.First(), users.First());
         Assert.IsTrue(returnedUsers.Count() == 1 );
+    }
+
+    [TestMethod]
+    public void TurnOnOffHomeDevice_ExistingDevice_TogglesOnlineStatus()
+    {
+        // Arrange
+        var Device = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Device 2",
+            ModelNumber = "1234",
+            Description = "Device 2 for home",
+            Photos = new List<Photo>(),
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "Business 2",
+                Logo = "logo2.png",
+                RUT = "12345678-9",
+                BusinessOwner = new User
+                {
+                    Email = "mail@mail.com",
+                    Name = "Owner 1",
+                    Password = "password",
+                    Role = new Role { Name = "Admin" },
+                    Surname = "Surname 1"
+                }
+            }
+        };
+        var homeDeviceId = Guid.NewGuid();
+        var homeDevice = new HomeDevice
+        {
+            Device = Device,
+            Id = homeDeviceId,
+            Online = false,
+            Name = "Device 1"
+        };
+
+        homeDeviceRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<HomeDevice, bool>>()))
+            .Returns(homeDevice);
+
+        homeDeviceRepositoryMock.Setup(repo => repo.Update(It.IsAny<HomeDevice>())).Returns(homeDevice);
+
+        // Act
+        var result = homeService.TurnOnOffHomeDevice(homeDeviceId);
+
+        // Assert
+        homeDeviceRepositoryMock.Verify(repo => repo.Update(homeDevice), Times.Once);
+        Assert.IsTrue(result); // Should now be online
+        Assert.IsTrue(homeDevice.Online);
+    }
+
+    [TestMethod]
+    public void TurnOnOffHomeDevice_DeviceAlreadyOnline_TurnsOff()
+    {
+        var Device = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Device 2",
+            ModelNumber = "1234",
+            Description = "Device 2 for home",
+            Photos = new List<Photo>(),
+            Business = new Business
+            {
+                Id = Guid.NewGuid(),
+                Name = "Business 2",
+                Logo = "logo2.png",
+                RUT = "12345678-9",
+                BusinessOwner = new User
+                {
+                    Email = "mail@mail.com",
+                    Name = "Owner 1",
+                    Password = "password",
+                    Role = new Role { Name = "Admin" },
+                    Surname = "Surname 1"
+                }
+            }
+        };
+        var homeDeviceId = Guid.NewGuid();
+        var homeDevice = new HomeDevice
+        {
+            Device = Device,
+            Id = homeDeviceId,
+            Online = true,
+            Name = "Device 1"
+        };
+
+        homeDeviceRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<HomeDevice, bool>>()))
+            .Returns(homeDevice);
+        homeDeviceRepositoryMock.Setup(repo => repo.Update(It.IsAny<HomeDevice>())).Returns(homeDevice);
+
+        // Act
+        var result = homeService.TurnOnOffHomeDevice(homeDeviceId);
+
+        // Assert
+        homeDeviceRepositoryMock.Verify(repo => repo.Update(homeDevice), Times.Once);
+        Assert.IsFalse(result); // Should now be offline
+        Assert.IsFalse(homeDevice.Online);
     }
 }

@@ -45,7 +45,7 @@ public class HomeMemberControllerTest
             NotificationsPermission = true
         };
 
-        homeMemberLogicMock.Setup(h => h.UpdateHomePermissionsOfHomeMember(It.IsAny<Guid>(), It.IsAny<List<HomePermission>>()));
+        homeMemberLogicMock.Setup(h => h.UpdateHomePermissionsOfHomeMember(It.IsAny<Guid>(), It.IsAny<List<HomePermission>>(), It.IsAny<Guid>()));
 
         // ACT
         var expected = new NoContentResult();

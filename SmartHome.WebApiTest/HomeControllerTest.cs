@@ -436,4 +436,26 @@ public class HomeControllerTest
         homeLogicMock.VerifyAll();
         Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Id.Equals(objectResult.First().Id));
     }
+
+    [TestMethod]
+    public void TurnOnOffHomeDevice_ValidDevice_ReturnsUpdatedState()
+    {
+        // Arrange
+        var homeDeviceId = Guid.NewGuid();
+        var updatedState = true;
+        homeLogicMock.Setup(h => h.TurnOnOffHomeDevice(homeDeviceId)).Returns(updatedState);
+
+        HttpContext httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext { HttpContext = httpContext };
+        homeController.ControllerContext = controllerContext;
+
+        // Act
+        var result = homeController.TurnOnOffHomeDevice(homeDeviceId) as OkObjectResult;
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(200, result.StatusCode);
+        Assert.AreEqual(updatedState, result.Value);
+        homeLogicMock.Verify(h => h.TurnOnOffHomeDevice(homeDeviceId), Times.Once);
+    }
 }
