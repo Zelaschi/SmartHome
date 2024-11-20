@@ -45,6 +45,22 @@
                 placeholder="Select an Importer"
             />
         </div>
+        <div *ngIf="importerStatus">
+          <div *ngIf="importerStatus.success" >
+            <br>
+            <div class="alert alert-success" *ngIf="importerStatus.success !== ''">
+                <p>{{ importerStatus.success }}</p>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="importerStatus">
+          <div *ngIf="importerStatus.error" >
+            <br>
+            <div class="alert alert-danger" *ngIf="importerStatus.error !== ''">
+                <p>{{ importerStatus.error }}</p>
+            </div>
+          </div>
+        </div>
   
         <div class="mt-3 d-grid gap-2 form-group">
           <app-form-button title="Import Devices" submit  />

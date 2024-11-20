@@ -13,7 +13,8 @@ export class DeviceImporterFormComponent {
   selectedImporter: string | null = null;
   
   importerStatus!: {
-    loading?: true;
+    success?: string;
+    loading?: boolean;
     error?: string;
     importers: Array<DropdownOption>;
   };
@@ -25,9 +26,11 @@ export class DeviceImporterFormComponent {
   readonly formField: any = {
     fileName: {
       name: "fileName",
+      required: "File Name is required"
     },
     dllName:{
-      name:'dllName'
+      name:'dllName',
+      required: "DLL Name is required"
     }
   }
   readonly deviceImporterForm = new FormGroup({
@@ -57,30 +60,37 @@ export class DeviceImporterFormComponent {
   }
 
   public onSubmit(values : DeviceImportRequestModel) {
+    this.importerStatus.loading = true ;
     if (this.deviceImporterForm.invalid) {
+      this.importerStatus.error = "Please fill in all required fields";
+      this.importerStatus.loading = false ;
       return;
     }
 
     console.log(values);
 
     this._deviceImporterService.importDevices(values).subscribe({
-      next: () => {
+      next: (result) => {
+        this.importerStatus.error = undefined;
         this.deviceImporterForm.reset();
         this.selectedImporter = null;
+        this.importerStatus.loading = false ;
+        this.importerStatus.success = result + ' Devices imported successfully';
       },
       error: (error) => {
+        this.importerStatus.loading = false ;
+        this.importerStatus.success = undefined;
+        if(error == undefined){
+          this.importerStatus.error = 'Failed to import devices. Please try again.';
+        }
+        else
+        {
+          this.importerStatus.error = error;
+
+        }
         console.error(error);
       }
     });
-    //this._businessService.addValidatorToBusiness(validatorId).subscribe({
-      //next: () => {
-        //this.validatorForm.reset();
-        //this.selectedValidator = null;
-      //},
-      //error: (error) => {
-        //console.error(error);
-      //}
-    //});
   }
 
 }
