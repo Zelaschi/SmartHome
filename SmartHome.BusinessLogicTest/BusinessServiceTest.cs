@@ -376,4 +376,37 @@ public class BusinessServiceTest
         Assert.IsInstanceOfType(exception, typeof(BusinessException));
         Assert.AreEqual("Business does not exist", exception.Message);
     }
+
+    [TestMethod]
+    public void GetBusinessById_BusinessFound_ReturnsBusiness()
+    {
+        var businessOwner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pr@mail.com"
+        };
+
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner,
+            ValidatorId = Guid.NewGuid()
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        var result = businessService.GetBusinessById(business.Id);
+
+        businessRepositoryMock.VerifyAll();
+        Assert.IsNotNull(result);
+        Assert.AreEqual(business, result);
+    }
 }
