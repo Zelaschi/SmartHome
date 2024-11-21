@@ -513,4 +513,52 @@ public class BusinessServiceTest
         Assert.IsInstanceOfType(exception, typeof(ValidatorException));
         Assert.AreEqual("Validator was not found in database", exception.Message);
     }
+
+    [TestMethod]
+    public void AddValidatorToBusiness_AddsCorrectly()
+    {
+        var businessOwner = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pr@mail.com"
+        };
+
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner,
+            ValidatorId = null
+        };
+        var validator = new ModelNumberValidator
+        {
+            Id = Guid.Parse("c46e1484-3838-4f61-ac33-d4708f5e3a5b"),
+            Name = "SixLettersModelValidator"
+        };
+
+        validatorRepositoryMock.Setup(u => u.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+                    .Returns(validator);
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        Exception exception = null;
+
+        try
+        {
+            businessService.AddValidatorToBusiness(businessOwner, validator.Id);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        businessRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(Guid.Parse("c46e1484-3838-4f61-ac33-d4708f5e3a5b"), business.ValidatorId);
+    }
 }
