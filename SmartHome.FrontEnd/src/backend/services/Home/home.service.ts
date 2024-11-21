@@ -75,4 +75,11 @@ export class HomeService {
   {
     return this._repository.TurnOnOffDevice(homeDeviceId);
   }
+
+  public GetHomeByHomeId(
+    homeId: string,
+  ): Observable<HomeCreatedModel>
+  {
+    return this._repository.GetHomeByHomeId(homeId);
+  }
 }

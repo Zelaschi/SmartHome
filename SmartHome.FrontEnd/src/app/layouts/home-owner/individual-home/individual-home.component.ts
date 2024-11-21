@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import HomeCreatedModel from '../../../../backend/services/Home/models/HomeCreatedModel';
 import { ActivatedRoute } from '@angular/router';
+import { HomeService } from '../../../../backend/services/Home/home.service';
 
 @Component({
   selector: 'app-individual-home',
@@ -21,10 +22,18 @@ export class IndividualHomeComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private homeService: HomeService,
   ) {}
 
   ngOnInit(): void {
-    this.homeId = this.route.snapshot.paramMap.get('id');
+    this.route.paramMap.subscribe(params => {
+      this.homeId = params.get('id');
+      if (this.homeId) {
+        this.GetHome();
+      } else {
+        console.error('No se encontró el ID en la ruta');
+      }
+    });
   }
 
   hideAllSections(): void {
@@ -115,6 +124,14 @@ export class IndividualHomeComponent implements OnInit {
   onNameUpdated(newName: string): void {
     if (this.home) {
       this.home.name = newName;
+    }
+  }
+
+  public GetHome(): void {
+    if (this.homeId) {
+      this.homeService.GetHomeByHomeId(this.homeId).subscribe(home => {
+        this.home = home;
+      });
     }
   }
 }

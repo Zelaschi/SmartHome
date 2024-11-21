@@ -1,5 +1,12 @@
 <h1 class="text-center my-4 text-black">Home Details:</h1>
-<div class="d-flex flex-column justify-content-center align-items-center ">
+
+<div class="d-flex flex-column justify-content-center align-items-center">
+  <div *ngIf="home" class="mb-4">
+    <h4>Name: {{ home.name }}</h4>
+    <p>Main street: {{ home.mainStreet }}</p>
+    <p>Door number: {{ home.doorNumber }}</p>
+  </div>
+
   <div class="button-section d-flex gap-1 mt-3">
     <div>
       <button class="btn btn-outline-dark" (click)="AddHomeMembers()">Add Members</button>
