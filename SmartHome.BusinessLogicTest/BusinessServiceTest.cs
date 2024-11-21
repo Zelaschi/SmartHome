@@ -535,6 +535,7 @@ public class BusinessServiceTest
             BusinessOwner = businessOwner,
             ValidatorId = null
         };
+
         var validator = new ModelNumberValidator
         {
             Id = Guid.Parse("c46e1484-3838-4f61-ac33-d4708f5e3a5b"),
@@ -542,23 +543,20 @@ public class BusinessServiceTest
         };
 
         validatorRepositoryMock.Setup(u => u.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
-                    .Returns(validator);
+            .Returns(validator);
+
         businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-                    .Returns(business);
+            .Returns(business);
 
-        Exception exception = null;
+        businessRepositoryMock.Setup(u => u.Update(It.Is<Business>(b => b.Id == business.Id)))
+            .Returns(business);
 
-        try
-        {
-            businessService.AddValidatorToBusiness(businessOwner, validator.Id);
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
+        var businessFound = businessService.AddValidatorToBusiness(businessOwner, validator.Id);
 
         businessRepositoryMock.VerifyAll();
+        validatorRepositoryMock.VerifyAll();
 
-        Assert.AreEqual(Guid.Parse("c46e1484-3838-4f61-ac33-d4708f5e3a5b"), business.ValidatorId);
+        business.ValidatorId.Should().Be(validator.Id);
+        Assert.AreEqual(businessFound, business);
     }
 }

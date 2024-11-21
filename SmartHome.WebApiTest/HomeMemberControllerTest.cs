@@ -129,4 +129,23 @@ public class HomeMemberControllerTest
 
         homeMemberLogicMock.Verify(h => h.GetAllHomePermissions(), Times.Once);
     }
+
+    [TestMethod]
+    public void UpdateHomeMemberPermissions_UserMissing_ReturnsUnauthorized()
+    {
+        var httpContext = new DefaultHttpContext();
+        homeMemberController.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+
+        var homeMemberId = Guid.NewGuid();
+        var permissions = new HomeMemberPermissions();
+
+        var result = homeMemberController.UpdateHomeMemberPermissions(homeMemberId, permissions);
+
+        Assert.IsInstanceOfType(result, typeof(UnauthorizedObjectResult));
+        var unauthorizedResult = result as UnauthorizedObjectResult;
+        Assert.AreEqual("User is missing", unauthorizedResult?.Value);
+    }
 }

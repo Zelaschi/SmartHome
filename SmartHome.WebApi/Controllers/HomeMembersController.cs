@@ -29,7 +29,7 @@ public sealed class HomeMembersController : ControllerBase
         var user = HttpContext.Items[UserStatic.User] as User;
         if (user == null)
         {
-            return Unauthorized("UserId is missing");
+            return Unauthorized("User is missing");
         }
 
         if (user.Id == null)
