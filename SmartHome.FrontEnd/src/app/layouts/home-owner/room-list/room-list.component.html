@@ -3,8 +3,8 @@
     <div *ngIf="loading" class="loader">
           <app-loading></app-loading>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col" *ngFor="let room of status.rooms">
+    <div class="row  g-4">
+        <div class="col-auto" *ngFor="let room of status.rooms">
             <app-room-item [room]="room" [homeId]="homeId"></app-room-item>
         </div>
     </div>
