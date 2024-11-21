@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Domain;
@@ -13,7 +8,6 @@ using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeModels.In;
 using SmartHome.WebApi.WebModels.RoomModels.In;
 using SmartHome.WebApi.WebModels.RoomModels.Out;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SmartHome.WebApi.Test;
 [TestClass]

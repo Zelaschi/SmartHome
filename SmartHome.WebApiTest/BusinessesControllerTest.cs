@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Constants;
@@ -13,8 +8,6 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.Businesses.In;
 using SmartHome.WebApi.WebModels.Businesses.Out;
-using SmartHome.WebApi.WebModels.BusinessOwnerModels.In;
-using SmartHome.WebApi.WebModels.HomeModels.Out;
 using SmartHome.WebApi.WebModels.PaginationModels.Out;
 
 namespace SmartHome.WebApi.Test;

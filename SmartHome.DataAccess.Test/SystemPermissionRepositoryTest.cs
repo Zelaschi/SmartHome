@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using SmartHome.BusinessLogic.Domain;
-using SmartHome.BusinessLogic.Services;
 using SmartHome.DataAccess.Contexts;
 using SmartHome.DataAccess.CustomExceptions;
 using SmartHome.DataAccess.Repositories;
