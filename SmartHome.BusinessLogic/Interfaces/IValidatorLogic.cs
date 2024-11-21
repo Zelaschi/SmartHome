@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModeloValidador.Abstracciones;
+﻿using ModeloValidador.Abstracciones;
 
 namespace SmartHome.BusinessLogic.Interfaces;
 public interface IValidatorLogic

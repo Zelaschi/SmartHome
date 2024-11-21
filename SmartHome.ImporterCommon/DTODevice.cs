@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmartHome.ImporterCommon;
+﻿namespace SmartHome.ImporterCommon;
 public sealed class DTODevice
 {
     public Guid Id { get; set; }

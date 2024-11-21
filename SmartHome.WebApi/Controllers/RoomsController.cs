@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
-using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
 using SmartHome.WebApi.WebModels.RoomModels.In;
 using SmartHome.WebApi.WebModels.RoomModels.Out;
 

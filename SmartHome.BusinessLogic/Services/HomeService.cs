@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using SmartHome.BusinessLogic.Constants;
+﻿using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.DTOs;
@@ -228,7 +221,7 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
             throw new HomeException("Owner was not found");
         }
 
-        if (owner.HomePermissions.FirstOrDefault(x => x.Id == Guid.Parse(SeedDataConstants.ADD_PERMISSIONS_TO_HOMEMEMBER_ID)) == null )
+        if (owner.HomePermissions.FirstOrDefault(x => x.Id == Guid.Parse(SeedDataConstants.ADD_PERMISSIONS_TO_HOMEMEMBER_ID)) == null)
         {
             throw new HomeException("User does not have permission to add permissions to home member");
         }
@@ -250,11 +243,11 @@ public sealed class HomeService : IHomeLogic, IHomeMemberLogic, INotificationLog
 
     public List<DTONotification> GetUsersNotifications(User user)
     {
-       var userHomeMembers = _homeRepository
-            .FindAll()
-            .SelectMany(home => home.Members)
-            .Where(member => member.User.Id == user.Id)
-            .ToList();
+        var userHomeMembers = _homeRepository
+             .FindAll()
+             .SelectMany(home => home.Members)
+             .Where(member => member.User.Id == user.Id)
+             .ToList();
 
         var notifications = new List<Notification>();
         var updatedHomeOwners = new List<HomeMember>();

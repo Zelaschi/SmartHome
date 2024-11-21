@@ -1,20 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartHome.BusinessLogic.Interfaces;
-using SmartHome.WebApi.WebModels.HomeModels.Out;
-using SmartHome.WebApi.WebModels.HomeModels.In;
-using SmartHome.WebApi.Filters;
-using System.Reflection.Metadata.Ecma335;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.InitialSeedData;
+using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.WebApi.Filters;
+using SmartHome.WebApi.WebModels.AddUserToHome.In;
 using SmartHome.WebApi.WebModels.HomeDeviceModels.Out;
 using SmartHome.WebApi.WebModels.HomeMemberModels.Out;
-using SmartHome.BusinessLogic.InitialSeedData;
-using Microsoft.Identity.Client;
-using SmartHome.BusinessLogic.Constants;
+using SmartHome.WebApi.WebModels.HomeModels.In;
+using SmartHome.WebApi.WebModels.HomeModels.Out;
 using SmartHome.WebApi.WebModels.UpdateNameModels.In;
 using SmartHome.WebApi.WebModels.UserModels.Out;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using SmartHome.WebApi.WebModels.AddUserToHome.In;
-using SmartHome.BusinessLogic.CustomExceptions;
 
 namespace SmartHome.WebApi.Controllers;
 

@@ -3427,7 +3427,7 @@ public class HomeServiceTest
         homeRepositoryMock.VerifyAll();
 
         Assert.AreEqual(returnedUsers.First(), users.First());
-        Assert.IsTrue(returnedUsers.Count() == 1 );
+        Assert.IsTrue(returnedUsers.Count() == 1);
     }
 
     [TestMethod]

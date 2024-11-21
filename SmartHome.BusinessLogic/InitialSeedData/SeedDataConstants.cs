@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmartHome.BusinessLogic.InitialSeedData;
+﻿namespace SmartHome.BusinessLogic.InitialSeedData;
 public static class SeedDataConstants
 {
     public const string ADMIN_ROLE_ID = "ffa636e8-ce76-4b52-b03e-8b3989bfd008";

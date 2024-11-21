@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.InitialSeedData;
-using static Azure.Core.HttpHeader;
 
 namespace SmartHome.DataAccess.Contexts;
 public sealed class SmartHomeEFCoreContext : DbContext
@@ -252,8 +245,8 @@ public sealed class SmartHomeEFCoreContext : DbContext
             },
             new RoleSystemPermission
             {
-                 RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
-                 SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_DEVICES_PERMISSION_ID)
+                RoleId = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID),
+                SystemPermissionId = Guid.Parse(SeedDataConstants.LIST_ALL_DEVICES_PERMISSION_ID)
             },
             new RoleSystemPermission
             {

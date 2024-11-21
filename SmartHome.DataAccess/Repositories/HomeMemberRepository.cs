@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SmartHome.BusinessLogic.Domain;
@@ -66,7 +61,7 @@ public sealed class HomeMemberRepository : IGenericRepository<HomeMember>, IUpda
     {
         try
         {
-            return _context.HomeMembers.Include(x=>x.HomePermissions).Include(x=> x.Notifications).Include(x=> x.User).FirstOrDefault(filter);
+            return _context.HomeMembers.Include(x => x.HomePermissions).Include(x => x.Notifications).Include(x => x.User).FirstOrDefault(filter);
         }
         catch (SqlException)
         {

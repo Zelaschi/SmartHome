@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using SmartHome.BusinessLogic.Constants;
+using SmartHome.BusinessLogic.CustomExceptions;
+using SmartHome.BusinessLogic.DeviceImporter.TypeMap;
 using SmartHome.BusinessLogic.Domain;
-using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.ImporterCommon;
-using SmartHome.BusinessLogic.DeviceImporter.TypeMap;
-using SmartHome.BusinessLogic.CustomExceptions;
-using System.Runtime.CompilerServices;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class DeviceImportService : IDeviceImportLogic
@@ -116,7 +107,7 @@ public sealed class DeviceImportService : IDeviceImportLogic
                 catch (DeviceException e)
                 {
                     addedDevices--;
-                    Console.WriteLine("Coudnt register device " + camera.ModelNumber+ " Error: " + e.Message);
+                    Console.WriteLine("Coudnt register device " + camera.ModelNumber + " Error: " + e.Message);
                 }
             }
             else

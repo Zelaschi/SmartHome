@@ -1,6 +1,5 @@
-﻿using SmartHome.JSONImporter.IncomingData;
-
-using SmartHome.ImporterCommon;
+﻿using SmartHome.ImporterCommon;
+using SmartHome.JSONImporter.IncomingData;
 
 namespace SmartHome.JSONImporter;
 public class JsonImporterClass : IDeviceImporter

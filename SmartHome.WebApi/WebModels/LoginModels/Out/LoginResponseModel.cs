@@ -1,5 +1,4 @@
 ﻿using SmartHome.BusinessLogic.DTOs;
-using SmartHome.WebApi.WebModels.DeviceModels.Out;
 
 namespace SmartHome.WebApi.WebModels.LoginModels.Out;
 

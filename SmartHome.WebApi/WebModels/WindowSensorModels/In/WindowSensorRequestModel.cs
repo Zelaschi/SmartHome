@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.Internal;
-using SmartHome.BusinessLogic.Constants;
+﻿using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
 
 namespace SmartHome.WebApi.WebModels.WindowSensorModels.In;

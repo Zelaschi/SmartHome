@@ -260,7 +260,7 @@ public class UsersControllerTest
         {
             user1
         };
-        var expectedReturnedUsers = new List <User>();
+        var expectedReturnedUsers = new List<User>();
         usersLogicMock.Setup(u => u.GetUsers(null, null, null, "John Doe"))
             .Returns(expectedReturnedUsers);
 

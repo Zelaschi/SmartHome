@@ -6,7 +6,6 @@ using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.MovementSensorModels.In;
 using SmartHome.WebApi.WebModels.MovementSensorModels.Out;
-using SmartHome.WebApi.WebModels.WindowSensorModels.Out;
 
 namespace SmartHome.WebApi.Controllers;
 
@@ -24,7 +23,7 @@ public class MovementSensorsController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_DEVICE_PERMISSION_ID)]
     [HttpPost]
-    public IActionResult CreateMovementSensor([FromBody]MovementSensorRequestModel deviceRequestModel)
+    public IActionResult CreateMovementSensor([FromBody] MovementSensorRequestModel deviceRequestModel)
     {
         var user = HttpContext.Items[UserStatic.User] as User;
 

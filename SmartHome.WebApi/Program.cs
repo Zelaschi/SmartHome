@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using SmartHome.DataAccess.Contexts;
-using SmartHome.BusinessLogic.Interfaces;
-using SmartHome.BusinessLogic.Services;
-using SmartHome.BusinessLogic.GenericRepositoryInterface;
-using SmartHome.DataAccess.Repositories;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
+using SmartHome.BusinessLogic.GenericRepositoryInterface;
+using SmartHome.BusinessLogic.Interfaces;
+using SmartHome.BusinessLogic.Services;
+using SmartHome.DataAccess.Contexts;
+using SmartHome.DataAccess.Repositories;
 using SmartHome.WebApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);

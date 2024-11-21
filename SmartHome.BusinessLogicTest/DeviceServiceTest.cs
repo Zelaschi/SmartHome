@@ -439,7 +439,7 @@ public class DeviceServiceTest
     [TestMethod]
     public void ListAll_DeviceTypes_Test()
     {
-        var deviceTypes = new List<string> {"Security Camera", "Inteligent Lamp",  "Window Sensor", "Movement Sensor" };
+        var deviceTypes = new List<string> { "Security Camera", "Inteligent Lamp", "Window Sensor", "Movement Sensor" };
 
         var result = deviceService.GetAllDeviceTypes().ToList();
 

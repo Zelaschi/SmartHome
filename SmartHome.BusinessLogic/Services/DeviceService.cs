@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
-using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Interfaces;
-using SmartHome.BusinessLogic.Constants;
-using System.Linq.Expressions;
 
 namespace SmartHome.BusinessLogic.Services;
 public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateDeviceLogic
@@ -69,7 +63,7 @@ public sealed class DeviceService : IDeviceLogic, ISecurityCameraLogic, ICreateD
 
         if (_deviceRepository.Find(x => x.Id == device.Id) != null)
         {
-            throw new DeviceException("There is already a device with the id "+ device.Id + " in the database");
+            throw new DeviceException("There is already a device with the id " + device.Id + " in the database");
         }
 
         device.Business = business;

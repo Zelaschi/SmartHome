@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome.BusinessLogic.Interfaces;
-using SmartHome.WebApi.Filters;
 using SmartHome.WebApi.WebModels.LoginModels.In;
 using SmartHome.WebApi.WebModels.LoginModels.Out;
 

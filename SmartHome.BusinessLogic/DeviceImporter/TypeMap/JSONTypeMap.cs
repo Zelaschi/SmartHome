@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmartHome.BusinessLogic.DeviceImporter.TypeMap;
+﻿namespace SmartHome.BusinessLogic.DeviceImporter.TypeMap;
 public static class JSONTypeMap
 {
     public const string SecurityCamera = "camera";

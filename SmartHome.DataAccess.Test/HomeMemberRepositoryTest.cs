@@ -424,7 +424,7 @@ public class HomeMemberRepositoryTest
         _context.Users.Update(user);
         _context.SaveChanges();
 
-        var nonExistingHomeMember= new HomeMember
+        var nonExistingHomeMember = new HomeMember
         {
             HomeMemberId = Guid.NewGuid(),
             HomeId = home.Id,

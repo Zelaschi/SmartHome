@@ -14,7 +14,7 @@ namespace SmartHome.WebApi.Test;
 public class MeControllerTest
 {
     private Mock<INotificationLogic>? _notificationLogicMock;
-    private  Mock<IHomeLogic>? _homeLogicMock;
+    private Mock<IHomeLogic>? _homeLogicMock;
     private MeController? _meController;
     private Role? homeOwner;
 

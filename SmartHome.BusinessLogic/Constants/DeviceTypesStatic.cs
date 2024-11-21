@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmartHome.BusinessLogic.Constants;
+﻿namespace SmartHome.BusinessLogic.Constants;
 public static class DeviceTypesStatic
 {
     public const string SecurityCamera = "Security Camera";

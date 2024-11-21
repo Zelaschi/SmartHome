@@ -293,7 +293,7 @@ public class DeviceControllerTest
             Photos = []
         };
 
-        IEnumerable< Device> devices = new List<Device>
+        IEnumerable<Device> devices = new List<Device>
         {
             device1,
             device2

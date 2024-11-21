@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.DataAccess.CustomExceptions;
-using System.Net;
 
 namespace SmartHome.WebApi.Filters;
 
 public sealed class ExceptionFilter : IExceptionFilter
 {
-    private readonly Dictionary<Type, Func<Exception, IActionResult>> _errors = new ()
+    private readonly Dictionary<Type, Func<Exception, IActionResult>> _errors = new()
     {
         {
             typeof(ValidatorException),
