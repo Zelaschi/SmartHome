@@ -428,4 +428,46 @@ public class BusinessServiceTest
         result.First().Name.Should().Be("Business2");
     }
 
+    [TestMethod]
+    public void AddValidatorToBusiness_BusinessAlreadyHasValidator_ShouldThrowException()
+    {
+        var businessOwner = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pr@mail.com"
+        };
+
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner,
+            ValidatorId = Guid.NewGuid()
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        Exception exception = null;
+
+        try
+        {
+            businessService.AddValidatorToBusiness(businessOwner, Guid.NewGuid());
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(BusinessException));
+        Assert.AreEqual("Business already has a validator", exception.Message);
+    }
 }
