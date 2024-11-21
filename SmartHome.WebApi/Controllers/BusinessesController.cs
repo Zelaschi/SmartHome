@@ -84,7 +84,7 @@ public sealed class BusinessesController : ControllerBase
 
     [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
     [HttpGet("myBusinesses")]
-    public IActionResult GetBusinessById()
+    public IActionResult GetBusinessByUser()
     {
         var user = HttpContext.Items[UserStatic.User] as User;
 

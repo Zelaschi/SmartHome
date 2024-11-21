@@ -520,7 +520,7 @@ public class BusinessesControllerTest
             .Setup(x => x.GetBusinessByUser(user))
             .Returns(business);
 
-        var result = businessesController.GetBusinessById();
+        var result = businessesController.GetBusinessByUser();
 
         Assert.IsInstanceOfType(result, typeof(OkObjectResult));
         var okResult = result as OkObjectResult;
@@ -543,7 +543,7 @@ public class BusinessesControllerTest
             HttpContext = httpContext
         };
 
-        var result = businessesController.GetBusinessById();
+        var result = businessesController.GetBusinessByUser();
 
         Assert.IsInstanceOfType(result, typeof(UnauthorizedObjectResult));
         var unauthorizedResult = result as UnauthorizedObjectResult;

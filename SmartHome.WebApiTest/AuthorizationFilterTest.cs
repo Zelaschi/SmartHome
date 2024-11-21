@@ -196,7 +196,6 @@ public class AuthorizationFilterTests
     [TestMethod]
     public void OnAuthorization_ErrorGettingPermission_ReturnsBadRequest()
     {
-        // Arrange
         var user = new User
         {
             Id = Guid.NewGuid(),
@@ -216,7 +215,6 @@ public class AuthorizationFilterTests
     };
         _httpContextMock.Setup(h => h.Items).Returns(items);
 
-        // Configura el mock para lanzar una excepción
         _permissionServiceMock!.Setup(p => p.GetSystemPermissionById(permissionId))
             .Throws(new Exception("Database error"));
 
@@ -227,7 +225,6 @@ public class AuthorizationFilterTests
 
         _httpContextMock.Setup(h => h.RequestServices).Returns(serviceProvider);
 
-        // Act
         try
         {
             _attribute!.OnAuthorization(_context!);
