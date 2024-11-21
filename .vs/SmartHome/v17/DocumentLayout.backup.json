@@ -1,0 +1,451 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\obj\\Debug\\net8.0\\SmartHome.BusinessLogic.Test.AssemblyInfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartHome.BusinessLogicTest\\obj\\Debug\\net8.0\\SmartHome.BusinessLogic.Test.AssemblyInfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}|SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogictest\\businessservicetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}|SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj|solutionrelative:smarthome.businesslogictest\\businessservicetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91797D06-C3DE-4C61-AE39-1E75EE533A3B}|SmartHome.JSONImporterTest\\SmartHome.JSONImporterTest.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.jsonimportertest\\jsonimportertestclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91797D06-C3DE-4C61-AE39-1E75EE533A3B}|SmartHome.JSONImporterTest\\SmartHome.JSONImporterTest.csproj|solutionrelative:smarthome.jsonimportertest\\jsonimportertestclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}|SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogictest\\homeservicetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}|SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj|solutionrelative:smarthome.businesslogictest\\homeservicetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogic\\deviceimporter\\devicesfiles\\devices-to-import.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|solutionrelative:smarthome.businesslogic\\deviceimporter\\devicesfiles\\devices-to-import.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}|SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogictest\\deviceimportservicetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}|SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj|solutionrelative:smarthome.businesslogictest\\deviceimportservicetest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapi\\controllers\\homescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|solutionrelative:smarthome.webapi\\controllers\\homescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapi\\controllers\\homememberscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|solutionrelative:smarthome.webapi\\controllers\\homememberscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64ED751B-0B32-44F7-A08B-35A6E6FC4132}|SmartHome.DataAccess\\SmartHome.DataAccess.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.dataaccess\\contexts\\smarthomeefcorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64ED751B-0B32-44F7-A08B-35A6E6FC4132}|SmartHome.DataAccess\\SmartHome.DataAccess.csproj|solutionrelative:smarthome.dataaccess\\contexts\\smarthomeefcorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapi\\controllers\\deviceimportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|solutionrelative:smarthome.webapi\\controllers\\deviceimportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapi\\controllers\\mecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|solutionrelative:smarthome.webapi\\controllers\\mecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogic\\services\\deviceimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|solutionrelative:smarthome.businesslogic\\services\\deviceimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogic\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|solutionrelative:smarthome.businesslogic\\services\\deviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapi\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|solutionrelative:smarthome.webapi\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapi\\webmodels\\notificationmodels\\out\\notificationresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|solutionrelative:smarthome.webapi\\webmodels\\notificationmodels\\out\\notificationresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapi\\filters\\exceptionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|solutionrelative:smarthome.webapi\\filters\\exceptionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1BCA30B0-9C50-4D5E-BF14-F47356F1EA23}|SmartHome.WebApiTest\\SmartHome.WebApi.Test.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapitest\\homecontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1BCA30B0-9C50-4D5E-BF14-F47356F1EA23}|SmartHome.WebApiTest\\SmartHome.WebApi.Test.csproj|solutionrelative:smarthome.webapitest\\homecontrollertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}|SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogictest\\smarthome.businesslogic.test.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{FB04EDFB-B5EF-41A8-9D0F-F38381FB9E61}|SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj|solutionrelative:smarthome.businesslogictest\\smarthome.businesslogic.test.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogic\\interfaces\\ihomelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|solutionrelative:smarthome.businesslogic\\interfaces\\ihomelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64ED751B-0B32-44F7-A08B-35A6E6FC4132}|SmartHome.DataAccess\\SmartHome.DataAccess.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.dataaccess\\repositories\\homedevicerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64ED751B-0B32-44F7-A08B-35A6E6FC4132}|SmartHome.DataAccess\\SmartHome.DataAccess.csproj|solutionrelative:smarthome.dataaccess\\repositories\\homedevicerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.webapi\\webmodels\\homemembermodels\\in\\homememberpermissionsrequestmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB14D6FB-6CC1-4B20-A93D-3478F382CB39}|SmartHome.WebApi\\SmartHome.WebApi.csproj|solutionrelative:smarthome.webapi\\webmodels\\homemembermodels\\in\\homememberpermissionsrequestmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.businesslogic\\interfaces\\ihomememberlogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C56A093C-57A0-452D-90E2-2C7D3833E857}|SmartHome.BusinessLogic\\SmartHome.BusinessLogic.csproj|solutionrelative:smarthome.businesslogic\\interfaces\\ihomememberlogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64ED751B-0B32-44F7-A08B-35A6E6FC4132}|SmartHome.DataAccess\\SmartHome.DataAccess.csproj|c:\\users\\toto\\desktop\\ort\\semestre 6\\dise\u00F1o 2\\obligatorio\\smarthome.dataaccess\\customexceptions\\databaseexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64ED751B-0B32-44F7-A08B-35A6E6FC4132}|SmartHome.DataAccess\\SmartHome.DataAccess.csproj|solutionrelative:smarthome.dataaccess\\customexceptions\\databaseexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 515,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BusinessServiceTest.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\BusinessServiceTest.cs",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogicTest\\BusinessServiceTest.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\BusinessServiceTest.cs",
+              "RelativeToolTip": "SmartHome.BusinessLogicTest\\BusinessServiceTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-21T20:18:54.986Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "JSONImporterTestClass.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.JSONImporterTest\\JSONImporterTestClass.cs",
+              "RelativeDocumentMoniker": "SmartHome.JSONImporterTest\\JSONImporterTestClass.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.JSONImporterTest\\JSONImporterTestClass.cs",
+              "RelativeToolTip": "SmartHome.JSONImporterTest\\JSONImporterTestClass.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-21T20:13:23.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SmartHome.BusinessLogic.Test.AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\obj\\Debug\\net8.0\\SmartHome.BusinessLogic.Test.AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogicTest\\obj\\Debug\\net8.0\\SmartHome.BusinessLogic.Test.AssemblyInfo.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\obj\\Debug\\net8.0\\SmartHome.BusinessLogic.Test.AssemblyInfo.cs",
+              "RelativeToolTip": "SmartHome.BusinessLogicTest\\obj\\Debug\\net8.0\\SmartHome.BusinessLogic.Test.AssemblyInfo.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-21T20:07:24.295Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "devices-to-import.json",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\DeviceImporter\\DevicesFiles\\devices-to-import.json",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogic\\DeviceImporter\\DevicesFiles\\devices-to-import.json",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\DeviceImporter\\DevicesFiles\\devices-to-import.json",
+              "RelativeToolTip": "SmartHome.BusinessLogic\\DeviceImporter\\DevicesFiles\\devices-to-import.json",
+              "ViewState": "AgIAAMOUAQAAAAAAAAAowBmVAQAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-11-20T22:25:06.837Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DeviceImportController.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\DeviceImportController.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApi\\Controllers\\DeviceImportController.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\DeviceImportController.cs",
+              "RelativeToolTip": "SmartHome.WebApi\\Controllers\\DeviceImportController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T21:31:20.245Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "NotificationsController.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\NotificationsController.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApi\\Controllers\\NotificationsController.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\NotificationsController.cs",
+              "RelativeToolTip": "SmartHome.WebApi\\Controllers\\NotificationsController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAArwBoAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T21:07:51.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "NotificationResponseModel.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\WebModels\\NotificationModels\\Out\\NotificationResponseModel.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApi\\WebModels\\NotificationModels\\Out\\NotificationResponseModel.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\WebModels\\NotificationModels\\Out\\NotificationResponseModel.cs",
+              "RelativeToolTip": "SmartHome.WebApi\\WebModels\\NotificationModels\\Out\\NotificationResponseModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T21:06:23.653Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MeController.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\MeController.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApi\\Controllers\\MeController.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\MeController.cs",
+              "RelativeToolTip": "SmartHome.WebApi\\Controllers\\MeController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAhwCIAAACRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T21:06:19.642Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ExceptionFilter.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Filters\\ExceptionFilter.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApi\\Filters\\ExceptionFilter.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Filters\\ExceptionFilter.cs",
+              "RelativeToolTip": "SmartHome.WebApi\\Filters\\ExceptionFilter.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAASwIAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T20:20:03.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "DeviceService.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\Services\\DeviceService.cs",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogic\\Services\\DeviceService.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\Services\\DeviceService.cs",
+              "RelativeToolTip": "SmartHome.BusinessLogic\\Services\\DeviceService.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAvwEUAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T19:50:42.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "DeviceImportService.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\Services\\DeviceImportService.cs",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogic\\Services\\DeviceImportService.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\Services\\DeviceImportService.cs",
+              "RelativeToolTip": "SmartHome.BusinessLogic\\Services\\DeviceImportService.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAmwHYAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T19:19:22.036Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "SmartHome.BusinessLogic.Test.csproj",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj",
+              "RelativeToolTip": "SmartHome.BusinessLogicTest\\SmartHome.BusinessLogic.Test.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-11-20T19:02:39.519Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "HomeServiceTest.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\HomeServiceTest.cs",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogicTest\\HomeServiceTest.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\HomeServiceTest.cs",
+              "RelativeToolTip": "SmartHome.BusinessLogicTest\\HomeServiceTest.cs",
+              "ViewState": "AgIAAOMCAAAAAAAAAAAAAPkCAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:19:18.051Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "HomeControllerTest.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApiTest\\HomeControllerTest.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApiTest\\HomeControllerTest.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApiTest\\HomeControllerTest.cs",
+              "RelativeToolTip": "SmartHome.WebApiTest\\HomeControllerTest.cs",
+              "ViewState": "AgIAAKgCAAAAAAAAAAAAAK0CAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T19:01:16.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "IHomeLogic.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\Interfaces\\IHomeLogic.cs",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogic\\Interfaces\\IHomeLogic.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\Interfaces\\IHomeLogic.cs",
+              "RelativeToolTip": "SmartHome.BusinessLogic\\Interfaces\\IHomeLogic.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAIA1wBQAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:49:42.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "HomesController.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\HomesController.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApi\\Controllers\\HomesController.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\HomesController.cs",
+              "RelativeToolTip": "SmartHome.WebApi\\Controllers\\HomesController.cs",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAvwHkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:47:39.431Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "HomeDeviceRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.DataAccess\\Repositories\\HomeDeviceRepository.cs",
+              "RelativeDocumentMoniker": "SmartHome.DataAccess\\Repositories\\HomeDeviceRepository.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.DataAccess\\Repositories\\HomeDeviceRepository.cs",
+              "RelativeToolTip": "SmartHome.DataAccess\\Repositories\\HomeDeviceRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:47:24.029Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "HomeMemberPermissionsRequestModel.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\WebModels\\HomeMemberModels\\In\\HomeMemberPermissionsRequestModel.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApi\\WebModels\\HomeMemberModels\\In\\HomeMemberPermissionsRequestModel.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\WebModels\\HomeMemberModels\\In\\HomeMemberPermissionsRequestModel.cs",
+              "RelativeToolTip": "SmartHome.WebApi\\WebModels\\HomeMemberModels\\In\\HomeMemberPermissionsRequestModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAACIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:29:27.625Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "SmartHomeEFCoreContext.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.DataAccess\\Contexts\\SmartHomeEFCoreContext.cs",
+              "RelativeDocumentMoniker": "SmartHome.DataAccess\\Contexts\\SmartHomeEFCoreContext.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.DataAccess\\Contexts\\SmartHomeEFCoreContext.cs",
+              "RelativeToolTip": "SmartHome.DataAccess\\Contexts\\SmartHomeEFCoreContext.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAcwH4AAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:27:32.825Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "DatabaseException.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.DataAccess\\CustomExceptions\\DatabaseException.cs",
+              "RelativeDocumentMoniker": "SmartHome.DataAccess\\CustomExceptions\\DatabaseException.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.DataAccess\\CustomExceptions\\DatabaseException.cs",
+              "RelativeToolTip": "SmartHome.DataAccess\\CustomExceptions\\DatabaseException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:26:44.026Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{905da7d1-18fd-4a46-8d0f-a5ff58ada9de}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "IHomeMemberLogic.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\Interfaces\\IHomeMemberLogic.cs",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogic\\Interfaces\\IHomeMemberLogic.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogic\\Interfaces\\IHomeMemberLogic.cs",
+              "RelativeToolTip": "SmartHome.BusinessLogic\\Interfaces\\IHomeMemberLogic.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:09:02.321Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DeviceImportServiceTest.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\DeviceImportServiceTest.cs",
+              "RelativeDocumentMoniker": "SmartHome.BusinessLogicTest\\DeviceImportServiceTest.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.BusinessLogicTest\\DeviceImportServiceTest.cs",
+              "RelativeToolTip": "SmartHome.BusinessLogicTest\\DeviceImportServiceTest.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAvwDkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T02:36:47.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HomeMembersController.cs",
+              "DocumentMoniker": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\HomeMembersController.cs",
+              "RelativeDocumentMoniker": "SmartHome.WebApi\\Controllers\\HomeMembersController.cs",
+              "ToolTip": "C:\\Users\\Toto\\Desktop\\ORT\\Semestre 6\\Dise\u00F1o 2\\Obligatorio\\SmartHome.WebApi\\Controllers\\HomeMembersController.cs",
+              "RelativeToolTip": "SmartHome.WebApi\\Controllers\\HomeMembersController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAewCcAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-20T18:08:36.61Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 341,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

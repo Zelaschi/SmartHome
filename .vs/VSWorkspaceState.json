@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\SmartHome.BusinessLogic",
+    "\\SmartHome.BusinessLogic\\Domain",
+    "\\SmartHome.BusinessLogic\\DTOs",
+    "\\SmartHome.BusinessLogic\\Services"
+  ],
+  "SelectedNode": "\\SmartHome.BusinessLogic\\Services\\DeviceImportService.cs",
+  "PreviewInSolutionExplorer": false
+}

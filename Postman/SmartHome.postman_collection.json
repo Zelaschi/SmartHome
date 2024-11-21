@@ -1,0 +1,1137 @@
+{
+	"info": {
+		"_postman_id": "9efe6973-9b9b-4817-8255-7b9383b4c50a",
+		"name": "SmartHome",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38411143",
+		"_collection_link": "https://diseo-2-1838.postman.co/workspace/Dise%C3%B1o-2-Workspace~380f7a89-fb20-49ea-a5a7-74f25eef433c/collection/38411143-9efe6973-9b9b-4817-8255-7b9383b4c50a?action=share&source=collection_link&creator=38411143"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\": \"businessOwner@gmail.com\",\r\n    \"Password\": \"Password@1234\"\r\n}"
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/authentication",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"authentication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "homeOwner",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"Martin\",\r\n    \"Surname\": \"Felder\",\r\n    \"Email\": \"user@gmail.com\",\r\n    \"Password\" : \"Password@1234\",\r\n    \"ProfilePhoto\" : \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/homeOwners",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"homeOwners"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "e3cb8664-9230-4a29-8eba-d373d8bb8952",
+						"description": "Admin token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admins",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "e3cb8664-9230-4a29-8eba-d373d8bb8952",
+						"description": "admin token",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"admin\",\r\n    \"Surname\": \"instrator\",\r\n    \"Email\": \"admin2@gmail.com\",\r\n    \"Password\" : \"Pasword@1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/admins",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"admins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admins/{adminId}",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "8ba709f9-4684-40ed-9c02-6d2569c8ed38",
+						"description": "admin token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/admins/80E909FB-3C8A-423D-BD46-EDDE4F85FBE3",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"admins",
+						"80E909FB-3C8A-423D-BD46-EDDE4F85FBE3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "businessOwners",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "ba36a4b7-8bf0-4b85-a4f2-3eba20dd7cf8",
+						"description": "admin token",
+						"type": "text"
+					},
+					{
+						"key": "Content",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"Business\",\r\n    \"Surname\": \"Owner\",\r\n    \"Email\": \"businessOwner@gmail.com\",\r\n    \"Password\" : \"Password@1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/businessOwners",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"businessOwners"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "businesses",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "a96dc957-80c7-4787-897d-a4fa64cd3797",
+						"description": "business owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"RUT\" : \"123451fgs\",\r\n    \"Name\" : \"BusinessName\",\r\n    \"Logo\" : \"logoPath\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/businesses",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"businesses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "businesses",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "11BC500E-87AA-46D1-8961-5FBE3DD61782",
+						"description": "admin token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/businesses",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"businesses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "devices",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home owner token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/devices",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inteligentLamps",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "67a9f524-e67d-479b-995c-f77ebd1e383b",
+						"description": "business owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"Name\" : \"Device2Name\",\r\n    \"ModelNumber\" : \"DeviceModelNumber\",\r\n    \"Description\" : \"Device2Description\",\r\n    \"Photos\" : [\r\n        {\r\n            \"path\" : \"url\"\r\n        }\r\n    ]\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/inteligentLamps",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"inteligentLamps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movementSensors",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "a96dc957-80c7-4787-897d-a4fa64cd3797",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"Name\" : \"MovementSensor\",\r\n    \"ModelNumber\" : \"movementSensorModelNumber\",\r\n    \"Description\" : \"Device2Description\",\r\n    \"Photos\" : \"photoPath\"\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/movementSensors",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"movementSensors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "securityCameras",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "67a9f524-e67d-479b-995c-f77ebd1e383b",
+						"description": "business owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"Name\" : \"CamaraName\",\r\n    \"ModelNumber\" : \"CameraModelNumber2\",\r\n    \"Description\" : \"Camara2Description\",\r\n    \"Photos\" : [\r\n        {\r\n            \"path\" : \"url\"\r\n        }\r\n    ],\r\n    \"InDoor\" : false,\r\n    \"OutDoor\" : true,\r\n    \"MovementDetection\": true,\r\n    \"PersonDetection\": false\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/securityCameras",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"securityCameras"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "windowSensors",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "a96dc957-80c7-4787-897d-a4fa64cd3797",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"Name\" : \"WindowSensor\",\r\n    \"ModelNumber\" : \"WindpwSensorModelNumber\",\r\n    \"Description\" : \"Device2Description\",\r\n    \"Photos\" : [\r\n        {\r\n            \"path\" : \"url\"\r\n        }\r\n    ],\r\n    \"Open\" : true\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/windowSensors",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"windowSensors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "devicesTypes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home owner token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/deviceTypes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"deviceTypes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "homes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"MainStreet\" : \"StreetName\",\r\n    \"DoorNumber\" : \"666\",\r\n    \"Latitude\" : \"31.11\",\r\n    \"Longitude\" : \"-32.314\",\r\n    \"MaxMembers\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/homes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"homes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "me/homes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home Owners token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/me/homes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"me",
+						"homes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "homes/{homeId}/members",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "313d3dac-bcea-4fa1-9b22-b9b6ecc5f76a",
+						"description": "home owner token\n",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"4418307a-7a61-4d98-af57-08dce7cd1353\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/homes/A377CF17-C8BC-4F28-C069-08DCF30233FA/members",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"homes",
+						"A377CF17-C8BC-4F28-C069-08DCF30233FA",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "homes/{homeId}/homeDevices",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "2c197b4a-5bf2-4683-bc1c-3fcba17b8818",
+						"description": "home owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"0D159E2D-C0A4-4722-E87B-08DCF30161B3\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/homes/A377CF17-C8BC-4F28-C069-08DCF30233FA/homeDevices",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"homes",
+						"A377CF17-C8BC-4F28-C069-08DCF30233FA",
+						"homeDevices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "homes/{homeId}/homeDevices",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "313d3dac-bcea-4fa1-9b22-b9b6ecc5f76a",
+						"description": "home owner token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/homes/A377CF17-C8BC-4F28-C069-08DCF30233FA/homeDevices",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"homes",
+						"A377CF17-C8BC-4F28-C069-08DCF30233FA",
+						"homeDevices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "homes/{homeId}/members",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "313d3dac-bcea-4fa1-9b22-b9b6ecc5f76a",
+						"description": "home owner token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/homes/A377CF17-C8BC-4F28-C069-08DCF30233FA/members",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"homes",
+						"A377CF17-C8BC-4F28-C069-08DCF30233FA",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "homeMembers/{homeMemberId}/permissions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"AddMemberPermission\" : false,\r\n    \"AddDevicePermission\" : true,\r\n    \"ListDevicesPermission\" : false,\r\n    \"NotificationsPermission\" : true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/homeMembers/118BB59B-EB3A-4862-8982-74B14470A923/permissions",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"homeMembers",
+						"118BB59B-EB3A-4862-8982-74B14470A923",
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "homeMembers/{homeMemberId}/permissions",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"AddMemberPermission\" : false,\r\n    \"AddDevicePermission\" : true,\r\n    \"ListDevicesPermission\" : true,\r\n    \"NotificationsPermission\" : true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/homeMembers/118BB59B-EB3A-4862-8982-74B14470A923/permissions",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"homeMembers",
+						"118BB59B-EB3A-4862-8982-74B14470A923",
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "notification/{homeDeviceId}/personDetection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"9CEB5A81-9668-47AA-DCC8-08DCE6D82581\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/notifications/A5A42027-F3F2-4A91-ADD5-6CE54874E460/personDetection",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"notifications",
+						"A5A42027-F3F2-4A91-ADD5-6CE54874E460",
+						"personDetection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "notifications/{homeDeviceId}/movementDetection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "a282a219-731b-4f66-a4f6-d18d07387bf8",
+						"description": "home owner token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/notifications/230A19C6-E304-4F7C-AC3E-6EAAC658E5C8/movementDetection",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"notifications",
+						"230A19C6-E304-4F7C-AC3E-6EAAC658E5C8",
+						"movementDetection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "notifications/{homeDeviceId}/openClosedStatus",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home owner token",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "true",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/notifications/3cfb80ad-8080-4246-86f5-3dc905217eb3/OpenClosedStatus",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"notifications",
+						"3cfb80ad-8080-4246-86f5-3dc905217eb3",
+						"OpenClosedStatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "me/notifications",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "df011944-02ee-4b8b-b1ec-00a985912383",
+						"description": "home owners token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/me/notifications",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"me",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deviceImport",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "d4f2254a-e21f-414d-b43f-c241624d6e39",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"DllName\" : \"JSON\",\r\n    \"FileName\": \"devices-to-import.json\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/deviceImport",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"deviceImport"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "businesses/validators",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "d9ccc4ab-afef-4791-87e4-b4453efa0027",
+						"description": "businessowner token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/businesses/Validators",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"businesses",
+						"Validators"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "businesses/validators/{businessId}",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "45cf84f9-02d5-42f8-9188-714d766416f3",
+						"description": "businessOwner token",
+						"type": "text"
+					},
+					{
+						"key": "Content",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v2/businesses/validators/E6B61874-3BD1-48FA-216C-08DD029373A2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"businesses",
+						"validators",
+						"E6B61874-3BD1-48FA-216C-08DD029373A2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admins/homeOwnerPermissions",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "e4a1a2e6-5c5f-4e8a-9ae8-8f3d2649fa43",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7220/api/v2/admins/homeOwnerPermissions",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v2",
+						"admins",
+						"homeOwnerPermissions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
