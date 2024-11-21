@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
-using System.Linq.Expressions;
 using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.Services;
+using System.Linq.Expressions;
 
 namespace SmartHome.BusinessLogic.Test;
 
@@ -290,64 +290,142 @@ public class BusinessServiceTest
 
         result.Should().HaveCount(2);
     }
+
+    [TestMethod]
+    public void GetBusinessByUser_BusinessNotFound_ThrowsException()
+    {
+        var user = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pr@mail.com"
+        };
+
+        Business business = null;
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        Exception exception = null;
+
+        try
+        {
+            businessService.GetBusinessByUser(user);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(BusinessException));
+        Assert.AreEqual("Business does not exist", exception.Message);
+    }
+
+    [TestMethod]
+    public void GetBusinessByUser_BusinessFound_ReturnsBusiness()
+    {
+        var businessOwner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pr@mail.com"
+        };
+
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner,
+            ValidatorId = Guid.NewGuid()
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        var result = businessService.GetBusinessByUser(businessOwner);
+
+        businessRepositoryMock.VerifyAll();
+        Assert.IsNotNull(result);
+        Assert.AreEqual(business, result);
+    }
+
+    [TestMethod]
+    public void GetBusinesses_WithPagination_ReturnsPagedBusinesses()
+    {
+        var businesses = new List<Business>
+    {
+        new Business
+        {
+            Name = "Business1",
+            BusinessOwner = new User
+                            {
+                                Name = "Juan",
+                                Surname = "Perez",
+                                Password = "Password@1234",
+                                Email = "mail@mail.com"
+                            },
+            Id = Guid.NewGuid(),
+            Logo = "Logo1",
+            RUT = "1234"
+        },
+        new Business
+        {
+            Name = "Business2",
+            BusinessOwner = new User
+                            {
+                                Name = "Pedro",
+                                Surname = "Rodriguez",
+                                Password = "Password@1234",
+                                Email = "mail@mail.com"
+                            },
+            Id = Guid.NewGuid(),
+            Logo = "Logo1",
+            RUT = "1234"
+        },
+        new Business
+        {
+            Name = "Business3",
+            BusinessOwner = new User
+                            {
+                                Name = "Luis",
+                                Surname = "Martinez",
+                                Password = "Password@1234",
+                                Email = "mail@mail.com"
+                            },
+            Id = Guid.NewGuid(),
+            Logo = "Logo1",
+            RUT = "1234"
+        }
+    };
+
+        businessRepositoryMock.Setup(x => x.FindAllFiltered(
+                It.IsAny<Expression<Func<Business, bool>>>(),
+                It.Is<int>(p => p == 2), // Página 2
+                It.Is<int>(s => s == 1)) // Tamaño 1 (un registro por página)
+            )
+            .Returns(businesses.Skip(1).Take(1).ToList());
+
+        var result = businessService.GetBusinesses(2, 1, null, null);
+
+        businessRepositoryMock.Verify(
+            x => x.FindAllFiltered(
+                It.IsAny<Expression<Func<Business, bool>>>(),
+                It.Is<int>(p => p == 2),
+                It.Is<int>(s => s == 1)),
+            Times.Once);
+
+        result.Should().HaveCount(1);
+        result.First().Name.Should().Be("Business2");
+    }
+
 }
-
-////[TestMethod]
-////public void GetBusinessById_BusinessNotFound_ThrowsException()
-////{
-////    var businessId = Guid.NewGuid();
-////    Business business = null;
-
-////    businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-////                .Returns(business);
-
-////    Exception exception = null;
-
-////    try
-////    {
-////        businessService.GetBusinessById(businessId);
-////    }
-////    catch (Exception e)
-////    {
-////        exception = e;
-////    }
-
-////    businessRepositoryMock.VerifyAll();
-
-////    Assert.IsNotNull(exception);
-////    Assert.IsInstanceOfType(exception, typeof(BusinessException));
-////    Assert.AreEqual("Business does not exist", exception.Message);
-////}
-
-////[TestMethod]
-////public void GetBusinessById_BusinessFound_ReturnsBusiness()
-////{
-////    var businessOwner = new User
-////    {
-////        Id = Guid.NewGuid(),
-////        Name = "Pedro",
-////        Surname = "Rodriguez",
-////        Password = "Password@1234",
-////        CreationDate = DateTime.Today,
-////        Email = "pr@mail.com"
-////    };
-
-////    var business = new Business
-////    {
-////        Id = Guid.NewGuid(),
-////        Name = "HikVision",
-////        Logo = "Logo1",
-////        RUT = "1234",
-////        BusinessOwner = businessOwner,
-////        ValidatorId = Guid.NewGuid()
-////    };
-
-////    businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-////                .Returns(business);
-
-////    var result = businessService.GetBusinessById(business.Id);
-
-////    businessRepositoryMock.VerifyAll();
-////    Assert.IsNotNull(result);
-////    Assert.AreEqual(business, result);
-////}
