@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import HomeDeviceResponseModel from '../../../../backend/services/Home/models/HomeDeviceResponseModel';
 import { RoomService } from '../../../../backend/services/Room/room.service';
 import { Observable } from 'rxjs';
+import { HomeService } from '../../../../backend/services/Home/home.service';
 
 @Component({
   selector: 'app-home-device-item',
@@ -21,6 +22,7 @@ export class HomeDeviceItemComponent {
 
   constructor(
     private readonly _roomService: RoomService,
+    private readonly _homeService: HomeService,
   ) {}
 
   ChangeHomeDeviceName(harwardId : string): void {
@@ -70,6 +72,22 @@ export class HomeDeviceItemComponent {
         },
         error: () => {
           this.errorMessage = 'Failed to add device to room. Please try again.';
+        }
+      });
+    }
+  }
+
+  toggleDevice(): void {
+    if (this.homeDevice) {
+      this._homeService.TurnOnOffDevice(this.homeDevice.hardwardId).subscribe({
+        next: () => {
+          if (this.homeDevice) {
+            this.homeDevice.online = !this.homeDevice.online;
+            this.showTemporaryMessage(true, 'Device updated successfully');
+          }
+        },
+        error: () => {
+          this.showTemporaryMessage(false, 'Error turning on/off device');
         }
       });
     }

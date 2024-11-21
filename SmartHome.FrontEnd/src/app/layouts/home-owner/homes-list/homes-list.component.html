@@ -1,19 +1,23 @@
 <div>
   <a
-  class="btn btn-outline-dark m-1 mt-3 ms-3" 
-  routerLink="/homeOwners/createHome"
-  routerLinkActive="active"
+    class="btn btn-outline-dark m-1 mt-3 ms-3" 
+    routerLink="/homeOwners/createHome"
+    routerLinkActive="active"
   >Create home</a>
 </div> 
 
-<div class="homes-list d-flex flex-column container justify-content-center align-items-center">
-    <h2 class="m-4">My Homes</h2>
+<div class="homes-list container">
+    <h2 class="m-4 text-center">My Homes</h2>
     <div *ngIf="loading" class="loader">
       <app-loading></app-loading>
     </div>
-    <div *ngFor="let home of status.homes" class="home-item" (click)="navigateToHome(home)">
-      <app-home-item [home]="home"></app-home-item>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let home of status.homes">
+        <div class="home-item" (click)="navigateToHome(home)">
+          <app-home-item [home]="home"></app-home-item>
+        </div>
+      </div>
     </div>
-  </div>
+</div>
 
 

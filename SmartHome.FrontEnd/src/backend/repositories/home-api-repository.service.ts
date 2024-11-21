@@ -78,4 +78,11 @@ export class HomeApiRepositoryService extends ApiRepository{
   {
     return this.post<void>({ userId }, `${homeId}/members`);
   }
+
+  public TurnOnOffDevice(
+    homeDeviceId: string,
+  ): Observable<void>
+  {
+    return this.putById<void>(`${homeDeviceId}/turnOnOff`);
+  }
 }

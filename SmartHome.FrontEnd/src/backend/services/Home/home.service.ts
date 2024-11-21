@@ -68,4 +68,11 @@ export class HomeService {
   {
     return this._repository.AddHomeMemberToHome(homeId, userId);
   }
+
+  public TurnOnOffDevice(
+    homeDeviceId: string,
+  ): Observable<void>
+  {
+    return this._repository.TurnOnOffDevice(homeDeviceId);
+  }
 }
