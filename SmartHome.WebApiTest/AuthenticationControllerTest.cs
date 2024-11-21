@@ -15,8 +15,6 @@ public class AuthenticationControllerTest
     private Mock<ILoginLogic>? loginLogicMock;
     private AuthenticationController? authController;
 
-    // private readonly Session session = new Session() { SessionId = new Guid(), UserId = new Guid() };
-
     [TestInitialize]
     public void TestInitialize()
     {
@@ -37,7 +35,14 @@ public class AuthenticationControllerTest
         var sessionAndSP = new DTOSessionAndSystemPermissions
         {
             SessionId = token,
-            SystemPermissions = new List<SystemPermission> { new SystemPermission { Name = "READ", Description = "read" } }
+            SystemPermissions = new List<SystemPermission>
+            {
+                new SystemPermission
+                {
+                    Name = "READ",
+                    Description = "read"
+                }
+            }
         };
 
         var expectedLoginResponse = new LoginResponseModel(sessionAndSP);

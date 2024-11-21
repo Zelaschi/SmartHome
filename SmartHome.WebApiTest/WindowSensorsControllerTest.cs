@@ -26,9 +26,24 @@ public class WindowSensorsControllerTest
     [TestMethod]
     public void CreateWindowSensorTest_Ok()
     {
-        // Arrange
-        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
+        var user1 = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+        var company1 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "hikvision",
+            Logo = "logo1",
+            RUT = "rut1",
+            BusinessOwner = user1
+        };
 
         var deviceRequestModel = new WindowSensorRequestModel()
         {
@@ -50,20 +65,23 @@ public class WindowSensorsControllerTest
             HttpContext = httpContext
         };
 
-        windowSensorController = new WindowSensorsController(windowSensorLogicMock.Object) { ControllerContext = controllerContext };
+        windowSensorController = new WindowSensorsController(windowSensorLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
-        windowSensorLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>())).Returns(device);
+        windowSensorLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>()))
+            .Returns(device);
 
         var expectedResult = new WindowSensorResponseModel(device);
         var expectedObjectResult = new CreatedAtActionResult("CreateWindowSensor", "WindowSensor", new { Id = device.Id }, expectedResult);
 
-        // Act
         var result = windowSensorController.CreateWindowSensor(deviceRequestModel) as CreatedAtActionResult;
         var deviceResult = result.Value as WindowSensorResponseModel;
 
-        // Assert
         windowSensorLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
+        Assert.AreEqual(expectedObjectResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, deviceResult);
     }
 
     [TestMethod]

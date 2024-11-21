@@ -35,7 +35,8 @@ public class AdminControllerTest
         };
 
         var admin = adminRequestModel.ToEntitiy();
-        adminLogicMock.Setup(a => a.CreateAdmin(It.IsAny<User>())).Returns(admin);
+        adminLogicMock.Setup(a => a.CreateAdmin(It.IsAny<User>()))
+            .Returns(admin);
 
         var expectedResult = new AdminResponseModel(admin);
         var expectedObjecResult = new CreatedAtActionResult("CreateAdmin", "CreateAdmin", new { admin.Id }, expectedResult);
@@ -44,7 +45,8 @@ public class AdminControllerTest
         var adminResult = result.Value as AdminResponseModel;
 
         adminLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjecResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(adminResult));
+        Assert.AreEqual(expectedObjecResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, adminResult);
     }
 
     [TestMethod]
@@ -67,8 +69,8 @@ public class AdminControllerTest
         var result = adminController.DeleteAdmin(adminId) as OkObjectResult;
 
         adminLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(200));
-        Assert.IsTrue(result.Value.Equals("The admin was deleted successfully"));
+        Assert.AreEqual(result.StatusCode, 200);
+        Assert.AreEqual(result.Value, "The admin was deleted successfully");
     }
 
     [TestMethod]

@@ -25,9 +25,28 @@ public class SecurityCameraControllerTest
     [TestMethod]
     public void RegisterSecurityCameraTest_OK()
     {
-        var businessOwnerRole = new Role() { Name = "BusinessOwner" };
-        var businessOwner = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwnerRole, CreationDate = DateTime.Today };
-        var company = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = businessOwner };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = businessOwnerRole,
+            CreationDate = DateTime.Today
+        };
+        var company = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "hikvision",
+            Logo = "logo1",
+            RUT = "rut1",
+            BusinessOwner = businessOwner
+        };
         var securityCameraRequestModel = new SecurityCameraRequestModel()
         {
             Type = "CameraType",
@@ -53,9 +72,13 @@ public class SecurityCameraControllerTest
             HttpContext = httpContext
         };
 
-        securityCameraController = new SecurityCamerasController(securityCameraLogicMock.Object) { ControllerContext = controllerContext };
+        securityCameraController = new SecurityCamerasController(securityCameraLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
-        securityCameraLogicMock.Setup(d => d.CreateSecurityCamera(It.IsAny<SecurityCamera>(), It.IsAny<BusinessLogic.Domain.User>())).Returns(securityCamera);
+        securityCameraLogicMock.Setup(d => d.CreateSecurityCamera(It.IsAny<SecurityCamera>(), It.IsAny<User>()))
+            .Returns(securityCamera);
         var expectedResult = new SecurityCameraResponseModel(securityCamera);
         var expectedSecurityCameraResult = new CreatedAtActionResult("CreateSecurityCamera", "CreateSecurityCamera", new { Id = securityCamera.Id }, expectedResult);
 
@@ -63,7 +86,8 @@ public class SecurityCameraControllerTest
         var securityCameraResult = result.Value as SecurityCameraResponseModel;
 
         securityCameraLogicMock.VerifyAll();
-        Assert.IsTrue(expectedSecurityCameraResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(securityCameraResult));
+        Assert.AreEqual(expectedSecurityCameraResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, securityCameraResult);
     }
 
     [TestMethod]
@@ -83,7 +107,10 @@ public class SecurityCameraControllerTest
         };
 
         HttpContext httpContext = new DefaultHttpContext();
-        var controllerContext = new ControllerContext { HttpContext = httpContext };
+        var controllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
 
         securityCameraController.ControllerContext = controllerContext;
 

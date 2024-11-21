@@ -15,7 +15,10 @@ public class BusinessOwnerControllerTest
 {
     private Mock<IBusinessOwnerLogic>? businessOwnerLogicMock;
     private BusinessOwnersController? businessOwnerController;
-    private readonly Role businessOwner = new Role() { Name = "BusinessOwner" };
+    private readonly Role businessOwner = new Role
+    {
+        Name = "BusinessOwner"
+    };
 
     [TestInitialize]
     public void TestInitialize()
@@ -27,7 +30,7 @@ public class BusinessOwnerControllerTest
     [TestMethod]
     public void RegisterBusinessOwnerTest_OK()
     {
-        var businessOwnerRequestModel = new BusinessOwnerRequestModel()
+        var businessOwnerRequestModel = new BusinessOwnerRequestModel
         {
             Name = "businessOwnerName",
             Surname = "businessOwnerSurname",
@@ -36,7 +39,8 @@ public class BusinessOwnerControllerTest
         };
 
         var businessOwner = businessOwnerRequestModel.ToEntitiy();
-        businessOwnerLogicMock.Setup(b => b.CreateBusinessOwner(It.IsAny<User>())).Returns(businessOwner);
+        businessOwnerLogicMock.Setup(b => b.CreateBusinessOwner(It.IsAny<User>()))
+            .Returns(businessOwner);
 
         var expectedResult = new BusinessOwnerResponseModel(businessOwner);
         var expectedObjecResult = new CreatedAtActionResult("CreateBusinessOwner", "CreateBusinessOwner", new { Id = businessOwner.Id }, expectedResult);
@@ -45,7 +49,8 @@ public class BusinessOwnerControllerTest
         var businessOwnerResult = result.Value as BusinessOwnerResponseModel;
 
         businessOwnerLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjecResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(businessOwnerResult));
+        Assert.AreEqual(expectedObjecResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, businessOwnerResult);
     }
 
     [TestMethod]

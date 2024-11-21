@@ -25,7 +25,6 @@ public class DeviceImportControllerTest
     [TestMethod]
     public void ImportDevicesTest_OK()
     {
-        // Arrange
         var user1 = new User()
         {
             Id = Guid.NewGuid(),
@@ -95,12 +94,9 @@ public class DeviceImportControllerTest
 
         var expectedResult = new CreatedAtActionResult("ImportDevice", "DeviceImport", new { Id = string.Empty }, devices.Count);
 
-        // Act
-
         var result = _deviceImportController.ImportDevice(deviceImportRequestModel) as OkObjectResult;
         var objectResult = result.Value;
 
-        // Assert
         _deviceImportService.VerifyAll();
 
         Assert.IsNotNull(result);

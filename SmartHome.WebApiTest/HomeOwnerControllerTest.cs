@@ -34,7 +34,8 @@ public class HomeOwnerControllerTest
         };
 
         var homeOwner = homeOwnerRequestModel.ToEntitiy();
-        homeOwnerLogicMock.Setup(h => h.CreateHomeOwner(It.IsAny<User>())).Returns(homeOwner);
+        homeOwnerLogicMock.Setup(h => h.CreateHomeOwner(It.IsAny<User>()))
+            .Returns(homeOwner);
 
         var expectedResult = new HomeOwnerResponseModel(homeOwner);
         var expectedObjectResult = new CreatedAtActionResult("CreateHomeOwner", "CreateHomeOwner", new { Id = homeOwner.Id }, expectedResult);
@@ -43,6 +44,7 @@ public class HomeOwnerControllerTest
         var homeOwnerResult = result.Value as HomeOwnerResponseModel;
 
         homeOwnerLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(homeOwnerResult));
+        Assert.AreEqual(expectedObjectResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, homeOwnerResult);
     }
 }

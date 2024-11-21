@@ -14,7 +14,10 @@ public class MovementSensorControllerTest
 {
     private Mock<ICreateDeviceLogic>? movementSensorLogicMock;
     private MovementSensorsController? movementSensorController;
-    private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
+    private readonly Role homeOwner = new Role
+    {
+        Name = "HomeOwner"
+    };
 
     [TestInitialize]
     public void TestInitialize()
@@ -26,9 +29,24 @@ public class MovementSensorControllerTest
     [TestMethod]
     public void CreateMovementSensorTest_Ok()
     {
-        // Arrange
-        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
+        var user1 = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+        var company1 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "hikvision",
+            Logo = "logo1",
+            RUT = "rut1",
+            BusinessOwner = user1
+        };
 
         var deviceRequestModel = new MovementSensorRequestModel()
         {
@@ -51,20 +69,23 @@ public class MovementSensorControllerTest
             HttpContext = httpContext
         };
 
-        movementSensorController = new MovementSensorsController(movementSensorLogicMock.Object) { ControllerContext = controllerContext };
+        movementSensorController = new MovementSensorsController(movementSensorLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
-        movementSensorLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>())).Returns(device);
+        movementSensorLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>()))
+            .Returns(device);
 
         var expectedResult = new MovementSensorResponseModel(device);
         var expectedObjectResult = new CreatedAtActionResult("CreateMovementSensor", "Device", new { Id = device.Id }, expectedResult);
 
-        // Act
         var result = movementSensorController.CreateMovementSensor(deviceRequestModel) as CreatedAtActionResult;
         var deviceResult = result.Value as MovementSensorResponseModel;
 
-        // Assert
         movementSensorLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
+        Assert.AreEqual(expectedObjectResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, deviceResult);
     }
 
     [TestMethod]
@@ -83,7 +104,6 @@ public class MovementSensorControllerTest
     [TestMethod]
     public void CreateMovementSensor_UserIdMissing_ReturnsUnauthorized()
     {
-        // Arrange
         var deviceRequestModel = new MovementSensorRequestModel
         {
             Name = "Movement Sensor Test",
@@ -93,15 +113,16 @@ public class MovementSensorControllerTest
             Type = "MovementSensor"
         };
 
-        var httpContext = new DefaultHttpContext(); // No user added to context
-        var controllerContext = new ControllerContext { HttpContext = httpContext };
+        var httpContext = new DefaultHttpContext();
+        var controllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
 
         movementSensorController.ControllerContext = controllerContext;
 
-        // Act
         var result = movementSensorController.CreateMovementSensor(deviceRequestModel) as UnauthorizedObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(401, result.StatusCode);
         Assert.AreEqual("UserId is missing", result.Value);

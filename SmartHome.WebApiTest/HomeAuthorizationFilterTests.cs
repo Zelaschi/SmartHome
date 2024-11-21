@@ -81,20 +81,26 @@ public class HomeAuthorizationFilterTests
     [TestMethod]
     public void OnAuthorization_WhenUserIsNotAuthenticated_ShouldReturnUnauthenticatedResponse()
     {
-        // Arrange
         var permissionGuid = Guid.NewGuid();
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = "email@mail.com",
+            Name = "Pedro",
+            Password = "Password1",
+            Surname = "Azambuja"
+        };
         _attribute = new HomeAuthorizationFilter(permissionGuid.ToString());
-        _httpContextMock.Setup(h => h.Items[UserStatic.User]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
+        _httpContextMock.Setup(h => h.Items[UserStatic.User])
+            .Returns(user);
 
         var homeGuid = Guid.NewGuid();
         _context.RouteData.Values["homeId"] = homeGuid.ToString();
 
         Assert.IsNotNull(_context);
 
-        // Act
         _attribute.OnAuthorization(_context);
 
-        // Assert
         var response = _context.Result;
         Assert.IsNotNull(response, "Response should not be null.");
         var concreteResponse = response as ObjectResult;
@@ -107,19 +113,24 @@ public class HomeAuthorizationFilterTests
     [TestMethod]
     public void OnAuthorization_WhenUserIdIsInvalid_ShouldReturnInvalidUserIdResponse()
     {
-        // Arrange
         var permissionGuid = Guid.NewGuid();
         _attribute = new HomeAuthorizationFilter(permissionGuid.ToString());
         var homeGuid = Guid.NewGuid();
         _context.RouteData.Values["homeId"] = homeGuid.ToString();
-        _httpContextMock.Setup(h => h.Items[UserStatic.User]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = "email@mail.com",
+            Name = "Pedro",
+            Password = "Password1",
+            Surname = "Azambuja"
+        };
+        _httpContextMock.Setup(h => h.Items[UserStatic.User]).Returns(user);
 
         Assert.IsNotNull(_context);
 
-        // Act
         _attribute.OnAuthorization(_context);
 
-        // Assert
         var response = _context.Result;
         Assert.IsNotNull(response, "Response should not be null.");
         var concreteResponse = response as ObjectResult;
@@ -135,7 +146,15 @@ public class HomeAuthorizationFilterTests
         _attribute = new HomeAuthorizationFilter(Guid.NewGuid().ToString());
         var guid = Guid.NewGuid();
         _context.RouteData.Values["homeId"] = guid.ToString();
-        _httpContextMock.Setup(h => h.Items[UserStatic.User]).Returns(new User { Id = Guid.NewGuid(), Email = "email@mail.com", Name = "Pedro", Password = "Password1", Surname = "Azambuja" });
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = "email@mail.com",
+            Name = "Pedro",
+            Password = "Password1",
+            Surname = "Azambuja"
+        };
+        _httpContextMock.Setup(h => h.Items[UserStatic.User]).Returns(user);
 
         _homePermissionServiceMock.Setup(s => s.HasPermission(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(false);
 

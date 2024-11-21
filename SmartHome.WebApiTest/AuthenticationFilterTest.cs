@@ -145,23 +145,21 @@ public class AuthenticationFilterTests
     [TestMethod]
     public void OnAuthorization_WhenExceptionInGetUserOfSession_ShouldReturnUnauthorizedResponse()
     {
-        // Arrange
         var authToken = Guid.NewGuid().ToString();
         _httpContextMock.Setup(h => h.Request.Headers).Returns(new HeaderDictionary(new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
     {
         { HeaderNames.Authorization, authToken }
     }));
 
-        // Configura el mock para que `GetUserOfSession` lance una excepción
-        _sessionServiceMock.Setup(s => s.IsSessionValid(It.IsAny<Guid>())).Returns(true);
-        _sessionServiceMock.Setup(s => s.GetUserOfSession(It.IsAny<Guid>())).Throws(new Exception());
+        _sessionServiceMock.Setup(s => s.IsSessionValid(It.IsAny<Guid>()))
+            .Returns(true);
+        _sessionServiceMock.Setup(s => s.GetUserOfSession(It.IsAny<Guid>()))
+            .Throws(new Exception());
 
         Assert.IsNotNull(_context);
 
-        // Act
         _attribute.OnAuthorization(_context);
 
-        // Assert
         var response = _context.Result;
         Assert.IsNotNull(response, "Response should not be null.");
         var concreteResponse = response as ObjectResult;
@@ -186,7 +184,10 @@ public class AuthenticationFilterTests
         var role = new Role
         {
             Name = "Test Role",
-            SystemPermissions = new List<SystemPermission> { sp }
+            SystemPermissions = new List<SystemPermission>
+            {
+                sp
+            }
         };
 
         var user = new User
@@ -209,8 +210,10 @@ public class AuthenticationFilterTests
         };
         httpContext.Request.Headers[HeaderNames.Authorization] = authToken.ToString();
 
-        _sessionServiceMock.Setup(s => s.IsSessionValid(authToken)).Returns(true);
-        _sessionServiceMock.Setup(s => s.GetUserOfSession(authToken)).Returns(user);
+        _sessionServiceMock.Setup(s => s.IsSessionValid(authToken))
+            .Returns(true);
+        _sessionServiceMock.Setup(s => s.GetUserOfSession(authToken))
+            .Returns(user);
 
         var routeData = new RouteData();
         var actionDescriptor = new ActionDescriptor();

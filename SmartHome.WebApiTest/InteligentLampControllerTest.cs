@@ -27,8 +27,24 @@ public class InteligentLampControllerTest
     [TestMethod]
     public void CreateInteligentLampTest_Ok()
     {
-        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
+        var user1 = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+        var company1 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "hikvision",
+            Logo = "logo1",
+            RUT = "rut1",
+            BusinessOwner = user1
+        };
         var deviceRequestModel = new InteligentLampRequestModel()
         {
             Name = "Lampara inteligente",
@@ -47,8 +63,12 @@ public class InteligentLampControllerTest
             HttpContext = httpContext
         };
 
-        inteligentLampsController = new InteligentLampsController(inteligentLampLogicMock.Object) { ControllerContext = controllerContext };
-        inteligentLampLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>())).Returns(device);
+        inteligentLampsController = new InteligentLampsController(inteligentLampLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
+        inteligentLampLogicMock.Setup(d => d.CreateDevice(It.IsAny<Device>(), It.IsAny<User>(), It.IsAny<string>()))
+            .Returns(device);
         var expectedResult = new InteligentLampResponseModel(device);
         var expectedObjectResult = new CreatedAtActionResult("CreateInteligentLamp", "InteligentLamp", new { Id = device.Id }, expectedResult);
 
@@ -56,7 +76,8 @@ public class InteligentLampControllerTest
         var deviceResult = result.Value as InteligentLampResponseModel;
 
         inteligentLampLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(deviceResult));
+        Assert.AreEqual(expectedObjectResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, deviceResult);
     }
 
     [TestMethod]

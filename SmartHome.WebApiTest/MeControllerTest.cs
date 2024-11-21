@@ -24,16 +24,21 @@ public class MeControllerTest
         _notificationLogicMock = new Mock<INotificationLogic>();
         _homeLogicMock = new Mock<IHomeLogic>();
         _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object);
-        homeOwner = new Role() { Name = "HomeOwner" };
+        homeOwner = new Role()
+        {
+            Name = "HomeOwner"
+        };
     }
 
     [TestMethod]
     public void GetNotificationsByHomeMemberIdTest_OK()
     {
-        // ARRANGE
-        var companyOwner = new Role() { Name = "CompanyOwner" };
+        var companyOwner = new Role
+        {
+            Name = "CompanyOwner"
+        };
         var homeMemberId = Guid.NewGuid();
-        var companyOwner1 = new BusinessLogic.Domain.User()
+        var companyOwner1 = new User
         {
             Id = Guid.NewGuid(),
             Name = "a",
@@ -43,7 +48,7 @@ public class MeControllerTest
             Role = companyOwner,
             CreationDate = DateTime.Today
         };
-        var user1 = new BusinessLogic.Domain.User()
+        var user1 = new User
         {
             Id = Guid.NewGuid(),
             Name = "a",
@@ -53,7 +58,7 @@ public class MeControllerTest
             Role = homeOwner,
             CreationDate = DateTime.Today
         };
-        var device1 = new BusinessLogic.Domain.Device()
+        var device1 = new Device
         {
             Id = Guid.NewGuid(),
             Name = "Device1",
@@ -70,7 +75,7 @@ public class MeControllerTest
             ModelNumber = "1234",
             Photos = new List<Photo>()
         };
-        var homeDevice = new HomeDevice()
+        var homeDevice = new HomeDevice
         {
             Id = Guid.NewGuid(),
             Device = device1,
@@ -78,15 +83,34 @@ public class MeControllerTest
             Name = device1.Name
         };
 
-        // Notificaciones originales
         var notifications = new List<Notification>
-{
-    new Notification() { Id = Guid.NewGuid(), Event = "Event1", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
-    new Notification() { Id = Guid.NewGuid(), Event = "Event2", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
-    new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now }
-};
+        {
+            new Notification
+            {
+                Id = Guid.NewGuid(),
+                Event = "Event1",
+                Date = DateTime.Today,
+                HomeDevice = homeDevice,
+                Time = DateTime.Now
+            },
+            new Notification
+            {
+                Id = Guid.NewGuid(),
+                Event = "Event2",
+                Date = DateTime.Today,
+                HomeDevice = homeDevice,
+                Time = DateTime.Now
+            },
+            new Notification
+            {
+                Id = Guid.NewGuid(),
+                Event = "Event3",
+                Date = DateTime.Today,
+                HomeDevice = homeDevice,
+                Time = DateTime.Now
+            }
+        };
 
-        // DTOs de notificaciones
         var notificationsDTO = notifications
             .Select(notification => new DTONotification()
             {
@@ -95,11 +119,9 @@ public class MeControllerTest
             })
             .ToList();
 
-        // Configurar el mock para devolver DTOs
-        _notificationLogicMock.Setup(n => n.GetUsersNotifications(It.IsAny<BusinessLogic.Domain.User>()))
+        _notificationLogicMock.Setup(n => n.GetUsersNotifications(It.IsAny<User>()))
             .Returns(notificationsDTO);
 
-        // Configurar contexto del controlador
         HttpContext httpContext = new DefaultHttpContext();
         httpContext.Items.Add(UserStatic.User, user1);
 
@@ -108,12 +130,13 @@ public class MeControllerTest
             HttpContext = httpContext
         };
 
-        _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object) { ControllerContext = controllerContext };
+        _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
-        // ACT
         var result = _meController.GetUsersNotifications() as OkObjectResult;
 
-        // ASSERT
         Assert.IsNotNull(result);
         Assert.IsNotNull(result.Value);
 
@@ -122,7 +145,6 @@ public class MeControllerTest
         Assert.IsNotNull(objectResult);
         Assert.AreEqual(notifications.Count, objectResult.Count);
 
-        // Validar contenido de la respuesta
         for (var i = 0; i < notifications.Count; i++)
         {
             Assert.AreEqual(notifications[i].Event, objectResult[i].Event, $"Mismatch in Event at index {i}.");
@@ -136,15 +158,58 @@ public class MeControllerTest
     public void GetAllHomesByUserIdTest_Ok()
     {
         var user1Id = Guid.NewGuid();
-        var user1 = new BusinessLogic.Domain.User() { Id = user1Id, Name = "a", Surname = "b", Password = "psw1", Email = "user1@gmail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var user2 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "user2@hotmail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var home1 = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1, Name = "Home Name" };
-        var home2 = new Home() { Id = Guid.NewGuid(), MainStreet = "18 de Julio", DoorNumber = "5678", Latitude = "56", Longitude = "78", MaxMembers = 10, Owner = user2, Name = "Home Name" };
-        var homes = new List<Home>() { home1, home2 };
+        var user1 = new User
+        {
+            Id = user1Id,
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "user1@gmail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+        var user2 = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "c",
+            Surname = "d",
+            Password = "psw2",
+            Email = "user2@hotmail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+        var home1 = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Cuareim",
+            DoorNumber = "1234",
+            Latitude = "12",
+            Longitude = "34",
+            MaxMembers = 5,
+            Owner = user1,
+            Name = "Home Name"
+        };
+        var home2 = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "18 de Julio",
+            DoorNumber = "5678",
+            Latitude = "56",
+            Longitude = "78",
+            MaxMembers = 10,
+            Owner = user2,
+            Name = "Home Name"
+        };
+        var homes = new List<Home>
+        {
+            home1,
+            home2
+        };
         user1.Houses = homes;
 
         IUsersLogic usersLogicMock = new Mock<IUsersLogic>().Object;
-        _homeLogicMock.Setup(h => h.GetAllHomesByUserId(It.IsAny<Guid>())).Returns(homes);
+        _homeLogicMock.Setup(h => h.GetAllHomesByUserId(It.IsAny<Guid>()))
+            .Returns(homes);
 
         var expected = new OkObjectResult(new List<HomeResponseModel>
         {
@@ -159,21 +224,28 @@ public class MeControllerTest
             HttpContext = httpContext
         };
 
-        _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object) { ControllerContext = controllerContext };
+        _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object)
+        {
+            ControllerContext = controllerContext
+        };
         var result = _meController.GetAllHomesByUserId() as OkObjectResult;
         var objectResult = (result.Value as List<HomeResponseModel>)!;
 
         var expectedObject = (expected.Value as List<HomeResponseModel>)!;
         _homeLogicMock.VerifyAll();
 
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Equals(objectResult.First()));
+        Assert.AreEqual(result.StatusCode, expected.StatusCode);
+        Assert.AreEqual(expectedObject.First(), objectResult.First());
     }
 
     [TestMethod]
     public void GetAllHomesByUserId_UserIsMissing_ReturnsUnauthorized()
     {
         HttpContext httpContext = new DefaultHttpContext();
-        var controllerContext = new ControllerContext() { HttpContext = httpContext };
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
 
         _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object)
         {
@@ -190,7 +262,7 @@ public class MeControllerTest
     [TestMethod]
     public void GetAllHomesByUserId_UserIdIsNull_ReturnsUnauthorized()
     {
-        var userWithNullId = new BusinessLogic.Domain.User
+        var userWithNullId = new User
         {
             Id = null,
             Name = "a",
@@ -203,7 +275,10 @@ public class MeControllerTest
 
         HttpContext httpContext = new DefaultHttpContext();
         httpContext.Items.Add(UserStatic.User, userWithNullId);
-        var controllerContext = new ControllerContext() { HttpContext = httpContext };
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
 
         _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object)
         {
@@ -221,7 +296,10 @@ public class MeControllerTest
     public void GetUsersNotifications_UserIsMissing_ReturnsUnauthorized()
     {
         HttpContext httpContext = new DefaultHttpContext();
-        _meController.ControllerContext = new ControllerContext { HttpContext = httpContext };
+        _meController.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
 
         var result = _meController.GetUsersNotifications() as UnauthorizedObjectResult;
 

@@ -13,7 +13,7 @@ public class UsersControllerTest
 {
     private Mock<IUsersLogic>? usersLogicMock;
     private UsersController? usersController;
-    private readonly Role admin = new Role() { Name = "Administrator" };
+    private readonly Role admin = new Role { Name = "Administrator" };
     private readonly Role businessOwner = new Role() { Name = "BusinessOwner" };
     private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
 
@@ -29,12 +29,40 @@ public class UsersControllerTest
     {
         IEnumerable<User> users = new List<User>
         {
-            new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw", Email = "mail@mail.com", Role = admin, CreationDate = DateTime.Today },
-            new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw", Email = "mail2@mail.com", Role = businessOwner, CreationDate = DateTime.Today },
-            new User() { Id = Guid.NewGuid(), Name = "e", Surname = "f", Password = "psw", Email = "mail3@mail.com", Role = homeOwner, CreationDate = DateTime.Today }
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Name = "a",
+                Surname = "b",
+                Password = "psw",
+                Email = "mail@mail.com",
+                Role = admin,
+                CreationDate = DateTime.Today
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Name = "c",
+                Surname = "d",
+                Password = "psw",
+                Email = "mail2@mail.com",
+                Role = businessOwner,
+                CreationDate = DateTime.Today
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Name = "e",
+                Surname = "f",
+                Password = "psw",
+                Email = "mail3@mail.com",
+                Role = homeOwner,
+                CreationDate = DateTime.Today
+            }
         };
 
-        usersLogicMock.Setup(a => a.GetUsers(null, null, null, null)).Returns(users);
+        usersLogicMock.Setup(a => a.GetUsers(null, null, null, null))
+            .Returns(users);
 
         var expected = new OkObjectResult(new List<UserResponseModel>
         {
@@ -44,19 +72,17 @@ public class UsersControllerTest
         });
         List<UserResponseModel> expectedObject = (expected.Value as List<UserResponseModel>)!;
 
-        // ACT
         var result = usersController.GetUsers(null, null, null, null) as OkObjectResult;
         var objectResult = (result.Value as List<UserResponseModel>)!;
 
-        // ASSERT
         usersLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Equals(objectResult.First()));
+        Assert.AreEqual(result.StatusCode, expected.StatusCode);
+        Assert.AreEqual(expectedObject.First(), objectResult.First());
     }
 
     [TestMethod]
     public void GetUsersTest_WithPagination_OK()
     {
-        // Arrange
         var user1 = new User()
         {
             Id = Guid.NewGuid(),
@@ -88,15 +114,22 @@ public class UsersControllerTest
         };
         var pageNumber = 1;
         var pageSize = 2;
-        IEnumerable<User> users = new List<User> { user1, user2, user3 };
-        var expectedReturnedUsers = new List<User> { user1, user2 };
-        usersLogicMock.Setup(u => u.GetUsers(pageNumber, pageSize, null, null)).Returns(expectedReturnedUsers);
-
-        // Act
+        IEnumerable<User> users = new List<User>
+        {
+            user1,
+            user2,
+            user3
+        };
+        var expectedReturnedUsers = new List<User>
+        {
+            user1,
+            user2
+        };
+        usersLogicMock.Setup(u => u.GetUsers(pageNumber, pageSize, null, null))
+            .Returns(expectedReturnedUsers);
 
         var result = usersController.GetUsers(pageNumber, pageSize, null, null) as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
         var resultValue = result.Value as PaginatedResponse<UserResponseModel>;
         Assert.IsNotNull(resultValue);
@@ -114,7 +147,6 @@ public class UsersControllerTest
     [TestMethod]
     public void GetUsersTest_FilterByRole_OK()
     {
-        // Arrange
         var user1 = new User()
         {
             Id = Guid.NewGuid(),
@@ -145,14 +177,22 @@ public class UsersControllerTest
             Role = businessOwner
         };
 
-        IEnumerable<User> users = new List<User> { user1, user2, user3 };
-        var expectedReturnedUsers = new List<User> { user1, user3 };
-        usersLogicMock.Setup(u => u.GetUsers(null, null, businessOwner.Name, null)).Returns(expectedReturnedUsers);
+        IEnumerable<User> users = new List<User>
+        {
+            user1,
+            user2,
+            user3
+        };
+        var expectedReturnedUsers = new List<User>
+        {
+            user1,
+            user3
+        };
+        usersLogicMock.Setup(u => u.GetUsers(null, null, businessOwner.Name, null))
+            .Returns(expectedReturnedUsers);
 
-        // Act
         var result = usersController.GetUsers(null, null, businessOwner.Name, null) as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
         var resultValue = result.Value as List<UserResponseModel>;
         Assert.IsNotNull(resultValue);
@@ -162,7 +202,6 @@ public class UsersControllerTest
     [TestMethod]
     public void GetUsersTest_FilterByFullName_OK()
     {
-        // Arrange
         var user1 = new User()
         {
             Id = Guid.NewGuid(),
@@ -183,14 +222,20 @@ public class UsersControllerTest
             Role = businessOwner
         };
 
-        IEnumerable<User> users = new List<User> { user1, user2 };
-        var expectedReturnedUsers = new List<User> { user1 };
-        usersLogicMock.Setup(u => u.GetUsers(null, null, null, "Alice Smith")).Returns(expectedReturnedUsers);
+        IEnumerable<User> users = new List<User>
+        {
+            user1,
+            user2
+        };
+        var expectedReturnedUsers = new List<User>
+        {
+            user1
+        };
+        usersLogicMock.Setup(u => u.GetUsers(null, null, null, "Alice Smith"))
+            .Returns(expectedReturnedUsers);
 
-        // Act
         var result = usersController.GetUsers(null, null, null, "Alice Smith") as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
         var resultValue = result.Value as List<UserResponseModel>;
         Assert.IsNotNull(resultValue);
@@ -201,7 +246,6 @@ public class UsersControllerTest
     [TestMethod]
     public void GetUsersTest_FilterByFullName_NotFound()
     {
-        // Arrange
         var user1 = new User()
         {
             Id = Guid.NewGuid(),
@@ -212,14 +256,16 @@ public class UsersControllerTest
             Role = businessOwner
         };
 
-        IEnumerable<User> users = new List<User> { user1 };
+        IEnumerable<User> users = new List<User>
+        {
+            user1
+        };
         var expectedReturnedUsers = new List <User>();
-        usersLogicMock.Setup(u => u.GetUsers(null, null, null, "John Doe")).Returns(expectedReturnedUsers);
+        usersLogicMock.Setup(u => u.GetUsers(null, null, null, "John Doe"))
+            .Returns(expectedReturnedUsers);
 
-        // Act
         var result = usersController.GetUsers(null, null, null, "John Doe") as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
         var resultValue = result.Value as List<UserResponseModel>;
         Assert.IsNotNull(resultValue);

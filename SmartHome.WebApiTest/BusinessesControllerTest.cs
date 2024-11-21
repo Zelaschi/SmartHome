@@ -27,10 +27,34 @@ public class BusinessesControllerTest
     [TestMethod]
     public void GetBusinessesTest_OK()
     {
-        var user1 = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwner };
-        var company1 = new Business() { Id = Guid.NewGuid(), Name = "hikvision", Logo = "logo1", RUT = "rut1", BusinessOwner = user1 };
-        var user2 = new User() { Id = Guid.NewGuid(), Name = "c", Surname = "d", Password = "psw2", Email = "mail2@mail.com", Role = businessOwner };
-        var company2 = new Business() { Id = Guid.NewGuid(), Name = "kolke", Logo = "logo2", RUT = "rut2", BusinessOwner = user2 };
+        var user1 = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = businessOwner
+        };
+        var company1 = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "hikvision",
+            Logo = "logo1",
+            RUT = "rut1",
+            BusinessOwner = user1
+        };
+        var user2 = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "c",
+            Surname = "d",
+            Password = "psw2",
+            Email = "mail2@mail.com",
+            Role = businessOwner
+        };
+        var company2 = new Business
+        { Id = Guid.NewGuid(), Name = "kolke", Logo = "logo2", RUT = "rut2", BusinessOwner = user2 };
 
         IEnumerable<Business> companies = new List<Business>()
         {
@@ -57,8 +81,7 @@ public class BusinessesControllerTest
     [TestMethod]
     public void GetBusinessesTest_WithPagination_OK()
     {
-        // Arrange
-        var user1 = new User()
+        var user1 = new User
         {
             Id = Guid.NewGuid(),
             Name = "a",
@@ -68,7 +91,7 @@ public class BusinessesControllerTest
             Role = businessOwner
         };
 
-        var company1 = new Business()
+        var company1 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "hikvision",
@@ -77,7 +100,7 @@ public class BusinessesControllerTest
             BusinessOwner = user1
         };
 
-        var company2 = new Business()
+        var company2 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "kolke",
@@ -86,7 +109,7 @@ public class BusinessesControllerTest
             BusinessOwner = user1
         };
 
-        var company3 = new Business()
+        var company3 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "example",
@@ -105,10 +128,8 @@ public class BusinessesControllerTest
 
         businessesLogicMock.Setup(b => b.GetBusinesses(pageNumber, pageSize, null, null)).Returns(companies);
 
-        // Act
         var result = businessesController.GetBusinesses(pageNumber, pageSize, null, null) as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
 
         var resultValue = result.Value as PaginatedResponse<BusinessesResponseModel>;
@@ -128,9 +149,8 @@ public class BusinessesControllerTest
     [TestMethod]
     public void GetBusinessesTest_FilterByBusinessName_OK()
     {
-        // Arrange
         var hikvision = "hikvision";
-        var user1 = new User()
+        var user1 = new User
         {
             Id = Guid.NewGuid(),
             Name = "John",
@@ -149,7 +169,7 @@ public class BusinessesControllerTest
             BusinessOwner = user1
         };
 
-        var company2 = new Business()
+        var company2 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "kolke",
@@ -158,7 +178,7 @@ public class BusinessesControllerTest
             BusinessOwner = user1
         };
 
-        var company3 = new Business()
+        var company3 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "example",
@@ -174,10 +194,8 @@ public class BusinessesControllerTest
 
         businessesLogicMock.Setup(b => b.GetBusinesses(null, null, hikvision, null)).Returns(companies);
 
-        // Act
         var result = businessesController.GetBusinesses(null, null, hikvision, null) as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
 
         var resultValue = result.Value as List<BusinessesResponseModel>;
@@ -190,8 +208,7 @@ public class BusinessesControllerTest
     [TestMethod]
     public void GetBusinessesTest_FilterByFullName_OK()
     {
-        // Arrange
-        var user1 = new User()
+        var user1 = new User
         {
             Id = Guid.NewGuid(),
             Name = "John",
@@ -200,7 +217,7 @@ public class BusinessesControllerTest
             Email = "mail1@mail.com",
             Role = businessOwner
         };
-        var user2 = new User()
+        var user2 = new User
         {
             Id = Guid.NewGuid(),
             Name = "Juan",
@@ -210,7 +227,7 @@ public class BusinessesControllerTest
             Role = businessOwner
         };
 
-        var company1 = new Business()
+        var company1 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "hikvision",
@@ -219,7 +236,7 @@ public class BusinessesControllerTest
             BusinessOwner = user2
         };
 
-        var company2 = new Business()
+        var company2 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "kolke",
@@ -228,7 +245,7 @@ public class BusinessesControllerTest
             BusinessOwner = user1
         };
 
-        var company3 = new Business()
+        var company3 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "example",
@@ -245,10 +262,8 @@ public class BusinessesControllerTest
 
         businessesLogicMock.Setup(b => b.GetBusinesses(null, null, null, "John Doe")).Returns(companies);
 
-        // Act
         var result = businessesController.GetBusinesses(null, null, null, "John Doe") as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
 
         var resultValue = result.Value as List<BusinessesResponseModel>;
@@ -260,8 +275,7 @@ public class BusinessesControllerTest
     [TestMethod]
     public void GetBusinessesTest_FilterByFullName_NotFound()
     {
-        // Arrange
-        var user1 = new User()
+        var user1 = new User
         {
             Id = Guid.NewGuid(),
             Name = "Alice",
@@ -271,7 +285,7 @@ public class BusinessesControllerTest
             Role = businessOwner
         };
 
-        var company1 = new Business()
+        var company1 = new Business
         {
             Id = Guid.NewGuid(),
             Name = "hikvision",
@@ -288,10 +302,8 @@ public class BusinessesControllerTest
 
         businessesLogicMock.Setup(b => b.GetBusinesses(null, null, null, "John Doe")).Returns(returnedCompanies);
 
-        // Act
         var result = businessesController.GetBusinesses(null, null, null, "John Doe") as OkObjectResult;
 
-        // Assert
         Assert.IsNotNull(result);
 
         var resultValue = result.Value as List<BusinessesResponseModel>;
@@ -303,8 +315,16 @@ public class BusinessesControllerTest
     [TestMethod]
     public void RegisterBusinessTest_Ok()
     {
-        var user = new User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = businessOwner };
-        var businessRequestModel = new BusinessRequestModel()
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = businessOwner
+        };
+        var businessRequestModel = new BusinessRequestModel
         {
             Name = "businessName",
             Logo = "businessLogo",
@@ -322,7 +342,8 @@ public class BusinessesControllerTest
 
         businessesController = new BusinessesController(businessesLogicMock.Object) { ControllerContext = controllerContext };
 
-        businessesLogicMock.Setup(b => b.CreateBusiness(It.IsAny<Business>(), It.IsAny<User>())).Returns(business);
+        businessesLogicMock.Setup(b => b.CreateBusiness(It.IsAny<Business>(), It.IsAny<User>()))
+            .Returns(business);
 
         business.BusinessOwner = user;
 
@@ -333,7 +354,8 @@ public class BusinessesControllerTest
         var businessResult = result.Value as BusinessesResponseModel;
 
         businessesLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(businessResult));
+        Assert.AreEqual(expectedObjectResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, businessResult);
     }
 
     [TestMethod]

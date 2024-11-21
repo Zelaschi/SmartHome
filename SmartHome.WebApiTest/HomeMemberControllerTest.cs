@@ -15,7 +15,10 @@ public class HomeMemberControllerTest
 {
     private Mock<IHomeMemberLogic>? homeMemberLogicMock;
     private HomeMembersController? homeMemberController;
-    private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
+    private readonly Role homeOwner = new Role
+    {
+        Name = "HomeOwner"
+    };
 
     [TestInitialize]
     public void TestInitialize()
@@ -27,7 +30,6 @@ public class HomeMemberControllerTest
     [TestMethod]
     public void UpdateHomePermissionsOfHomeMemberTest_Ok()
     {
-        // ARRANGE
         var user1 = new BusinessLogic.Domain.User
         {
             Id = Guid.NewGuid(),
@@ -60,12 +62,10 @@ public class HomeMemberControllerTest
                 It.IsAny<Guid>())
         );
 
-        // ACT
         var result = homeMemberController.UpdateHomeMemberPermissions(
             Guid.NewGuid(),
             homeMemberPermissionsModel) as NoContentResult;
 
-        // ASSERT
         homeMemberLogicMock.VerifyAll();
         Assert.IsNotNull(result);
         Assert.AreEqual(204, result.StatusCode);
@@ -87,12 +87,34 @@ public class HomeMemberControllerTest
     [TestMethod]
     public void GetAllHomePermissionsTest_Ok()
     {
-        var user1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var homePermission1 = new HomePermission() { Id = Guid.NewGuid(), Name = "AddMemberPermission" };
-        var homePermission2 = new HomePermission() { Id = Guid.NewGuid(), Name = "AddDevicePermission" };
-        var homePermissionsList = new List<HomePermission> { homePermission1, homePermission2 };
+        var user1 = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+        var homePermission1 = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "AddMemberPermission"
+        };
+        var homePermission2 = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "AddDevicePermission"
+        };
+        var homePermissionsList = new List<HomePermission>
+        {
+            homePermission1,
+            homePermission2
+        };
 
-        homeMemberLogicMock.Setup(h => h.GetAllHomePermissions()).Returns(homePermissionsList);
+        homeMemberLogicMock.Setup(h => h.GetAllHomePermissions())
+            .Returns(homePermissionsList);
 
         var result = homeMemberController.GetAllHomePermissions() as OkObjectResult;
 

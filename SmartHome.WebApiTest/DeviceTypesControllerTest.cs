@@ -24,9 +24,14 @@ public class DeviceTypesControllerTest
 
     public void GetAll_DeviceTypesTest_Ok()
     {
-        IEnumerable<string> deviceTypes = new List<string>() { "Window Sensor", "Security Camera" };
+        IEnumerable<string> deviceTypes = new List<string>()
+        {
+            "Window Sensor",
+            "Security Camera"
+        };
 
-        deviceLogicMock.Setup(d => d.GetAllDeviceTypes()).Returns(deviceTypes);
+        deviceLogicMock.Setup(d => d.GetAllDeviceTypes())
+            .Returns(deviceTypes);
 
         var expected = new OkObjectResult(new List<DeviceTypesResponseModel>
         {
@@ -40,7 +45,8 @@ public class DeviceTypesControllerTest
         var objectResult = (result.Value as List<DeviceTypesResponseModel>)!;
 
         deviceLogicMock.VerifyAll();
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedObject.First().Type.Equals(objectResult.First().Type));
+        Assert.AreEqual(result.StatusCode, expected.StatusCode);
+        Assert.AreEqual(expectedObject.First().Type, objectResult.First().Type);
     }
 
     [TestMethod]

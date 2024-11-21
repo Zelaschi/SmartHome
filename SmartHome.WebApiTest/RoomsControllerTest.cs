@@ -15,7 +15,10 @@ public class RoomsControllerTest
 {
     private Mock<IRoomLogic>? roomLogicMock;
     private RoomsController? roomController;
-    private readonly Role homeOwner = new Role() { Name = "HomeOwner" };
+    private readonly Role homeOwner = new Role
+    {
+        Name = "HomeOwner"
+    };
 
     [TestInitialize]
     public void TestInitialize()
@@ -33,7 +36,8 @@ public class RoomsControllerTest
         };
 
         var room = roomRequestModel.ToEntity();
-        roomLogicMock.Setup(r => r.CreateRoom(It.IsAny<Room>(), It.IsAny<Guid>())).Returns(room);
+        roomLogicMock.Setup(r => r.CreateRoom(It.IsAny<Room>(), It.IsAny<Guid>()))
+            .Returns(room);
 
         var expectedResult = new RoomResponseModel(room);
         var expectedObjectResult = new CreatedAtActionResult("CreateRoom", "CreateRoom", new { Id = room.Id }, expectedResult);
@@ -42,7 +46,8 @@ public class RoomsControllerTest
         var roomResult = result.Value as RoomResponseModel;
 
         roomLogicMock.VerifyAll();
-        Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(roomResult));
+        Assert.AreEqual(expectedObjectResult.StatusCode, result.StatusCode);
+        Assert.AreEqual(expectedResult, roomResult);
     }
 
     [TestMethod]
@@ -108,7 +113,10 @@ public class RoomsControllerTest
 
         var expectedResult = new HomeDeviceResponseModel(homeDevice);
 
-        var hdIdReq = new HomeDeviceIdRequestModel { HomeDeviceId = homeDeviceId };
+        var hdIdReq = new HomeDeviceIdRequestModel
+        {
+            HomeDeviceId = homeDeviceId
+        };
 
         var result = roomController.AddDevicesToRoom(hdIdReq, roomId);
 
@@ -154,11 +162,26 @@ public class RoomsControllerTest
             Name = "Home Name"
         };
 
-        var room1 = new Room() { Id = Guid.NewGuid(), Name = "Living Room", Home = home };
-        var room2 = new Room() { Id = Guid.NewGuid(), Name = "Kitchen", Home = home};
-        var roomsList = new List<Room> { room1, room2 };
+        var room1 = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "Living Room",
+            Home = home
+        };
+        var room2 = new Room
+        {
+            Id = Guid.NewGuid(),
+            Name = "Kitchen",
+            Home = home
+        };
+        var roomsList = new List<Room>
+        {
+            room1,
+            room2
+        };
 
-        roomLogicMock.Setup(r => r.GetAllRoomsFromHome(homeId)).Returns(roomsList);
+        roomLogicMock.Setup(r => r.GetAllRoomsFromHome(homeId))
+            .Returns(roomsList);
 
         var result = roomController.GetAllRoomsFromHome(homeId) as OkObjectResult;
 
