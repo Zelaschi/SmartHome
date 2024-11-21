@@ -15,12 +15,10 @@ export class DeviceItemComponent {
   @Input() isAddingToHome: boolean = false;
   @Output() deviceAdded = new EventEmitter<Device>();
 
-  added: boolean = false;
 
   addToHome(): void {
     if (this.device) {
       console.log(`Adding device ${this.device.name} to home.`);
-      this.added = true;
       this.deviceAdded.emit(this.device);
     }
   }
