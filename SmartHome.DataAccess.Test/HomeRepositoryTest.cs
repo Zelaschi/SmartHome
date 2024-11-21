@@ -335,7 +335,10 @@ public class HomeRepositoryTest
             HomeMemberId = Guid.NewGuid(),
             HomeId = home.Id,
             User = memberUser,
-            HomePermissions = new List<HomePermission> { homePermission }
+            HomePermissions = new List<HomePermission>
+            {
+                homePermission
+            }
         };
         _context.HomeMembers.Add(homeMember);
         _context.SaveChanges();

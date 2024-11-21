@@ -558,8 +558,14 @@ public class HomeMemberRepositoryTest
         _context.Homes.Add(home);
         _context.SaveChanges();
 
-        var homeMember1 = new HomeMember(user1) { HomeId = home.Id };
-        var homeMember2 = new HomeMember(user2) { HomeId = home.Id };
+        var homeMember1 = new HomeMember(user1)
+        {
+            HomeId = home.Id
+        };
+        var homeMember2 = new HomeMember(user2)
+        {
+            HomeId = home.Id
+        };
         _homeMemberRepository.Add(homeMember1);
         _homeMemberRepository.Add(homeMember2);
         _context.SaveChanges();
@@ -567,7 +573,11 @@ public class HomeMemberRepositoryTest
         homeMember1.User.Name = "Updated User1";
         homeMember2.User.Name = "Updated User2";
 
-        var updatedEntities = new List<HomeMember> { homeMember1, homeMember2 };
+        var updatedEntities = new List<HomeMember>
+        {
+            homeMember1,
+            homeMember2
+        };
 
         var result = _homeMemberRepository.UpdateMultiplElements(updatedEntities);
 
@@ -626,13 +636,25 @@ public class HomeMemberRepositoryTest
         _context.Homes.Add(home);
         _context.SaveChanges();
 
-        var homeMember = new HomeMember(user) { HomeId = home.Id };
+        var homeMember = new HomeMember(user)
+        {
+            HomeId = home.Id
+        };
         _homeMemberRepository.Add(homeMember);
         _context.SaveChanges();
 
-        var nonExistingHomeMember = new HomeMember { HomeMemberId = Guid.NewGuid(), HomeId = home.Id, User = user };
+        var nonExistingHomeMember = new HomeMember
+        {
+            HomeMemberId = Guid.NewGuid(),
+            HomeId = home.Id,
+            User = user
+        };
 
-        var updatedEntities = new List<HomeMember> { homeMember, nonExistingHomeMember };
+        var updatedEntities = new List<HomeMember>
+        {
+            homeMember,
+            nonExistingHomeMember
+        };
 
         Action action = () => _homeMemberRepository.UpdateMultiplElements(updatedEntities);
 
