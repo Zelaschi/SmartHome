@@ -10,6 +10,7 @@ public sealed class BusinessesResponseModel
     public string OwnerName { get; set; }
     public string Email { get; set; }
     public string RUT { get; set; }
+    public string? Logo { get; set; }
 
     public BusinessesResponseModel(Business aBusiness)
     {
@@ -18,6 +19,10 @@ public sealed class BusinessesResponseModel
         OwnerName = aBusiness.BusinessOwner.Name;
         Email = aBusiness.BusinessOwner.Email;
         RUT = aBusiness.RUT;
+        if (aBusiness.Logo != null)
+        {
+            Logo = aBusiness.Logo;
+        }
     }
 
     public override bool Equals(object? obj)

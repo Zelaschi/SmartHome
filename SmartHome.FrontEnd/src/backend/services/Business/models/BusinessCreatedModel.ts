@@ -4,4 +4,5 @@ export default interface BusinessCreatedModel {
     rut : string,
     email : string,
     ownerName : string,
+    logo? : string
 }

@@ -97,7 +97,7 @@ export class DeviceFormComponent {
     return {
       name: `${this.formField.photos.name}.${index}`,
       control: control,
-      placeholder: 'URL de la foto',
+      placeholder: 'URL of the photo',
     };
   }
 
