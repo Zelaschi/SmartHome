@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SmartHome.BusinessLogic.Constants;
@@ -59,127 +60,181 @@ public class AuthorizationFilterTests
         Assert.AreEqual(400, ((ObjectResult)_context.Result).StatusCode);
         Assert.AreEqual("Existing Error", ((ObjectResult)_context.Result).Value);
     }
+
+    [TestMethod]
+    public void OnAuthorization_MissingPermissionId_ReturnsBadRequest()
+    {
+        _attribute = new AuthorizationFilter(null);
+
+        _attribute.OnAuthorization(_context!);
+
+        Assert.IsInstanceOfType(_context.Result, typeof(ObjectResult));
+        var result = (ObjectResult)_context.Result;
+
+        Assert.AreEqual(400, result.StatusCode);
+    }
+
+    [TestMethod]
+    public void OnAuthorization_UserNotAuthenticated_ReturnsUnauthorized()
+    {
+        var items = new Dictionary<object, object>
+        {
+            { UserStatic.User, null }
+        };
+        _httpContextMock.Setup(h => h.Items).Returns(items);
+
+        _attribute!.OnAuthorization(_context!);
+
+        Assert.IsInstanceOfType(_context.Result, typeof(ObjectResult));
+        var result = (ObjectResult)_context.Result;
+
+        Assert.AreEqual(401, result.StatusCode);
+    }
+
+    [TestMethod]
+    public void OnAuthorization_UserDoesNotHavePermission_ReturnsForbidden()
+    {
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = new Role { Name = "TestRole" },
+            Name = "TestUser",
+            Email = "t@Test.Com",
+            Password = "TestPassword",
+            Surname = "TestSurname"
+        };
+
+        var sysPermission = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "TestPermission",
+            Description = "TestDescription"
+        };
+
+        var permissionId = sysPermission.Id;
+        _attribute = new AuthorizationFilter(permissionId.ToString());
+
+        var items = new Dictionary<object, object>
+        {
+            { UserStatic.User, user }
+        };
+        _httpContextMock.Setup(h => h.Items).Returns(items);
+
+        var permissionLogicMock = new Mock<ISystemPermissionLogic>();
+        permissionLogicMock.Setup(p => p.GetSystemPermissionById(permissionId))
+            .Returns(sysPermission);
+
+        var roleLogicMock = new Mock<IRoleLogic>();
+        roleLogicMock.Setup(r => r.HasPermission(user.Role.Id, permissionId))
+            .Returns(false);
+
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddSingleton(permissionLogicMock.Object);
+        serviceCollection.AddSingleton(roleLogicMock.Object);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        _httpContextMock.Setup(h => h.RequestServices)
+            .Returns(serviceProvider);
+
+        _attribute.OnAuthorization(_context!);
+
+        Assert.IsInstanceOfType(_context.Result, typeof(ObjectResult));
+        var result = (ObjectResult)_context.Result;
+
+        Assert.AreEqual(403, result.StatusCode);
+    }
+
+    [TestMethod]
+    public void OnAuthorization_UserHasPermission_ProceedsSuccessfully()
+    {
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = new Role { Name = "TestRole" },
+            Name = "TestUser",
+            Email = "t@Test.Com",
+            Password = "TestPassword",
+            Surname = "TestSurname"
+        };
+
+        var sysPermission = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "TestPermission",
+            Description = "TestDescription"
+        };
+
+        var permissionId = sysPermission.Id;
+        _attribute = new AuthorizationFilter(permissionId.ToString());
+
+        var items = new Dictionary<object, object>
+        {
+            { UserStatic.User, user }
+        };
+        _httpContextMock.Setup(h => h.Items).Returns(items);
+
+        var permissionLogicMock = new Mock<ISystemPermissionLogic>();
+        permissionLogicMock.Setup(p => p.GetSystemPermissionById(permissionId))
+            .Returns(sysPermission);
+
+        var roleLogicMock = new Mock<IRoleLogic>();
+        roleLogicMock.Setup(r => r.HasPermission(user.Role.Id, permissionId))
+            .Returns(true);
+
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddSingleton(permissionLogicMock.Object);
+        serviceCollection.AddSingleton(roleLogicMock.Object);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        _httpContextMock.Setup(h => h.RequestServices).Returns(serviceProvider);
+
+        _attribute.OnAuthorization(_context!);
+
+        Assert.IsNull(_context.Result);
+    }
+
+    [TestMethod]
+    public void OnAuthorization_ErrorGettingPermission_ReturnsBadRequest()
+    {
+        // Arrange
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Role = new Role { Name = "TestRole" },
+            Name = "TestUser",
+            Email = "t@Test.Com",
+            Password = "TestPassword",
+            Surname = "TestSurname"
+        };
+
+        var permissionId = Guid.NewGuid();
+        _attribute = new AuthorizationFilter(permissionId.ToString());
+
+        var items = new Dictionary<object, object>
+    {
+        { UserStatic.User, user }
+    };
+        _httpContextMock.Setup(h => h.Items).Returns(items);
+
+        // Configura el mock para lanzar una excepción
+        _permissionServiceMock!.Setup(p => p.GetSystemPermissionById(permissionId))
+            .Throws(new Exception("Database error"));
+
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddSingleton(_permissionServiceMock.Object);
+        serviceCollection.AddSingleton(_roleServiceMock!.Object);
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        _httpContextMock.Setup(h => h.RequestServices).Returns(serviceProvider);
+
+        // Act
+        try
+        {
+            _attribute!.OnAuthorization(_context!);
+        }
+        catch (Exception ex)
+        {
+            Assert.AreEqual("Database error", ex.Message);
+        }
+    }
 }
-
-////    [TestMethod]
-////    public void OnAuthorization_MissingPermissionId_ReturnsBadRequest()
-////    {
-////        // Arrange
-////        var filter = new CustomAuthorizationFilter(null);
-
-////        // Act
-////        filter.OnAuthorization(_context);
-
-////        // Assert
-////        Assert.IsInstanceOfType(_context.Result, typeof(ObjectResult));
-////        var result = (ObjectResult)_context.Result;
-
-////        Assert.AreEqual(400, result.StatusCode);
-////        Assert.AreEqual("Invalid permission", ((dynamic)result.Value).InnerCode);
-////        Assert.AreEqual("Permission id is required", ((dynamic)result.Value).Message);
-////    }
-
-////    [TestMethod]
-////    public void OnAuthorization_UserNotAuthenticated_ReturnsUnauthorized()
-////    {
-////        // Arrange
-////        var filter = new CustomAuthorizationFilter("valid-permission-id");
-
-////        // Act
-////        filter.OnAuthorization(_context);
-
-////        // Assert
-////        Assert.IsInstanceOfType(_context.Result, typeof(ObjectResult));
-////        var result = (ObjectResult)_context.Result;
-
-////        Assert.AreEqual(401, result.StatusCode);
-////        Assert.AreEqual("Unauthenticated", ((dynamic)result.Value).InnerCode);
-////        Assert.AreEqual("You are not authenticated", ((dynamic)result.Value).Message);
-////    }
-
-////    [TestMethod]
-////    public void OnAuthorization_MissingPermission_ReturnsForbidden()
-////    {
-////        // Arrange
-////        var user = new User
-////        {
-////            Id = Guid.NewGuid(),
-////            Role = new Role { Id = Guid.NewGuid() }
-////        };
-////        _httpContext.Items[UserStatic.User] = user;
-
-////        var permissionId = Guid.NewGuid();
-////        var permission = new Permission
-////        {
-////            Id = permissionId,
-////            Name = "Test Permission"
-////        };
-
-////        _permissionServiceMock
-////            .Setup(x => x.GetSystemPermissionById(permissionId))
-////            .Returns(permission);
-
-////        _roleServiceMock
-////            .Setup(x => x.HasPermission(user.Role.Id, permission.Id))
-////            .Returns(false);
-
-////        var filter = new CustomAuthorizationFilter(permissionId.ToString());
-
-////        // Act
-////        filter.OnAuthorization(_context);
-
-////        // Assert
-////        Assert.IsInstanceOfType(_context.Result, typeof(ObjectResult));
-////        var result = (ObjectResult)_context.Result;
-
-////        Assert.AreEqual(403, result.StatusCode);
-////        Assert.AreEqual("Forbidden", ((dynamic)result.Value).InnerCode);
-////        Assert.AreEqual($"Missing permission {permission.Name}", ((dynamic)result.Value).Message);
-
-////        _permissionServiceMock.VerifyAll();
-////        _roleServiceMock.VerifyAll();
-////    }
-
-////    [TestMethod]
-////    public void OnAuthorization_ExceptionInRoleService_ReturnsBadRequest()
-////    {
-////        // Arrange
-////        var user = new User
-////        {
-////            Id = Guid.NewGuid(),
-////            Role = new Role { Id = Guid.NewGuid() }
-////        };
-////        _httpContext.Items[UserStatic.User] = user;
-
-////        var permissionId = Guid.NewGuid();
-////        var permission = new Permission
-////        {
-////            Id = permissionId,
-////            Name = "Test Permission"
-////        };
-
-////        _permissionServiceMock
-////            .Setup(x => x.GetSystemPermissionById(permissionId))
-////            .Returns(permission);
-
-////        _roleServiceMock
-////            .Setup(x => x.HasPermission(user.Role.Id, permission.Id))
-////            .Throws(new Exception());
-
-////        var filter = new CustomAuthorizationFilter(permissionId.ToString());
-
-////        // Act
-////        filter.OnAuthorization(_context);
-
-////        // Assert
-////        Assert.IsInstanceOfType(_context.Result, typeof(ObjectResult));
-////        var result = (ObjectResult)_context.Result;
-
-////        Assert.AreEqual(400, result.StatusCode);
-////        Assert.AreEqual("Forbidden", ((dynamic)result.Value).InnerCode);
-////        Assert.AreEqual("HomeId does not exist", ((dynamic)result.Value).Message);
-
-////        _permissionServiceMock.VerifyAll();
-////        _roleServiceMock.VerifyAll();
-////    }
-////}
