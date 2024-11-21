@@ -470,4 +470,47 @@ public class BusinessServiceTest
         Assert.IsInstanceOfType(exception, typeof(BusinessException));
         Assert.AreEqual("Business already has a validator", exception.Message);
     }
+
+    [TestMethod]
+    public void AddValidatorToBusiness_ValidatorNotFoundInDB_ShouldThrowException()
+    {
+        var businessOwner = new User
+        {
+            Name = "Pedro",
+            Surname = "Rodriguez",
+            Password = "Password@1234",
+            CreationDate = DateTime.Today,
+            Email = "pr@mail.com"
+        };
+
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "HikVision",
+            Logo = "Logo1",
+            RUT = "1234",
+            BusinessOwner = businessOwner,
+            ValidatorId = null
+        };
+
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+                    .Returns(business);
+
+        Exception exception = null;
+
+        try
+        {
+            businessService.AddValidatorToBusiness(businessOwner, Guid.NewGuid());
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        businessRepositoryMock.VerifyAll();
+
+        Assert.IsNotNull(exception);
+        Assert.IsInstanceOfType(exception, typeof(ValidatorException));
+        Assert.AreEqual("Validator was not found in database", exception.Message);
+    }
 }
