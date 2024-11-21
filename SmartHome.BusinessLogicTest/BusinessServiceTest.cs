@@ -17,14 +17,40 @@ public class BusinessServiceTest
     private ValidatorService? validatorService;
     private BusinessService? businessService;
 
+    private readonly string originModelV =
+    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "SmartHome.BusinessLogicTest", "SmartHome.ModelValidator");
+    private readonly string destinationModelV = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "SmartHome.BusinessLogicTest", "bin", "Debug", "SmartHome.ModelValidator");
+
+    private readonly string originBL =
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "SmartHome.BusinessLogicTest", "SmartHome.BusinessLogic");
+    private readonly string destinationBL = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "SmartHome.BusinessLogicTest", "bin", "Debug", "SmartHome.BusinessLogic");
+
     [TestInitialize]
+
     public void Initialize()
     {
+        MoveFiles(originModelV, destinationModelV);
+        MoveFiles(originBL, destinationBL);
         businessRepositoryMock = new Mock<IGenericRepository<Business>>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IGenericRepository<User>>(MockBehavior.Strict);
         validatorRepositoryMock = new Mock<IGenericRepository<ModelNumberValidator>>();
         validatorService = new ValidatorService(validatorRepositoryMock.Object);
         businessService = new BusinessService(businessRepositoryMock.Object, userRepositoryMock.Object, validatorRepositoryMock.Object, validatorService);
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        MoveFiles(destinationModelV, originModelV);
+        MoveFiles(destinationBL, originBL);
+    }
+
+    private static void MoveFiles(string sourcePath, string destinationPath)
+    {
+        if (Directory.Exists(sourcePath))
+        {
+            Directory.Move(sourcePath, destinationPath);
+        }
     }
 
     [TestMethod]

@@ -17,16 +17,41 @@ public class DeviceImportServiceTest
     private DeviceImportService? deviceImportService;
     private readonly Role businessOwner = new Role() { Name = "businessOwner" };
     private readonly string path = @".\test.json";
+    private readonly string originModelV =
+    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "SmartHome.BusinessLogicTest", "SmartHome.ModelValidator");
+    private readonly string destinationModelV = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "SmartHome.BusinessLogicTest", "bin", "Debug", "SmartHome.ModelValidator");
+
+    private readonly string originBL =
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "SmartHome.BusinessLogicTest", "SmartHome.BusinessLogic");
+    private readonly string destinationBL = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "SmartHome.BusinessLogicTest", "bin", "Debug", "SmartHome.BusinessLogic");
 
     [TestInitialize]
-    public void TestInitialize()
+
+    public void Initialize()
     {
+        MoveFiles(originModelV, destinationModelV);
+        MoveFiles(originBL, destinationBL);
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
         businessRepositoryMock = new Mock<IGenericRepository<Business>>();
         validatorRepositoryMock = new Mock<IGenericRepository<ModelNumberValidator>>();
         validatorService = new ValidatorService(validatorRepositoryMock.Object);
         deviceService = new DeviceService(businessRepositoryMock.Object, deviceRepositoryMock.Object, validatorService);
         deviceImportService = new DeviceImportService(deviceService);
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        MoveFiles(destinationModelV, originModelV);
+        MoveFiles(destinationBL, originBL);
+    }
+
+    private static void MoveFiles(string sourcePath, string destinationPath)
+    {
+        if (Directory.Exists(sourcePath))
+        {
+            Directory.Move(sourcePath, destinationPath);
+        }
     }
 
     [TestMethod]
