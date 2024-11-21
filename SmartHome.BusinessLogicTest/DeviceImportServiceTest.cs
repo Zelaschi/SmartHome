@@ -32,7 +32,6 @@ public class DeviceImportServiceTest
     [TestMethod]
     public void ImportDevicesTest_OK()
     {
-        // Arrange
         var user1 = new User()
         {
             Id = Guid.NewGuid(),

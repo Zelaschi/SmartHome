@@ -46,9 +46,20 @@ public class RoleServiceTest
                                       userRepositoryMock.Object, homePermissionRepositoryMock.Object, deviceRepositoryMock.Object,
                                       roomRepositoryMock.Object, homesFromUserRepositoryMock.Object, updateMultipleHomeMembers.Object);
         roleService = new RoleService(roleRepositoryMock.Object, systemPermissionRepositoryMock.Object);
-        homeOwnerRole = new Role { Name = "HomeOwner" };
+        homeOwnerRole = new Role
+        {
+            Name = "HomeOwner"
+        };
         ownerId = Guid.NewGuid();
-        owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
+        owner = new User
+        {
+            Email = "owner@blank.com",
+            Name = "ownerName",
+            Surname = "ownerSurname",
+            Password = "ownerPassword",
+            Id = ownerId,
+            Role = homeOwnerRole
+        };
     }
 
     [TestMethod]
@@ -56,7 +67,8 @@ public class RoleServiceTest
     {
         Role role = null;
 
-        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>()))
+            .Returns(role);
 
         Exception exception = null;
         try
@@ -76,7 +88,12 @@ public class RoleServiceTest
     [TestMethod]
     public void Get_HomeOwnerRole_RoleExists_ReturnsRole_Test()
     {
-        var expectedRole = new Role { Name = "HomeOwner", Id = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID) };
+        var expectedRole = new Role
+        {
+            Name = "HomeOwner",
+            Id = Guid.Parse(SeedDataConstants.HOME_OWNER_ROLE_ID)
+        };
+
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
                            .Returns(expectedRole);
 
@@ -89,7 +106,12 @@ public class RoleServiceTest
     [TestMethod]
     public void Get_BusinessOwnerRole_RoleExists_ReturnsRole_Test()
     {
-        var expectedRole = new Role { Name = "BusinessOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID) };
+        var expectedRole = new Role
+        {
+            Name = "BusinessOwner",
+            Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID)
+        };
+
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
                            .Returns(expectedRole);
 
@@ -104,7 +126,8 @@ public class RoleServiceTest
     {
         Role role = null;
 
-        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>()))
+            .Returns(role);
 
         Exception exception = null;
         try
@@ -124,7 +147,12 @@ public class RoleServiceTest
     [TestMethod]
     public void Get_AdminRole_RoleExists_ReturnsRole_Test()
     {
-        var expectedRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
+        var expectedRole = new Role
+        {
+            Name = "Admin",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID)
+        };
+
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
                            .Returns(expectedRole);
 
@@ -139,7 +167,8 @@ public class RoleServiceTest
     {
         Role role = null;
 
-        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>()))
+            .Returns(role);
 
         Exception exception = null;
         try
@@ -159,7 +188,12 @@ public class RoleServiceTest
     [TestMethod]
     public void Get_BusinessOwnerHomeOwnerRole_RoleExists_ReturnsRole_Test()
     {
-        var expectedRole = new Role { Name = "BusinessOwnerHomeOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID) };
+        var expectedRole = new Role
+        {
+            Name = "BusinessOwnerHomeOwner",
+            Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID)
+        };
+
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
                            .Returns(expectedRole);
 
@@ -174,7 +208,8 @@ public class RoleServiceTest
     {
         Role role = null;
 
-        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>()))
+            .Returns(role);
 
         Exception exception = null;
         try
@@ -194,7 +229,12 @@ public class RoleServiceTest
     [TestMethod]
     public void Get_AdminHomeOwnerRole_RoleExists_ReturnsRole_Test()
     {
-        var expectedRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
+        var expectedRole = new Role
+        {
+            Name = "AdminHomeOwner",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID)
+        };
+
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
                            .Returns(expectedRole);
 
@@ -209,7 +249,8 @@ public class RoleServiceTest
     {
         Role role = null;
 
-        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>()))
+            .Returns(role);
 
         Exception exception = null;
         try
@@ -231,7 +272,8 @@ public class RoleServiceTest
     {
         Role role = null;
 
-        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>())).Returns(role);
+        roleRepositoryMock.Setup(r => r.Find(It.IsAny<Func<Role, bool>>()))
+            .Returns(role);
 
         Exception exception = null;
         try
@@ -251,7 +293,12 @@ public class RoleServiceTest
     [TestMethod]
     public void HasPermission_Permission_NotFound_ThrowsRoleException()
     {
-        var expectedRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
+        var expectedRole = new Role
+        {
+            Name = "AdminHomeOwner",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID)
+        };
+
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
                            .Returns(expectedRole);
 
@@ -264,8 +311,18 @@ public class RoleServiceTest
     [TestMethod]
     public void HasPermission_Permission_Found_ReturnsTrue_Test()
     {
-        var expectedRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
-        var expectedRolePermission = new SystemPermission { Id = Guid.NewGuid(), Name = "Permission", Description = "Test" };
+        var expectedRole = new Role
+        {
+            Name = "AdminHomeOwner",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID)
+        };
+
+        var expectedRolePermission = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Permission",
+            Description = "Test"
+        };
         expectedRole.SystemPermissions.Add(expectedRolePermission);
 
         roleRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Role, bool>>()))
@@ -304,7 +361,12 @@ public class RoleServiceTest
     [TestMethod]
     public void Get_SystemPermission_Permission_Found_ReturnsTrue_Test()
     {
-        var expectedRolePermission = new SystemPermission { Id = Guid.NewGuid(), Name = "Permission", Description = "Test" };
+        var expectedRolePermission = new SystemPermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "Permission",
+            Description = "Test"
+        };
 
         systemPermissionRepositoryMock.Setup(p => p.Find(It.IsAny<Func<SystemPermission, bool>>()))
                                       .Returns(expectedRolePermission);

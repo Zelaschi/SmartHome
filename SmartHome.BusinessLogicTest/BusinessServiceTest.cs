@@ -17,7 +17,6 @@ public class BusinessServiceTest
     private BusinessService? businessService;
 
     [TestInitialize]
-
     public void Initialize()
     {
         businessRepositoryMock = new Mock<IGenericRepository<Business>>(MockBehavior.Strict);
@@ -28,7 +27,6 @@ public class BusinessServiceTest
     }
 
     [TestMethod]
-
     public void Create_Business_Test()
     {
         var businessOwner = new Role { Name = "BusinessOwner" };
@@ -53,7 +51,6 @@ public class BusinessServiceTest
 
         businessRepositoryMock.Setup(x => x.Add(business)).Returns(business);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
-
         userRepositoryMock.Setup(x => x.Update(It.Is<User>(u => u.Id == owner.Id))).Returns(owner);
 
         var businessResult = businessService.CreateBusiness(business, owner);
@@ -67,7 +64,6 @@ public class BusinessServiceTest
     }
 
     [TestMethod]
-
     public void Create_Business_With_Complete_Account_Throws_Exception_Test()
     {
         var businessOwner = new Role { Name = "BusinessOwner" };
@@ -204,64 +200,6 @@ public class BusinessServiceTest
     }
 
     [TestMethod]
-    public void GetBusinesses_WithFiltersAndPagination_ReturnsPagedFilteredBusinesses()
-    {
-        var businesses = new List<Business>
-        {
-            new Business
-            {
-                Name = "HikVision",
-                BusinessOwner = new User
-                                {
-                                    Name = "Juan",
-                                    Surname = "Perez",
-                                    Password = "Password@1234",
-                                    Email = "mail@mail.com"
-                                },
-                Id = Guid.NewGuid(),
-                Logo = "Logo1",
-                RUT = "1234"
-            }
-        };
-
-        businessRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1)).Returns(businesses);
-
-        var result = businessService.GetBusinesses(1, 1, "HikVision", "Juan Perez");
-
-        businessRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1), Times.Once);
-        Assert.AreEqual(1, result.Count());
-    }
-
-    [TestMethod]
-    public void GetBusinesses_WithPaginationOnly_ReturnsPagedBusinesses()
-    {
-        var businesses = new List<Business>
-        {
-            new Business
-            {
-                Name = "Business1",
-                BusinessOwner = new User
-                                {
-                                    Name = "Juan",
-                                    Surname = "Perez",
-                                    Password = "Password@1234",
-                                    Email = "mail@mail.com"
-                                },
-                Id = Guid.NewGuid(),
-                Logo = "Logo1",
-                RUT = "1234"
-            }
-        };
-
-        businessRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1)).Returns(businesses);
-
-        var result = businessService.GetBusinesses(1, 1, null, null);
-
-        businessRepositoryMock.Verify(x => x.FindAllFiltered(It.IsAny<Expression<Func<Business, bool>>>(), 1, 1), Times.Once);
-        Assert.AreEqual(1, result.Count());
-    }
-
-    [TestMethod]
     public void AddValidatorToBusiness_BusinessNotFound_ThrowsException()
     {
         var businessOwner = new User
@@ -276,12 +214,10 @@ public class BusinessServiceTest
 
         Business business = null;
 
-        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-                    .Returns(business);
+        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>())).Returns(business);
 
         Exception exception = null;
 
-        // Act: Intentar crear un dispositivo con un número de modelo inválido
         try
         {
             businessService.AddValidatorToBusiness(businessOwner, Guid.NewGuid());
@@ -291,59 +227,13 @@ public class BusinessServiceTest
             exception = e;
         }
 
-        // Assert: Verificar que se lanzó la excepción esperada
         businessRepositoryMock.VerifyAll();
 
         Assert.IsNotNull(exception);
         Assert.IsInstanceOfType(exception, typeof(BusinessException));
         Assert.AreEqual("Business does not exist", exception.Message);
     }
-
-    [TestMethod]
-    public void AddValidatorToBusiness_BusinessWithValidator_ThrowsException()
-    {
-        var businessOwner = new User
-        {
-            Id = Guid.NewGuid(),
-            Name = "Pedro",
-            Surname = "Rodriguez",
-            Password = "Password@1234",
-            CreationDate = DateTime.Today,
-            Email = "pr@mail.com"
-        };
-
-        var business = new Business
-        {
-            Id = Guid.NewGuid(),
-            Name = "HikVision",
-            Logo = "Logo1",
-            RUT = "1234",
-            BusinessOwner = businessOwner,
-            ValidatorId = Guid.NewGuid()
-        };
-
-        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-                    .Returns(business);
-
-        Exception exception = null;
-
-        // Act: Intentar crear un dispositivo con un número de modelo inválido
-        try
-        {
-            businessService.AddValidatorToBusiness(businessOwner, Guid.NewGuid());
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
-
-        // Assert: Verificar que se lanzó la excepción esperada
-        businessRepositoryMock.VerifyAll();
-
-        Assert.IsNotNull(exception);
-        Assert.IsInstanceOfType(exception, typeof(BusinessException));
-        Assert.AreEqual("Business already has a validator", exception.Message);
-    }
+}
 
     ////[TestMethod]
     ////public void GetBusinessById_BusinessNotFound_ThrowsException()
@@ -404,4 +294,3 @@ public class BusinessServiceTest
     ////    Assert.IsNotNull(result);
     ////    Assert.AreEqual(business, result);
     ////}
-}

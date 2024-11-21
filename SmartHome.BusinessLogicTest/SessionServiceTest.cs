@@ -47,18 +47,18 @@ public class SessionServiceTest
             Role = role
         };
 
+        var list = new List<User> { existingUser };
+
         userRepositoryMock.Setup(repo => repo.FindAll())
-            .Returns(new List<User> { existingUser });
+            .Returns(list);
 
         Session? sessionAdded = null;
         sessionRepositoryMock.Setup(repo => repo.Add(It.IsAny<Session>()))
             .Callback<Session>(s => sessionAdded = s)
             .Returns((Session s) => s);
 
-        // Act
         var result = sessionService.LogIn("juanperez@gmail.com", "Password@1234");
 
-        // Assert
         Assert.IsNotNull(result);
         Assert.IsNotNull(sessionAdded);
         Assert.AreEqual(userId, sessionAdded.UserId);
@@ -70,7 +70,11 @@ public class SessionServiceTest
     public void Get_UserOfSession_Test()
     {
         var token = Guid.NewGuid();
-        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+        var session = new Session
+        {
+            SessionId = token,
+            UserId = Guid.NewGuid()
+        };
         var userId = Guid.NewGuid();
         var existingUser = new User
         {
@@ -121,7 +125,11 @@ public class SessionServiceTest
     public void Get_UserOfSession_UserNotFound_Throws_Exception()
     {
         var token = Guid.NewGuid();
-        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+        var session = new Session
+        {
+            SessionId = token,
+            UserId = Guid.NewGuid()
+        };
 
         sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
                               .Returns(session);
@@ -161,7 +169,12 @@ public class SessionServiceTest
     public void IsSessionValid_Session_Valid()
     {
         var token = Guid.NewGuid();
-        var session = new Session { SessionId = token, UserId = Guid.NewGuid() };
+        var session = new Session
+        {
+            SessionId = token,
+            UserId = Guid.NewGuid()
+        };
+
         sessionRepositoryMock.Setup(repo => repo.Find(It.IsAny<Func<Session, bool>>()))
                               .Returns(session);
 

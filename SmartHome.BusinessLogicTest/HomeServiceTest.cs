@@ -1,11 +1,11 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
 using SmartHome.BusinessLogic.ExtraRepositoryInterfaces;
 using SmartHome.BusinessLogic.GenericRepositoryInterface;
 using SmartHome.BusinessLogic.InitialSeedData;
 using SmartHome.BusinessLogic.Services;
-using FluentAssertions;
 
 namespace SmartHome.BusinessLogic.Test;
 
@@ -41,15 +41,36 @@ public class HomeServiceTest
         homeService = new HomeService(homeMemberRepositoryMock.Object, homeDeviceRepositoryMock.Object, homeRepositoryMock.Object,
                                       userRepositoryMock.Object, homePermissionRepositoryMock.Object, deviceRepositoryMock.Object,
                                       roomRepositoryMock.Object, homesFromUserRepositoryMock.Object, updateMultipleElementsRepositoryMock.Object);
-        homeOwnerRole = new Role { Name = "HomeOwner" };
+        homeOwnerRole = new Role
+        {
+            Name = "HomeOwner"
+        };
         ownerId = Guid.NewGuid();
-        owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
+        owner = new User
+        {
+            Email = "owner@blank.com",
+            Name = "ownerName",
+            Surname = "ownerSurname",
+            Password = "ownerPassword",
+            Id = ownerId,
+            Role = homeOwnerRole
+        };
     }
 
     [TestMethod]
     public void Create_Home_OK_Test()
     {
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
@@ -67,9 +88,27 @@ public class HomeServiceTest
     [TestMethod]
     public void Register_HomeMemberToHouse_OK_Test()
     {
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var memberId = Guid.NewGuid();
-        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        var member = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = memberId,
+            Role = homeOwnerRole
+        };
 
         homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(new HomeMember(member));
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -83,13 +122,39 @@ public class HomeServiceTest
     [TestMethod]
     public void GetAll_HomeMembers_Test()
     {
-        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
-        var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var member1 = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = homeOwnerRole
+        };
+        var member2 = new User
+        {
+            Email = "blankEmail2@blank.com",
+            Name = "blankName2",
+            Surname = "blanckSurname2",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = homeOwnerRole
+        };
         var homeOwner = new HomeMember(owner);
         var homeMember1 = new HomeMember(member1);
         var homeMember2 = new HomeMember(member2);
 
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         home.Members.Add(homeOwner);
         home.Members.Add(homeMember1);
         home.Members.Add(homeMember2);
@@ -106,16 +171,73 @@ public class HomeServiceTest
     [TestMethod]
     public void GetAll_HomeDevices_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
 
-        var device1 = new Device { Id = Guid.NewGuid(), Name = "Device1", Description = "A Device", Business = business, ModelNumber = "123", Photos = [] };
-        var device2 = new Device { Id = Guid.NewGuid(), Name = "Device2", Description = "A Device", Business = business, ModelNumber = "123", Photos = [] };
+        var device1 = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Device1",
+            Description = "A Device",
+            Business = business,
+            ModelNumber = "123",
+            Photos = []
+        };
+        var device2 = new Device
+        {
+            Id = Guid.NewGuid(),
+            Name = "Device2",
+            Description = "A Device",
+            Business = business,
+            ModelNumber = "123",
+            Photos = []
+        };
 
-        var homeDevice1 = new HomeDevice { Device = device1, Id = Guid.NewGuid(), Online = true, Name = device1.Name };
-        var homeDevice2 = new HomeDevice { Device = device2, Id = Guid.NewGuid(), Online = false, Name = device2.Name };
+        var homeDevice1 = new HomeDevice
+        {
+            Device = device1,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = device1.Name
+        };
+        var homeDevice2 = new HomeDevice
+        {
+            Device = device2,
+            Id = Guid.NewGuid(),
+            Online = false,
+            Name = device2.Name
+        };
 
         home.Devices.Add(homeDevice1);
         home.Devices.Add(homeDevice2);
@@ -131,16 +253,69 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Person_Detecion_Notification()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var homeMember = new HomeMember(owner);
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var securityCamera = new SecurityCamera
+        {
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = securityCamera,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = securityCamera.Name
+        };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
 
-        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now, DetectedPerson = owner };
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Test",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now,
+            DetectedPerson = owner
+        };
         home.Devices.Add(homeDevice);
         home.Members.Add(homeMember);
 
@@ -164,16 +339,68 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Movement_Detection_Notification()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
         var homeMember = new HomeMember(owner);
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var securityCamera = new SecurityCamera
+        {
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = securityCamera,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = securityCamera.Name
+        };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
 
-        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Test",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now
+        };
         home.Devices.Add(homeDevice);
         home.Members.Add(homeMember);
 
@@ -196,15 +423,63 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Movement_Detection_Notification_On_Off_Device_Throws_Exception()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var homeMember = new HomeMember(owner);
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = false, Name = securityCamera.Name };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var securityCamera = new SecurityCamera
+        {
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = securityCamera,
+            Id = Guid.NewGuid(),
+            Online = false,
+            Name = securityCamera.Name
+        };
 
-        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Test",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now
+        };
         home.Devices.Add(homeDevice);
         home.Members.Add(homeMember);
 
@@ -227,10 +502,23 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Movement_Detection_Notification_Should_Only_Be_Added_To_HomeMember_If_He_Has_Notification_Permission()
     {
-        // ASSERT
-
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
@@ -240,7 +528,15 @@ public class HomeServiceTest
         var result = homeService.CreateHome(home, ownerId);
 
         var memberId = Guid.NewGuid();
-        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        var member = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = memberId,
+            Role = homeOwnerRole
+        };
 
         homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -250,11 +546,42 @@ public class HomeServiceTest
         HomeMember homeMember = homeService.AddHomeMemberToHome(home.Id, memberId);
         home.Members.Add(homeMember);
 
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var securityCamera = new SecurityCamera
+        {
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = securityCamera,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = securityCamera.Name
+        };
 
         home.Devices.Add(homeDevice);
 
@@ -268,15 +595,11 @@ public class HomeServiceTest
             .Returns(homeMember);
         homePermissionRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(notificationPermission);
 
-        // ACCTION
-
         homeService.CreateMovementDetectionNotification(homeDevice.Id);
 
         IEnumerable<HomeMember> homeMembers = (List<HomeMember>)homeService.GetAllHomeMembers(home.Id);
         var ownerFound = homeMembers.First(x => x.User == owner);
         var memberFound = homeMembers.First(x => x.User == member);
-
-        // ASSERT
 
         Assert.IsTrue(ownerFound.Notifications.Count > 0);
         Assert.IsTrue(memberFound.Notifications.Count == 0);
@@ -290,14 +613,57 @@ public class HomeServiceTest
     public void Register_Default_Device_To_Home_Test()
     {
         var homeId = Guid.NewGuid();
-        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = Guid.NewGuid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
         var deviceId = Guid.NewGuid();
-        var device = new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = [], Business = business };
+        var device = new Device
+        {
+            Id = deviceId,
+            Name = "Window sensor",
+            ModelNumber = "1234",
+            Description = "Window sensor for home",
+            Photos = [],
+            Business = business
+        };
         var homeDeviceId = Guid.NewGuid();
-        var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId, Name = device.Name };
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            Online = true,
+            Device = device,
+            HomeId = homeId,
+            Name = device.Name
+        };
         home.Devices.Add(homeDevice);
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -316,7 +682,17 @@ public class HomeServiceTest
     public void Register_Device_To_Home_Throws_Exception_If_Device_Does_Not_Exist()
     {
         var homeId = Guid.NewGuid();
-        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var deviceId = Guid.NewGuid();
 
         deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns((Device)null);
@@ -340,9 +716,36 @@ public class HomeServiceTest
     {
         var homeId = Guid.NewGuid();
         var deviceId = Guid.NewGuid();
-
+        var device = new Device
+        {
+            Id = deviceId,
+            Name = "Window sensor",
+            ModelNumber = "1234",
+            Description = "Window sensor for home",
+            Photos = [],
+            Business = new Business
+            {
+                BusinessOwner = new User
+                {
+                    Email = "blankEmail@blank.com",
+                    Name = "blankName",
+                    Surname = "blanckSurname",
+                    Password = "blankPassword",
+                    Id = Guid.NewGuid(),
+                    Role = new Role
+                    {
+                        Name = "BusinessOwner"
+                    }
+                },
+                Id = Guid.NewGuid(),
+                Name = "bName",
+                Logo = "logo",
+                RUT = "111222333"
+            }
+        };
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
-        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>())).Returns(new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = [], Business = new Business { BusinessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = new Role { Name = "BusinessOwner" } }, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" } });
+        deviceRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Device, bool>>()))
+            .Returns(device);
 
         var ex = new HomeException("PlaceHolder");
         try
@@ -362,10 +765,28 @@ public class HomeServiceTest
     public void Add_Permissions_To_HomeMember_Test()
     {
         var homeId = Guid.NewGuid();
-        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
 
         var userId = Guid.NewGuid();
-        var user = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = userId, Role = homeOwnerRole };
+        var user = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = userId,
+            Role = homeOwnerRole
+        };
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
@@ -379,12 +800,34 @@ public class HomeServiceTest
         homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(returnedMember);
         homeMemberRepositoryMock.Setup(x => x.Update(It.IsAny<HomeMember>())).Returns(returnedMember);
 
-        var addMemberPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID), Name = "AddMemberPermission" };
-        var addDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID), Name = "AddDevicesPermission" };
-        var listDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID), Name = "ListDevicesPermission" };
-        var notificationsPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationsPermission" };
+        var addMemberPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID),
+            Name = "AddMemberPermission"
+        };
+        var addDevicesPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID),
+            Name = "AddDevicesPermission"
+        };
+        var listDevicesPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID),
+            Name = "ListDevicesPermission"
+        };
+        var notificationsPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationsPermission"
+        };
 
-        var permissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission, notificationsPermission };
+        var permissions = new List<HomePermission>
+        {
+            addMemberPermission,
+            addDevicesPermission,
+            listDevicesPermission,
+            notificationsPermission
+        };
 
         homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(permissions);
         homePermissionRepositoryMock
@@ -409,10 +852,28 @@ public class HomeServiceTest
     public void Update_Permissions_To_HomeMember_Test()
     {
         var homeId = Guid.NewGuid();
-        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
 
         var userId = Guid.NewGuid();
-        var user = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = userId, Role = homeOwnerRole };
+        var user = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = userId,
+            Role = homeOwnerRole
+        };
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(user);
@@ -424,12 +885,34 @@ public class HomeServiceTest
         homeMemberRepositoryMock.Setup(x => x.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(returnedMember);
         homeMemberRepositoryMock.Setup(x => x.Update(It.IsAny<HomeMember>())).Returns(returnedMember);
 
-        var addMemberPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID), Name = "AddMemberPermission" };
-        var addDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID), Name = "AddDevicesPermission" };
-        var listDevicesPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID), Name = "ListDevicesPermission" };
-        var notificationsPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationsPermission" };
+        var addMemberPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.ADD_MEMBER_TO_HOME_PERMISSION_ID),
+            Name = "AddMemberPermission"
+        };
+        var addDevicesPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.ADD_DEVICES_TO_HOME_HOMEPERMISSION_ID),
+            Name = "AddDevicesPermission"
+        };
+        var listDevicesPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.LIST_DEVICES_HOMEPERMISSION_ID),
+            Name = "ListDevicesPermission"
+        };
+        var notificationsPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationsPermission"
+        };
 
-        var permissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission, notificationsPermission };
+        var permissions = new List<HomePermission>
+        {
+            addMemberPermission,
+            addDevicesPermission,
+            listDevicesPermission,
+            notificationsPermission
+        };
 
         homePermissionRepositoryMock.Setup(x => x.FindAll()).Returns(permissions);
         homePermissionRepositoryMock
@@ -441,7 +924,12 @@ public class HomeServiceTest
 
         homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, permissions, ownerId);
 
-        var updatedPermissions = new List<HomePermission> { addMemberPermission, addDevicesPermission, listDevicesPermission };
+        var updatedPermissions = new List<HomePermission>
+        {
+            addMemberPermission,
+            addDevicesPermission,
+            listDevicesPermission
+        };
 
         homeService.UpdateHomePermissionsOfHomeMember(returnedMember.HomeMemberId, updatedPermissions, ownerId);
         IEnumerable<HomeMember> members = homeService.GetAllHomeMembers(homeId);
@@ -456,18 +944,76 @@ public class HomeServiceTest
     [TestMethod]
     public void Get_Users_Notifications()
     {
-        var owner = new User { Email = "owner@blank.com", Name = "ownerName", Surname = "ownerSurname", Password = "ownerPassword", Id = ownerId, Role = homeOwnerRole };
+        var owner = new User
+        {
+            Email = "owner@blank.com",
+            Name = "ownerName",
+            Surname = "ownerSurname",
+            Password = "ownerPassword",
+            Id = ownerId,
+            Role = homeOwnerRole
+        };
         var home1Id = Guid.NewGuid();
-        var home1 = new Home { Id = home1Id, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home1 = new Home
+        {
+            Id = home1Id,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var home2Id = Guid.NewGuid();
-        var home2 = new Home { Id = home2Id, MainStreet = "Street2", DoorNumber = "1235", Latitude = "-32", Longitude = "11", MaxMembers = 6, Owner = owner, Name = "House Name" };
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var home2 = new Home
+        {
+            Id = home2Id,
+            MainStreet = "Street2",
+            DoorNumber = "1235",
+            Latitude = "-32",
+            Longitude = "11",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
 
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = Guid.NewGuid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
         var deviceId = Guid.NewGuid();
-        var securityCamera = new SecurityCamera { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = [], Business = business };
+        var securityCamera = new SecurityCamera
+        {
+            Id = deviceId,
+            Name = "Window sensor",
+            ModelNumber = "1234",
+            Description = "Window sensor for home",
+            Photos = [],
+            Business = business
+        };
         var homeDeviceId = Guid.NewGuid();
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home1);
@@ -494,11 +1040,25 @@ public class HomeServiceTest
         var noti1 = homeService.CreatePersonDetectionNotification(home1.Id, ownerId);
         var noti2 = homeService.CreateMovementDetectionNotification(home2.Id);
         var homeMember1 = home1.Members.FirstOrDefault(x => x.User.Id == ownerId);
-        var homeNoti1 = new HomeMemberNotification { HomeMemberId = ownerId, NotificationId = noti1.Id, Read = false, Notification = noti1, HomeMember = homeMember1 };
+        var homeNoti1 = new HomeMemberNotification
+        {
+            HomeMemberId = ownerId,
+            NotificationId = noti1.Id,
+            Read = false,
+            Notification = noti1,
+            HomeMember = homeMember1
+        };
         homeMember1.Notifications.Add(noti1);
         homeMember1.HomeMemberNotifications.Add(homeNoti1);
         var homeMember2 = home2.Members.FirstOrDefault(x => x.User.Id == ownerId);
-        var homeNoti2 = new HomeMemberNotification { HomeMemberId = ownerId, NotificationId = noti2.Id, Read = false, Notification = noti2, HomeMember = homeMember2 };
+        var homeNoti2 = new HomeMemberNotification
+        {
+            HomeMemberId = ownerId,
+            NotificationId = noti2.Id,
+            Read = false,
+            Notification = noti2,
+            HomeMember = homeMember2
+        };
         homeMember2.Notifications.Add(noti2);
         homeMember2.HomeMemberNotifications.Add(homeNoti2);
         home1.Members.Clear();
@@ -520,14 +1080,50 @@ public class HomeServiceTest
     public void GetAll_Users_Homes_Test()
     {
         var member1Id = Guid.NewGuid();
-        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = member1Id, Role = homeOwnerRole };
-        var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = new Guid(), Role = homeOwnerRole };
+        var member1 = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = member1Id,
+            Role = homeOwnerRole
+        };
+        var member2 = new User
+        {
+            Email = "blankEmail2@blank.com",
+            Name = "blankName2",
+            Surname = "blanckSurname2",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = homeOwnerRole
+        };
         var homeOwner = new HomeMember(owner);
         var homeMember1 = new HomeMember(member1);
         var homeMember2 = new HomeMember(member2);
 
-        var home1 = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
-        var home2 = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home1 = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
+        var home2 = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         home1.Members.Add(homeOwner);
         home1.Members.Add(homeMember1);
         home1.Members.Add(homeMember2);
@@ -548,17 +1144,70 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Opened_Window_Notification_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var homeMember = new HomeMember(owner);
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new Device { Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var windowSensor = new Device
+        {
+            Type = "Window Sensor",
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = windowSensor,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = windowSensor.Name
+        };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
 
         homeDevice.IsOpen = false;
-        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Test",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now
+        };
         home.Devices.Add(homeDevice);
         home.Members.Add(homeMember);
 
@@ -581,17 +1230,70 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Closed_Window_Notification_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
         var homeMember = new HomeMember(owner);
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new Device { Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var windowSensor = new Device
+        {
+            Type = "Window Sensor",
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = windowSensor,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = windowSensor.Name
+        };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
 
         homeDevice.IsOpen = true;
-        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Test",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now
+        };
         home.Devices.Add(homeDevice);
         home.Members.Add(homeMember);
 
@@ -614,15 +1316,64 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Window_Sensor_Notification_On_Off_Device_Throws_Exception()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
         var homeMember = new HomeMember(owner);
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new Device { Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = false, Name = windowSensor.Name };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var windowSensor = new Device
+        {
+            Type = "Window Sensor",
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = windowSensor,
+            Id = Guid.NewGuid(),
+            Online = false,
+            Name = windowSensor.Name
+        };
 
-        var notification = new Notification { Date = DateTime.Today, Event = "Test", HomeDevice = homeDevice, Time = DateTime.Now };
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Test",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now
+        };
         home.Devices.Add(homeDevice);
         home.Members.Add(homeMember);
 
@@ -645,8 +1396,23 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Window_Sensor_Notification_Should_Only_Be_Added_To_HomeMember_If_He_Has_Notification_Permission()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
 
         homeRepositoryMock.Setup(x => x.Add(It.IsAny<Home>())).Returns(home);
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns((Home)null);
@@ -656,7 +1422,15 @@ public class HomeServiceTest
         var result = homeService.CreateHome(home, ownerId);
 
         var memberId = Guid.NewGuid();
-        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        var member = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = memberId,
+            Role = homeOwnerRole
+        };
 
         homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(new HomeMember(member));
         homeRepositoryMock.Setup(x => x.Update(It.IsAny<Home>())).Returns(home);
@@ -666,11 +1440,43 @@ public class HomeServiceTest
         HomeMember homeMember = homeService.AddHomeMemberToHome(home.Id, memberId);
         home.Members.Add(homeMember);
 
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var windowSensor = new Device { Type = "Window Sensor", Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = windowSensor, Id = Guid.NewGuid(), Online = true, Name = windowSensor.Name };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var windowSensor = new Device
+        {
+            Type = "Window Sensor",
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = windowSensor,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = windowSensor.Name
+        };
 
         home.Devices.Add(homeDevice);
 
@@ -700,8 +1506,28 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Repeated_Adress_Home_Throws_Exception_Test()
     {
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
-        var home2 = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 3, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
+        var home2 = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 3,
+            Owner = owner,
+            Name = "Home Name"
+        };
         homeRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(owner);
         Exception exception = null;
@@ -724,9 +1550,27 @@ public class HomeServiceTest
     [TestMethod]
     public void Register_Repeated_HomeMemberToHouse_Throws_Exception_Test()
     {
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
         var memberId = Guid.NewGuid();
-        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        var member = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = memberId,
+            Role = homeOwnerRole
+        };
         var homeMember = new HomeMember(member);
 
         homeMemberRepositoryMock.Setup(x => x.Add(It.IsAny<HomeMember>())).Returns(homeMember);
@@ -755,9 +1599,27 @@ public class HomeServiceTest
     [TestMethod]
     public void Register_HomeMember_To_Full_House_Throws_Exception_Test()
     {
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 1, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 1,
+            Owner = owner,
+            Name = "Home Name"
+        };
         var member1Id = Guid.NewGuid();
-        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = member1Id, Role = homeOwnerRole };
+        var member1 = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = member1Id,
+            Role = homeOwnerRole
+        };
         var homeMember = new HomeMember(member1);
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -787,13 +1649,55 @@ public class HomeServiceTest
     [TestMethod]
     public void Update_HomeDevice_Name_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
         var homeMember = new HomeMember(owner);
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var device = new Device { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = device, Id = Guid.NewGuid(), Online = false, Name = device.Name };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var device = new Device
+        {
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = device,
+            Id = Guid.NewGuid(),
+            Online = false,
+            Name = device.Name
+        };
         var newName = "NewName";
 
         home.Devices.Add(homeDevice);
@@ -812,7 +1716,18 @@ public class HomeServiceTest
     [TestMethod]
     public void Update_Home_Name_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "Home Name"
+        };
         var newName = "NewName";
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -828,7 +1743,18 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Home_With_Invalid_User_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = null, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = null,
+            Name = "Home Name"
+        };
         User invalidUser = home.Owner;
         userRepositoryMock.Setup(u => u.Find(It.IsAny<Func<User, bool>>())).Returns(invalidUser);
         Exception exception = null;
@@ -871,7 +1797,18 @@ public class HomeServiceTest
     [TestMethod]
     public void GetAll_HomeDevices_DevicesNotFound_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = null, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = null,
+            Name = "Home Name"
+        };
         home.Devices = null;
         homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         Exception exception = null;
@@ -893,7 +1830,18 @@ public class HomeServiceTest
     [TestMethod]
     public void GetAllHomeMembers_HomeMembersNotFound_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = null, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = null,
+            Name = "Home Name"
+        };
         home.Members = null;
 
         homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -937,7 +1885,18 @@ public class HomeServiceTest
     [TestMethod]
     public void CreateHome_EmptyMainStreet_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = string.Empty, DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = null, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = string.Empty,
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = null,
+            Name = "Home Name"
+        };
 
         Exception exception = null;
 
@@ -957,7 +1916,18 @@ public class HomeServiceTest
     [TestMethod]
     public void CreateHome_EmptyDoorNumber_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = string.Empty, Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = null, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = string.Empty,
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = null,
+            Name = "Home Name"
+        };
 
         Exception exception = null;
 
@@ -977,7 +1947,18 @@ public class HomeServiceTest
     [TestMethod]
     public void CreateHome_EmptyLatitude_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "0000", Latitude = string.Empty, Longitude = "31", MaxMembers = 6, Owner = null, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "0000",
+            Latitude = string.Empty,
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = null,
+            Name = "Home Name"
+        };
 
         Exception exception = null;
 
@@ -997,7 +1978,18 @@ public class HomeServiceTest
     [TestMethod]
     public void CreateHome_EmptyLongitude_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "0000", Latitude = "31", Longitude = string.Empty, MaxMembers = 6, Owner = null, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "0000",
+            Latitude = "31",
+            Longitude = string.Empty,
+            MaxMembers = 6,
+            Owner = null,
+            Name = "Home Name"
+        };
 
         Exception exception = null;
 
@@ -1017,7 +2009,18 @@ public class HomeServiceTest
     [TestMethod]
     public void CreateHome_InvalidMaxMembers_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "0000", Latitude = "31", Longitude = "31", MaxMembers = 0, Owner = null, Name = "Home Name" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "0000",
+            Latitude = "31",
+            Longitude = "31",
+            MaxMembers = 0,
+            Owner = null,
+            Name = "Home Name"
+        };
 
         Exception exception = null;
 
@@ -1083,8 +2086,27 @@ public class HomeServiceTest
     [TestMethod]
     public void HasPermission_User_Is_Not_HomeMember_Throws_Exception_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "0000", Latitude = "31", Longitude = "31", MaxMembers = 2, Owner = owner, Name = "Home Name" };
-        var notMember = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "0000",
+            Latitude = "31",
+            Longitude = "31",
+            MaxMembers = 2,
+            Owner = owner,
+            Name = "Home Name"
+        };
+        var notMember = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = Guid.NewGuid(),
+            Role = homeOwnerRole
+        };
         homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
         Exception exception = null;
 
@@ -1105,9 +2127,27 @@ public class HomeServiceTest
     [TestMethod]
     public void HasPermission_HomePermission_Not_Found_Throws_Exception_Test()
     {
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var memberId = Guid.NewGuid();
-        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        var member = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = memberId,
+            Role = homeOwnerRole
+        };
         home.Members.Add(new HomeMember(member));
         var permissionId = Guid.NewGuid();
 
@@ -1134,13 +2174,36 @@ public class HomeServiceTest
     [TestMethod]
     public void HasPermission_UserHasPermission_Test()
     {
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var memberId = Guid.NewGuid();
-        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        var member = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = memberId,
+            Role = homeOwnerRole
+        };
         home.Members.Add(new HomeMember(member));
         var permissionId = Guid.NewGuid();
 
-        var homePermission = new HomePermission { HomeMembers = home.Members, Name = "Permiso", Id = permissionId };
+        var homePermission = new HomePermission
+        {
+            HomeMembers = home.Members,
+            Name = "Permiso",
+            Id = permissionId
+        };
         home.Members.First().HomePermissions.Add(homePermission);
 
         homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -1156,14 +2219,40 @@ public class HomeServiceTest
     [TestMethod]
     public void HasPermission_UserDoesNotHavePermission_Returns_False_Test()
     {
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         var memberId = Guid.NewGuid();
-        var member = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = memberId, Role = homeOwnerRole };
+        var member = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = memberId,
+            Role = homeOwnerRole
+        };
         home.Members.Add(new HomeMember(member));
         var permissionId = Guid.NewGuid();
 
-        var differentPermission = new HomePermission { Id = Guid.NewGuid(), Name = "different p" };
-        var homePermission = new HomePermission { Id = permissionId, Name = "permission" };
+        var differentPermission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "different p"
+        };
+        var homePermission = new HomePermission
+        {
+            Id = permissionId,
+            Name = "permission"
+        };
         home.Members.First().HomePermissions.Add(differentPermission);
 
         homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -1183,9 +2272,13 @@ public class HomeServiceTest
         var permissionId = Guid.NewGuid();
 
         HomeMember homeMember = null;
-
+        var homePermission = new HomePermission
+        {
+            Id = permissionId,
+            Name = "Permission"
+        };
         homeMemberRepositoryMock.Setup(h => h.Find(It.IsAny<Func<HomeMember, bool>>())).Returns(homeMember);
-        homePermissionRepositoryMock.Setup(hp => hp.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(new HomePermission { Id = permissionId, Name = "Permission" });
+        homePermissionRepositoryMock.Setup(hp => hp.Find(It.IsAny<Func<HomePermission, bool>>())).Returns(homePermission);
 
         Exception exception = null;
 
@@ -1240,17 +2333,70 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_Detected_Person_Notification_Person_Not_Detected_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var securityCamera = new SecurityCamera
+        {
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = securityCamera,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = securityCamera.Name
+        };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
         var detectedPersonId = Guid.NewGuid();
         User detectedPerson = null;
         HomeMember member = null;
-        var notification = new Notification { Date = DateTime.Today, Event = "Undetected person", HomeDevice = homeDevice, Time = DateTime.Now, DetectedPerson = detectedPerson };
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Undetected person",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now,
+            DetectedPerson = detectedPerson
+        };
         home.Devices.Add(homeDevice);
 
         homeDeviceRepositoryMock.Setup(hd => hd.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
@@ -1273,24 +2419,96 @@ public class HomeServiceTest
     [TestMethod]
     public void Create_PersonDetectionNotification_AddsNotificationToAllMembers_Test()
     {
-        var home = new Home { Devices = new List<HomeDevice>(), Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = new Guid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
-        var securityCamera = new SecurityCamera { Name = "DeviceName", Business = business, Description = "DeviceDescription", Photos = [], ModelNumber = "a" };
-        var homeDevice = new HomeDevice { Device = securityCamera, Id = Guid.NewGuid(), Online = true, Name = securityCamera.Name };
+        var home = new Home
+        {
+            Devices = new List<HomeDevice>(),
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = new Guid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
+        var securityCamera = new SecurityCamera
+        {
+            Name = "DeviceName",
+            Business = business,
+            Description = "DeviceDescription",
+            Photos = [],
+            ModelNumber = "a"
+        };
+        var homeDevice = new HomeDevice
+        {
+            Device = securityCamera,
+            Id = Guid.NewGuid(),
+            Online = true,
+            Name = securityCamera.Name
+        };
         var detectedPersonId = Guid.NewGuid();
         User detectedPerson = null;
         HomeMember member = null;
-        var notification = new Notification { Date = DateTime.Today, Event = "Undetected person", HomeDevice = homeDevice, Time = DateTime.Now, DetectedPerson = detectedPerson };
+        var notification = new Notification
+        {
+            Date = DateTime.Today,
+            Event = "Undetected person",
+            HomeDevice = homeDevice,
+            Time = DateTime.Now,
+            DetectedPerson = detectedPerson
+        };
         home.Devices.Add(homeDevice);
-        var notificationPermission = new HomePermission { Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID), Name = "NotificationPermission" };
-        var permission = new HomePermission { Id = Guid.NewGuid(), Name = "A" };
+        var notificationPermission = new HomePermission
+        {
+            Id = Guid.Parse(SeedDataConstants.RECIEVE_NOTIFICATIONS_HOMEPERMISSION_ID),
+            Name = "NotificationPermission"
+        };
+        var permission = new HomePermission
+        {
+            Id = Guid.NewGuid(),
+            Name = "A"
+        };
         var homeMembers = new List<HomeMember>
         {
-            new HomeMember { HomeMemberId = Guid.NewGuid(), Notifications = new List<Notification>{notification}, HomePermissions = new List<HomePermission> { permission }},
-            new HomeMember { HomeMemberId = Guid.NewGuid(), Notifications = new List<Notification>{notification}, HomePermissions = new List<HomePermission> { permission }},
-            new HomeMember { HomeMemberId = Guid.NewGuid(), Notifications = new List<Notification>{notification}, HomePermissions = new List<HomePermission> { permission }}
+            new HomeMember
+            {
+                HomeMemberId = Guid.NewGuid(),
+                Notifications = new List<Notification>{notification},
+                HomePermissions = new List<HomePermission> {permission}
+            },
+            new HomeMember
+            {
+                HomeMemberId = Guid.NewGuid(),
+                Notifications = new List<Notification>{notification},
+                HomePermissions = new List<HomePermission>{permission}
+            },
+            new HomeMember
+            {
+                HomeMemberId = Guid.NewGuid(),
+                Notifications = new List<Notification>{notification},
+                HomePermissions = new List<HomePermission>{permission}
+            }
         };
         home.Members = homeMembers;
 
@@ -1378,12 +2596,43 @@ public class HomeServiceTest
     public void Create_MovementDetectionNotification_HomeNotFound_ThrowsHomeException()
     {
         var homeDeviceId = Guid.NewGuid();
-        var securityCamera = new SecurityCamera { Description = "test", ModelNumber = "test", Name = "test", Photos = [], Business = new Business { BusinessOwner = new User { Email = "test", Name = "test", Password = "test", Role = new Role { Name = "test" }, Surname = "test" }, Id = Guid.NewGuid(), Logo = "test", Name = "test", RUT = "test" } };
+        var securityCamera = new SecurityCamera
+        {
+            Description = "test",
+            ModelNumber = "test",
+            Name = "test",
+            Photos = [],
+            Business = new Business
+            {
+                BusinessOwner = new User
+                {
+                    Email = "test",
+                    Name = "test",
+                    Password = "test",
+                    Role = new Role
+                    {
+                        Name = "test"
+                    },
+                    Surname = "test"
+                },
+                Id = Guid.NewGuid(),
+                Logo = "test",
+                Name = "test",
+                RUT = "test"
+            }
+        };
         Home home = null;
 
         homeRepositoryMock.Setup(h => h.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
 
-        var homeDevice = new HomeDevice { Id = homeDeviceId, HomeId = Guid.NewGuid(), Device = securityCamera, Name = "test", Online = true };
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            HomeId = Guid.NewGuid(),
+            Device = securityCamera,
+            Name = "test",
+            Online = true
+        };
         homeDeviceRepositoryMock.Setup(hd => hd.Find(It.IsAny<Func<HomeDevice, bool>>())).Returns(homeDevice);
 
         Exception exception = null;
@@ -1500,15 +2749,58 @@ public class HomeServiceTest
     public void Register_WindowSensor_Device_To_Home_Test()
     {
         var homeId = Guid.NewGuid();
-        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = Guid.NewGuid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
         var deviceId = Guid.NewGuid();
-        var device = new Device { Id = deviceId, Name = "Window sensor", ModelNumber = "1234", Description = "Window sensor for home", Photos = [], Business = business };
+        var device = new Device
+        {
+            Id = deviceId,
+            Name = "Window sensor",
+            ModelNumber = "1234",
+            Description = "Window sensor for home",
+            Photos = [],
+            Business = business
+        };
         device.Type = "Window Sensor";
         var homeDeviceId = Guid.NewGuid();
-        var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId, Name = device.Name };
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            Online = true,
+            Device = device,
+            HomeId = homeId,
+            Name = device.Name
+        };
         home.Devices.Add(homeDevice);
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -1527,15 +2819,58 @@ public class HomeServiceTest
     public void Register_IntelligentLamp_Device_To_Home_Test()
     {
         var homeId = Guid.NewGuid();
-        var home = new Home { Id = homeId, MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
-        var businessOwnerRole = new Role { Name = "BusinessOwner" };
-        var businessOwner = new User { Email = "blankEmail@blank.com", Name = "blankName", Surname = "blanckSurname", Password = "blankPassword", Id = Guid.NewGuid(), Role = businessOwnerRole };
-        var business = new Business { BusinessOwner = businessOwner, Id = Guid.NewGuid(), Name = "bName", Logo = "logo", RUT = "111222333" };
+        var home = new Home
+        {
+            Id = homeId,
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner"
+        };
+        var businessOwner = new User
+        {
+            Email = "blankEmail@blank.com",
+            Name = "blankName",
+            Surname = "blanckSurname",
+            Password = "blankPassword",
+            Id = Guid.NewGuid(),
+            Role = businessOwnerRole
+        };
+        var business = new Business
+        {
+            BusinessOwner = businessOwner,
+            Id = Guid.NewGuid(),
+            Name = "bName",
+            Logo = "logo",
+            RUT = "111222333"
+        };
         var deviceId = Guid.NewGuid();
-        var device = new Device { Id = deviceId, Name = "Inteligent Lamp", ModelNumber = "1234", Description = "Inteligent lamp for home", Photos = [], Business = business };
+        var device = new Device
+        {
+            Id = deviceId,
+            Name = "Inteligent Lamp",
+            ModelNumber = "1234",
+            Description = "Inteligent lamp for home",
+            Photos = [],
+            Business = business
+        };
         device.Type = "Inteligent Lamp";
         var homeDeviceId = Guid.NewGuid();
-        var homeDevice = new HomeDevice { Id = homeDeviceId, Online = true, Device = device, HomeId = homeId, Name = device.Name };
+        var homeDevice = new HomeDevice
+        {
+            Id = homeDeviceId,
+            Online = true,
+            Device = device,
+            HomeId = homeId,
+            Name = device.Name
+        };
         home.Devices.Add(homeDevice);
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
@@ -2108,7 +3443,11 @@ public class HomeServiceTest
             }
         };
 
-        home.Devices = new List<HomeDevice>() { device1, device2 };
+        home.Devices = new List<HomeDevice>()
+        {
+            device1,
+            device2
+        };
 
         homeRepositoryMock.Setup(x => x.Find(It.IsAny<Func<Home, bool>>())).Returns(home);
 
@@ -2215,18 +3554,49 @@ public class HomeServiceTest
     [TestMethod]
     public void UnRelatedHomeOwnersTest_Ok()
     {
-        var member1 = new User { Email = "blankEmail1@blank.com", Name = "blankName1", Surname = "blanckSurname1", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
-        var member2 = new User { Email = "blankEmail2@blank.com", Name = "blankName2", Surname = "blanckSurname2", Password = "blankPassword", Id = Guid.NewGuid(), Role = homeOwnerRole };
+        var member1 = new User
+        {
+            Email = "blankEmail1@blank.com",
+            Name = "blankName1",
+            Surname = "blanckSurname1",
+            Password = "blankPassword",
+            Id = Guid.NewGuid(),
+            Role = homeOwnerRole
+        };
+        var member2 = new User
+        {
+            Email = "blankEmail2@blank.com",
+            Name = "blankName2",
+            Surname = "blanckSurname2",
+            Password = "blankPassword",
+            Id = Guid.NewGuid(),
+            Role = homeOwnerRole
+        };
         var homeOwner = new HomeMember(owner);
         var homeMember1 = new HomeMember(member1);
 
-        var users = new List<User> {  member2 , member1};
+        var users = new List<User>
+        {
+            member2,
+            member1
+        };
+
         if (owner != null)
         {
             users.Add(owner);
         }
 
-        var home = new Home { Id = Guid.NewGuid(), MainStreet = "Street", DoorNumber = "123", Latitude = "-31", Longitude = "31", MaxMembers = 6, Owner = owner, Name = "House Name" };
+        var home = new Home
+        {
+            Id = Guid.NewGuid(),
+            MainStreet = "Street",
+            DoorNumber = "123",
+            Latitude = "-31",
+            Longitude = "31",
+            MaxMembers = 6,
+            Owner = owner,
+            Name = "House Name"
+        };
         home.Members.Add(homeOwner);
         home.Members.Add(homeMember1);
 
@@ -2243,7 +3613,6 @@ public class HomeServiceTest
     [TestMethod]
     public void TurnOnOffHomeDevice_ExistingDevice_TogglesOnlineStatus()
     {
-        // Arrange
         var Device = new Device
         {
             Id = Guid.NewGuid(),
@@ -2281,12 +3650,10 @@ public class HomeServiceTest
 
         homeDeviceRepositoryMock.Setup(repo => repo.Update(It.IsAny<HomeDevice>())).Returns(homeDevice);
 
-        // Act
         var result = homeService.TurnOnOffHomeDevice(homeDeviceId);
 
-        // Assert
         homeDeviceRepositoryMock.Verify(repo => repo.Update(homeDevice), Times.Once);
-        Assert.IsTrue(result); // Should now be online
+        Assert.IsTrue(result);
         Assert.IsTrue(homeDevice.Online);
     }
 
@@ -2329,12 +3696,10 @@ public class HomeServiceTest
             .Returns(homeDevice);
         homeDeviceRepositoryMock.Setup(repo => repo.Update(It.IsAny<HomeDevice>())).Returns(homeDevice);
 
-        // Act
         var result = homeService.TurnOnOffHomeDevice(homeDeviceId);
 
-        // Assert
         homeDeviceRepositoryMock.Verify(repo => repo.Update(homeDevice), Times.Once);
-        Assert.IsFalse(result); // Should now be offline
+        Assert.IsFalse(result);
         Assert.IsFalse(homeDevice.Online);
     }
 }

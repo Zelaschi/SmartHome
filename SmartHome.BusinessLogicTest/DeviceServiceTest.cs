@@ -17,7 +17,6 @@ public class DeviceServiceTest
     private DeviceService? deviceService;
 
     [TestInitialize]
-
     public void Initialize()
     {
         deviceRepositoryMock = new Mock<IGenericRepository<Device>>();
@@ -159,7 +158,6 @@ public class DeviceServiceTest
     [TestMethod]
     public void Create_WindowSensor_ModelNumeber_NotValid_Throws_Exception_Test()
     {
-        // Arrange: Configurar los datos de prueba
         var validator = new ModelNumberValidator
         {
             Id = Guid.NewGuid(),
@@ -196,17 +194,14 @@ public class DeviceServiceTest
             Business = business
         };
 
-        // Configurar el mock para businessRepository
         businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
             .Returns(business);
 
-        // Configurar el mock para validatorRepository
         validatorRepositoryMock.Setup(u => u.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
-            .Returns(validator); // Devuelve el validador cuando se busca por cualquier condición
+            .Returns(validator);
 
         Exception exception = null;
 
-        // Act: Intentar crear un dispositivo con un número de modelo inválido
         try
         {
             deviceService.CreateDevice(windowSensor, businessOwner, "Window Sensor");
@@ -216,7 +211,6 @@ public class DeviceServiceTest
             exception = e;
         }
 
-        // Assert: Verificar que se lanzó la excepción esperada
         businessRepositoryMock.VerifyAll();
 
         Assert.IsNotNull(exception);
@@ -268,13 +262,11 @@ public class DeviceServiceTest
             Email = "x@y.com",
         };
 
-        // Configurar el mock para businessRepository
         businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
             .Returns(businessNotFound);
 
         Exception exception = null;
 
-        // Act: Intentar crear un dispositivo con un número de modelo inválido
         try
         {
             deviceService.CreateDevice(windowSensor, user, "Window Sensor");
@@ -284,7 +276,6 @@ public class DeviceServiceTest
             exception = e;
         }
 
-        // Assert: Verificar que se lanzó la excepción esperada
         businessRepositoryMock.VerifyAll();
 
         Assert.IsNotNull(exception);
@@ -295,7 +286,6 @@ public class DeviceServiceTest
     [TestMethod]
     public void Create_SecurityCamera_ModelNumeber_Repeated_Throws_Exception_Test()
     {
-        // Arrange: Configurar los datos de prueba
         var validator = new ModelNumberValidator
         {
             Id = Guid.NewGuid(),
@@ -400,13 +390,11 @@ public class DeviceServiceTest
             Email = "x@y.com",
         };
 
-        // Configurar el mock para businessRepository
         businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
             .Returns(businessNotFound);
 
         Exception exception = null;
 
-        // Act: Intentar crear un dispositivo con un número de modelo inválido
         try
         {
             deviceService.CreateSecurityCamera(securityCamera, user);
@@ -416,7 +404,6 @@ public class DeviceServiceTest
             exception = e;
         }
 
-        // Assert: Verificar que se lanzó la excepción esperada
         businessRepositoryMock.VerifyAll();
 
         Assert.IsNotNull(exception);

@@ -39,11 +39,14 @@ public class UserServiceTest
             Email = "juanperez@gmail.com",
         };
 
-        roleLogicMock.Setup(x => x.GetHomeOwnerRole()).Returns(new Role { Name = "HomeOwner" });
+        roleLogicMock.Setup(x => x.GetHomeOwnerRole())
+            .Returns(new Role { Name = "HomeOwner" });
 
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>()))
+            .Returns((User)null);
 
-        userRepositoryMock.Setup(x => x.Add(homeOwner)).Returns(homeOwner);
+        userRepositoryMock.Setup(x => x.Add(homeOwner))
+            .Returns(homeOwner);
 
         homeOwner.Id = Guid.NewGuid();
         var homeOwnerResult = userService.CreateHomeOwner(homeOwner);
@@ -66,7 +69,8 @@ public class UserServiceTest
             Role = new Role { Name = "HomeOwner" }
         };
 
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(homeOwner);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>()))
+            .Returns(homeOwner);
 
         Exception exception = null;
 
@@ -278,11 +282,16 @@ public class UserServiceTest
             Complete = false
         };
 
-        roleLogicMock.Setup(x => x.GetBusinessOwnerRole()).Returns(new Role { Name = "BusinessOwner" });
+        var role = new Role { Name = "BusinessOwner" };
 
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
+        roleLogicMock.Setup(x => x.GetBusinessOwnerRole())
+            .Returns(role);
 
-        userRepositoryMock.Setup(x => x.Add(businessOwner)).Returns(businessOwner);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>()))
+            .Returns((User)null);
+
+        userRepositoryMock.Setup(x => x.Add(businessOwner))
+            .Returns(businessOwner);
 
         businessOwner.Id = Guid.NewGuid();
         var businessOwnerResult = userService.CreateBusinessOwner(businessOwner);
@@ -305,9 +314,18 @@ public class UserServiceTest
             Email = "pedroRodriguez@gmail.com"
         };
 
-        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) });
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
-        userRepositoryMock.Setup(x => x.Add(admin)).Returns(admin);
+        var role = new Role
+        {
+            Name = "Admin",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID)
+        };
+
+        roleLogicMock.Setup(x => x.GetAdminRole())
+            .Returns(role);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>()))
+            .Returns((User)null);
+        userRepositoryMock.Setup(x => x.Add(admin))
+            .Returns(admin);
 
         var adminResult = userService.CreateAdmin(admin);
 
@@ -322,7 +340,11 @@ public class UserServiceTest
     [TestMethod]
     public void Delete_Admin_Test()
     {
-        var adminRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
+        var adminRole = new Role
+        {
+            Name = "Admin",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID)
+        };
         var adminId = Guid.NewGuid();
         var admin = new User
         {
@@ -344,17 +366,27 @@ public class UserServiceTest
             Email = "toto@example.com",
             Role = adminRole
         };
-        var adminList = new List<User> { admin, admin2 };
+        var adminList = new List<User>
+        {
+            admin,
+            admin2
+        };
 
-        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);
+        userRepositoryMock.Setup(x => x.FindAll())
+            .Returns(adminList);
         userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>()))
-                          .Returns((Expression<Func<User, bool>> filter) => adminList.Where(filter.Compile()).ToList());
+                          .Returns((Expression<Func<User, bool>> filter) => adminList
+                          .Where(filter.Compile())
+                          .ToList());
 
         userRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>()))
-                          .Callback<Guid>(id => adminList.RemoveAll(u => u.Id == id));
+                          .Callback<Guid>(id => adminList
+                          .RemoveAll(u => u.Id == id));
 
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(admin);
-        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(adminRole);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>()))
+            .Returns(admin);
+        roleLogicMock.Setup(x => x.GetAdminRole())
+            .Returns(adminRole);
 
         userService.DeleteAdmin(adminId);
 
@@ -370,7 +402,11 @@ public class UserServiceTest
     [TestMethod]
     public void Delete_Only_Admin_Throws_Exception_Test()
     {
-        var adminRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
+        var adminRole = new Role
+        {
+            Name = "Admin",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID)
+        };
         var adminId = Guid.NewGuid();
         var admin = new User
         {
@@ -384,12 +420,17 @@ public class UserServiceTest
         };
         var adminList = new List<User> { admin };
 
-        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(adminRole);
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
-        userRepositoryMock.Setup(x => x.Add(admin)).Returns(admin);
-        userRepositoryMock.Setup(x => x.FindAll()).Returns(adminList);
+        roleLogicMock.Setup(x => x.GetAdminRole())
+            .Returns(adminRole);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>()))
+            .Returns((User)null);
+        userRepositoryMock.Setup(x => x.Add(admin))
+            .Returns(admin);
+        userRepositoryMock.Setup(x => x.FindAll())
+            .Returns(adminList);
         userService.CreateAdmin(admin);
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns(admin);
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>()))
+            .Returns(admin);
 
         try
         {
@@ -416,8 +457,17 @@ public class UserServiceTest
             CreationDate = DateTime.Today,
             Email = "pedroRodriguez@gmail.com"
         };
-        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>())).Returns((User)null);
-        roleLogicMock.Setup(x => x.GetAdminRole()).Returns(new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) });
+        var role = new Role
+        {
+            Name = "Admin",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID)
+        };
+
+        userRepositoryMock.Setup(x => x.Find(It.IsAny<Func<User, bool>>()))
+            .Returns((User)null);
+        roleLogicMock.Setup(x => x.GetAdminRole())
+            .Returns(role);
+
         try
         {
             userService.DeleteAdmin(adminId);
@@ -433,8 +483,16 @@ public class UserServiceTest
     [TestMethod]
     public void Update_Admin_Role_Test()
     {
-        var adminRole = new Role { Name = "Admin", Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID) };
-        var adminHomeOwnerRole = new Role { Name = "AdminHomeOwner", Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID) };
+        var adminRole = new Role
+        {
+            Name = "Admin",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_ROLE_ID)
+        };
+        var adminHomeOwnerRole = new Role
+        {
+            Name = "AdminHomeOwner",
+            Id = Guid.Parse(SeedDataConstants.ADMIN_HOME_OWNER_ROLE_ID)
+        };
         var adminId = Guid.NewGuid();
 
         var admin = new User
@@ -463,7 +521,8 @@ public class UserServiceTest
                           .Callback<User>(u => u.Role = adminHomeOwnerRole)
                           .Returns(adminResult);
 
-        roleLogicMock.Setup(x => x.GetAdminHomeOwnerRole()).Returns(adminHomeOwnerRole);
+        roleLogicMock.Setup(x => x.GetAdminHomeOwnerRole())
+            .Returns(adminHomeOwnerRole);
 
         userService.UpdateAdminRole(admin);
 
@@ -476,8 +535,16 @@ public class UserServiceTest
     [TestMethod]
     public void Update_BusinessOwner_Role_Test()
     {
-        var businessOwnerRole = new Role { Name = "BusinessOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID) };
-        var businessOwnerHomeOwnerRole = new Role { Name = "BusinessOwnerHomeOwner", Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID) };
+        var businessOwnerRole = new Role
+        {
+            Name = "BusinessOwner",
+            Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_ROLE_ID)
+        };
+        var businessOwnerHomeOwnerRole = new Role
+        {
+            Name = "BusinessOwnerHomeOwner",
+            Id = Guid.Parse(SeedDataConstants.BUSINESS_OWNER_HOME_OWNER_ROLE_ID)
+        };
         var businessOwnerId = Guid.NewGuid();
 
         var businessOwner = new User
@@ -506,7 +573,8 @@ public class UserServiceTest
                           .Callback<User>(u => u.Role = businessOwnerHomeOwnerRole)
                           .Returns(businessOwnerResult);
 
-        roleLogicMock.Setup(x => x.GetBusinessOwnerHomeOwnerRole()).Returns(businessOwnerHomeOwnerRole);
+        roleLogicMock.Setup(x => x.GetBusinessOwnerHomeOwnerRole())
+            .Returns(businessOwnerHomeOwnerRole);
 
         userService.UpdateBusinessOwnerRole(businessOwner);
 
@@ -539,7 +607,8 @@ public class UserServiceTest
             },
         };
 
-        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>())).Returns(users);
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>()))
+            .Returns(users);
 
         var result = userService.GetUsers(null, null, null, null);
 
@@ -562,7 +631,8 @@ public class UserServiceTest
             }
         };
 
-        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>())).Returns(users);
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>()))
+            .Returns(users);
 
         var result = userService.GetUsers(null, null, "Admin", null);
 
@@ -585,7 +655,8 @@ public class UserServiceTest
             }
         };
 
-        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>())).Returns(users);
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>()))
+            .Returns(users);
 
         var result = userService.GetUsers(null, null, null, "Juan Perez");
 
@@ -608,7 +679,8 @@ public class UserServiceTest
             }
         };
 
-        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>(), 1, 10)).Returns(users);
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>(), 1, 10))
+            .Returns(users);
 
         var result = userService.GetUsers(1, 10, "Admin", "Juan Perez");
 
@@ -631,7 +703,8 @@ public class UserServiceTest
             }
         };
 
-        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>(), 1, 10)).Returns(users);
+        userRepositoryMock.Setup(x => x.FindAllFiltered(It.IsAny<Expression<Func<User, bool>>>(), 1, 10))
+            .Returns(users);
 
         var result = userService.GetUsers(1, 10, null, null);
 
