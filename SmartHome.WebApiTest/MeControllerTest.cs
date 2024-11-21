@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SmartHome.BusinessLogic.Constants;
 using SmartHome.BusinessLogic.Domain;
+using SmartHome.BusinessLogic.DTOs;
 using SmartHome.BusinessLogic.Interfaces;
 using SmartHome.WebApi.Controllers;
 using SmartHome.WebApi.WebModels.HomeModels.Out;
@@ -35,34 +36,76 @@ public class MeControllerTest
     [TestMethod]
     public void GetNotificationsByHomeMemberIdTest_OK()
     {
+        // ARRANGE
         var companyOwner = new Role() { Name = "CompanyOwner" };
         var homeMemberId = Guid.NewGuid();
-        var companyOwner1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = companyOwner, CreationDate = DateTime.Today };
-        var user1 = new BusinessLogic.Domain.User() { Id = Guid.NewGuid(), Name = "a", Surname = "b", Password = "psw1", Email = "mail1@mail.com", Role = homeOwner, CreationDate = DateTime.Today };
-        var home = new Home() { Id = Guid.NewGuid(), MainStreet = "Cuareim", DoorNumber = "1234", Latitude = "12", Longitude = "34", MaxMembers = 5, Owner = user1, Name = "Home Name" };
-        var company = new Business() { Id = Guid.NewGuid(), BusinessOwner = companyOwner1, Logo = "logo", Name = "hikvision", RUT = "1234" };
-        var device1 = new BusinessLogic.Domain.Device() { Id = Guid.NewGuid(), Name = "Device1", Type = "Type1", Business = company, Description = "description", ModelNumber = "1234", Photos = [] };
-        var homeDevice = new HomeDevice() { Id = Guid.NewGuid(), Device = device1, Online = true, Name = device1.Name };
-
-        var notifications = new List<Notification>
+        var companyOwner1 = new BusinessLogic.Domain.User()
         {
-            new Notification() { Id = Guid.NewGuid(), Event = "Event1", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
-            new Notification() { Id = Guid.NewGuid(), Event = "Event2", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
-            new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now }
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = companyOwner,
+            CreationDate = DateTime.Today
         };
-        var notificationsDTO = notifications.Select(notification => new NotificationResponseModel(notification));
-
-        var homeMember = new HomeMember(user1) { HomeMemberId = homeMemberId, Notifications = notifications, HomePermissions = new List<HomePermission>() };
-
-        _notificationLogicMock.Setup(n => n.GetUsersNotifications(user1)).Returns(notifications);
-
-        var expected = new OkObjectResult(new List<NotificationResponseModel>
+        var user1 = new BusinessLogic.Domain.User()
         {
-            notificationsDTO.First(),
-            notificationsDTO.ElementAt(1),
-            notificationsDTO.Last()
-        });
+            Id = Guid.NewGuid(),
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "mail1@mail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+        var device1 = new BusinessLogic.Domain.Device()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Device1",
+            Type = "Type1",
+            Business = new Business()
+            {
+                Id = Guid.NewGuid(),
+                BusinessOwner = companyOwner1,
+                Logo = "logo",
+                Name = "hikvision",
+                RUT = "1234"
+            },
+            Description = "description",
+            ModelNumber = "1234",
+            Photos = new List<Photo>()
+        };
+        var homeDevice = new HomeDevice()
+        {
+            Id = Guid.NewGuid(),
+            Device = device1,
+            Online = true,
+            Name = device1.Name
+        };
 
+        // Notificaciones originales
+        var notifications = new List<Notification>
+{
+    new Notification() { Id = Guid.NewGuid(), Event = "Event1", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
+    new Notification() { Id = Guid.NewGuid(), Event = "Event2", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now },
+    new Notification() { Id = Guid.NewGuid(), Event = "Event3", Date = DateTime.Today, HomeDevice = homeDevice, Time = DateTime.Now }
+};
+
+        // DTOs de notificaciones
+        var notificationsDTO = notifications
+            .Select(notification => new DTONotification()
+            {
+                Notification = notification,
+                Read = false
+            })
+            .ToList();
+
+        // Configurar el mock para devolver DTOs
+        _notificationLogicMock.Setup(n => n.GetUsersNotifications(It.IsAny<BusinessLogic.Domain.User>()))
+            .Returns(notificationsDTO);
+
+        // Configurar contexto del controlador
         HttpContext httpContext = new DefaultHttpContext();
         httpContext.Items.Add(UserStatic.User, user1);
 
@@ -73,15 +116,26 @@ public class MeControllerTest
 
         _meController = new MeController(_notificationLogicMock.Object, _homeLogicMock.Object) { ControllerContext = controllerContext };
 
+        // ACT
         var result = _meController.GetUsersNotifications() as OkObjectResult;
 
-        var objectResult = result.Value as List<NotificationResponseModel>;
+        // ASSERT
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(result.Value);
 
-        _notificationLogicMock.VerifyAll();
+        var objectResult = result.Value as List<MeNotificationResponseModel>;
 
         Assert.IsNotNull(objectResult);
+        Assert.AreEqual(notifications.Count, objectResult.Count);
 
-        Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && objectResult.First().Equals(notificationsDTO.First()));
+        // Validar contenido de la respuesta
+        for (var i = 0; i < notifications.Count; i++)
+        {
+            Assert.AreEqual(notifications[i].Event, objectResult[i].Event, $"Mismatch in Event at index {i}.");
+            Assert.AreEqual(notifications[i].Date, objectResult[i].Date, $"Mismatch in Date at index {i}.");
+        }
+
+        _notificationLogicMock.VerifyAll();
     }
 
     [TestMethod]

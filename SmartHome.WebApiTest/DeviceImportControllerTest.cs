@@ -102,14 +102,14 @@ public class DeviceImportControllerTest
 
         // Act
 
-        var result = _deviceImportController.ImportDevice(deviceImportRequestModel) as CreatedAtActionResult;
+        var result = _deviceImportController.ImportDevice(deviceImportRequestModel) as OkObjectResult;
         var objectResult = result.Value;
 
         // Assert
         _deviceImportService.VerifyAll();
 
         Assert.IsNotNull(result);
-        Assert.IsInstanceOfType(result, typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
         Assert.AreEqual(objectResult, devices.Count);
     }
 }

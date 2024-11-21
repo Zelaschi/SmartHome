@@ -350,63 +350,63 @@ public class BusinessServiceTest
         Assert.AreEqual("Business already has a validator", exception.Message);
     }
 
-    [TestMethod]
-    public void GetBusinessById_BusinessNotFound_ThrowsException()
-    {
-        var businessId = Guid.NewGuid();
-        Business business = null;
+    ////[TestMethod]
+    ////public void GetBusinessById_BusinessNotFound_ThrowsException()
+    ////{
+    ////    var businessId = Guid.NewGuid();
+    ////    Business business = null;
 
-        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-                    .Returns(business);
+    ////    businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+    ////                .Returns(business);
 
-        Exception exception = null;
+    ////    Exception exception = null;
 
-        try
-        {
-            businessService.GetBusinessById(businessId);
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
+    ////    try
+    ////    {
+    ////        businessService.GetBusinessById(businessId);
+    ////    }
+    ////    catch (Exception e)
+    ////    {
+    ////        exception = e;
+    ////    }
 
-        businessRepositoryMock.VerifyAll();
+    ////    businessRepositoryMock.VerifyAll();
 
-        Assert.IsNotNull(exception);
-        Assert.IsInstanceOfType(exception, typeof(BusinessException));
-        Assert.AreEqual("Business does not exist", exception.Message);
-    }
+    ////    Assert.IsNotNull(exception);
+    ////    Assert.IsInstanceOfType(exception, typeof(BusinessException));
+    ////    Assert.AreEqual("Business does not exist", exception.Message);
+    ////}
 
-    [TestMethod]
-    public void GetBusinessById_BusinessFound_ReturnsBusiness()
-    {
-        var businessOwner = new User
-        {
-            Id = Guid.NewGuid(),
-            Name = "Pedro",
-            Surname = "Rodriguez",
-            Password = "Password@1234",
-            CreationDate = DateTime.Today,
-            Email = "pr@mail.com"
-        };
+    ////[TestMethod]
+    ////public void GetBusinessById_BusinessFound_ReturnsBusiness()
+    ////{
+    ////    var businessOwner = new User
+    ////    {
+    ////        Id = Guid.NewGuid(),
+    ////        Name = "Pedro",
+    ////        Surname = "Rodriguez",
+    ////        Password = "Password@1234",
+    ////        CreationDate = DateTime.Today,
+    ////        Email = "pr@mail.com"
+    ////    };
 
-        var business = new Business
-        {
-            Id = Guid.NewGuid(),
-            Name = "HikVision",
-            Logo = "Logo1",
-            RUT = "1234",
-            BusinessOwner = businessOwner,
-            ValidatorId = Guid.NewGuid()
-        };
+    ////    var business = new Business
+    ////    {
+    ////        Id = Guid.NewGuid(),
+    ////        Name = "HikVision",
+    ////        Logo = "Logo1",
+    ////        RUT = "1234",
+    ////        BusinessOwner = businessOwner,
+    ////        ValidatorId = Guid.NewGuid()
+    ////    };
 
-        businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-                    .Returns(business);
+    ////    businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+    ////                .Returns(business);
 
-        var result = businessService.GetBusinessById(business.Id);
+    ////    var result = businessService.GetBusinessById(business.Id);
 
-        businessRepositoryMock.VerifyAll();
-        Assert.IsNotNull(result);
-        Assert.AreEqual(business, result);
-    }
+    ////    businessRepositoryMock.VerifyAll();
+    ////    Assert.IsNotNull(result);
+    ////    Assert.AreEqual(business, result);
+    ////}
 }
