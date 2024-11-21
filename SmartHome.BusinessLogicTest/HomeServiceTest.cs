@@ -2589,7 +2589,7 @@ public class HomeServiceTest
 
         Assert.IsNotNull(exception);
         Assert.IsInstanceOfType(exception, typeof(HomeException));
-        Assert.AreEqual("Home Member not found", exception.Message);
+        Assert.AreEqual("Owner was not found", exception.Message);
     }
 
     [TestMethod]
