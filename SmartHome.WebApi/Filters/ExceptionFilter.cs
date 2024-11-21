@@ -8,7 +8,7 @@ namespace SmartHome.WebApi.Filters;
 
 public sealed class ExceptionFilter : IExceptionFilter
 {
-    private readonly Dictionary<Type, Func<Exception, IActionResult>> _errors = new()
+    private readonly Dictionary<Type, Func<Exception, IActionResult>> _errors = new ()
     {
         {
             typeof(ValidatorException),
