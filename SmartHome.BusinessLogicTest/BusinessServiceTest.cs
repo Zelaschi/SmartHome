@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using FluentAssertions;
+using System.Linq.Expressions;
 using Moq;
 using SmartHome.BusinessLogic.CustomExceptions;
 using SmartHome.BusinessLogic.Domain;
@@ -233,64 +234,120 @@ public class BusinessServiceTest
         Assert.IsInstanceOfType(exception, typeof(BusinessException));
         Assert.AreEqual("Business does not exist", exception.Message);
     }
+
+    [TestMethod]
+    public void GetAllValidators_ShouldReturnExistingValidators_WhenFoundInRepository()
+    {
+        var validatorNames = new List<string> { "LetterNumberModelValidator", "SixLettersModelValidator" };
+
+        var existingValidators = new List<ModelNumberValidator>
+    {
+        new ModelNumberValidator
+        {
+            Id = Guid.Parse("a10f1893-4454-4588-afbe-0f0eb9332c3c"),
+            Name = "LetterNumberModelValidator"
+        },
+        new ModelNumberValidator
+        {
+            Id = Guid.Parse("c46e1484-3838-4f61-ac33-d4708f5e3a5b"),
+            Name = "SixLettersModelValidator"
+        }
+    };
+
+        var addedValidators = new List<ModelNumberValidator>();
+
+        validatorRepositoryMock
+            .Setup(v => v.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+            .Returns<Func<ModelNumberValidator, bool>>(filter =>
+                existingValidators.FirstOrDefault(filter));
+
+        validatorRepositoryMock
+            .Setup(v => v.Add(It.IsAny<ModelNumberValidator>()))
+            .Callback<ModelNumberValidator>(validator => addedValidators.Add(validator));
+
+        var result = businessService.GetAllValidators();
+
+        result.Should().HaveCount(2);
+        result.First(v => v.Name == "LetterNumberModelValidator").ValidatorId.Should().Be(Guid.Parse("a10f1893-4454-4588-afbe-0f0eb9332c3c"));
+        result.First(v => v.Name == "SixLettersModelValidator").ValidatorId.Should().Be(Guid.Parse("c46e1484-3838-4f61-ac33-d4708f5e3a5b"));
+
+        addedValidators.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void GetAllValidators_ShouldReturnTwo_WhenNoValidatorsAdded()
+    {
+        validatorRepositoryMock.Setup(v => v.Find(It.IsAny<Func<ModelNumberValidator, bool>>()))
+            .Returns((ModelNumberValidator)null);
+        validatorService = new ValidatorService(validatorRepositoryMock.Object);
+        businessService = new BusinessService(
+            businessRepositoryMock.Object,
+            userRepositoryMock.Object,
+            validatorRepositoryMock.Object,
+            validatorService);
+
+        var result = businessService.GetAllValidators();
+
+        result.Should().HaveCount(2);
+    }
 }
 
-    ////[TestMethod]
-    ////public void GetBusinessById_BusinessNotFound_ThrowsException()
-    ////{
-    ////    var businessId = Guid.NewGuid();
-    ////    Business business = null;
+////[TestMethod]
+////public void GetBusinessById_BusinessNotFound_ThrowsException()
+////{
+////    var businessId = Guid.NewGuid();
+////    Business business = null;
 
-    ////    businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-    ////                .Returns(business);
+////    businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+////                .Returns(business);
 
-    ////    Exception exception = null;
+////    Exception exception = null;
 
-    ////    try
-    ////    {
-    ////        businessService.GetBusinessById(businessId);
-    ////    }
-    ////    catch (Exception e)
-    ////    {
-    ////        exception = e;
-    ////    }
+////    try
+////    {
+////        businessService.GetBusinessById(businessId);
+////    }
+////    catch (Exception e)
+////    {
+////        exception = e;
+////    }
 
-    ////    businessRepositoryMock.VerifyAll();
+////    businessRepositoryMock.VerifyAll();
 
-    ////    Assert.IsNotNull(exception);
-    ////    Assert.IsInstanceOfType(exception, typeof(BusinessException));
-    ////    Assert.AreEqual("Business does not exist", exception.Message);
-    ////}
+////    Assert.IsNotNull(exception);
+////    Assert.IsInstanceOfType(exception, typeof(BusinessException));
+////    Assert.AreEqual("Business does not exist", exception.Message);
+////}
 
-    ////[TestMethod]
-    ////public void GetBusinessById_BusinessFound_ReturnsBusiness()
-    ////{
-    ////    var businessOwner = new User
-    ////    {
-    ////        Id = Guid.NewGuid(),
-    ////        Name = "Pedro",
-    ////        Surname = "Rodriguez",
-    ////        Password = "Password@1234",
-    ////        CreationDate = DateTime.Today,
-    ////        Email = "pr@mail.com"
-    ////    };
+////[TestMethod]
+////public void GetBusinessById_BusinessFound_ReturnsBusiness()
+////{
+////    var businessOwner = new User
+////    {
+////        Id = Guid.NewGuid(),
+////        Name = "Pedro",
+////        Surname = "Rodriguez",
+////        Password = "Password@1234",
+////        CreationDate = DateTime.Today,
+////        Email = "pr@mail.com"
+////    };
 
-    ////    var business = new Business
-    ////    {
-    ////        Id = Guid.NewGuid(),
-    ////        Name = "HikVision",
-    ////        Logo = "Logo1",
-    ////        RUT = "1234",
-    ////        BusinessOwner = businessOwner,
-    ////        ValidatorId = Guid.NewGuid()
-    ////    };
+////    var business = new Business
+////    {
+////        Id = Guid.NewGuid(),
+////        Name = "HikVision",
+////        Logo = "Logo1",
+////        RUT = "1234",
+////        BusinessOwner = businessOwner,
+////        ValidatorId = Guid.NewGuid()
+////    };
 
-    ////    businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
-    ////                .Returns(business);
+////    businessRepositoryMock.Setup(u => u.Find(It.IsAny<Func<Business, bool>>()))
+////                .Returns(business);
 
-    ////    var result = businessService.GetBusinessById(business.Id);
+////    var result = businessService.GetBusinessById(business.Id);
 
-    ////    businessRepositoryMock.VerifyAll();
-    ////    Assert.IsNotNull(result);
-    ////    Assert.AreEqual(business, result);
-    ////}
+////    businessRepositoryMock.VerifyAll();
+////    Assert.IsNotNull(result);
+////    Assert.AreEqual(business, result);
+////}
