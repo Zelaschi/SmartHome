@@ -485,50 +485,68 @@ public class BusinessesControllerTest
         businessesLogicMock.VerifyAll();
     }
 
-    ////[TestMethod]
-    ////public void GetBusinessById_ShouldReturnBusinessById()
-    ////{
-    ////    var user1 = new User()
-    ////    {
-    ////        Id = Guid.NewGuid(),
-    ////        Name = "Alice",
-    ////        Surname = "Smith",
-    ////        Password = "psw1",
-    ////        Email = "mail1@mail.com",
-    ////        Role = businessOwner
-    ////    };
+    [TestMethod]
+    public void GetBusinessById_ValidUser_ReturnsBusiness()
+    {
+        var userId = Guid.NewGuid();
+        var user = new User
+        {
+            Id = userId,
+            Name = "TestUser",
+            Surname = "UserSurname",
+            Email = "testuser@example.com",
+            Password = "password",
+            Role = businessOwner,
+            CreationDate = DateTime.Now
+        };
 
-    ////    var company1 = new Business()
-    ////    {
-    ////        Id = Guid.NewGuid(),
-    ////        Name = "hikvision",
-    ////        Logo = "logo1",
-    ////        RUT = "rut1",
-    ////        BusinessOwner = user1
-    ////    };
+        var business = new Business
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Business",
+            Logo = "TestLogo",
+            RUT = "1234",
+            BusinessOwner = user
+        };
 
-    ////    businessesLogicMock.Setup(b => b.GetBusinessById(company1.Id)).Returns(company1);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[UserStatic.User] = user;
+        businessesController.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
 
-    ////    var expected = new OkObjectResult(new BusinessesResponseModel(company1));
+        businessesLogicMock
+            .Setup(x => x.GetBusinessByUser(user))
+            .Returns(business);
 
-    ////    var result = businessesController.GetBusinessById(company1.Id) as OkObjectResult;
+        var result = businessesController.GetBusinessById();
 
-    ////    Assert.IsNotNull(result);
-    ////    Assert.AreEqual(expected.StatusCode, result.StatusCode);
-    ////}
+        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+        var okResult = result as OkObjectResult;
+        Assert.IsNotNull(okResult);
 
-    ////[TestMethod]
-    ////public void GetBusinessById_BusinessIdMissing_Test_ReturnsNotFound()
-    ////{
-    ////    var missingBusinessId = Guid.NewGuid();
-    ////    businessesLogicMock.Setup(b => b.GetBusinessById(missingBusinessId)).Returns((Business)null);
+        var responseModel = okResult.Value as BusinessesResponseModel;
+        Assert.IsNotNull(responseModel);
+        Assert.AreEqual(business.Id.ToString(), responseModel.Id);
+        Assert.AreEqual(business.Name, responseModel.Name);
 
-    ////    var expected = new NotFoundResult();
+        businessesLogicMock.Verify(x => x.GetBusinessByUser(user), Times.Once);
+    }
 
-    ////    var result = businessesController.GetBusinessById(missingBusinessId) as NotFoundResult;
+    [TestMethod]
+    public void GetBusinessById_UserMissing_ReturnsUnauthorized()
+    {
+        var httpContext = new DefaultHttpContext();
+        businessesController.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
 
-    ////    businessesLogicMock.VerifyAll();
-    ////    Assert.IsNotNull(result);
-    ////    Assert.AreEqual(result.StatusCode, expected.StatusCode);
-    ////}
+        var result = businessesController.GetBusinessById();
+
+        Assert.IsInstanceOfType(result, typeof(UnauthorizedObjectResult));
+        var unauthorizedResult = result as UnauthorizedObjectResult;
+        Assert.AreEqual("User is missing", unauthorizedResult?.Value);
+    }
 }

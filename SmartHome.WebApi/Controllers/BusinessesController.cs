@@ -90,7 +90,7 @@ public sealed class BusinessesController : ControllerBase
 
         if (user == null)
         {
-            return Unauthorized("UserId is missing");
+            return Unauthorized("User is missing");
         }
 
         var business = _businessesLogic.GetBusinessByUser(user);

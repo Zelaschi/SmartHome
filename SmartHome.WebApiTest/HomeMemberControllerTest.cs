@@ -148,4 +148,35 @@ public class HomeMemberControllerTest
         var unauthorizedResult = result as UnauthorizedObjectResult;
         Assert.AreEqual("User is missing", unauthorizedResult?.Value);
     }
+
+    [TestMethod]
+    public void UpdateHomeMemberPermissions_UserIdNull_ReturnsUnauthorized()
+    {
+        var user = new User
+        {
+            Id = null,
+            Name = "a",
+            Surname = "b",
+            Password = "psw1",
+            Email = "abc@mail.com",
+            Role = homeOwner,
+            CreationDate = DateTime.Today
+        };
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items[UserStatic.User] = user;
+        homeMemberController.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+
+        var homeMemberId = Guid.NewGuid();
+        var permissions = new HomeMemberPermissions();
+
+        var result = homeMemberController.UpdateHomeMemberPermissions(homeMemberId, permissions);
+
+        Assert.IsInstanceOfType(result, typeof(UnauthorizedObjectResult));
+        var unauthorizedResult = result as UnauthorizedObjectResult;
+        Assert.AreEqual("UserId is missing", unauthorizedResult?.Value);
+    }
 }
