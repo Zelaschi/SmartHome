@@ -4,7 +4,7 @@ using SmartHome.JSONImporter.IncomingData;
 namespace SmartHome.JSONImporterTest;
 
 [TestClass]
-public class JSONImporterTest
+public class JSONImporterTestClass
 {
     private JsonImporterClass? jsonImporter;
     public required string path;
