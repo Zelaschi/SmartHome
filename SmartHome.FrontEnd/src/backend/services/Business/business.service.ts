@@ -38,4 +38,9 @@ export class BusinessService {
   ): Observable<void> {
     return this._repository.addValidatorToBusiness(validatorId);
   }
+
+  public getBusinessByUser(
+  ): Observable<BusinessCreatedModel> {
+    return this._repository.getBusinessByUser();
+  }
 }

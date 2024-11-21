@@ -137,9 +137,9 @@ public sealed class BusinessService : IBusinessesLogic
         return business;
     }
 
-    public Business GetBusinessById(Guid businessId)
+    public Business GetBusinessByUser(User user)
     {
-        var business = _businessRepository.Find(b => b.Id == businessId);
+        var business = _businessRepository.Find(b => b.BusinessOwner == user);
 
         if (business == null)
         {

@@ -54,4 +54,9 @@ export class BusinessApiRepositoryService extends ApiRepository{
     console.log(Id);
     return this.patchById('validators', body);
   }
+
+  public getBusinessByUser(
+  ): Observable<BusinessCreatedModel> {
+    return this.get<BusinessCreatedModel>('myBusinesses');
+  }
 }

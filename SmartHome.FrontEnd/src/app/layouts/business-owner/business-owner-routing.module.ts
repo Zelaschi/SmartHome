@@ -5,6 +5,7 @@ import { authorizationGuard } from '../../../backend/guards/authorization.guard'
 import { BusinessFormComponent } from './business-form/business-form.component';
 import { ValidatorFormComponent } from './validator-form/validator-form.component';
 import { DeviceImporterFormComponent } from './device-importer-form/device-importer-form.component';
+import { MyBusinessItemComponent } from './my-business-item/my-business-item.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,12 @@ const routes: Routes = [
     data: { requiredSystemPermission: 'Create device' },
     component: DeviceImporterFormComponent
   },
+  {
+    path: 'myBusiness',
+    canActivate: [authorizationGuard],
+    data: { requiredSystemPermission: 'Create device' },
+    component: MyBusinessItemComponent
+  }
 
 ];
 

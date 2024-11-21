@@ -110,7 +110,7 @@ public sealed class HomesController : ControllerBase
     }
 
     [AuthorizationFilter(SeedDataConstants.HOME_RELATED_PERMISSION_ID)]
-    [HttpGet("{homeId}/home")]
+    [HttpGet("{homeId}")]
     public IActionResult GetHomeById([FromRoute] Guid homeId)
     {
         var home = _homeLogic.GetHomeById(homeId);

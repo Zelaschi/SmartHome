@@ -82,16 +82,18 @@ public sealed class BusinessesController : ControllerBase
         return Ok(updatedBusiness);
     }
 
-    [AuthorizationFilter(SeedDataConstants.LIST_ALL_BUSINESSES_PERMISSION_ID)]
-    [HttpGet("{businessId}/business")]
-    public IActionResult GetBusinessById([FromRoute] Guid businessId)
+    [AuthorizationFilter(SeedDataConstants.CREATE_BUSINESS_PERMISSION_ID)]
+    [HttpGet("myBusinesses")]
+    public IActionResult GetBusinessById()
     {
-        var business = _businessesLogic.GetBusinessById(businessId);
+        var user = HttpContext.Items[UserStatic.User] as User;
 
-        if (business == null)
+        if (user == null)
         {
-            return NotFound();
+            return Unauthorized("UserId is missing");
         }
+
+        var business = _businessesLogic.GetBusinessByUser(user);
 
         return Ok(new BusinessesResponseModel(business));
     }

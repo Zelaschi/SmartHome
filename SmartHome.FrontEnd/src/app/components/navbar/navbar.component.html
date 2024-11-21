@@ -24,6 +24,11 @@
                 *ngIf="userLogged.systemPermissions.includes('Create business')">Register Business</a>
             <a
                 class="nav-link" 
+                routerLink="/businessOwners/myBusiness"
+                routerLinkActive="active"
+                *ngIf="userLogged.systemPermissions.includes('Create business')">My Business</a>
+            <a
+                class="nav-link" 
                 routerLink="/homeOwners/"
                 routerLinkActive="active"
                 *ngIf="userLogged.systemPermissions.includes('List all users homes')">My Homes</a>

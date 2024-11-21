@@ -13,5 +13,5 @@ public interface IBusinessesLogic
     IEnumerable<Business> GetBusinesses(int? pageNumber, int? pageSize, string? businessName, string? fullName);
     List<DTOValidator> GetAllValidators();
     Business AddValidatorToBusiness(User user, Guid validatorId);
-    Business GetBusinessById(Guid businessId);
+    Business GetBusinessByUser(User user);
 }
