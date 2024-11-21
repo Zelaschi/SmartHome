@@ -1,0 +1,7 @@
+<app-input
+  [type]="type"
+  [label]="label"
+  [placeholder]="placeholder"
+  [(value)]="value"
+  class="mw-100 bg-white" />
+<small *ngIf="error" class="text-danger">{{ error }}</small>

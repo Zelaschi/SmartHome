@@ -1,0 +1,15 @@
+.carousel-image-container {
+    width: 100%;
+    padding-top: 100%; /* Crea un contenedor cuadrado */
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .carousel-image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen para llenar el contenedor cuadrado */
+  }

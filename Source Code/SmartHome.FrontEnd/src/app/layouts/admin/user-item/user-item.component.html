@@ -1,0 +1,23 @@
+<div *ngIf="user" class="card device-item" >
+  <div class="card-body">
+    <h3 class="card-title">{{ user.name }}</h3>
+    <p class="card-text">Surname: {{ user.surname }}</p>
+    <p class="card-text">Email {{ user.email }}</p>
+    <p class="card-text">Role: {{ user.role }}</p>
+    <p class="card-text">Creation date: {{ user.creationDate | date:'dd/MM/yyyy' }}</p>
+    <div *ngIf="error" >
+      <br>
+      <div class="alert alert-danger" *ngIf="error !== ''">
+          <p>{{ error }}</p>
+      </div>
+    </div>
+    <div *ngIf="success" >
+      <br>
+      <div class="alert alert-success" *ngIf="success !== ''">
+          <p>{{ success }}</p>
+      </div>
+    </div>
+    <button *ngIf="user.role == 'Admin'" class="btn btn-danger" (click)="deleteAdmin(user.id)">Delete</button>
+  </div>
+
+</div>

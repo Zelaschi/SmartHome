@@ -1,0 +1,70 @@
+<div *ngIf="importerStatus">
+  <div *ngIf="importerStatus.loading">
+    <app-loading></app-loading>
+  </div>
+</div>
+
+<div>
+    <a
+    class="btn btn-outline-dark m-1 mt-3 ms-3" 
+    routerLink="/businessOwners"
+    routerLinkActive="active"
+    >Back</a>
+  </div> 
+
+<h1 class="text-center my-4">Device Importer</h1>
+
+<div class="container d-flex justify-content-center">
+    <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
+      <app-form [form]="deviceImporterForm" (onSubmit)="onSubmit($event)">
+        <div class="instructions">
+            <h5>Instructions:</h5>
+            <p><small>1. Paste the importer file in the <br>./SmartHome.BusinessLogic/DeviceImporter/DeviceFiles directory</small></p>
+            <p><small>3. Input file name (with the extension)</small></p>
+            <p><small>4. Select an importer</small></p>
+            <p><small>5. Click on the "Import Devices" button</small></p>
+        </div>
+        <div class="form-group">
+          <label for="password" class="form-label">File name</label>
+          <app-form-input
+            type="text"
+            placeholder="file name"
+            [name]="formField.fileName.name"
+            [form]="deviceImporterForm"
+            [formField]="formField"
+            class="mb-3" />
+        </div>
+  
+        <div class="form-group">
+            <label for ="importer" class="form-label">Importer</label>
+            <app-dropdown
+                [options]="importerStatus.importers"
+                [value]="selectedImporter"
+                (valueChange)="onImporterChange($event)"
+                emptyMessage="No importers loaded" 
+                placeholder="Select an Importer"
+            />
+        </div>
+        <div *ngIf="importerStatus">
+          <div *ngIf="importerStatus.success" >
+            <br>
+            <div class="alert alert-success" *ngIf="importerStatus.success !== ''">
+                <p>{{ importerStatus.success }}</p>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="importerStatus">
+          <div *ngIf="importerStatus.error" >
+            <br>
+            <div class="alert alert-danger" *ngIf="importerStatus.error !== ''">
+                <p>{{ importerStatus.error }}</p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="mt-3 d-grid gap-2 form-group">
+          <app-form-button title="Import Devices" submit  />
+        </div>
+      </app-form>
+    </div>
+  </div>

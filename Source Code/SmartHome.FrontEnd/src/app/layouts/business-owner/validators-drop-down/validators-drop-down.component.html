@@ -1,0 +1,17 @@
+<div *ngIf="status.loading; else finishLoading">
+    Loading validators...
+        <app-loading></app-loading>
+  </div>
+  <ng-template #finishLoading>
+    <div *ngIf="status.error; else showDropdown">
+      <p>{{ status.error }}</p>
+    </div>
+    <ng-template #showDropdown>
+      <app-dropdown
+        [options]="status.validators"
+        [value]="value"
+        placeholder="Select validator"
+        emptyMessage="No validators loaded" 
+        (valueChange)="onChange($event)"/>
+    </ng-template>
+  </ng-template>

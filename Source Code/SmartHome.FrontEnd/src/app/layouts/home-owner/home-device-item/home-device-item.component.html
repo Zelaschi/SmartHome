@@ -1,0 +1,60 @@
+<div *ngIf="homeDevice" class="card mx-auto h-100" style="max-width: 350px; min-width: 350px;">
+    <div class="position-absolute w-100 px-3 pt-2" style="z-index: 1000;">
+        <div *ngIf="successMessage" class="alert alert-success py-2 mb-0">
+            <p class="mb-0">{{ successMessage }}</p>
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger py-2 mb-0">
+            <p class="mb-0">{{ errorMessage }}</p>
+        </div>
+    </div>
+
+    <div class="card-img-top position-relative">
+        <app-photos-carousel 
+            *ngIf="homeDevice?.photos && homeDevice.photos.length > 0"
+            [photos]="homeDevice.photos"
+            class="device-carousel">
+        </app-photos-carousel>
+    </div>
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title text-center mb-3">{{ homeDevice.name }}</h5>
+        
+        <div class="device-info px-2">
+            <p class="card-text mb-2">Device Type: {{ homeDevice.type }}</p>
+            <p class="card-text mb-2">Model: {{ homeDevice.device }}</p>
+            <p class="card-text mb-2">Online: {{ homeDevice.online ? 'Yes' : 'No' }}</p>
+            <p class="card-text mb-2" *ngIf="homeDevice.isOn !== null">Is on?: {{ homeDevice.isOn ? 'Yes' : 'No' }}</p>
+            <p class="card-text mb-2" *ngIf="homeDevice.open !== null">Is open?: {{ homeDevice.open ? 'Yes' : 'No' }}</p>
+            <p class="card-text mb-2" *ngIf="homeDevice.room">Room: {{ homeDevice.room }}</p>
+        </div>
+
+        <div class="flex-grow-1"></div>
+
+        <div *ngIf="showHomeDeviceNameForm" class="position-absolute start-0 end-0 bg-white p-3" 
+             style="z-index: 1000; top: 50%; transform: translateY(-50%); box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+            <app-home-device-name
+                [homeDeviceId]="homeDevice.hardwardId"
+                (homeDeviceNameUpdated)="onHomeDeviceNameUpdated($event)">
+            </app-home-device-name>
+        </div>
+        
+        <div class="mt-auto pt-3">
+            <button *ngIf="homeDevice?.online !== null"
+                    class="btn btn-primary btn-sm mb-2 w-100" 
+                    (click)="toggleDevice()">
+                {{ homeDevice.online ? 'TurnOff' : 'TurnOn' }}
+            </button>
+
+            <button class="btn btn-secondary btn-sm mb-2 w-100" 
+                    (click)="ChangeHomeDeviceName(homeDevice.hardwardId)">
+                Change name
+            </button>
+
+            <button *ngIf="isAddingToRoom" 
+                    (click)="addDeviceToRoom()" 
+                    class="btn btn-secondary btn-sm mb-2 w-100">
+                Add to Room
+            </button>
+        </div>
+        <ng-content></ng-content>
+    </div>
+</div>

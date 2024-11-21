@@ -1,0 +1,7 @@
+<ngb-carousel *ngIf="photos.length">
+  <ng-template ngbSlide *ngFor="let photo of photos">
+    <div class="carousel-image-container">
+      <img [src]="photo" class="d-block w-100" alt="Device photo">
+    </div>
+  </ng-template>
+</ngb-carousel>

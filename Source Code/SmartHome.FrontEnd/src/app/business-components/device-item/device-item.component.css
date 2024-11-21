@@ -1,0 +1,22 @@
+.device-item {
+    max-width: 250px; /* Ajusta el tamaño máximo de la tarjeta */
+    margin: auto; /* Centra la tarjeta si el contenedor es más grande */
+  }
+  
+  .image-container {
+    width: 100%;
+    padding-top: 100%; /* Mantiene la proporción cuadrada */
+    position: relative;
+    overflow: hidden;
+    max-width: 250px; /* Ajusta el tamaño máximo del contenedor */
+    margin: auto;
+  }
+  
+  .image-container app-photos-carousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen para llenar el cuadrado */
+  }

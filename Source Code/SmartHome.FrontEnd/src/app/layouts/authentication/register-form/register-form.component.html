@@ -1,0 +1,82 @@
+<div *ngIf="registerStatus">
+  <div *ngIf="registerStatus.loading">
+    <app-loading></app-loading>
+  </div>
+</div>
+
+<h1 class="text-center my-4 text-black">Register in SmartHomeApp</h1>
+
+<div class="container d-flex justify-content-center">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 400px; background-color: #fffffe; border: none;">
+    <app-form [form]="registerForm" (onSubmit)="onSubmit($event)">
+      <!-- Campo de Nombre -->
+      <div class="form-group">
+        <label for="Name" class="form-label">Name</label>
+        <app-form-input
+          type="text"
+          placeholder="Name"
+          [name]="formField.name.name"
+          [form]="registerForm"
+          [formField]="formField" />
+      </div>
+
+      <!-- Campo de Apellido -->
+      <div class="form-group">
+        <label for="surname" class="form-label">Surname</label>
+        <app-form-input
+          type="text"
+          placeholder="Surname"
+          [name]="formField.surname.name"
+          [form]="registerForm"
+          [formField]="formField" />
+      </div>
+
+      <!-- Campo de Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <app-form-input
+          type="text"
+          placeholder="email@example.com"
+          [name]="formField.email.name"
+          [form]="registerForm"
+          [formField]="formField" />
+      </div>
+
+      <!-- Campo de Contraseña -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <app-form-input
+          type="password"
+          placeholder="*****"
+          [name]="formField.password.name"
+          [form]="registerForm"
+          [formField]="formField" />
+      </div>
+
+      <!-- Campo de URL de Imagen (opcional) -->
+      <div class="form-group">
+        <label for="profilePhoto" class="form-label">Profile photo</label>
+        <app-form-input
+          type="text"
+          placeholder="Profile photo (optional)"
+          [name]="formField.profilePhoto.name"
+          [form]="registerForm"
+          [formField]="formField" />
+      </div>
+
+      <div *ngIf="registerStatus">
+        <div *ngIf="registerStatus.error" >
+          <br>
+          <div class="alert alert-danger" *ngIf="registerStatus.error !== ''">
+              <p>{{ registerStatus.error }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de Registro -->
+      <div class="d-grid gap-2 mt-4">
+        <app-form-button title="Register" />
+      </div>
+    </app-form>
+  </div>
+</div>

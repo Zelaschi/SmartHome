@@ -1,0 +1,52 @@
+<div>
+  <a
+  class="btn btn-outline-dark m-1 mt-3 ms-3" 
+  routerLink="/admins/registerAdmins"
+  routerLinkActive="active"
+  >Register Admin</a>
+  <a
+  class="btn btn-outline-dark m-1 mt-3 ms-3" 
+  routerLink="/admins/registerBusinessOwners"
+  routerLinkActive="active"
+  >Register Business Owner</a>
+</div> 
+
+
+<div class="user-list d-flex flex-column container justify-content-center align-items-center">
+    <h1>Users</h1>
+    <div *ngIf="loading" class="loader">
+      Loading users...
+    </div>
+    <app-filter [form]="userFilterForm" (onSubmit)="onSubmit($event)" class="">
+      <app-form-input
+          type="text"
+          placeholder="Filter by user full name"
+          [name]="formField.fullName.name"
+          [form]="userFilterForm"
+          [formField]="formField"
+          class="">
+      </app-form-input>
+      <app-form-input
+          type="text"
+          placeholder="Filter by role"
+          [name]="formField.role.name"
+          [form]="userFilterForm"
+          [formField]="formField"
+          class="">
+      </app-form-input>
+      
+      <app-form-button title="Apply Filters" submit ></app-form-button>
+        
+    </app-filter>
+    <div class="row users justify-content-center" style="width: 100%;">
+      <div *ngFor="let user of status.users" class="device-item col-md-4 mb-4">
+        <app-user-item [user]="user"></app-user-item>
+      </div>
+    </div>
+    <app-pagination
+        [pageNumber]="pageNumber"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+        [areMore]="status.moreUsers"
+      ></app-pagination>
+  </div>

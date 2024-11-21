@@ -1,0 +1,17 @@
+<div *ngIf="room" class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">{{ room.name }}</h5>
+    
+    <button class="btn btn-primary mt-2" (click)="toggleDevices()">
+      {{ showDevices ? 'Hide Devices' : 'Add device to room' }}
+    </button>
+  </div>
+</div>
+<div *ngIf="showDevices" class="mt-3">
+  <app-home-device-list 
+    [homeId]="homeId" 
+    [roomId]="room?.id ?? null" 
+    [isAddingDeviceToRoom]="isAddingDeviceToRoom" 
+    (homeDeviceAdded)="onHomeDeviceAdded()">
+  </app-home-device-list>
+</div>
