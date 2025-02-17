@@ -26,7 +26,7 @@ During the creation of this app one of my classmates couldn't contribute much so
    ```sh
    cd SmartHome.DataAccess
    dotnet ef database update --verbose --startup-project ../SmartHome.WebApi
-   ..
+   cd ..
    ```
 5. Run Frontend
    ```sh
