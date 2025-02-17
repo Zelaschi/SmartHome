@@ -22,7 +22,13 @@ During the creation of this app one of my classmates couldn't contribute much so
 2. Run Backend
    -Open SmartHome.sln on Visual Studio
    -Run de backend
-3. Run Frontend
+3. Load the database
+   ```sh
+   cd SmartHome.DataAccess
+   dotnet ef database update --verbose --startup-project ../SmartHome.WebApi
+   ..
+   ```
+5. Run Frontend
    ```sh
    cd SmartHome.FrontEnd
    npm install
